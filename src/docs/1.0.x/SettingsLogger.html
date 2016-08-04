@@ -1,4 +1,6 @@
-<h1 id="Configuring-Logging"><a class="section-marker" href="#Configuring-Logging">§</a>Configuring Logging</h1><p>Lagom uses SLF4J for logging, backed by <a href="http://logback.qos.ch/">Logback</a> as its default logging engine. See the <a href="http://logback.qos.ch/manual/configuration.html">Logback documentation</a> for details on configuration.</p><h2 id="Default-configuration"><a class="section-marker" href="#Default-configuration">§</a>Default configuration</h2><p>If you don&rsquo;t provide your own Logback configuration, Lagom uses the following default configuration in development:</p>
+<h1 id="Configuring-Logging"><a class="section-marker" href="#Configuring-Logging">§</a><a href="#configuring-logging" name="configuring-logging">Configuring Logging</a></h1>
+<p>Lagom uses SLF4J for logging, backed by <a href="http://logback.qos.ch/">Logback</a> as its default logging engine. See the <a href="http://logback.qos.ch/manual/configuration.html">Logback documentation</a> for details on configuration.</p><h2 id="Default-configuration"><a class="section-marker" href="#Default-configuration">§</a><a href="#default-configuration" name="default-configuration">Default configuration</a></h2>
+<p>If you don&rsquo;t provide your own Logback configuration, Lagom uses the following default configuration in development:</p>
 <pre class="prettyprint"><code class="language-xml">&lt;!--
   ~ Copyright (C) 2016 Lightbend Inc. &lt;http://www.lightbend.com&gt;
   --&gt;
@@ -37,7 +39,8 @@
     &lt;appender-ref ref=&quot;FILE&quot; /&gt;
   &lt;/root&gt;
   
-&lt;/configuration&gt;</code></pre><p>While it uses the following one in production:</p>
+&lt;/configuration&gt;</code></pre>
+<p>While it uses the following one in production:</p>
 <pre class="prettyprint"><code class="language-xml">&lt;!--
   ~ Copyright (C) 2016 Lightbend Inc. &lt;http://www.lightbend.com&gt;
   --&gt;
@@ -82,31 +85,47 @@
     &lt;appender-ref ref=&quot;ASYNCSTDOUT&quot; /&gt;
   &lt;/root&gt;
   
-&lt;/configuration&gt;</code></pre><p>A few things to note:</p>
+&lt;/configuration&gt;</code></pre>
+<p>A few things to note:</p>
 <ul>
   <li>A file appender that writes to <code>logs/application.log</code> is declared.</li>
   <li>The file logger logs full exception stack traces, while the console logger only logs 10 lines of an exception stack trace.</li>
   <li>Lagom uses ANSI color codes by default in level messages.</li>
   <li>In production, Lagom puts both the console and the file logger behind the logback <a href="http://logback.qos.ch/manual/appenders.html#AsyncAppender">AsyncAppender</a>. For details on the performance implications on this, see this <a href="https://blog.takipi.com/how-to-instantly-improve-your-java-logging-with-7-logback-tweaks/">blog post</a>.</li>
-</ul><h2 id="Custom-configuration"><a class="section-marker" href="#Custom-configuration">§</a>Custom configuration</h2><p>For any custom configuration, you need to provide your own Logback configuration file.</p><h3 id="Using-a-configuration-file-from-project-source"><a class="section-marker" href="#Using-a-configuration-file-from-project-source">§</a>Using a configuration file from project source</h3><p>You can provide a default logging configuration by creating a <code>logback.xml</code> file in the project&rsquo;s resource folder. Furthermore, for testing purposes, you can also create a <code>logback-test.xml</code> and place it in the <code>src/test/resources</code> directory of your project. When both <code>logback.xml</code> and <code>logback-test.xml</code> are in the classpath, the latter has higher precedence.</p><h3 id="Using-an-external-configuration-file"><a class="section-marker" href="#Using-an-external-configuration-file">§</a>Using an external configuration file</h3><p>You can also specify a configuration file via a System property. This is particularly useful for production environments where the configuration file may be managed outside of your application source.</p>
-<blockquote><p>Note: The logging system gives top preference to configuration files specified by system properties, secondly to files in the resource directory, and lastly to the default. This allows you to customize your application&rsquo;s logging configuration and still override it for specific environments or developer setups.</p>
-</blockquote><h4 id="Using--Dlogger.resource"><a class="section-marker" href="#Using--Dlogger.resource">§</a>Using <code>-Dlogger.resource</code></h4><p>To specify a configuration file to be loaded from the classpath use the system property <code>-Dlogger.resource</code>, e.g., <code>-Dlogger.resource=prod-logger.xml</code>.</p><h4 id="Using--Dlogger.file"><a class="section-marker" href="#Using--Dlogger.file">§</a>Using <code>-Dlogger.file</code></h4><p>To specify a configuration file to be loaded from the file system use the system property <code>-Dlogger.file</code>, e.g., <code>-Dlogger.file=/opt/prod/logger.xml</code>.</p><h2 id="Play-Lagom-applications"><a class="section-marker" href="#Play-Lagom-applications">§</a>Play Lagom applications</h2><p>When integrating a Play application in Lagom via the <code>LagomPlay</code> sbt plugin, the default Play logging module is used. The main difference, with respect to the Lagom logging module, is that the Play logging module provides different default logback configurations. Read the Play framework <a href="https://www.playframework.com/documentation/2.5.x/SettingsLogger">Configuring Logging</a> documentation for details.</p><h2 id="Internal-framework-logging"><a class="section-marker" href="#Internal-framework-logging">§</a>Internal framework logging</h2><p>It can be useful at times to gain more visibility on what&rsquo;s happening inside Lagom.</p><h3 id="Lagom-logging-configuration"><a class="section-marker" href="#Lagom-logging-configuration">§</a>Lagom logging configuration</h3><p>Lagom system logging can be done by changing the <code>com.lightbend.lagom</code> logger to DEBUG.</p>
+</ul><h2 id="Custom-configuration"><a class="section-marker" href="#Custom-configuration">§</a><a href="#custom-configuration" name="custom-configuration">Custom configuration</a></h2>
+<p>For any custom configuration, you need to provide your own Logback configuration file.</p><h3 id="Using-a-configuration-file-from-project-source"><a class="section-marker" href="#Using-a-configuration-file-from-project-source">§</a><a href="#using-a-configuration-file-from-project-source" name="using-a-configuration-file-from-project-source">Using a configuration file from project source</a></h3>
+<p>You can provide a default logging configuration by creating a <code>logback.xml</code> file in the project&rsquo;s resource folder. Furthermore, for testing purposes, you can also create a <code>logback-test.xml</code> and place it in the <code>src/test/resources</code> directory of your project. When both <code>logback.xml</code> and <code>logback-test.xml</code> are in the classpath, the latter has higher precedence.</p><h3 id="Using-an-external-configuration-file"><a class="section-marker" href="#Using-an-external-configuration-file">§</a><a href="#using-an-external-configuration-file" name="using-an-external-configuration-file">Using an external configuration file</a></h3>
+<p>You can also specify a configuration file via a System property. This is particularly useful for production environments where the configuration file may be managed outside of your application source.</p>
+<blockquote>
+  <p>Note: The logging system gives top preference to configuration files specified by system properties, secondly to files in the resource directory, and lastly to the default. This allows you to customize your application&rsquo;s logging configuration and still override it for specific environments or developer setups.</p>
+</blockquote><h4 id="Using--Dlogger.resource"><a class="section-marker" href="#Using--Dlogger.resource">§</a>Using <code>-Dlogger.resource</code></h4>
+<p>To specify a configuration file to be loaded from the classpath use the system property <code>-Dlogger.resource</code>, e.g., <code>-Dlogger.resource=prod-logger.xml</code>.</p><h4 id="Using--Dlogger.file"><a class="section-marker" href="#Using--Dlogger.file">§</a>Using <code>-Dlogger.file</code></h4>
+<p>To specify a configuration file to be loaded from the file system use the system property <code>-Dlogger.file</code>, e.g., <code>-Dlogger.file=/opt/prod/logger.xml</code>.</p><h2 id="Play-Lagom-applications"><a class="section-marker" href="#Play-Lagom-applications">§</a><a href="#play-lagom-applications" name="play-lagom-applications">Play Lagom applications</a></h2>
+<p>When integrating a Play application in Lagom via the <code>LagomPlay</code> sbt plugin, the default Play logging module is used. The main difference, with respect to the Lagom logging module, is that the Play logging module provides different default logback configurations. Read the Play framework <a href="https://www.playframework.com/documentation/2.5.x/SettingsLogger">Configuring Logging</a> documentation for details.</p><h2 id="Internal-framework-logging"><a class="section-marker" href="#Internal-framework-logging">§</a><a href="#internal-framework-logging" name="internal-framework-logging">Internal framework logging</a></h2>
+<p>It can be useful at times to gain more visibility on what&rsquo;s happening inside Lagom.</p><h3 id="Lagom-logging-configuration"><a class="section-marker" href="#Lagom-logging-configuration">§</a><a href="#lagom-logging-configuration" name="lagom-logging-configuration">Lagom logging configuration</a></h3>
+<p>Lagom system logging can be done by changing the <code>com.lightbend.lagom</code> logger to DEBUG.</p>
 <pre class="prettyprint"><code class="language-xml">&lt;!-- Set logging for all Lagom library classes to DEBUG --&gt;
 &lt;logger name=&quot;com.lightbend.lagom&quot; level=&quot;DEBUG&quot; /&gt;
-</code></pre><h3 id="Akka-logging-configuration"><a class="section-marker" href="#Akka-logging-configuration">§</a>Akka logging configuration</h3><p>Akka system logging can be done by changing the <code>akka</code> logger to DEBUG.</p>
+</code></pre><h3 id="Akka-logging-configuration"><a class="section-marker" href="#Akka-logging-configuration">§</a><a href="#akka-logging-configuration" name="akka-logging-configuration">Akka logging configuration</a></h3>
+<p>Akka system logging can be done by changing the <code>akka</code> logger to DEBUG.</p>
 <pre class="prettyprint"><code class="language-xml">&lt;!-- Set logging for all Akka library classes to DEBUG --&gt;
 &lt;logger name=&quot;akka&quot; level=&quot;DEBUG&quot; /&gt;
 &lt;!-- Set a specific actor to DEBUG --&gt;
 &lt;logger name=&quot;actors.MyActor&quot; level=&quot;DEBUG&quot; /&gt;
-</code></pre><p>And, you will also need to add the following in your project&rsquo;s <code>application.conf</code>:</p>
+</code></pre>
+<p>And, you will also need to add the following in your project&rsquo;s <code>application.conf</code>:</p>
 <pre class="prettyprint"><code class="language-conf">akka.loglevel=DEBUG
-</code></pre><p>Furthermore, you may also wish to configure an appender for the Akka loggers that includes useful properties such as thread and actor address. For more information about configuring Akka&rsquo;s logging, including details on Logback and Slf4j integration, see the <a href="http://doc.akka.io/docs/akka/2.4.4/scala/logging.html">Akka documentation</a>.</p><h3 id="Play-logging-configuration"><a class="section-marker" href="#Play-logging-configuration">§</a>Play logging configuration</h3><p>Play system logging can be done by changing the <code>play</code> logger to DEBUG.</p>
+</code></pre>
+<p>Furthermore, you may also wish to configure an appender for the Akka loggers that includes useful properties such as thread and actor address. For more information about configuring Akka&rsquo;s logging, including details on Logback and Slf4j integration, see the <a href="http://doc.akka.io/docs/akka/2.4.4/scala/logging.html">Akka documentation</a>.</p><h3 id="Play-logging-configuration"><a class="section-marker" href="#Play-logging-configuration">§</a><a href="#play-logging-configuration" name="play-logging-configuration">Play logging configuration</a></h3>
+<p>Play system logging can be done by changing the <code>play</code> logger to DEBUG.</p>
 <pre class="prettyprint"><code class="language-xml">&lt;!-- Set logging for all Play library classes to DEBUG --&gt;
 &lt;logger name=&quot;play&quot; level=&quot;DEBUG&quot; /&gt;
-</code></pre><h2 id="Using-a-Custom-Logging-Framework"><a class="section-marker" href="#Using-a-Custom-Logging-Framework">§</a>Using a Custom Logging Framework</h2><p>Lagom uses Logback by default, but it is possible to configure Lagom to use another logging framework, as long as there is an SLF4J adapter for it. To do this, the <code>LagomLogback</code> sbt plugin must be disabled using <code>disablePlugins</code>:</p>
+</code></pre><h2 id="Using-a-Custom-Logging-Framework"><a class="section-marker" href="#Using-a-Custom-Logging-Framework">§</a><a href="#using-a-custom-logging-framework" name="using-a-custom-logging-framework">Using a Custom Logging Framework</a></h2>
+<p>Lagom uses Logback by default, but it is possible to configure Lagom to use another logging framework, as long as there is an SLF4J adapter for it. To do this, the <code>LagomLogback</code> sbt plugin must be disabled using <code>disablePlugins</code>:</p>
 <pre class="prettyprint"><code class="language-sbt">lazy val portfolioImpl = (project in file(&quot;portfolioImpl&quot;))
   .enablePlugins(LagomJava)
-  .disablePlugins(LagomLogback) // this avoids that the Lagom logging module is addedd to the classpath</code></pre><p>From there, a custom logging framework can be used. Here, Log4J 2 is used as an example.</p>
+  .disablePlugins(LagomLogback) // this avoids that the Lagom logging module is addedd to the classpath</code></pre>
+<p>From there, a custom logging framework can be used. Here, Log4J 2 is used as an example.</p>
 <pre class="prettyprint"><code class="language-sbt">lazy val portfolioImpl = (project in file(&quot;portfolioImpl&quot;))
   .enablePlugins(LagomJava)
   .disablePlugins(LagomLogback) // this avoids that the Lagom logging module is addedd to the classpath
@@ -116,4 +135,5 @@
       &quot;org.apache.logging.log4j&quot; % &quot;log4j-api&quot; % &quot;2.4.1&quot;,
       &quot;org.apache.logging.log4j&quot; % &quot;log4j-core&quot; % &quot;2.4.1&quot;
     )
-  )</code></pre><p>Once the libraries and the SLF4J adapter are loaded, the <code>log4j.configurationFile</code> system property can be set on the command line as usual.</p>
+  )</code></pre>
+<p>Once the libraries and the SLF4J adapter are loaded, the <code>log4j.configurationFile</code> system property can be set on the command line as usual.</p>

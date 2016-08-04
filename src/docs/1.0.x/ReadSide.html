@@ -1,5 +1,11 @@
-<h1 id="Persistent-Read-Side"><a class="section-marker" href="#Persistent-Read-Side">§</a>Persistent Read-Side</h1><p><a href="ES_CQRS.html">Event Sourcing and CQRS</a> is a recommended introduction to this section.</p><p><a href="PersistentEntity.html">Persistent Entities</a> are used for holding the state of individual entities, but they cannot be used for serving queries that span more than one entity. You need to know the identifier of the entity to be able to interact with it. Therefore you need to create another view of the data that is tailored to the queries that the service provides. Lagom has support for populating this read-side view of the data and also for building queries of the read-side.</p><p>This separation of the write-side and the read-side of the persistent data is often referred to as the <a href="https://msdn.microsoft.com/en-us/library/jj591573.aspx">CQRS</a> (Command Query Responibility Segregation) pattern. The <a href="https://msdn.microsoft.com/en-us/library/jj554200.aspx">CQRS Journey</a> is a great resource for learning more about CQRS.</p><h2 id="Dependency"><a class="section-marker" href="#Dependency">§</a>Dependency</h2><p>To use this feature add the following in your project&rsquo;s build:</p>
-<pre class="prettyprint"><code class="language-sbt">libraryDependencies += lagomJavadslPersistence</code></pre><h2 id="Query-the-Read-Side-Database"><a class="section-marker" href="#Query-the-Read-Side-Database">§</a>Query the Read-Side Database</h2><p>Lagom has support for <a href="http://cassandra.apache.org/">Cassandra</a> as data store, both for the write-side entities and the read-side queries. It is a very scalable distributed database, and also flexible enough to support most of the use cases that reactive services may have.</p><p>Let us first look at how a service implementation can retrieve data from Cassandra.</p>
+<h1 id="Persistent-Read-Side"><a class="section-marker" href="#Persistent-Read-Side">§</a>Persistent Read-Side</h1>
+<p><a href="ES_CQRS.html">Event Sourcing and CQRS</a> is a recommended introduction to this section.</p>
+<p><a href="PersistentEntity.html">Persistent Entities</a> are used for holding the state of individual entities, but they cannot be used for serving queries that span more than one entity. You need to know the identifier of the entity to be able to interact with it. Therefore you need to create another view of the data that is tailored to the queries that the service provides. Lagom has support for populating this read-side view of the data and also for building queries of the read-side.</p>
+<p>This separation of the write-side and the read-side of the persistent data is often referred to as the <a href="https://msdn.microsoft.com/en-us/library/jj591573.aspx">CQRS</a> (Command Query Responibility Segregation) pattern. The <a href="https://msdn.microsoft.com/en-us/library/jj554200.aspx">CQRS Journey</a> is a great resource for learning more about CQRS.</p><h2 id="Dependency"><a class="section-marker" href="#Dependency">§</a><a href="#dependency" name="dependency">Dependency</a></h2>
+<p>To use this feature add the following in your project&rsquo;s build:</p>
+<pre class="prettyprint"><code class="language-sbt">libraryDependencies += lagomJavadslPersistence</code></pre><h2 id="Query-the-Read-Side-Database"><a class="section-marker" href="#Query-the-Read-Side-Database">§</a>Query the Read-Side Database</h2>
+<p>Lagom has support for <a href="http://cassandra.apache.org/">Cassandra</a> as data store, both for the write-side entities and the read-side queries. It is a very scalable distributed database, and also flexible enough to support most of the use cases that reactive services may have.</p>
+<p>Let us first look at how a service implementation can retrieve data from Cassandra.</p>
 <pre class="prettyprint"><code class="language-java">import akka.NotUsed;
 import com.lightbend.lagom.javadsl.api.ServiceCall;
 import com.lightbend.lagom.javadsl.persistence.cassandra.CassandraSession;
@@ -17,15 +23,19 @@ public class BlogServiceImpl2 implements BlogService2 {
   }
 
   @Override
-  public ServiceCall&lt;NotUsed, NotUsed, Source&lt;PostSummary, ?&gt;&gt; getPostSummaries() {
-    return (id, request) -&gt; {
+  public ServiceCall&lt;NotUsed, Source&lt;PostSummary, ?&gt;&gt; getPostSummaries() {
+    return request -&gt; {
       Source&lt;PostSummary, ?&gt; summaries = cassandraSession.select(
           &quot;SELECT id, title FROM postsummary;&quot;).map(row -&gt;
             PostSummary.of(row.getString(&quot;id&quot;), row.getString(&quot;title&quot;)));
       return CompletableFuture.completedFuture(summaries);
     };
   }
-}</code></pre><p>Note that the <a href="api/java/index.html?com/lightbend/lagom/javadsl/persistence/cassandra/CassandraSession.html">CassandraSession</a> is injected in the constructor. <code>CassandraSession</code> provides several methods in different flavors for executing queries. The one used in the above example returns a <code>Source</code>, i.e. a streamed response. There are also methods for retrieving a list of rows, which can be useful when you know that the result set is small, e.g. when you have included a <code>LIMIT</code> clause.</p><p>All methods in <code>CassandraSession</code> are non-blocking and they return a <code>CompletionStage</code> or a <code>Source</code>. The statements are expressed in <a href="http://docs.datastax.com/en/cql/3.3/cql/cqlIntro.html">Cassandra Query Language</a> (CQL) syntax. See <a href="http://docs.datastax.com/en/cql/3.3/cql/cql_using/useQueryDataTOC.html">Querying tables</a> for information about CQL queries.</p><h2 id="Update-the-Read-Side"><a class="section-marker" href="#Update-the-Read-Side">§</a>Update the Read-Side</h2><p>We need to transform the events generated by the <a href="PersistentEntity.html">Persistent Entities</a> into database tables that can be queried as illustrated in the previous section. For that we will use the <a href="api/java/index.html?com/lightbend/lagom/javadsl/persistence/cassandra/CassandraReadSideProcessor.html">CassandraReadSideProcessor</a>. It will Consume events produced by persistent entities and update one or more tables in Cassandra that are optimized for queries.</p><p>This is how a <a href="api/java/index.html?com/lightbend/lagom/javadsl/persistence/cassandra/CassandraReadSideProcessor.html">CassandraReadSideProcessor</a> class looks like before filling in the implementation details:</p>
+}</code></pre>
+<p>Note that the <a href="api/index.html?com/lightbend/lagom/javadsl/persistence/cassandra/CassandraSession.html">CassandraSession</a> is injected in the constructor. <code>CassandraSession</code> provides several methods in different flavors for executing queries. The one used in the above example returns a <code>Source</code>, i.e. a streamed response. There are also methods for retrieving a list of rows, which can be useful when you know that the result set is small, e.g. when you have included a <code>LIMIT</code> clause.</p>
+<p>All methods in <code>CassandraSession</code> are non-blocking and they return a <code>CompletionStage</code> or a <code>Source</code>. The statements are expressed in <a href="http://docs.datastax.com/en/cql/3.3/cql/cqlIntro.html">Cassandra Query Language</a> (CQL) syntax. See <a href="http://docs.datastax.com/en/cql/3.3/cql/cql_using/useQueryDataTOC.html">Querying tables</a> for information about CQL queries.</p><h2 id="Update-the-Read-Side"><a class="section-marker" href="#Update-the-Read-Side">§</a>Update the Read-Side</h2>
+<p>We need to transform the events generated by the <a href="PersistentEntity.html">Persistent Entities</a> into database tables that can be queried as illustrated in the previous section. For that we will use the <a href="api/index.html?com/lightbend/lagom/javadsl/persistence/cassandra/CassandraReadSideProcessor.html">CassandraReadSideProcessor</a>. It will Consume events produced by persistent entities and update one or more tables in Cassandra that are optimized for queries.</p>
+<p>This is how a <a href="api/index.html?com/lightbend/lagom/javadsl/persistence/cassandra/CassandraReadSideProcessor.html">CassandraReadSideProcessor</a> class looks like before filling in the implementation details:</p>
 <pre class="prettyprint"><code class="language-java">import com.lightbend.lagom.javadsl.persistence.AggregateEventTag;
 
 import com.lightbend.lagom.javadsl.persistence.cassandra.CassandraReadSideProcessor;
@@ -54,13 +64,16 @@ public class BlogEventProcessor1 extends CassandraReadSideProcessor&lt;BlogEvent
     return builder.build();
   }
 
-}</code></pre><p>To make the events available for read-side processing the events must implement the <code>aggregateTag</code> method of the <a href="api/java/index.html?com/lightbend/lagom/javadsl/persistence/AggregateEvent.html">AggregateEvent</a> interface to define which events belong together. Typically you define this <code>aggregateTag</code> on the top level event type of a <code>PersistentEntity</code> class.</p><p>The <a href="api/java/index.html?com/lightbend/lagom/javadsl/persistence/AggregateEventTag.html">AggregateEventTag</a> for the <code>BlogEvent</code> is defined as a constant like this:</p>
+}</code></pre>
+<p>To make the events available for read-side processing the events must implement the <code>aggregateTag</code> method of the <a href="api/index.html?com/lightbend/lagom/javadsl/persistence/AggregateEvent.html">AggregateEvent</a> interface to define which events belong together. Typically you define this <code>aggregateTag</code> on the top level event type of a <code>PersistentEntity</code> class.</p>
+<p>The <a href="api/index.html?com/lightbend/lagom/javadsl/persistence/AggregateEventTag.html">AggregateEventTag</a> for the <code>BlogEvent</code> is defined as a constant like this:</p>
 <pre class="prettyprint"><code class="language-java">public class BlogEventTag {
 
   public static final AggregateEventTag&lt;BlogEvent&gt; INSTANCE =
     AggregateEventTag.of(BlogEvent.class);
 
-}</code></pre><p>The <code>BlogEvent</code> classes:</p>
+}</code></pre>
+<p>The <code>BlogEvent</code> classes:</p>
 <pre class="prettyprint"><code class="language-java">interface BlogEvent extends Jsonable, AggregateEvent&lt;BlogEvent&gt; {
 
   @Override
@@ -93,7 +106,8 @@ public class BlogEventProcessor1 extends CassandraReadSideProcessor&lt;BlogEvent
     String getPostId();
   }
 
-}</code></pre><p>In the service implementation you need to inject the <a href="api/java/index.html?com/lightbend/lagom/javadsl/persistence/cassandra/CassandraReadSide.html">CassandraReadSide</a> and at startup (in the constructor) register the class that implements the <code>CassandraReadSideProcessor</code>. This will make sure that one instance of the processor is always running on one of the nodes in the cluster of the service.</p>
+}</code></pre>
+<p>In the service implementation you need to inject the <a href="api/index.html?com/lightbend/lagom/javadsl/persistence/cassandra/CassandraReadSide.html">CassandraReadSide</a> and at startup (in the constructor) register the class that implements the <code>CassandraReadSideProcessor</code>. This will make sure that one instance of the processor is always running on one of the nodes in the cluster of the service.</p>
 <pre class="prettyprint"><code class="language-java">@Inject
 public BlogServiceImpl3(
     PersistentEntityRegistry persistentEntityRegistry,
@@ -104,15 +118,19 @@ public BlogServiceImpl3(
   this.cassandraSession = cassandraSession;
 
   cassandraReadSide.register(BlogEventProcessor.class);
-}</code></pre><h3 id="aggregateTag"><a class="section-marker" href="#aggregateTag">§</a>aggregateTag</h3><p>Define the <a href="api/java/index.html?com/lightbend/lagom/javadsl/persistence/AggregateEventTag.html">AggregateEventTag</a> in the method <code>aggregateTag</code> of the processor. The tag defines which events to process. You should return the same constant value as in the events.</p>
+}</code></pre><h3 id="aggregateTag"><a class="section-marker" href="#aggregateTag">§</a><a href="#aggregatetag" name="aggregatetag">aggregateTag</a></h3>
+<p>Define the <a href="api/index.html?com/lightbend/lagom/javadsl/persistence/AggregateEventTag.html">AggregateEventTag</a> in the method <code>aggregateTag</code> of the processor. The tag defines which events to process. You should return the same constant value as in the events.</p>
 <pre class="prettyprint"><code class="language-java">@Override
 public AggregateEventTag&lt;BlogEvent&gt; aggregateTag() {
   return BlogEventTag.INSTANCE;
-}</code></pre><h3 id="prepare"><a class="section-marker" href="#prepare">§</a>prepare</h3><p>You must tell where in the event stream the processing should start. This is the primary purpose of the <code>prepare</code> method. Each event is associated with a unique offset, a time based UUID. The offset is a parameter to the event handler for each event and it should typically be stored so that it can be retrieved with a <code>select</code> statement in the <code>prepare</code> method. Use the <code>CassandraSession</code> to get the stored offset.</p>
+}</code></pre><h3 id="prepare"><a class="section-marker" href="#prepare">§</a><a href="#prepare" name="prepare">prepare</a></h3>
+<p>You must tell where in the event stream the processing should start. This is the primary purpose of the <code>prepare</code> method. Each event is associated with a unique offset, a time based UUID. The offset is a parameter to the event handler for each event and it should typically be stored so that it can be retrieved with a <code>select</code> statement in the <code>prepare</code> method. Use the <code>CassandraSession</code> to get the stored offset.</p>
 <pre class="prettyprint"><code class="language-java">private CompletionStage&lt;Optional&lt;UUID&gt;&gt; selectOffset(CassandraSession session) {
   return session.selectOne(&quot;SELECT offset FROM blogevent_offset&quot;).thenApply(
       optionalRow -&gt; optionalRow.map(r -&gt; r.getUUID(&quot;offset&quot;)));
-}</code></pre><p>Return <code>noOffset()</code> if you want to processes all events, e.g. when starting the first time or if the number of events are known to be small enough to processes all events.</p><p>Typically <code>prepare</code> is also used to create prepared statements that are later used when processing the events. Use <code>CassandraSession.prepare</code> to create the prepared statements.</p>
+}</code></pre>
+<p>Return <code>noOffset()</code> if you want to processes all events, e.g. when starting the first time or if the number of events are known to be small enough to processes all events.</p>
+<p>Typically <code>prepare</code> is also used to create prepared statements that are later used when processing the events. Use <code>CassandraSession.prepare</code> to create the prepared statements.</p>
 <pre class="prettyprint"><code class="language-java">private PreparedStatement writeTitle = null; // initialized in prepare
 private PreparedStatement writeOffset = null; // initialized in prepare
 
@@ -138,14 +156,17 @@ private CompletionStage&lt;NotUsed&gt; prepareWriteOffset(CassandraSession sessi
         setWriteOffset(ps);
         return NotUsed.getInstance();
       });
-}</code></pre><p>Composing those asynchronous <code>CompletionStage</code> tasks may look like this:</p>
+}</code></pre>
+<p>Composing those asynchronous <code>CompletionStage</code> tasks may look like this:</p>
 <pre class="prettyprint"><code class="language-java">@Override
 public CompletionStage&lt;Optional&lt;UUID&gt;&gt; prepare(CassandraSession session) {
   return
     prepareWriteTitle(session).thenCompose(a -&gt;
     prepareWriteOffset(session).thenCompose(b -&gt;
     selectOffset(session)));
-}</code></pre><h3 id="defineEventHandlers"><a class="section-marker" href="#defineEventHandlers">§</a>defineEventHandlers</h3><p>The events are processed by event handlers that are defined in the method <code>defineEventHandlers</code>. One handler for each event class.</p><p>A handler is a <code>BiFunction</code> that takes the event and the offset as parameters and returns zero or more bound statements that will be executed before processing next event.</p>
+}</code></pre><h3 id="defineEventHandlers"><a class="section-marker" href="#defineEventHandlers">§</a><a href="#defineeventhandlers" name="defineeventhandlers">defineEventHandlers</a></h3>
+<p>The events are processed by event handlers that are defined in the method <code>defineEventHandlers</code>. One handler for each event class.</p>
+<p>A handler is a <code>BiFunction</code> that takes the event and the offset as parameters and returns zero or more bound statements that will be executed before processing next event.</p>
 <pre class="prettyprint"><code class="language-java">@Override
 public EventHandlers defineEventHandlers(EventHandlersBuilder builder) {
   builder.setEventHandler(PostAdded.class, this::processPostAdded);
@@ -158,21 +179,31 @@ private CompletionStage&lt;List&lt;BoundStatement&gt;&gt; processPostAdded(PostA
   bindWriteTitle.setString(&quot;title&quot;, event.getContent().getTitle());
   BoundStatement bindWriteTitleOffset = writeOffset.bind(offset);
   return completedStatements(Arrays.asList(bindWriteTitle, bindWriteTitleOffset));
-}</code></pre><p>In this example we add one row to the <code>blogsummary</code> table and update the current offset in the <code>blogevent_offset</code> table for each <code>PostAdded</code> event. Other event types are ignored.</p><p>Note how the prepared statements that were initialized in the <code>prepare</code> method are used here.</p><p>You can keep state in variables of the enclosing class and update that state safely from the event handlers. The events are processed sequentially, one at a time. An example of such state could be values for calculating a moving average.</p><p>If there is a failure when executing the statements the processor will be restarted after a backoff delay. This delay is increased exponentially in case of repeated failures.</p><h2 id="Raw-Stream-of-Events"><a class="section-marker" href="#Raw-Stream-of-Events">§</a>Raw Stream of Events</h2><p>There is another tool that can be used if you want to do something else with the events than updating tables in Cassandra. You can get a stream of the persistent events with the <code>eventStream</code> method of the <a href="api/java/index.html?com/lightbend/lagom/javadsl/persistence/PersistentEntityRegistry.html">PersistentEntityRegistry</a>.</p>
-<pre class="prettyprint"><code class="language-java">public ServiceCall&lt;NotUsed, NotUsed, Source&lt;PostSummary, ?&gt;&gt; newPosts() {
+}</code></pre>
+<p>In this example we add one row to the <code>blogsummary</code> table and update the current offset in the <code>blogevent_offset</code> table for each <code>PostAdded</code> event. Other event types are ignored.</p>
+<p>Note how the prepared statements that were initialized in the <code>prepare</code> method are used here.</p>
+<p>You can keep state in variables of the enclosing class and update that state safely from the event handlers. The events are processed sequentially, one at a time. An example of such state could be values for calculating a moving average.</p>
+<p>If there is a failure when executing the statements the processor will be restarted after a backoff delay. This delay is increased exponentially in case of repeated failures.</p><h2 id="Raw-Stream-of-Events"><a class="section-marker" href="#Raw-Stream-of-Events">§</a><a href="#raw-stream-of-events" name="raw-stream-of-events">Raw Stream of Events</a></h2>
+<p>There is another tool that can be used if you want to do something else with the events than updating tables in Cassandra. You can get a stream of the persistent events with the <code>eventStream</code> method of the <a href="api/index.html?com/lightbend/lagom/javadsl/persistence/PersistentEntityRegistry.html">PersistentEntityRegistry</a>.</p>
+<pre class="prettyprint"><code class="language-java">public ServiceCall&lt;NotUsed, Source&lt;PostSummary, ?&gt;&gt; newPosts() {
   final PartialFunction&lt;BlogEvent, PostSummary&gt; collectFunction =
       new PFBuilder&lt;BlogEvent, PostSummary&gt;()
       .match(PostAdded.class, evt -&gt;
          PostSummary.of(evt.getPostId(), evt.getContent().getTitle()))
       .build();
 
-  return (id, request) -&gt; {
+  return request -&gt; {
     Source&lt;PostSummary, ?&gt; stream = persistentEntityRegistry
       .eventStream(BlogEventTag.INSTANCE, Optional.empty())
         .map(pair -&gt; pair.first()).collect(collectFunction);
     return CompletableFuture.completedFuture(stream);
   };
-}</code></pre><p>The <code>eventStream</code> method takes the event class that implements the <code>AggregateEventType</code> and an optional offset, which is the starting point of the stream. It returns a <code>Source</code> of <code>Pair</code> elements, which contains the event and the associated offset.</p><p>This stream will never complete, unless there is failure from retrieving the events from the database. It will continue to deliver new events as they are persisted.</p><p>Each such stream of events will continuously generate queries to Cassandra to fetch new events and therefore this tool should be used carefully. Do not run too many such streams. It should typically not be used for service calls invoked by unknown number of clients, but it can be useful for a limited number of background processing jobs.</p><h2 id="Refactoring-Consideration"><a class="section-marker" href="#Refactoring-Consideration">§</a>Refactoring Consideration</h2><p>If you use a class name of a event type as the aggregate tag in <a href="api/java/index.html?com/lightbend/lagom/javadsl/persistence/AggregateEventTag.html">AggregateEventTag</a> you have to retain the original tag if you change the event class name because this string is part of the stored event data. <code>AggregateEventTag</code> has a factory method (and constructor) with a <code>String tag</code> parameter for this purpose. Instead of using a class name as tag identifier you can consider to use a string tag up-front. The tag should be unique among the event types of the service.</p><h2 id="Configuration"><a class="section-marker" href="#Configuration">§</a>Configuration</h2><p>The default configuration should be good starting point, and the following settings may later be amended to customize the behavior if needed.</p>
+}</code></pre>
+<p>The <code>eventStream</code> method takes the event class that implements the <code>AggregateEventType</code> and an optional offset, which is the starting point of the stream. It returns a <code>Source</code> of <code>Pair</code> elements, which contains the event and the associated offset.</p>
+<p>This stream will never complete, unless there is failure from retrieving the events from the database. It will continue to deliver new events as they are persisted.</p>
+<p>Each such stream of events will continuously generate queries to Cassandra to fetch new events and therefore this tool should be used carefully. Do not run too many such streams. It should typically not be used for service calls invoked by unknown number of clients, but it can be useful for a limited number of background processing jobs.</p><h2 id="Refactoring-Consideration"><a class="section-marker" href="#Refactoring-Consideration">§</a><a href="#refactoring-consideration" name="refactoring-consideration">Refactoring Consideration</a></h2>
+<p>If you use a class name of a event type as the aggregate tag in <a href="api/index.html?com/lightbend/lagom/javadsl/persistence/AggregateEventTag.html">AggregateEventTag</a> you have to retain the original tag if you change the event class name because this string is part of the stored event data. <code>AggregateEventTag</code> has a factory method (and constructor) with a <code>String tag</code> parameter for this purpose. Instead of using a class name as tag identifier you can consider to use a string tag up-front. The tag should be unique among the event types of the service.</p><h2 id="Configuration"><a class="section-marker" href="#Configuration">§</a><a href="#configuration" name="configuration">Configuration</a></h2>
+<p>The default configuration should be good starting point, and the following settings may later be amended to customize the behavior if needed.</p>
 <pre class="prettyprint"><code class="language-conf">lagom.persistence.read-side {
 
   cassandra {
@@ -193,7 +224,7 @@ private CompletionStage&lt;List&lt;BoundStatement&gt;&gt; processPostAdded(PostA
     # It is possible to replace the implementation of the SessionProvider
     # to reuse another session or override the Cluster builder with other
     # settings.
-    # The implementation class may optionally have a constructor with an ActorSystem 
+    # The implementation class may optionally have a constructor with an ActorSystem
     # and Config parameter. The config parameter is the enclosing config section.
     session-provider = com.lightbend.lagom.internal.persistence.cassandra.ServiceLocatorSessionProvider
     
@@ -312,4 +343,7 @@ lagom.defaults.persistence.read-side.cassandra {
 	# Port of contact points in the Cassandra cluster
 	port = 9042
 	keyspace = &quot;lagom_read&quot;
-}</code></pre><h2 id="Underlying-Implementation"><a class="section-marker" href="#Underlying-Implementation">§</a>Underlying Implementation</h2><p>The <code>CassandraSession</code> is using the <a href="https://github.com/datastax/java-driver">Datastax Java Driver for Apache Cassandra</a>.</p><p>Each <code>CassandraReadSideProcessor</code> instance is executed by an <a href="http://doc.akka.io/docs/akka/2.4.4/java/untyped-actors.html">Actor</a> that is managed by <a href="http://doc.akka.io/docs/akka/2.4.4/java/cluster-singleton.html">Akka Cluster Singleton</a>. The processor consumes a stream of persistent events delivered by the <code>eventsByTag</code> <a href="http://doc.akka.io/docs/akka/2.4.4/java/persistence-query.html">Persistence Query</a> implemented by <a href="https://github.com/akka/akka-persistence-cassandra">akka-persistence-cassandra</a>. The tag corresponds to the <code>tag</code> defined by the <code>AggregateEventTag</code>.</p><p>The <code>eventStream</code> of the <code>PersistentEntityRegistry</code> is also implemented by the <code>eventsByTag</code> query.</p>
+}</code></pre><h2 id="Underlying-Implementation"><a class="section-marker" href="#Underlying-Implementation">§</a><a href="#underlying-implementation" name="underlying-implementation">Underlying Implementation</a></h2>
+<p>The <code>CassandraSession</code> is using the <a href="https://github.com/datastax/java-driver">Datastax Java Driver for Apache Cassandra</a>.</p>
+<p>Each <code>CassandraReadSideProcessor</code> instance is executed by an <a href="http://doc.akka.io/docs/akka/2.4.4/java/untyped-actors.html">Actor</a> that is managed by <a href="http://doc.akka.io/docs/akka/2.4.4/java/cluster-singleton.html">Akka Cluster Singleton</a>. The processor consumes a stream of persistent events delivered by the <code>eventsByTag</code> <a href="http://doc.akka.io/docs/akka/2.4.4/java/persistence-query.html">Persistence Query</a> implemented by <a href="https://github.com/akka/akka-persistence-cassandra">akka-persistence-cassandra</a>. The tag corresponds to the <code>tag</code> defined by the <code>AggregateEventTag</code>.</p>
+<p>The <code>eventStream</code> of the <code>PersistentEntityRegistry</code> is also implemented by the <code>eventsByTag</code> query.</p>

@@ -1,6 +1,10 @@
-<h1 id="Getting-started-with-Lagom"><a class="section-marker" href="#Getting-started-with-Lagom">§</a>Getting started with Lagom</h1><p>This page shows how to create and run your first Lagom project.</p><h2 id="Creating-a-new-Lagom-project"><a class="section-marker" href="#Creating-a-new-Lagom-project">§</a>Creating a new Lagom project</h2><p>A Lagom system is typically made up of a set of sbt builds, each build providing multiple services. The easiest way to get started with a new Lagom system is to create a new project using the <code>lagom</code> Activator template:</p>
+<h1 id="Getting-started-with-Lagom"><a class="section-marker" href="#Getting-started-with-Lagom">§</a><a href="#getting-started-with-lagom" name="getting-started-with-lagom">Getting started with Lagom</a></h1>
+<p>This page shows how to create and run your first Lagom project.</p><h2 id="Creating-a-new-Lagom-project"><a class="section-marker" href="#Creating-a-new-Lagom-project">§</a><a href="#creating-a-new-lagom-project" name="creating-a-new-lagom-project">Creating a new Lagom project</a></h2>
+<p>A Lagom system is typically made up of a set of sbt builds, each build providing multiple services. The easiest way to get started with a new Lagom system is to create a new project using the <code>lagom</code> Activator template:</p>
 <pre class="prettyprint"><code>$ activator new my-first-system lagom-java
-</code></pre><p>This will create a new system with two services in it: <code>helloworld</code> and <code>hellostream</code>.</p><h2 id="Anatomy-of-a-Lagom-project"><a class="section-marker" href="#Anatomy-of-a-Lagom-project">§</a>Anatomy of a Lagom project</h2><p>The created project contains the following elements:</p>
+</code></pre>
+<p>This will create a new system with two services in it: <code>helloworld</code> and <code>hellostream</code>.</p><h2 id="Anatomy-of-a-Lagom-project"><a class="section-marker" href="#Anatomy-of-a-Lagom-project">§</a><a href="#anatomy-of-a-lagom-project" name="anatomy-of-a-lagom-project">Anatomy of a Lagom project</a></h2>
+<p>The created project contains the following elements:</p>
 <pre class="prettyprint"><code>my-first-system          → Project root
  └ hellostream-api       → hellostream api project
  └ hellostream-impl      → hellostream implementation project
@@ -15,24 +19,28 @@
   <li>Notice how each service is broken up into two projects: api and implementation. The api project contains a service interface through which consumers may interact with the service. While the implementation project contains the actual service implementation.</li>
   <li>The <code>project</code> folder contains sbt specific files.</li>
   <li>The <code>build.sbt</code> file, which contains all information necessary to build, run, and deploy your services.</li>
-</ul><h2 id="Understanding-services-projects"><a class="section-marker" href="#Understanding-services-projects">§</a>Understanding services projects</h2>
+</ul><h2 id="Understanding-services-projects"><a class="section-marker" href="#Understanding-services-projects">§</a><a href="#understanding-services-projects" name="understanding-services-projects">Understanding services projects</a></h2>
 <ul>
   <li>The service interface is always placed in the api project. For instance, the service interface for the <code>helloworld</code> service can be found in the <code>helloworld-api</code> project (look for the <code>HelloService.java</code> source file).</li>
 </ul>
 <pre class="prettyprint"><code class="language-java">public interface HelloService extends Service {
+
+  ServiceCall&lt;NotUsed, String&gt; hello(String id);
+
   @Override
   default Descriptor descriptor() {
-    return named(&quot;helloservice&quot;).with(
-        restCall(Method.GET,  &quot;/api/hello/:id&quot;, hello())
+    return named(&quot;helloservice&quot;).withCalls(
+        restCall(Method.GET,  &quot;/api/hello/:id&quot;, this::hello)
       ).withAutoAcl(true);
   }
-
-  ServiceCall&lt;String, NotUsed, String&gt; hello();
 }</code></pre>
 <ul>
-  <li><p>The service interface needs to inherit from <a href="api/java/index.html?com/lightbend/lagom/javadsl/api/Service.html"><code>Service</code></a> and provide an implementation of <a href="api/java/index.html?com/lightbend/lagom/javadsl/api/Service.html#descriptor--"><code>Service#descriptor</code></a> method.</p></li>
-  <li><p>The implementation of <code>Service#descriptor</code> returns a <a href="api/java/index.html?com/lightbend/lagom/javadsl/api/Descriptor.html"><code>Descriptor</code></a>. A <code>Descriptor</code> defines the service name and the REST endpoints offered by a service. For each declared endpoint, an abstract method is declared in the service interface, e.g., see the <code>HelloService#hello</code> method.</p></li>
-  <li><p>The implementation of the service abstract methods is provided by the related implementation project. For instance, the service implementation of the <code>HelloService#hello</code> method, for the <code>helloworld</code> service, can be found in the <code>helloworld-impl</code> project (look for the <code>HelloServiceImpl.java</code> source file).</p></li>
+  <li>
+  <p>The service interface needs to inherit from <a href="api/index.html?com/lightbend/lagom/javadsl/api/Service.html"><code>Service</code></a> and provide an implementation of <a href="api/index.html?com/lightbend/lagom/javadsl/api/Service.html#descriptor--"><code>Service#descriptor</code></a> method.</p></li>
+  <li>
+  <p>The implementation of <code>Service#descriptor</code> returns a <a href="api/index.html?com/lightbend/lagom/javadsl/api/Descriptor.html"><code>Descriptor</code></a>. A <code>Descriptor</code> defines the service name and the REST endpoints offered by a service. For each declared endpoint, an abstract method is declared in the service interface, e.g., see the <code>HelloService#hello</code> method.</p></li>
+  <li>
+  <p>The implementation of the service abstract methods is provided by the related implementation project. For instance, the service implementation of the <code>HelloService#hello</code> method, for the <code>helloworld</code> service, can be found in the <code>helloworld-impl</code> project (look for the <code>HelloServiceImpl.java</code> source file).</p></li>
 </ul>
 <pre class="prettyprint"><code class="language-java">public class HelloServiceImpl implements HelloService {
 
@@ -45,8 +53,8 @@
   }
 
   @Override
-  public ServiceCall&lt;String, NotUsed, String&gt; hello() {
-    return (id, request) -&gt; {
+  public ServiceCall&lt;NotUsed, String&gt; hello(String id) {
+    return request -&gt; {
       // Look up the hello world entity for the given ID.
       PersistentEntityRef&lt;HelloCommand&gt; ref = persistentEntityRegistry.refFor(HelloWorld.class, id);
       // Ask the entity the Hello command.
@@ -55,8 +63,9 @@
   }
 }</code></pre>
 <ul>
-  <li>The <a href="api/java/index.html?com/lightbend/lagom/javadsl/persistence/PersistentEntityRegistry.html"><code>PersistentEntityRegistry</code></a> allows to persist data in the database using <a href="ES_CQRS.html">Event Sourcing and CQRS</a>.</li>
-</ul><h2 id="Running-Lagom-services"><a class="section-marker" href="#Running-Lagom-services">§</a>Running Lagom services</h2><p>Lagom includes a development environment that let you start all your services by simply typing <code>runAll</code> in the activator console. Open the terminal and <code>cd</code> to your Lagom project:</p>
+  <li>The <a href="api/index.html?com/lightbend/lagom/javadsl/persistence/PersistentEntityRegistry.html"><code>PersistentEntityRegistry</code></a> allows to persist data in the database using <a href="ES_CQRS.html">Event Sourcing and CQRS</a>.</li>
+</ul><h2 id="Running-Lagom-services"><a class="section-marker" href="#Running-Lagom-services">§</a><a href="#running-lagom-services" name="running-lagom-services">Running Lagom services</a></h2>
+<p>Lagom includes a development environment that let you start all your services by simply typing <code>runAll</code> in the activator console. Open the terminal and <code>cd</code> to your Lagom project:</p>
 <pre class="prettyprint"><code class="language-console">$ cd my-first-system
 $ activator
 ... (booting up)
@@ -69,8 +78,13 @@ $ activator
 [info] Service helloworld-impl listening for HTTP on 0:0:0:0:0:0:0:0:24266
 [info] Service hellostream-impl listening for HTTP on 0:0:0:0:0:0:0:0:26230
 (Services started, use Ctrl+D to stop and go back to the console...)
-</code></pre><p>You can verify that the services are indeed up and running by exercising one of its endpoints, e.g:</p>
+</code></pre>
+<p>You can verify that the services are indeed up and running by exercising one of its endpoints, e.g:</p>
 <pre class="prettyprint"><code class="language-console">$ curl http://localhost:9000/api/hello/World
-</code></pre><p>And you should get back the message <code>Hello, World!</code>.</p><p>If you are wondering why we have created two services in the seed template, instead of having just one, the reason is simply that (<a href="https://twitter.com/jboner/status/699536472442011648">quoting</a> Jonas Bonér):</p>
-<blockquote><p>One microservice is no microservice - they come in systems.</p>
-</blockquote><p>Said otherwise, we believe you will be creating several services, and we felt it was important to showcase intra-service communication.</p>
+</code></pre>
+<p>And you should get back the message <code>Hello, World!</code>.</p>
+<p>If you are wondering why we have created two services in the seed template, instead of having just one, the reason is simply that (<a href="https://twitter.com/jboner/status/699536472442011648">quoting</a> Jonas Bonér):</p>
+<blockquote>
+  <p>One microservice is no microservice - they come in systems.</p>
+</blockquote>
+<p>Said otherwise, we believe you will be creating several services, and we felt it was important to showcase intra-service communication.</p>

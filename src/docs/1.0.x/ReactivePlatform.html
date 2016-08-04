@@ -1,6 +1,12 @@
-<h1 id="Lightbend-Reactive-Platform"><a class="section-marker" href="#Lightbend-Reactive-Platform">§</a>Lightbend Reactive Platform</h1><p>We recommend that you use <a href="http://www.lightbend.com/products/lightbend-reactive-platform">Lightbend Reactive Platform</a> to take advantage of the <a href="http://doc.akka.io/docs/akka/rp-16s01p05/scala/split-brain-resolver.html">Split Brain Resolver</a> and the <a href="http://doc.akka.io/docs/akka/rp-16s01p05/common/diagnostics-recorder.html">Diagnostics Recorder</a>.</p><p>Read about the importance of the Split Brain Resolver in the <a href="Cluster.html#Downing">Cluster Downing</a> documentation.</p><p>To use Reactive Platform you need to adjust the build in your project.</p><p>1) Create a new file <code>project/typesafe.properties</code> (put this in <code>.gitignore</code> if the code will be released outside your organization) with the following content:</p>
+<h1 id="Lightbend-Reactive-Platform"><a class="section-marker" href="#Lightbend-Reactive-Platform">§</a><a href="#lightbend-reactive-platform" name="lightbend-reactive-platform">Lightbend Reactive Platform</a></h1>
+<p>We recommend that you use <a href="http://www.lightbend.com/products/lightbend-reactive-platform">Lightbend Reactive Platform</a> to take advantage of the <a href="http://doc.akka.io/docs/akka/rp-16s01p05/scala/split-brain-resolver.html">Split Brain Resolver</a> and the <a href="http://doc.akka.io/docs/akka/rp-16s01p05/common/diagnostics-recorder.html">Diagnostics Recorder</a>.</p>
+<p>Read about the importance of the Split Brain Resolver in the <a href="Cluster.html#Downing">Cluster Downing</a> documentation.</p>
+<p>To use Reactive Platform you need to adjust the build in your project.</p>
+<p>1) Create a new file <code>project/typesafe.properties</code> (put this in <code>.gitignore</code> if the code will be released outside your organization) with the following content:</p>
 <pre class="prettyprint"><code>typesafe.subscription=YOUR_SUBSCRIPTION_ID
-</code></pre><p>(<a href="http://www.lightbend.com/account/id">Click to obtain a subscription ID</a>)</p><p>2) Create a new file <code>project/project/typesafe.sbt</code> with the following content. (Note: It is <code>project/project</code> with two <code>project</code>.) The values of <code>rpVersion</code> and <code>rpUrl</code> are subject to change:</p>
+</code></pre>
+<p>(<a href="http://www.lightbend.com/account/id">Click to obtain a subscription ID</a>)</p>
+<p>2) Create a new file <code>project/project/typesafe.sbt</code> with the following content. (Note: It is <code>project/project</code> with two <code>project</code>.) The values of <code>rpVersion</code> and <code>rpUrl</code> are subject to change:</p>
 <pre class="prettyprint"><code>// Update this when a new patch of Reactive Platform is available
 val rpVersion = &quot;16s01p03&quot;
 
@@ -14,10 +20,12 @@ resolvers += &quot;typesafe-rp-mvn&quot; at rpUrl
 
 // The resolver name must start with typesafe-rp
 resolvers += Resolver.url(&quot;typesafe-rp-ivy&quot;, url(rpUrl))(Resolver.ivyStylePatterns)
-</code></pre><p>3) That is normally everything that is needed, but the current version of Reactive Platform does not include Play 2.5.0 yet, so we must adjust the build to not use the Play version that is included in Reactive Platform. In each project of the <code>build.sbt</code> the following setting must be added. That can be done in the <code>def project</code> helper method if you use that from the getting started build template.</p>
+</code></pre>
+<p>3) That is normally everything that is needed, but the current version of Reactive Platform does not include Play 2.5.0 yet, so we must adjust the build to not use the Play version that is included in Reactive Platform. In each project of the <code>build.sbt</code> the following setting must be added. That can be done in the <code>def project</code> helper method if you use that from the getting started build template.</p>
 <pre class="prettyprint"><code>// Play 2.5.0 is not part of RP yet
 .settings(rpOverrides := rpOverrides.value.filterNot(_.organization == &quot;com.typesafe.play&quot;))
-</code></pre><p>Similar must also be added to <code>project/plugins.sbt</code>:</p>
+</code></pre>
+<p>Similar must also be added to <code>project/plugins.sbt</code>:</p>
 <pre class="prettyprint"><code>// Play 2.5.0 is not part of RP yet
 rpOverrides := rpOverrides.value.filterNot(_.organization == &quot;com.typesafe.play&quot;)
 </code></pre>

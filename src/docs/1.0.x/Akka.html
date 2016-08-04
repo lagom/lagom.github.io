@@ -1,4 +1,8 @@
-<h1 id="Advanced-Topic:-Integrating-with-Akka"><a class="section-marker" href="#Advanced-Topic:-Integrating-with-Akka">§</a>Advanced Topic: Integrating with Akka</h1><p>Lagom is built with Akka as one of the underlying technologies. Nonetheless, writing simple Lagom services doesn&rsquo;t require interacting with Akka directly.</p><p>More advanced users may want direct access, as described in this section.</p><h2 id="Usage-from-Service-Implementation"><a class="section-marker" href="#Usage-from-Service-Implementation">§</a>Usage from Service Implementation</h2><p>Pretty much everything in Akka is accessible through an <code>ActorSystem</code> object. You can inject the current <code>ActorSystem</code> into your service implementations or persistent entities with ordinary dependency injection.</p><p>Let&rsquo;s look at an example of a <code>WorkerService</code> that accepts job requests and delegates the work to actors running on other nodes in the service&rsquo;s cluster.</p>
+<h1 id="Advanced-Topic:-Integrating-with-Akka"><a class="section-marker" href="#Advanced-Topic:-Integrating-with-Akka">§</a>Advanced Topic: Integrating with Akka</h1>
+<p>Lagom is built with Akka as one of the underlying technologies. Nonetheless, writing simple Lagom services doesn&rsquo;t require interacting with Akka directly.</p>
+<p>More advanced users may want direct access, as described in this section.</p><h2 id="Usage-from-Service-Implementation"><a class="section-marker" href="#Usage-from-Service-Implementation">§</a><a href="#usage-from-service-implementation" name="usage-from-service-implementation">Usage from Service Implementation</a></h2>
+<p>Pretty much everything in Akka is accessible through an <code>ActorSystem</code> object. You can inject the current <code>ActorSystem</code> into your service implementations or persistent entities with ordinary dependency injection.</p>
+<p>Let&rsquo;s look at an example of a <code>WorkerService</code> that accepts job requests and delegates the work to actors running on other nodes in the service&rsquo;s cluster.</p>
 <pre class="prettyprint"><code class="language-java">import static akka.pattern.PatternsCS.ask;
 
 import com.lightbend.lagom.javadsl.api.ServiceCall;
@@ -49,8 +53,8 @@ public class WorkerServiceImpl implements WorkerService {
   }
 
   @Override
-  public ServiceCall&lt;NotUsed, Job, JobAccepted&gt; doWork() {
-    return (id, job) -&gt; {
+  public ServiceCall&lt;Job, JobAccepted&gt; doWork() {
+    return job -&gt; {
       // send the job to a worker, via the consistent hashing router
       CompletionStage&lt;JobAccepted&gt; reply = ask(workerRouter, job, Timeout.apply(
           5, TimeUnit.SECONDS))
@@ -60,7 +64,9 @@ public class WorkerServiceImpl implements WorkerService {
       return reply;
     };
   }
-}</code></pre><p>Notice how the <code>ActorSystem</code> is injected through the constructor. We create worker actors on each node that has the &ldquo;worker-node&rdquo; role. We create a consistent hashing group router that delegates jobs to the workers. Details on these features are in the <a href="http://doc.akka.io/docs/akka/2.4.4/java.html">Akka documentation</a>.</p><p>The worker actor looks like this:</p>
+}</code></pre>
+<p>Notice how the <code>ActorSystem</code> is injected through the constructor. We create worker actors on each node that has the &ldquo;worker-node&rdquo; role. We create a consistent hashing group router that delegates jobs to the workers. Details on these features are in the <a href="http://doc.akka.io/docs/akka/2.4.4/java.html">Akka documentation</a>.</p>
+<p>The worker actor looks like this:</p>
 <pre class="prettyprint"><code class="language-java">import akka.actor.AbstractActor;
 import akka.actor.Props;
 import akka.event.Logging;
@@ -89,7 +95,8 @@ public class Worker extends AbstractActor {
     context().stop(self());
   }
 
-}</code></pre><p>The messages are ordinary <a href="Immutable.html">Immutable Objects</a>. Note that they extend <code>Jsonable</code> since they need proper <a href="Serialization.html">Serialization</a> when they are sent across nodes in the cluster of the service:</p>
+}</code></pre>
+<p>The messages are ordinary <a href="Immutable.html">Immutable Objects</a>. Note that they extend <code>Jsonable</code> since they need proper <a href="Serialization.html">Serialization</a> when they are sent across nodes in the cluster of the service:</p>
 <pre class="prettyprint"><code class="language-java">@Value.Immutable
 @ImmutableStyle
 @JsonDeserialize(as = Job.class)
@@ -119,11 +126,14 @@ public interface AbstractJobStatus extends Jsonable {
 
   @Value.Parameter
   public String getStatus();
-}</code></pre><h2 id="Usage-of-Lagom-APIs-in-Actors"><a class="section-marker" href="#Usage-of-Lagom-APIs-in-Actors">§</a>Usage of Lagom APIs in Actors</h2><p>If you need to have access to some Lagom API from an actor, you have two options:</p>
+}</code></pre><h2 id="Usage-of-Lagom-APIs-in-Actors"><a class="section-marker" href="#Usage-of-Lagom-APIs-in-Actors">§</a><a href="#usage-of-lagom-apis-in-actors" name="usage-of-lagom-apis-in-actors">Usage of Lagom APIs in Actors</a></h2>
+<p>If you need to have access to some Lagom API from an actor, you have two options:</p>
 <ol>
   <li>Pass the Lagom object as an ordinary constructor parameter when creating the actor.</li>
   <li>Use the <code>AkkaGuiceSupport</code> from the Play Framework.</li>
-</ol><p>The first alternative is probably sufficient in many cases, but we will take a closer look at the more advanced second alternative.</p><p>In your Guice module you add <code>AkkaGuiceSupport</code> and use the <code>bindActor</code> method, such as:</p>
+</ol>
+<p>The first alternative is probably sufficient in many cases, but we will take a closer look at the more advanced second alternative.</p>
+<p>In your Guice module you add <code>AkkaGuiceSupport</code> and use the <code>bindActor</code> method, such as:</p>
 <pre class="prettyprint"><code class="language-java">import play.libs.akka.AkkaGuiceSupport;
 import com.google.inject.AbstractModule;
 import com.lightbend.lagom.javadsl.server.ServiceGuiceSupport;
@@ -137,7 +147,10 @@ public class Worker2Module extends AbstractModule
 
     bindActor(Worker2.class, &quot;worker&quot;);
   }
-}</code></pre><p>That allows the actor itself to receive injected objects. It also allows the actor ref for the actor to be injected into other components. This actor is named <code>worker</code> and is also qualified with the <code>worker</code> name for injection.</p><p>You can read more about this and how to use dependency injection for child actors in the <a href="https://playframework.com/documentation/2.5.x/JavaAkka#Dependency-injecting-actors">Play documentation</a>.</p><p>Adjusting the <code>Worker</code> actor from the previous section to allow injection of the <code>PubSubRegistry</code>:</p>
+}</code></pre>
+<p>That allows the actor itself to receive injected objects. It also allows the actor ref for the actor to be injected into other components. This actor is named <code>worker</code> and is also qualified with the <code>worker</code> name for injection.</p>
+<p>You can read more about this and how to use dependency injection for child actors in the <a href="https://playframework.com/documentation/2.5.x/JavaAkka#Dependency-injecting-actors">Play documentation</a>.</p>
+<p>Adjusting the <code>Worker</code> actor from the previous section to allow injection of the <code>PubSubRegistry</code>:</p>
 <pre class="prettyprint"><code class="language-java">public class Worker2 extends AbstractActor {
 
   private final PubSubRef&lt;JobStatus&gt; topic;
@@ -160,7 +173,9 @@ public class Worker2Module extends AbstractModule
     context().stop(self());
   }
 
-}</code></pre><p>With the <code>PubSubRegistry</code> we can publish updates of the progress of the jobs to all nodes in the cluster, as described in <a href="PubSub.html">Publish-Subscribe</a>.</p><p>To make the example complete, an adjusted service implementation follows. Worker actors are created not by the service implementation, but by the <code>WorkerModule</code>. We have also added a <code>status</code> method that provides a stream of <code>JobStatus</code> values that clients can listen to.</p>
+}</code></pre>
+<p>With the <code>PubSubRegistry</code> we can publish updates of the progress of the jobs to all nodes in the cluster, as described in <a href="PubSub.html">Publish-Subscribe</a>.</p>
+<p>To make the example complete, an adjusted service implementation follows. Worker actors are created not by the service implementation, but by the <code>WorkerModule</code>. We have also added a <code>status</code> method that provides a stream of <code>JobStatus</code> values that clients can listen to.</p>
 <pre class="prettyprint"><code class="language-java">public class WorkerService2Impl implements WorkerService2 {
 
   private final ActorRef workerRouter;
@@ -190,15 +205,15 @@ public class Worker2Module extends AbstractModule
   }
 
   @Override
-  public ServiceCall&lt;NotUsed, NotUsed, Source&lt;JobStatus, ?&gt;&gt; status() {
-    return (id, req) -&gt; {
+  public ServiceCall&lt;NotUsed, Source&lt;JobStatus, ?&gt;&gt; status() {
+    return req -&gt; {
       return CompletableFuture.completedFuture(topic.subscriber());
     };
   }
 
   @Override
-  public ServiceCall&lt;NotUsed, Job, JobAccepted&gt; doWork() {
-    return (id, job) -&gt; {
+  public ServiceCall&lt;Job, JobAccepted&gt; doWork() {
+    return job -&gt; {
       // send the job to a worker, via the consistent hashing router
       CompletionStage&lt;JobAccepted&gt; reply = ask(workerRouter, job, Timeout.apply(
           5, TimeUnit.SECONDS))

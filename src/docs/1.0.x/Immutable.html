@@ -1,13 +1,17 @@
-<h1 id="Immutable-Objects"><a class="section-marker" href="#Immutable-Objects">§</a>Immutable Objects</h1><p>An immutable object is an object that cannot be modified after it was created.</p><p>Immutable objects have two great advantages:</p>
+<h1 id="Immutable-Objects"><a class="section-marker" href="#Immutable-Objects">§</a><a href="#immutable-objects" name="immutable-objects">Immutable Objects</a></h1>
+<p>An immutable object is an object that cannot be modified after it was created.</p>
+<p>Immutable objects have two great advantages:</p>
 <ul>
   <li>Code based on immutable objects is clearer and likelier to be correct. Bugs involving unexpected changes simply can&rsquo;t occur.</li>
   <li>Multiple threads can safely access immutable objects concurrently.</li>
-</ul><p>In Lagom, immutable objects are required in several places, such as:</p>
+</ul>
+<p>In Lagom, immutable objects are required in several places, such as:</p>
 <ul>
   <li>Service request and response types</li>
   <li>Persistent entity commands, events, and states</li>
   <li>Publish and subscribe messages</li>
-</ul><h2 id="Mutable-vs.-immutable"><a class="section-marker" href="#Mutable-vs.-immutable">§</a>Mutable vs. immutable</h2><p>Here is an example of a mutable object:</p>
+</ul><h2 id="Mutable-vs.-immutable"><a class="section-marker" href="#Mutable-vs.-immutable">§</a>Mutable vs. immutable</h2>
+<p>Here is an example of a mutable object:</p>
 <pre class="prettyprint"><code class="language-java">public class MutableUser {
   private String name;
   private String email;
@@ -28,7 +32,9 @@
     this.email = email;
   }
 
-}</code></pre><p>The setter methods can be used to modify the object after construction.</p><p>Here, by contrast, is an immutable object:</p>
+}</code></pre>
+<p>The setter methods can be used to modify the object after construction.</p>
+<p>Here, by contrast, is an immutable object:</p>
 <pre class="prettyprint"><code class="language-java">public class ImmutableUser {
   private final String name;
   private final String email;
@@ -46,7 +52,10 @@
     return email;
   }
 
-}</code></pre><p>All fields are final and are assigned at construction time. There are no setter methods.</p><h2 id="Immutables"><a class="section-marker" href="#Immutables">§</a>Immutables</h2><p>Lagom doesn&rsquo;t care how you define your immutable objects. You can write out the constructor and getters by hand, as in the above sample. But we recommend using the <a href="https://immutables.github.io">Immutables</a> tool to generate them instead. Using Immutables is easier and less error-prone than writing everything out by hand, and the resulting code is shorter and easier to read.</p><p>Here is the corresponding definition of a <code>User</code>, like the above <code>ImmutableUser</code>:</p>
+}</code></pre>
+<p>All fields are final and are assigned at construction time. There are no setter methods.</p><h2 id="Immutables"><a class="section-marker" href="#Immutables">§</a><a href="#immutables" name="immutables">Immutables</a></h2>
+<p>Lagom doesn&rsquo;t care how you define your immutable objects. You can write out the constructor and getters by hand, as in the above sample. But we recommend using the <a href="https://immutables.github.io">Immutables</a> tool to generate them instead. Using Immutables is easier and less error-prone than writing everything out by hand, and the resulting code is shorter and easier to read.</p>
+<p>Here is the corresponding definition of a <code>User</code>, like the above <code>ImmutableUser</code>:</p>
 <pre class="prettyprint"><code class="language-java">@Value.Immutable
 @ImmutableStyle
 public interface AbstractUser {
@@ -54,14 +63,19 @@ public interface AbstractUser {
   String getName();
 
   String getEmail();
-}</code></pre><p>For free you get things like:</p>
+}</code></pre>
+<p>For free you get things like:</p>
 <ul>
   <li>builders (very convenient when your class has many fields)</li>
   <li>correct <code>equals</code>, <code>hashCode</code>, <code>toString</code> implementations</li>
   <li>copy methods to make new instances based on old ones, e.g. <code>withEmail</code></li>
-</ul><p>Immutables supports different &ldquo;styles&rdquo; of object. Compared to the <a href="https://immutables.github.io/style.html">default style</a>, <code>@ImmutableStyle</code> follows a convention that the abstract class or interface name starts with <code>Abstract</code> and that is trimmed from the generated class, e.g. <code>AbstractUser</code> vs <code>User</code>. To use the <code>@ImmutableStyle</code> annotation you need to add <code>lagomJavadslImmutables</code> to your project&rsquo;s library dependencies. Here is an example:</p>
+</ul>
+<p>Immutables supports different &ldquo;styles&rdquo; of object. Compared to the <a href="https://immutables.github.io/style.html">default style</a>, <code>@ImmutableStyle</code> follows a convention that the abstract class or interface name starts with <code>Abstract</code> and that is trimmed from the generated class, e.g. <code>AbstractUser</code> vs <code>User</code>. To use the <code>@ImmutableStyle</code> annotation you need to add <code>lagomJavadslImmutables</code> to your project&rsquo;s library dependencies. Here is an example:</p>
 <pre class="prettyprint"><code class="language-sbt">lazy val usersApi = (project in file(&quot;usersApi&quot;))
-  .settings(libraryDependencies += lagomJavadslImmutables)</code></pre><p>Immutables integrates with popular IDEs. Follow the instructions for <a href="ImmutablesInIDEs.html#Eclipse">Eclipse</a> or <a href="ImmutablesInIDEs.html#IntelliJ_IDEA">IntelliJ IDEA</a> to add the Immutables annotation processor to your IDE.</p><h2 id="Collections"><a class="section-marker" href="#Collections">§</a>Collections</h2><p>If an immutable object contains a collection, that collection must be immutable too.</p><p>Here is an example of an object with a mutable collection in it:</p>
+  .settings(libraryDependencies += lagomJavadslImmutables)</code></pre>
+<p>Immutables integrates with popular IDEs. Follow the instructions for <a href="ImmutablesInIDEs.html#Eclipse">Eclipse</a> or <a href="ImmutablesInIDEs.html#IntelliJ_IDEA">IntelliJ IDEA</a> to add the Immutables annotation processor to your IDE.</p><h2 id="Collections"><a class="section-marker" href="#Collections">§</a><a href="#collections" name="collections">Collections</a></h2>
+<p>If an immutable object contains a collection, that collection must be immutable too.</p>
+<p>Here is an example of an object with a mutable collection in it:</p>
 <pre class="prettyprint"><code class="language-java">public class MutableUser2 {
   private final String name;
   private final List&lt;String&gt; phoneNumbers;
@@ -79,7 +93,9 @@ public interface AbstractUser {
     return phoneNumbers;
   }
 
-}</code></pre><p>The object might look like immutable since it only has final fields and no setters, but the <code>List</code> of <code>phoneNumbers</code> is mutable, because it can be changed by code like <code>user.getPhoneNumbers().add(&quot;+468123456&quot;)</code>.</p><p>One possible fix would be to make a defensive copy of the <code>List</code> in the constructor and use <code>Collections.unmodifiableList</code> in the getter, like this:</p>
+}</code></pre>
+<p>The object might look like immutable since it only has final fields and no setters, but the <code>List</code> of <code>phoneNumbers</code> is mutable, because it can be changed by code like <code>user.getPhoneNumbers().add(&quot;+468123456&quot;)</code>.</p>
+<p>One possible fix would be to make a defensive copy of the <code>List</code> in the constructor and use <code>Collections.unmodifiableList</code> in the getter, like this:</p>
 <pre class="prettyprint"><code class="language-java">public class ImmutableUser2 {
   private final String name;
   private final List&lt;String&gt; phoneNumbers;
@@ -97,7 +113,9 @@ public interface AbstractUser {
     return Collections.unmodifiableList(phoneNumbers);
   }
 
-}</code></pre><p>But it is easy to make mistakes when coding this way, so we again recommend letting Immutable handle it for you, as follows.</p><p>Here is a new definition of a <code>User2</code>, like the above <code>ImmutableUser2</code>:</p>
+}</code></pre>
+<p>But it is easy to make mistakes when coding this way, so we again recommend letting Immutable handle it for you, as follows.</p>
+<p>Here is a new definition of a <code>User2</code>, like the above <code>ImmutableUser2</code>:</p>
 <pre class="prettyprint"><code class="language-java">@Value.Immutable
 @ImmutableStyle
 public interface AbstractUser2 {
@@ -105,7 +123,12 @@ public interface AbstractUser2 {
   String getName();
 
   List&lt;String&gt; getPhoneNumbers();
-}</code></pre><p>The <code>getPhoneNumbers</code> method will return an instance of <code>com.google.common.collect.ImmutableList</code>.</p><h3 id="Guava-and-PCollections"><a class="section-marker" href="#Guava-and-PCollections">§</a>Guava and PCollections</h3><p>As seen above, Immutables uses <a href="https://github.com/google/guava/wiki/ImmutableCollectionsExplained">Guava immutable collections</a> by default.</p><p>The Guava collections are certainly better for this purpose than plain <code>java.util</code> collections. However, the Guava collections are cumbersome and inefficient for some common operations (for example, making a slightly modified copy of an existing collection).</p><p>Therefore, we recommend <a href="http://pcollections.org">PCollections</a>, which is a collection library that is designed from the ground up for immutability and efficiency.</p><p>This is how the above example looks like using a PCollection:</p>
+}</code></pre>
+<p>The <code>getPhoneNumbers</code> method will return an instance of <code>com.google.common.collect.ImmutableList</code>.</p><h3 id="Guava-and-PCollections"><a class="section-marker" href="#Guava-and-PCollections">§</a><a href="#guava-and-pcollections" name="guava-and-pcollections">Guava and PCollections</a></h3>
+<p>As seen above, Immutables uses <a href="https://github.com/google/guava/wiki/ImmutableCollectionsExplained">Guava immutable collections</a> by default.</p>
+<p>The Guava collections are certainly better for this purpose than plain <code>java.util</code> collections. However, the Guava collections are cumbersome and inefficient for some common operations (for example, making a slightly modified copy of an existing collection).</p>
+<p>Therefore, we recommend <a href="http://pcollections.org">PCollections</a>, which is a collection library that is designed from the ground up for immutability and efficiency.</p>
+<p>This is how the above example looks like using a PCollection:</p>
 <pre class="prettyprint"><code class="language-java">import com.lightbend.lagom.javadsl.immutable.ImmutableStyle;
 import org.immutables.value.Value;
 import org.pcollections.PVector;
@@ -117,7 +140,8 @@ public interface AbstractUser3 {
   String getName();
 
   PVector&lt;String&gt; getPhoneNumbers();
-}</code></pre><p>This is how to define an optional collection initialized with the empty collection:</p>
+}</code></pre>
+<p>This is how to define an optional collection initialized with the empty collection:</p>
 <pre class="prettyprint"><code class="language-java">import com.lightbend.lagom.javadsl.immutable.ImmutableStyle;
 import org.immutables.value.Value;
 import org.pcollections.PVector;
@@ -133,7 +157,11 @@ public interface AbstractUser4 {
   default PVector&lt;String&gt; getPhoneNumbers() {
     return TreePVector.empty();
   }
-}</code></pre><h3 id="Persistent-collections"><a class="section-marker" href="#Persistent-collections">§</a>&ldquo;Persistent&rdquo; collections</h3><p>There are two different and potentially confusing usages of the word &ldquo;persistent&rdquo; with respect to data.</p><p>You will see references, in the PCollections documentation and elsewhere, to <a href="https://en.wikipedia.org/wiki/Persistent_data_structure">&ldquo;persistent&rdquo; data structures</a>. There, the word &ldquo;persistent&rdquo; means that even when you construct a modified copy of a collection, the original &ldquo;persists&rdquo;.</p><p>In the rest of this documentation, &ldquo;persistent&rdquo; refers instead to <a href="https://en.wikipedia.org/wiki/Persistence_%28computer_science%29">persistent storage</a>, as in <a href="PersistentEntity.html">Persistent Entities</a> and the examples below.</p><h3 id="Further-reading"><a class="section-marker" href="#Further-reading">§</a>Further reading</h3><p>The Immutables documentation has more details on immutable collections <a href="https://immutables.github.io/immutable.html#array-collection-and-map-attributes">here</a>.</p><h2 id="Example-of-PersistentEntity-Commands"><a class="section-marker" href="#Example-of-PersistentEntity-Commands">§</a>Example of PersistentEntity Commands</h2>
+}</code></pre><h3 id="Persistent-collections"><a class="section-marker" href="#Persistent-collections">§</a>&ldquo;Persistent&rdquo; collections</h3>
+<p>There are two different and potentially confusing usages of the word &ldquo;persistent&rdquo; with respect to data.</p>
+<p>You will see references, in the PCollections documentation and elsewhere, to <a href="https://en.wikipedia.org/wiki/Persistent_data_structure">&ldquo;persistent&rdquo; data structures</a>. There, the word &ldquo;persistent&rdquo; means that even when you construct a modified copy of a collection, the original &ldquo;persists&rdquo;.</p>
+<p>In the rest of this documentation, &ldquo;persistent&rdquo; refers instead to <a href="https://en.wikipedia.org/wiki/Persistence_%28computer_science%29">persistent storage</a>, as in <a href="PersistentEntity.html">Persistent Entities</a> and the examples below.</p><h3 id="Further-reading"><a class="section-marker" href="#Further-reading">§</a><a href="#further-reading" name="further-reading">Further reading</a></h3>
+<p>The Immutables documentation has more details on immutable collections <a href="https://immutables.github.io/immutable.html#array-collection-and-map-attributes">here</a>.</p><h2 id="Example-of-PersistentEntity-Commands"><a class="section-marker" href="#Example-of-PersistentEntity-Commands">§</a><a href="#example-of-persistententity-commands" name="example-of-persistententity-commands">Example of PersistentEntity Commands</a></h2>
 <pre class="prettyprint"><code class="language-java">import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.lightbend.lagom.javadsl.immutable.ImmutableStyle;
 import com.lightbend.lagom.javadsl.persistence.PersistentEntity;
@@ -187,11 +215,12 @@ public interface BlogCommand extends Jsonable {
     }
   }
 
-}</code></pre><p>A few things worth noting here:</p>
+}</code></pre>
+<p>A few things worth noting here:</p>
 <ul>
   <li><code>@Value.Parameter</code> can be added to one or more properties to generate <a href="https://immutables.github.io/immutable.html#constructor-method">constructor method</a>, which is more convenient than the full builder for classes with only a few properties</li>
   <li><code>singleton = true</code> can be used for objects that don&rsquo;t have any properties, i.e. <a href="https://immutables.github.io/immutable.html#singleton-instances">singleton instances</a>, also note that the visibility of the constructor should be reduced for such classes</li>
-</ul><h3 id="Example-of-PersistentEntity-Events"><a class="section-marker" href="#Example-of-PersistentEntity-Events">§</a>Example of PersistentEntity Events</h3>
+</ul><h3 id="Example-of-PersistentEntity-Events"><a class="section-marker" href="#Example-of-PersistentEntity-Events">§</a><a href="#example-of-persistententity-events" name="example-of-persistententity-events">Example of PersistentEntity Events</a></h3>
 <pre class="prettyprint"><code class="language-java">interface BlogEvent extends Jsonable, AggregateEvent&lt;BlogEvent&gt; {
 
   @Override
@@ -224,7 +253,7 @@ public interface BlogCommand extends Jsonable {
     String getPostId();
   }
 
-}</code></pre><h3 id="Example-of-PersistentEntity-State"><a class="section-marker" href="#Example-of-PersistentEntity-State">§</a>Example of PersistentEntity State</h3>
+}</code></pre><h3 id="Example-of-PersistentEntity-State"><a class="section-marker" href="#Example-of-PersistentEntity-State">§</a><a href="#example-of-persistententity-state" name="example-of-persistententity-state">Example of PersistentEntity State</a></h3>
 <pre class="prettyprint"><code class="language-java">@Value.Immutable
 @ImmutableStyle
 @JsonDeserialize(as = BlogState.class)
@@ -264,7 +293,8 @@ public interface AbstractPostContent extends Jsonable {
   @Value.Parameter
   public String getBody();
 
-}</code></pre><p>A few things worth noting here:</p>
+}</code></pre>
+<p>A few things worth noting here:</p>
 <ul>
   <li>Java 8&rsquo;s <code>Optional</code> type can be used for <a href="https://immutables.github.io/immutable.html#optional-attributes">optional properties</a></li>
   <li>You can <a href="https://immutables.github.io/immutable.html#smart-data">add more methods</a> to the classes, such as <code>withBody</code> and <code>isEmpty</code> above</li>

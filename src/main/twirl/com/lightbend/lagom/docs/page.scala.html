@@ -1,8 +1,8 @@
 @import com.lightbend.lagom.docs.LagomContext
 
-@(title: String)(head: Html)(content: Html)(implicit context: LagomContext)
+@(title: String)(content: Html)(implicit context: LagomContext)
 
-@main(Some(title))(head) {
+@main(Some(title))()() {
 
     <header class="fw-wrapper lgm-purple page-title">
         <div class="row">
@@ -17,27 +17,9 @@
             <div class="small-12 large-7 columns">
                 @content
             </div>
-            <aside class="small-12 large-4 columns">
+            <aside class="show-for-medium small-12 large-4 columns">
                 <nav class="side-menu">
-                    <h3>Documentation</h3>
-                    <ul>
-                        <li><a href="@context.path/documentation/@context.currentDocsVersion/Installation.html">Installing</a></li>
-                        <li><a href="@context.path/documentation/@context.currentDocsVersion/GettingStarted.html">Getting started</a></li>
-                        <li><a href="@context.path/documentation/@context.currentDocsVersion/Home.html">Full documentation</a></li>
-                    </ul>
-                    <h3>Find help</h3>
-                    <ul>
-                        <li><a href="https://gitter.im/lagom/lagom">Gitter channel</a></li>
-                        <li><a href="https://stackoverflow.com/questions/tagged/lagom">Stack overflow</a></li>
-                        <li><a href="https://www.lightbend.com/services/expert-support">Professional support</a></li>
-                    </ul>
-                    <h3>Contribute</h3>
-                    <ul>
-                        <li><a href="@context.path/get-involved.html">Get involved</a></li>
-                        <li><a href="@context.path/conduct.html">Code of conduct</a></li>
-                        <li><a href="@context.path/community-process.html">Community process</a></li>
-                        <li><a href="@context.path/contributing.html">Contributor guidelines</a></li>
-                    </ul>
+                    @sideNav()
                 </nav>
             </aside>
         </div>

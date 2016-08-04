@@ -1,4 +1,12 @@
 article
+
+  /* This takes into account the header when clicking anchor links */
+  :target:before
+    content ""
+    display block
+    height header-height
+    margin-top - header-height
+
   .section-marker
     position: absolute
     margin-left: -1em
@@ -40,3 +48,39 @@ article
   .current-page
     a:link, a:visited
       font-weight 700
+
+/* Make the search drop down right aligned when the side menu is on the right hand side (ie, ion large screens) */
+@media screen and (min-width: 64em)
+  .aa-dropdown-menu
+    right 0 !important
+    left auto !important
+
+/* Algolia styling, see https://community.algolia.com/docsearch/documentation/ */
+.algolia-autocomplete
+  width 100%
+
+  .algolia-docsearch-suggestion
+    border-bottom-color lgm-purple-dkr
+  .algolia-docsearch-suggestion--category-header
+    background-color lgm-purple
+  .algolia-docsearch-suggestion--highlight
+    color: lgm-purple
+  .algolia-docsearch-suggestion--category-header .algolia-docsearch-suggestion--highlight
+    background-color: lgm-purple-ltr-ltr
+  .aa-cursor .algolia-docsearch-suggestion--content
+    color: lgm-purple-dkr
+  .aa-cursor .algolia-docsearch-suggestion
+    background: lgm-purple-ltr-ltr
+
+.edit-source
+  font-size 1em
+  margin-top 40px
+  padding-top 10px
+  border-top 1px solid lb-light-grey
+
+.side-menu
+  .api-docs:link
+    display block
+    margin 10px 0 20px 0
+    font-weight 700
+    text-transform uppercase

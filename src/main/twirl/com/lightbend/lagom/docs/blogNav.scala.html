@@ -1,0 +1,35 @@
+@import com.lightbend.lagom.docs.LagomContext
+
+@(renderRecent: Boolean = true)(implicit context: LagomContext)
+
+<nav class="side-menu">
+    @if(renderRecent) {
+        <h3>Recent posts</h3>
+
+        @for(blogPost <- context.blogSummary.recent) {
+            <div class="blog-meta">
+                <div class="blog-author-image">
+                    <a href="@blogPost.author.url">
+                        <img src="@blogPost.author.avatar"/>
+                    </a>
+                </div>
+                <div class="blog-meta-details">
+                    <a href="@context.path/blog/@{blogPost.id}.html">@blogPost.title</a>
+                    <br/>
+                    @blogPost.date.toString("MMMM d, yyyy")
+                </div>
+            </div>
+        }
+
+    }
+
+    <h3>Tags</h3>
+
+    <div class="blog-tag-box">
+    @for((tag, count) <- context.blogSummary.tags) {
+        <a href="@context.path/blog/tags/@{encodePathSegment(tag)}.html" data-count="@count">@tag</a>
+    }
+    </div>
+
+</nav>
+

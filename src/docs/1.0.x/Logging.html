@@ -1,4 +1,5 @@
-<h1 id="Logging"><a class="section-marker" href="#Logging">§</a>Logging</h1><p>Lagom uses SLF4J for logging, backed by <a href="http://logback.qos.ch/">Logback</a> as its default logging engine. Here is a short example showcasing how you can access the logger:</p>
+<h1 id="Logging"><a class="section-marker" href="#Logging">§</a><a href="#logging" name="logging">Logging</a></h1>
+<p>Lagom uses SLF4J for logging, backed by <a href="http://logback.qos.ch/">Logback</a> as its default logging engine. Here is a short example showcasing how you can access the logger:</p>
 <pre class="prettyprint"><code class="language-java">package docs.logging;
 
 import org.slf4j.Logger;
@@ -10,11 +11,15 @@ public class LoggingExample {
     public void demonstrateLogging(String msg) {
         log.debug(&quot;Here is a message at debug level: {}.&quot;, msg);
     }
-}</code></pre><p>And you can read of more advanced usages on the <a href="http://www.slf4j.org/manual.html">SLF4J user manual</a>.</p><p>The required library dependencies to SLF4J and Logback are automatically added to all projects that have the <code>LagomJava</code> sbt plugin enabled</p>
+}</code></pre>
+<p>And you can read of more advanced usages on the <a href="http://www.slf4j.org/manual.html">SLF4J user manual</a>.</p>
+<p>The required library dependencies to SLF4J and Logback are automatically added to all projects that have the <code>LagomJava</code> sbt plugin enabled</p>
 <pre class="prettyprint"><code class="language-sbt">lazy val usersImpl = (project in file(&quot;usersImpl&quot;))
-  .enablePlugins(LagomJava) // Lagom logging module is automatically added to the classpath</code></pre><p>If you&rsquo;d like to use the Lagom logger module on a project that doesn&rsquo;t have the <code>LagomJava</code> sbt plugin enabled (e.g., a Lagom API project), simply add the Lagom logger module as an explicit library dependency:</p>
+  .enablePlugins(LagomJava) // Lagom logging module is automatically added to the classpath</code></pre>
+<p>If you&rsquo;d like to use the Lagom logger module on a project that doesn&rsquo;t have the <code>LagomJava</code> sbt plugin enabled (e.g., a Lagom API project), simply add the Lagom logger module as an explicit library dependency:</p>
 <pre class="prettyprint"><code class="language-sbt">// `LagomImport` provides a few handy alias to several Lagom modules
 import com.lightbend.lagom.sbt.LagomImport.lagomLogback
 
 lazy val usersApi = (project in file(&quot;usersApi&quot;))
-  .settings(libraryDependencies += lagomLogback)</code></pre><p>The Lagom logger module includes a default logback configuration. Read <a href="SettingsLogger.html">Configuring Logging</a> for details.</p>
+  .settings(libraryDependencies += lagomLogback)</code></pre>
+<p>The Lagom logger module includes a default logback configuration. Read <a href="SettingsLogger.html">Configuring Logging</a> for details.</p>

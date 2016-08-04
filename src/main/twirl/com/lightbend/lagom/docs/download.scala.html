@@ -3,8 +3,7 @@
 
 @(implicit context: LagomContext)
 
-@main(None) {
-} {
+@main(None)()() {
     <div class="fw-wrapper lgm-purple hero-banner">
         <div class="row">
             <div class="small-12 columns">
@@ -25,7 +24,7 @@
                     <div class="dl-wrapper">
                         <a class="btn dl" href="@context.activatorRelease.miniUrl">Download Activator @context.activatorRelease.version @dlIcon()</a>
                         <div class="meta">@context.activatorRelease.miniSize - Windows, Mac and Linux - JDK8</div>
-                        <a class="btn glass small" href="@context.path/documentation/@context.currentDocsVersion/Installation.html">Installation instructions</a>
+                        <a class="btn glass small" href="@context.path/documentation/@context.currentDocsVersion/java/Installation.html">Installation instructions</a>
                     </div>
                 </div>
             </div>
@@ -38,7 +37,7 @@
                 <div class="small-12 large-6 columns">
                     <h2>Lagom from the command line</h2>
                     <p>
-                        <a href="@context.path/documentation/@context.currentDocsVersion/Installation.html">Add activator to your PATH</a> to have the command available in your cli.
+                        <a href="@context.path/documentation/@context.currentDocsVersion/java/Installation.html">Add activator to your PATH</a> to have the command available in your cli.
                     </p>
                     <p>
                         Create a new project from the command line:

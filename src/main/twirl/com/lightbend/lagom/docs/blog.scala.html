@@ -1,0 +1,62 @@
+@import com.lightbend.lagom.docs.BlogPost
+@import com.lightbend.lagom.docs.LagomContext
+
+@(title: String, renderRecent: Boolean, posts: Seq[(BlogPost, Html)])(implicit context: LagomContext)
+
+@main(Some(title)){
+    <link href="@context.path/blog/atom.xml" type="application/atom+xml" rel="alternate" title="ATOM Feed" />
+}() {
+
+    <header class="fw-wrapper lgm-purple page-title">
+        <div class="row">
+            <div class="small-12 columns">
+                <h1>@title</h1>
+            </div>
+        </div>
+    </header>
+
+    <article class="fw-wrapper page-content">
+        <div class="row">
+            <div class="small-12 large-7 columns">
+                @for((blogPost, summary) <- posts) {
+                    <div class="blog-meta clearfix row">
+                        <div class="medium-5 columns">
+                            <div class="blog-author-image">
+                                <a href="@blogPost.author.url">
+                                    <img src="@blogPost.author.avatar"/>
+                                </a>
+                            </div>
+                            <div class="blog-meta-details">
+                                <a class="blog-author-name" href="@blogPost.author.url">@blogPost.author.name</a>
+                                <br/>
+                                <span class="blog-post-date">@blogPost.date.toString("MMMM d, yyyy")</span>
+                            </div>
+                        </div>
+                        <div class="medium-7 columns">
+                            <div class="blog-meta-tags">
+                            @if(blogPost.tags.nonEmpty) {
+                                <img src="@context.path/images/entypo/purple/entypo_tag.svg" class="svg-icon"/>
+                                @for(tag <- blogPost.tags) {
+                                    <span class="blog-tag"><a href="@context.path/blog/tags/@{encodePathSegment(tag)}.html">@tag</a></span>
+                                }
+                            }
+                            </div>
+                        </div>
+                    </div>
+
+                    <h1><a href="@context.path/blog/@{blogPost.id}.html">@blogPost.title</a></h1>
+
+                    @summary
+
+                    <a href="@context.path/blog/@{blogPost.id}.html" class="btn">Read more...</a>
+
+                    <hr/>
+                }
+            </div>
+            <aside class="show-for-medium small-12 large-4 columns">
+                @blogNav()
+            </aside>
+        </div>
+    </article>
+
+}

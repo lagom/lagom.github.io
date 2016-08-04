@@ -1,26 +1,45 @@
-<h1 id="Installation"><a class="section-marker" href="#Installation">§</a>Installation</h1><p>Lagom consists of:</p>
+<h1 id="Installation"><a class="section-marker" href="#Installation">§</a><a href="#installation" name="installation">Installation</a></h1>
+<p>Lagom consists of:</p>
 <ul>
   <li>an <a href="http://www.scala-sbt.org">sbt</a> plugin</li>
   <li>libraries</li>
   <li>optional <a href="https://www.lightbend.com/activator/">Activator</a> project templates</li>
-</ul><h2 id="Activator-and-sbt"><a class="section-marker" href="#Activator-and-sbt">§</a>Activator and sbt</h2><p><a href="http://www.scala-sbt.org">sbt</a> is a build tool for Java and Scala. Activator adds a few features to sbt, notably the ability to start new projects from templates available online.</p><p>Because Activator includes sbt, you don&rsquo;t need to install anything except a JDK and Activator. Activator will retrieve the Lagom plugin and libraries for use within your project.</p><p>Note that if you aren&rsquo;t using the optional project templates, you don&rsquo;t strictly need Activator; sbt itself is enough. The examples in this manual always show the <code>activator</code> command, but unless the command is <code>activator new</code>, you can always substitute <code>activator</code> by <code>sbt</code>.</p><h2 id="Activator-version-(Read-me!)"><a class="section-marker" href="#Activator-version-(Read-me!)">§</a>Activator version (Read me!)</h2><p>Older installations of Activator may cause OutOfMemoryException when using the Lagom development environment. To avoid this issue, make sure you are using the Activator package version 1.3.10+. Here is how you can check what version of the Activator package you are using on Linux systems (for Windows users, just check what&rsquo;s in your <code>%PATH%</code> environment variable):</p>
+</ul><h2 id="Activator-and-sbt"><a class="section-marker" href="#Activator-and-sbt">§</a><a href="#activator-and-sbt" name="activator-and-sbt">Activator and sbt</a></h2>
+<p><a href="http://www.scala-sbt.org">sbt</a> is a build tool for Java and Scala. Activator adds a few features to sbt, notably the ability to start new projects from templates available online.</p>
+<p>Because Activator includes sbt, you don&rsquo;t need to install anything except a JDK and Activator. Activator will retrieve the Lagom plugin and libraries for use within your project.</p>
+<p>Note that if you aren&rsquo;t using the optional project templates, you don&rsquo;t strictly need Activator; sbt itself is enough. The examples in this manual always show the <code>activator</code> command, but unless the command is <code>activator new</code>, you can always substitute <code>activator</code> by <code>sbt</code>.</p><h2 id="Activator-version-(Read-me!)"><a class="section-marker" href="#Activator-version-(Read-me!)">§</a>Activator version (Read me!)</h2>
+<p>Older installations of Activator may cause OutOfMemoryException when using the Lagom development environment. To avoid this issue, make sure you are using the Activator package version 1.3.10+. Here is how you can check what version of the Activator package you are using on Linux systems (for Windows users, just check what&rsquo;s in your <code>%PATH%</code> environment variable):</p>
 <pre class="prettyprint"><code class="language-console">$ which activator
 /opt/activator-1.3.10-minimal/bin/activator
-</code></pre><p>The important bit is that the <version> appended after <code>activator-&lt;version&gt;</code> must be at least 1.13.10 for Lagom to properly work. </p><p>Follow <a href="https://www.lightbend.com/activator/download">this link</a> to download the latest activator bundle.</p><h2 id="Quick-setup"><a class="section-marker" href="#Quick-setup">§</a>Quick setup</h2><p>If you already have Activator and JDK 8, you can skip ahead to <a href="GettingStarted.html">Getting Started</a>.</p><p>Otherwise, follow these steps:</p>
+</code></pre>
+<p>The important bit is that the <version> appended after <code>activator-&lt;version&gt;</code> must be at least 1.13.10 for Lagom to properly work. </p>
+<p>Follow <a href="https://www.lightbend.com/activator/download">this link</a> to download the latest activator bundle.</p><h2 id="Quick-setup"><a class="section-marker" href="#Quick-setup">§</a><a href="#quick-setup" name="quick-setup">Quick setup</a></h2>
+<p>If you already have Activator and JDK 8, you can skip ahead to <a href="GettingStarted.html">Getting Started</a>.</p>
+<p>Otherwise, follow these steps:</p>
 <ol>
   <li><strong>Ensure</strong> you have Oracle JDK 8 installed on your system.</li>
   <li><strong>Download</strong> latest <a href="https://www.lightbend.com/activator/download">Activator</a></li>
   <li><strong>Extract</strong> it to a location where you have access.</li>
   <li><strong>Add</strong> the Activator installation directory to your <code>PATH</code>.</li>
-</ol><p>Some package managers can handle steps 2, 3, and 4 for you. For example, if you use Homebrew on Mac OS X, then <code>brew install typesafe-activator</code> and you&rsquo;re done.</p><p>More detailed information on these steps follows.</p><h3 id="JDK-details"><a class="section-marker" href="#JDK-details">§</a>JDK details</h3><p>Lagom requires JDK 8 or later. Early JDK 8 releases had bugs that could affect Lagom, so you&rsquo;ll want to use a recent build.</p><p>You can check whether you have JDK 8 by running <code>java</code> and <code>javac</code> from the command line:</p>
+</ol>
+<p>Some package managers can handle steps 2, 3, and 4 for you. For example, if you use Homebrew on Mac OS X, then <code>brew install typesafe-activator</code> and you&rsquo;re done.</p>
+<p>More detailed information on these steps follows.</p><h3 id="JDK-details"><a class="section-marker" href="#JDK-details">§</a><a href="#jdk-details" name="jdk-details">JDK details</a></h3>
+<p>Lagom requires JDK 8 or later. Early JDK 8 releases had bugs that could affect Lagom, so you&rsquo;ll want to use a recent build.</p>
+<p>You can check whether you have JDK 8 by running <code>java</code> and <code>javac</code> from the command line:</p>
 <pre class="prettyprint"><code>$ java -version
 java version &quot;1.8.0_74&quot;
 Java(TM) SE Runtime Environment (build 1.8.0_74-b02)
 Java HotSpot(TM) 64-Bit Server VM (build 25.74-b02, mixed mode)
 $ javac -version
 javac 1.8.0_74
-</code></pre><p>If you don&rsquo;t have java and javac, you can get it from the <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">Oracle Java downloads page</a>.</p><h3 id="Activator-details"><a class="section-marker" href="#Activator-details">§</a>Activator details</h3><p>To install Activator, download the <a href="https://www.lightbend.com/activator/download">latest version</a> and extract it to a location that you have write access to.</p><p>Activator needs write access to its installation directory. On Linux/Unix installations, this means that you shouldn&rsquo;t extract it to somewhere that you don&rsquo;t have write access to, for example <code>/opt</code> or <code>/usr/local</code>.</p><p>The <code>activator</code> script needs to be executable. If not, you can make it executable by running <code>chmod u+x /path/to/activator</code>.</p><h4 id="Adding-the-activator-installation-to-your-PATH"><a class="section-marker" href="#Adding-the-activator-installation-to-your-PATH">§</a>Adding the activator installation to your PATH</h4><p>For convenience, you should add the Activator installation directory to your system <code>PATH</code>:</p>
+</code></pre>
+<p>If you don&rsquo;t have java and javac, you can get it from the <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">Oracle Java downloads page</a>.</p><h3 id="Activator-details"><a class="section-marker" href="#Activator-details">§</a><a href="#activator-details" name="activator-details">Activator details</a></h3>
+<p>To install Activator, download the <a href="https://www.lightbend.com/activator/download">latest version</a> and extract it to a location that you have write access to.</p>
+<p>Activator needs write access to its installation directory. On Linux/Unix installations, this means that you shouldn&rsquo;t extract it to somewhere that you don&rsquo;t have write access to, for example <code>/opt</code> or <code>/usr/local</code>.</p>
+<p>The <code>activator</code> script needs to be executable. If not, you can make it executable by running <code>chmod u+x /path/to/activator</code>.</p><h4 id="Adding-the-activator-installation-to-your-PATH"><a class="section-marker" href="#Adding-the-activator-installation-to-your-PATH">§</a><a href="#adding-the-activator-installation-to-your-path" name="adding-the-activator-installation-to-your-path">Adding the activator installation to your PATH</a></h4>
+<p>For convenience, you should add the Activator installation directory to your system <code>PATH</code>:</p>
 <ul>
   <li>On Linux/Unix, this can be done by adding <code>export PATH=/path/to/activator:$PATH</code> to your <code>.bashrc</code> file.</li>
   <li>On Windows, add <code>;C:\path\to\activator</code> to your <code>PATH</code> environment variable. Do not use a path with spaces.</li>
-</ul><h4 id="Proxy-Setup"><a class="section-marker" href="#Proxy-Setup">§</a>Proxy Setup</h4><p>If you can only access the web through a proxy, set the <code>HTTP_PROXY</code> environment variable to your proxy&rsquo;s URL, for example, <code>HTTP_PROXY=http://&lt;host&gt;:&lt;port&gt;</code>.</p>
+</ul><h4 id="Proxy-Setup"><a class="section-marker" href="#Proxy-Setup">§</a><a href="#proxy-setup" name="proxy-setup">Proxy Setup</a></h4>
+<p>If you can only access the web through a proxy, set the <code>HTTP_PROXY</code> environment variable to your proxy&rsquo;s URL, for example, <code>HTTP_PROXY=http://&lt;host&gt;:&lt;port&gt;</code>.</p>

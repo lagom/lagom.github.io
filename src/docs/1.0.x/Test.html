@@ -1,10 +1,12 @@
-<h1 id="Testing-Services"><a class="section-marker" href="#Testing-Services">§</a>Testing Services</h1><h2 id="Running-tests"><a class="section-marker" href="#Running-tests">§</a>Running tests</h2><p>You can run tests from the Activator console.</p>
+<h1 id="Testing-Services"><a class="section-marker" href="#Testing-Services">§</a><a href="#testing-services" name="testing-services">Testing Services</a></h1><h2 id="Running-tests"><a class="section-marker" href="#Running-tests">§</a><a href="#running-tests" name="running-tests">Running tests</a></h2>
+<p>You can run tests from the Activator console.</p>
 <ul>
   <li>To run all tests, run <code>test</code>.</li>
   <li>To run only one test class, run <code>testOnly</code> followed by the name of the class i.e. <code>testOnly my.namespace.MyTest</code>.</li>
   <li>To run only the tests that have failed, run <code>testQuick</code>.</li>
   <li>To run tests continually, run a command with a tilde in front, i.e. <code>~testQuick</code>.</li>
-</ul><h2 id="JUnit"><a class="section-marker" href="#JUnit">§</a>JUnit</h2><p>The recommended test framework for Lagom is <a href="http://junit.org/">JUnit</a></p>
+</ul><h2 id="JUnit"><a class="section-marker" href="#JUnit">§</a><a href="#junit" name="junit">JUnit</a></h2>
+<p>The recommended test framework for Lagom is <a href="http://junit.org/">JUnit</a></p>
 <pre class="prettyprint"><code class="language-java">import static org.junit.Assert.*;
 
 import org.junit.Test;
@@ -23,9 +25,12 @@ public class SimpleTest {
     assertFalse(str.isEmpty());
   }
 
-}</code></pre><h2 id="Dependency"><a class="section-marker" href="#Dependency">§</a>Dependency</h2><p>To use this feature add the following in your project&rsquo;s build:</p>
-<pre class="prettyprint"><code class="language-sbt">libraryDependencies += lagomJavadslTestKit</code></pre><p>When using Cassandra the tests must be forked, which is enabled by adding the following in your project&rsquo;s build:</p>
-<pre class="prettyprint"><code class="language-sbt">.settings(lagomForkedTestSettings: _*)</code></pre><h2 id="How-to-test-one-service"><a class="section-marker" href="#How-to-test-one-service">§</a>How to test one service</h2><p>Lagom provides support for writing functional tests for one service in isolation. The service is running in a server and in the test you can interact with it using its service client, i.e. calls to the service API. These utilities are defined in <a href="api/java/index.html?com/lightbend/lagom/javadsl/testkit/ServiceTest.html">ServiceTest</a>.</p>
+}</code></pre><h2 id="Dependency"><a class="section-marker" href="#Dependency">§</a><a href="#dependency" name="dependency">Dependency</a></h2>
+<p>To use this feature add the following in your project&rsquo;s build:</p>
+<pre class="prettyprint"><code class="language-sbt">libraryDependencies += lagomJavadslTestKit</code></pre>
+<p>When using Cassandra the tests must be forked, which is enabled by adding the following in your project&rsquo;s build:</p>
+<pre class="prettyprint"><code class="language-sbt">.settings(lagomForkedTestSettings: _*)</code></pre><h2 id="How-to-test-one-service"><a class="section-marker" href="#How-to-test-one-service">§</a><a href="#how-to-test-one-service" name="how-to-test-one-service">How to test one service</a></h2>
+<p>Lagom provides support for writing functional tests for one service in isolation. The service is running in a server and in the test you can interact with it using its service client, i.e. calls to the service API. These utilities are defined in <a href="api/index.html?com/lightbend/lagom/javadsl/testkit/ServiceTest.html">ServiceTest</a>.</p>
 <pre class="prettyprint"><code class="language-java">import static com.lightbend.lagom.javadsl.testkit.ServiceTest.*;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.Assert.assertEquals;
@@ -43,11 +48,12 @@ public class HelloServiceTest {
     });
   }
 
-}</code></pre><p>Dependencies to other services must be replaced by stub or mock implementations by overriding the bindings of the <code>GuiceApplicationBuilder</code> in the <code>Setup</code>. If we are writing a test for the <code>HelloService</code> and that has a dependency to a <code>GreetingService</code> we must create an implementation of the <code>GreetingService</code> that can be used for the test without running the real <code>GreetingService</code>. Something like this:</p>
+}</code></pre>
+<p>Dependencies to other services must be replaced by stub or mock implementations by overriding the bindings of the <code>GuiceApplicationBuilder</code> in the <code>Setup</code>. If we are writing a test for the <code>HelloService</code> and that has a dependency to a <code>GreetingService</code> we must create an implementation of the <code>GreetingService</code> that can be used for the test without running the real <code>GreetingService</code>. Something like this:</p>
 <pre class="prettyprint"><code class="language-java">static class GreetingStub implements GreetingService {
   @Override
-  public ServiceCall&lt;NotUsed, String, String&gt; greeting() {
-    return (id, req) -&gt; CompletableFuture.completedFuture(&quot;Hello&quot;);
+  public ServiceCall&lt;String, String&gt; greeting() {
+    return req -&gt; CompletableFuture.completedFuture(&quot;Hello&quot;);
   }
 }
 
@@ -55,9 +61,15 @@ private final Setup setup = defaultSetup()
     .withConfigureBuilder(b -&gt; b.overrides(
         bind(GreetingService.class).to(GreetingStub.class)));
 
-</code></pre><p>Note how the dependency is overridden when constructing the test <code>Setup</code> object, which then can be used as parameter to the <code>withServer</code> method instead of the <code>defaultSetup()</code> in the above <code>HelloServiceTest</code>.</p><p>The server is by default running with <a href="PersistentEntity.html">persistence</a>, <a href="PubSub.html">pubsub</a> and <a href="Cluster.html">cluster</a> features enabled. Cassandra is also started before the test server is started. If your service does not use these features you can disable them in the <code>Setup</code>, which will reduce the startup time.</p><p>Disable persistence, including Cassandra startup:</p>
-<pre class="prettyprint"><code class="language-java">private final Setup setup1 = defaultSetup().withPersistence(false);</code></pre><p>If cluster is disabled the persistence is also disabled, since cluster is a prerequisite for persistence. Disable cluster and pubsub:</p>
-<pre class="prettyprint"><code class="language-java">private final Setup setup2 = defaultSetup().withCluster(false);</code></pre><p>There are two different styles that can be used when writing the tests. It is most convenient to use <code>withServer</code> as illustrated in the above <code>HelloServiceTest</code>. It automatically starts and stops the server before and after the given lambda.</p><p>When your test have several test methods, and especially when using persistence, it is faster to only start the server once in a static method annotated with <code>@BeforeClass</code> and stop it in a method annotated with <code>@AfterClass</code>.</p>
+</code></pre>
+<p>Note how the dependency is overridden when constructing the test <code>Setup</code> object, which then can be used as parameter to the <code>withServer</code> method instead of the <code>defaultSetup()</code> in the above <code>HelloServiceTest</code>.</p>
+<p>The server is by default running with <a href="PersistentEntity.html">persistence</a>, <a href="PubSub.html">pubsub</a> and <a href="Cluster.html">cluster</a> features enabled. Cassandra is also started before the test server is started. If your service does not use these features you can disable them in the <code>Setup</code>, which will reduce the startup time.</p>
+<p>Disable persistence, including Cassandra startup:</p>
+<pre class="prettyprint"><code class="language-java">private final Setup setup1 = defaultSetup().withPersistence(false);</code></pre>
+<p>If cluster is disabled the persistence is also disabled, since cluster is a prerequisite for persistence. Disable cluster and pubsub:</p>
+<pre class="prettyprint"><code class="language-java">private final Setup setup2 = defaultSetup().withCluster(false);</code></pre>
+<p>There are two different styles that can be used when writing the tests. It is most convenient to use <code>withServer</code> as illustrated in the above <code>HelloServiceTest</code>. It automatically starts and stops the server before and after the given lambda.</p>
+<p>When your test have several test methods, and especially when using persistence, it is faster to only start the server once in a static method annotated with <code>@BeforeClass</code> and stop it in a method annotated with <code>@AfterClass</code>.</p>
 <pre class="prettyprint"><code class="language-java">import static com.lightbend.lagom.javadsl.testkit.ServiceTest.*;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.Assert.assertEquals;
@@ -97,17 +109,20 @@ public class AdvancedHelloServiceTest {
     assertEquals(&quot;Hello Bob&quot;, msg);
   }
 
-}</code></pre><h2 id="How-to-test-several-services"><a class="section-marker" href="#How-to-test-several-services">§</a>How to test several services</h2><p>Lagom will provide support for writing integration tests that involve several interacting services. This feature is <a href="https://github.com/lagom/lagom/issues/38">not yet implemented</a>.</p><h2 id="How-to-test-streamed-request/response"><a class="section-marker" href="#How-to-test-streamed-request/response">§</a>How to test streamed request/response</h2><p>Let&rsquo;s say we have a service that have streaming request and/or response parameters. For example an <code>EchoService</code> like this:</p>
+}</code></pre><h2 id="How-to-test-several-services"><a class="section-marker" href="#How-to-test-several-services">§</a><a href="#how-to-test-several-services" name="how-to-test-several-services">How to test several services</a></h2>
+<p>Lagom will provide support for writing integration tests that involve several interacting services. This feature is <a href="https://github.com/lagom/lagom/issues/38">not yet implemented</a>.</p><h2 id="How-to-test-streamed-request/response"><a class="section-marker" href="#How-to-test-streamed-request/response">§</a><a href="#how-to-test-streamed-request-response" name="how-to-test-streamed-request-response">How to test streamed request/response</a></h2>
+<p>Let&rsquo;s say we have a service that have streaming request and/or response parameters. For example an <code>EchoService</code> like this:</p>
 <pre class="prettyprint"><code class="language-java">public interface EchoService extends Service {
 
-  ServiceCall&lt;NotUsed, Source&lt;String, NotUsed&gt;, Source&lt;String, NotUsed&gt;&gt; echo();
+  ServiceCall&lt;Source&lt;String, NotUsed&gt;, Source&lt;String, NotUsed&gt;&gt; echo();
 
   default Descriptor descriptor() {
-    return named(&quot;echo&quot;).with(
-      namedCall(&quot;echo&quot;, echo())
+    return named(&quot;echo&quot;).withCalls(
+      namedCall(&quot;echo&quot;, this::echo)
     );
   }
-}</code></pre><p>When writing tests for that the <a href="http://doc.akka.io/docs/akka/2.4.4/java/stream/stream-testkit.html#Streams_TestKit">Akka Streams TestKit</a> is very useful. We use the Streams TestKit together with the Lagom <code>ServiceTest</code> utilities:</p>
+}</code></pre>
+<p>When writing tests for that the <a href="http://doc.akka.io/docs/akka/2.4.4/java/stream/stream-testkit.html#Streams_TestKit">Akka Streams TestKit</a> is very useful. We use the Streams TestKit together with the Lagom <code>ServiceTest</code> utilities:</p>
 <pre class="prettyprint"><code class="language-java">import static com.lightbend.lagom.javadsl.testkit.ServiceTest.*;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import java.util.Arrays;
@@ -141,4 +156,7 @@ public class EchoServiceTest {
     });
   }
 
-}</code></pre><p>Read more about it in the documentation of the <a href="http://doc.akka.io/docs/akka/2.4.4/java/stream/stream-testkit.html#Streams_TestKit">Akka Streams TestKit</a>.</p><h2 id="How-to-test-PersistentEntity"><a class="section-marker" href="#How-to-test-PersistentEntity">§</a>How to test PersistentEntity</h2><p><a href="PersistentEntity.html">Persistent Entities</a> can be used in the service tests described above. In addition to that you should write unit tests using the <a href="api/java/index.html?com/lightbend/lagom/javadsl/testkit/PersistentEntityTestDriver.html">PersistentEntityTestDriver</a>, which will run the <code>PersistentEntity</code> without using a database.</p><p>This is described in the documentation of <a href="PersistentEntity.html#Unit-Testing">Persistent Entity</a></p>
+}</code></pre>
+<p>Read more about it in the documentation of the <a href="http://doc.akka.io/docs/akka/2.4.4/java/stream/stream-testkit.html#Streams_TestKit">Akka Streams TestKit</a>.</p><h2 id="How-to-test-PersistentEntity"><a class="section-marker" href="#How-to-test-PersistentEntity">§</a><a href="#how-to-test-persistententity" name="how-to-test-persistententity">How to test PersistentEntity</a></h2>
+<p><a href="PersistentEntity.html">Persistent Entities</a> can be used in the service tests described above. In addition to that you should write unit tests using the <a href="api/index.html?com/lightbend/lagom/javadsl/testkit/PersistentEntityTestDriver.html">PersistentEntityTestDriver</a>, which will run the <code>PersistentEntity</code> without using a database.</p>
+<p>This is described in the documentation of <a href="PersistentEntity.html#Unit-Testing">Persistent Entity</a></p>

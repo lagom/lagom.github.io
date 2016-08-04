@@ -1,11 +1,16 @@
-<h1 id="Import-a-Lagom-build-in-your-IDE"><a class="section-marker" href="#Import-a-Lagom-build-in-your-IDE">§</a>Import a Lagom build in your IDE</h1><p>Here you will learn how to import projects defined in a Lagom build into your preferred IDE.</p><h2 id="Eclipse"><a class="section-marker" href="#Eclipse">§</a>Eclipse</h2><p><a href="https://github.com/typesafehub/sbteclipse">sbt-eclipse</a> is needed to generate the Eclipse project files, which are required to import all projects defined in your Lagom build into Eclipse.</p><p>If your Lagom build file is in directory <code>helloworld</code>, create a <code>project/eclipse.sbt</code> with the following content:</p>
+<h1 id="Import-a-Lagom-build-in-your-IDE"><a class="section-marker" href="#Import-a-Lagom-build-in-your-IDE">§</a><a href="#import-a-lagom-build-in-your-ide" name="import-a-lagom-build-in-your-ide">Import a Lagom build in your IDE</a></h1>
+<p>Here you will learn how to import projects defined in a Lagom build into your preferred IDE.</p><h2 id="Eclipse"><a class="section-marker" href="#Eclipse">§</a><a href="#eclipse" name="eclipse">Eclipse</a></h2>
+<p><a href="https://github.com/typesafehub/sbteclipse">sbt-eclipse</a> is needed to generate the Eclipse project files, which are required to import all projects defined in your Lagom build into Eclipse.</p>
+<p>If your Lagom build file is in directory <code>helloworld</code>, create a <code>project/eclipse.sbt</code> with the following content:</p>
 <pre class="prettyprint"><code>addSbtPlugin(&quot;com.typesafe.sbteclipse&quot; % &quot;sbteclipse-plugin&quot; % &quot;3.0.0&quot;)
-</code></pre><p>Save the file. Now, open the terminal, and <code>cd</code> to the <code>helloworld</code> directory, and type <code>activator</code>:</p>
+</code></pre>
+<p>Save the file. Now, open the terminal, and <code>cd</code> to the <code>helloworld</code> directory, and type <code>activator</code>:</p>
 <pre class="prettyprint"><code>$ cd helloworld
 $ activator
 ... (booting up)
 &gt;
-</code></pre><p>If you have configured things correctly, typing <code>eclipse</code> will generate the Eclipse project files for all projects in your build:</p>
+</code></pre>
+<p>If you have configured things correctly, typing <code>eclipse</code> will generate the Eclipse project files for all projects in your build:</p>
 <pre class="prettyprint"><code>&gt; eclipse
 ...
 [info] Successfully created Eclipse project files for project(s):
@@ -16,7 +21,10 @@ $ activator
 [info] lagom-internal-meta-project-service-locator
 [info] lagom-internal-meta-project-cassandra
 &gt;
-</code></pre><p>Open Eclipse and follow the <a href="http://help.eclipse.org/mars/index.jsp?topic=%2Forg.eclipse.platform.doc.user%2Ftasks%2Ftasks-importproject.htm">Eclipse instructions</a> for importing existing projects. Also, mind that <code>lagom-internal-meta-project-service-locator</code> and <code>lagom-internal-meta-project-cassandra</code> are internal projects that you don&rsquo;t need to import, so just unselect them:</p><p><a href="resources/gettingstarted/eclipse_import_unselect_synthetic_projects.png"><img src="resources/gettingstarted/eclipse_import_unselect_synthetic_projects.png"/></a></p><p>One thing you&rsquo;ll notice after opening the imported projects in Eclipse is that a few unneeded source directories such as <code>src/main/scala</code> and <code>src/test/scala</code> have been created. It is possible to correct this behavior, but you will need to make a few changes in your Lagom build file. First, add the following definitions in your build (anywhere):</p>
+</code></pre>
+<p>Open Eclipse and follow the <a href="http://help.eclipse.org/mars/index.jsp?topic=%2Forg.eclipse.platform.doc.user%2Ftasks%2Ftasks-importproject.htm">Eclipse instructions</a> for importing existing projects. Also, mind that <code>lagom-internal-meta-project-service-locator</code> and <code>lagom-internal-meta-project-cassandra</code> are internal projects that you don&rsquo;t need to import, so just unselect them:</p>
+<p><a href="resources/gettingstarted/eclipse_import_unselect_synthetic_projects.png"><img src="resources/gettingstarted/eclipse_import_unselect_synthetic_projects.png"/></a></p>
+<p>One thing you&rsquo;ll notice after opening the imported projects in Eclipse is that a few unneeded source directories such as <code>src/main/scala</code> and <code>src/test/scala</code> have been created. It is possible to correct this behavior, but you will need to make a few changes in your Lagom build file. First, add the following definitions in your build (anywhere):</p>
 <pre class="prettyprint"><code>// All projects that you would like to import in Eclipse should use 
 // this factory.
 // Here is an usage example:
@@ -46,4 +54,14 @@ lazy val eclipseSettings = Seq(
   unmanagedSourceDirectories in Compile := Seq((javaSource in Compile).value),
   unmanagedSourceDirectories in Test := Seq((javaSource in Test).value)
 )
-</code></pre><p>Now update all projects declarations in your Lagom build to use the newly created <code>project</code> method, so that the defined <code>eclipseSettings</code> are successfully applied to all projects.</p><p>Finally, you will need to regenerate the Eclipse project files to account for the changes made in the build file. Go back to the activator console, type <code>reload</code> to reload the build file, and type <code>eclipse</code>. Once the <code>eclipse</code> task completes, go back to Eclipse, hit F5 to refresh all previously imported projects, and you are done.</p><h2 id="IntelliJ"><a class="section-marker" href="#IntelliJ">§</a>IntelliJ</h2><p>Because the Lagom build file is written in sbt, we recommend to install the IntelliJ IDEA sbt plugin to facilitate importing projects. Unfortunately, for sbt plugin to properly work, you will need to install the Scala plugin as well. To do so, open the <code>Plugins</code> modal for installing plugins, search for the &ldquo;SBT&rdquo; plugin. If no match is found, you&rsquo;ll have to hit &ldquo;Browse&rdquo;.</p><p><a href="resources/gettingstarted/idea_search_sbt_plugin.png"><img src="resources/gettingstarted/idea_search_sbt_plugin.png"/></a></p><p>Select and install the plugin.</p><p><a href="resources/gettingstarted/idea_install_sbt_plugin.png"><img src="resources/gettingstarted/idea_install_sbt_plugin.png"/></a></p><p>Repeat the same process for the &ldquo;Scala&rdquo; plugin.</p><p>After restarting IntelliJ IDEA, go to &ldquo;Import Project&rdquo;, and select your Lagom <code>build.sbt</code> file. An &ldquo;Import Project from SBT&rdquo; modal will open, and we suggest you to tick &ldquo;Use auto-import&rdquo;, and also tick the option to download sources and javadocs:</p><p><a href="resources/gettingstarted/idea_sbt_project_import.png"><img src="resources/gettingstarted/idea_sbt_project_import.png"/></a></p><p>Click &ldquo;OK&rdquo; and continue by importing all projects.</p>
+</code></pre>
+<p>Now update all projects declarations in your Lagom build to use the newly created <code>project</code> method, so that the defined <code>eclipseSettings</code> are successfully applied to all projects.</p>
+<p>Finally, you will need to regenerate the Eclipse project files to account for the changes made in the build file. Go back to the activator console, type <code>reload</code> to reload the build file, and type <code>eclipse</code>. Once the <code>eclipse</code> task completes, go back to Eclipse, hit F5 to refresh all previously imported projects, and you are done.</p><h2 id="IntelliJ"><a class="section-marker" href="#IntelliJ">§</a><a href="#intellij" name="intellij">IntelliJ</a></h2>
+<p>Because the Lagom build file is written in sbt, we recommend to install the IntelliJ IDEA sbt plugin to facilitate importing projects. Unfortunately, for sbt plugin to properly work, you will need to install the Scala plugin as well. To do so, open the <code>Plugins</code> modal for installing plugins, search for the &ldquo;SBT&rdquo; plugin. If no match is found, you&rsquo;ll have to hit &ldquo;Browse&rdquo;.</p>
+<p><a href="resources/gettingstarted/idea_search_sbt_plugin.png"><img src="resources/gettingstarted/idea_search_sbt_plugin.png"/></a></p>
+<p>Select and install the plugin.</p>
+<p><a href="resources/gettingstarted/idea_install_sbt_plugin.png"><img src="resources/gettingstarted/idea_install_sbt_plugin.png"/></a></p>
+<p>Repeat the same process for the &ldquo;Scala&rdquo; plugin.</p>
+<p>After restarting IntelliJ IDEA, go to &ldquo;Import Project&rdquo;, and select your Lagom <code>build.sbt</code> file. An &ldquo;Import Project from SBT&rdquo; modal will open, and we suggest you to tick &ldquo;Use auto-import&rdquo;, and also tick the option to download sources and javadocs:</p>
+<p><a href="resources/gettingstarted/idea_sbt_project_import.png"><img src="resources/gettingstarted/idea_sbt_project_import.png"/></a></p>
+<p>Click &ldquo;OK&rdquo; and continue by importing all projects.</p>

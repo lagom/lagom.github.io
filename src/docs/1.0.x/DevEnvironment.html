@@ -1,28 +1,40 @@
-<h1 id="Development-Environment"><a class="section-marker" href="#Development-Environment">§</a>Development Environment</h1><p>Lagom&rsquo;s sbt-based development console allows running any number of services together with a single command.</p><p>The same command also reloads your services when the code changes, so that you don&rsquo;t have to manually restart them. You can stay focused on your work and let Lagom do the compiling and reloading.</p><h2 id="Starting-the-development-console"><a class="section-marker" href="#Starting-the-development-console">§</a>Starting the development console</h2><p>Assuming you have followed the <a href="Installation.html">Installation</a> instructions, it&rsquo;s now time to fire up the console on your Lagom project directory:</p>
+<h1 id="Development-Environment"><a class="section-marker" href="#Development-Environment">§</a><a href="#development-environment" name="development-environment">Development Environment</a></h1>
+<p>Lagom&rsquo;s sbt-based development console allows running any number of services together with a single command.</p>
+<p>The same command also reloads your services when the code changes, so that you don&rsquo;t have to manually restart them. You can stay focused on your work and let Lagom do the compiling and reloading.</p><h2 id="Starting-the-development-console"><a class="section-marker" href="#Starting-the-development-console">§</a><a href="#starting-the-development-console" name="starting-the-development-console">Starting the development console</a></h2>
+<p>Assuming you have followed the <a href="Installation.html">Installation</a> instructions, it&rsquo;s now time to fire up the console on your Lagom project directory:</p>
 <pre class="prettyprint"><code class="language-console">$ cd &lt;path to your Lagom project&gt;
 $ activator
 [info] ...
 &gt;
-</code></pre><h2 id="Running-all-services"><a class="section-marker" href="#Running-all-services">§</a>Running all services</h2><p>To run all Lagom services together, with automatic reloading, just enter <code>runAll</code> in the activator console:</p>
+</code></pre><h2 id="Running-all-services"><a class="section-marker" href="#Running-all-services">§</a><a href="#running-all-services" name="running-all-services">Running all services</a></h2>
+<p>To run all Lagom services together, with automatic reloading, just enter <code>runAll</code> in the activator console:</p>
 <pre class="prettyprint"><code class="language-console">&gt; runAll
 [info] ...
 [info] Service helloworld-impl listening for HTTP on 0:0:0:0:0:0:0:0:23966
 [info] Service hellostream-impl listening for HTTP on 0:0:0:0:0:0:0:0:27462
 (Services started, use Ctrl+D to stop and go back to the console...)
-</code></pre><p>This may take a while if you have a lot of services or if dependencies are being retrieved for the first time.</p><p>Once the &ldquo;Services started&rdquo; message has appeared, if you make a change to your source code, you&rsquo;ll see output like this in the console:</p>
+</code></pre>
+<p>This may take a while if you have a lot of services or if dependencies are being retrieved for the first time.</p>
+<p>Once the &ldquo;Services started&rdquo; message has appeared, if you make a change to your source code, you&rsquo;ll see output like this in the console:</p>
 <pre class="prettyprint"><code class="language-console">[info] Compiling 1 Java source to /&lt;project-path&gt;/target/scala-2.11/classes...
 
 --- (RELOAD) ---
-</code></pre><h2 id="Behind-the-scenes"><a class="section-marker" href="#Behind-the-scenes">§</a>Behind the scenes</h2><p>What&rsquo;s happening behind the scenes when you <code>runAll</code>?</p>
+</code></pre><h2 id="Behind-the-scenes"><a class="section-marker" href="#Behind-the-scenes">§</a><a href="#behind-the-scenes" name="behind-the-scenes">Behind the scenes</a></h2>
+<p>What&rsquo;s happening behind the scenes when you <code>runAll</code>?</p>
 <ul>
   <li>an embedded Service Locator is started</li>
   <li>a Cassandra server is started</li>
   <li>your services start
-  <ul>
-    <li>&hellip;and register with the Service Locator</li>
-  </ul></li>
-</ul><p>This all happens automatically without special code or additional configuration.</p><p>You can verify that your services are running by viewing <code>http://localhost:8000/services</code> in a web browser (or with a command line tool such as <code>curl</code>). The Service Locator, running on port 8000, will return JSON such as:</p>
+    <ul>
+      <li>&hellip;and register with the Service Locator</li>
+    </ul>
+  </li>
+</ul>
+<p>This all happens automatically without special code or additional configuration.</p>
+<p>You can verify that your services are running by viewing <code>http://localhost:8000/services</code> in a web browser (or with a command line tool such as <code>curl</code>). The Service Locator, running on port 8000, will return JSON such as:</p>
 <pre class="prettyprint"><code>[{&quot;name&quot;:&quot;hellostream&quot;,&quot;url&quot;:&quot;http://0.0.0.0:26230&quot;},
  {&quot;name&quot;:&quot;cas_native&quot;,&quot;url&quot;:&quot;tcp://127.0.0.1:4000/cas_native&quot;},
  {&quot;name&quot;:&quot;helloservice&quot;,&quot;url&quot;:&quot;http://0.0.0.0:24266&quot;}]
-</code></pre><p><code>cas_native</code> is the <a href="http://cassandra.apache.org/">Cassandra</a> server. As you will learn in the <a href="PersistentEntity.html">documentation for writing persistent and clustered services</a>, Cassandra is the default database in Lagom, and it&rsquo;s an integral part of the development environment.</p><p>Both the Service Locator and Cassandra are covered in more detail in the sections that follow.</p>
+</code></pre>
+<p><code>cas_native</code> is the <a href="http://cassandra.apache.org/">Cassandra</a> server. As you will learn in the <a href="PersistentEntity.html">documentation for writing persistent and clustered services</a>, Cassandra is the default database in Lagom, and it&rsquo;s an integral part of the development environment.</p>
+<p>Both the Service Locator and Cassandra are covered in more detail in the sections that follow.</p>

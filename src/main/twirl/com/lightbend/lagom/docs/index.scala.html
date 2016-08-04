@@ -1,9 +1,9 @@
+@import com.lightbend.lagom.docs.BlogSummary
 @import com.lightbend.lagom.docs.LagomContext
 
 @(implicit context: LagomContext)
 
-@main(None) {
-} {
+@main(None)()() {
     <div class="fw-wrapper lgm-purple hero-banner">
         <div class="row">
             <div class="small-12 columns">
@@ -27,7 +27,7 @@
         <div class="row get-started">
             <div class="small-12 small-centered columns text-center">
                 <h1>Get Started</h1>
-                <p>View getting started videos below or jump straight in with <a class="" href="http://www.lagomframework.com/documentation/1.0.x/Home.html" target="_blank">Lagom documentation</a>.</p>
+                <p>View getting started videos below or jump straight in with <a class="" href="@context.path/documentation/@context.currentDocsVersion/java/Home.html" target="_blank">Lagom documentation</a>.</p>
             </div>
         </div>
 
@@ -82,6 +82,29 @@
                 <div class="flex-video widescreen">
                     <iframe id="player" class="youtube-embed-player" src="//www.youtube.com/embed/0Z0UIZxW1aw?rel=0&amp;autohide=1&amp;modestbranding=0&amp;showinfo=1" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe>
                 </div>
+            </div>
+        </div>
+
+        <div class="row vertical-buffer-bottom-60">
+            <div class="small-12 medium-6 large-5 columns medium-text-right">
+                <h1><a href="blog">Lagom Team Blog</a></h1>
+            </div>
+            <div class="small-12 medium-6 large-7 columns">
+                <h3>Recent posts</h3>
+            @for(blogPost <- context.blogSummary.recent) {
+                <div class="blog-meta">
+                    <div class="blog-author-image">
+                        <a href="@blogPost.author.url">
+                            <img src="@blogPost.author.avatar"/>
+                        </a>
+                    </div>
+                    <div class="blog-meta-details">
+                        <a href="@context.path/blog/@{blogPost.id}.html">@blogPost.title</a>
+                        <br/>
+                        @blogPost.date.toString("MMMM d, yyyy")
+                    </div>
+                </div>
+            }
             </div>
         </div>
 

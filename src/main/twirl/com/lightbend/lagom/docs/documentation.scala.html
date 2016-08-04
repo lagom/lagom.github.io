@@ -5,22 +5,21 @@
 
 @(path: String, content: Html, context: Context, version: String, versions: Seq[VersionPage], nav: List[Section], canonical: Option[String])(implicit ctx: LagomContext)
 
-@main(Some(context.title), canonical) {
-    <style type="text/css">
-            @@import "@ctx.path/lib/prettify/prettify.css";
-    </style>
-    <script type="text/javascript" charset="utf-8" src="@ctx.path/lib/prettify/prettify.js"></script>
-    <script type="text/javascript" charset="utf-8" src="@ctx.path/lib/prettify/lang-scala.js"></script>
-    <script type="text/javascript">
-            jQuery(function(){
-                window.prettyPrint && prettyPrint();
-            });
-    </script>
+@main(Some(context.title), canonical) { @* Header *@
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css" />
     @for(css <- context.resources.stylesheets) {<link rel="stylesheet" type="text/css" href="@css"/>
-    }@for(script <- context.resources.scripts) {<script type="text/javascript" src="@script"></script>
     }
-} {
-
+} { @* Footer *@
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script>
+    <script type="text/javascript"> docsearch({
+        apiKey: "77ef1e29e6bddfca861f7a42cc51725e",
+        indexName: "lagomframework",
+        inputSelector: "#docs-search"
+    });
+    </script>
+    @for(script <- context.resources.scripts) {<script type="text/javascript" src="@script"></script>
+    }
+} {  @* Body *@
     <header class="fw-wrapper lgm-purple page-title">
         <div class="row">
             <div class="small-12 columns">
@@ -32,7 +31,6 @@
     <div class="fw-wrapper documentation-content">
         <div class="row">
             <div class="small-12 large-7 columns">
-                @* I don't know if breadcrumbs are necessary, but here they are anyway. *@
                 @if(nav.size > 1) {
                     <nav class="breadcrumbs">
                         <a href="@nav.head.url">@nav.head.title</a>
@@ -53,12 +51,17 @@
             </div>
             <aside class="small-12 large-4 columns">
                 <nav class="side-menu">
+
+                    <input type="text" id="docs-search" placeholder="Search"/>
+
                     <label for="docs-version">Version:</label>
                     <select id="docs-version">
                     @for(v <- versions) {
-                        <option value="@ctx.path/documentation/@v.name@if(v.exists){/@path}else{/Home.html}"@if(v.name == version){ selected="selected"}>@v.name</option>
+                        <option value="@ctx.path/documentation/@v.name/java@if(v.exists){/@path}else{/Home.html}"@if(v.name == version){ selected="selected"}>@v.name</option>
                     }
                     </select>
+
+                    <a href="@ctx.path/documentation/@version/java/api/index.html" class="api-docs">API Documentation</a>
 
                     @for(section <- nav.reverse) {
                         <h3>@section.title</h3>
