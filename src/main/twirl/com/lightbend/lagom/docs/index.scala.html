@@ -84,13 +84,16 @@
                 </div>
             </div>
         </div>
-
-        <div class="row vertical-buffer-bottom-60">
-            <div class="small-12 medium-6 large-5 columns medium-text-right">
+    </article>
+    <aside class="fw-wrapper home-blog-listing">
+        <header class="row">
+            <div class="small-12 columns">
                 <h1><a href="blog">Lagom Team Blog</a></h1>
             </div>
-            <div class="small-12 medium-6 large-7 columns">
-                <h3>Recent posts</h3>
+        </header>
+        <div class="row home-blog-list">
+            <div class="columns small-12">
+            <h3>Recent posts</h3>
             @for(blogPost <- context.blogSummary.recent) {
                 <div class="blog-meta">
                     <div class="blog-author-image">
@@ -107,6 +110,5 @@
             }
             </div>
         </div>
-
-    </article>
+    </aside>
 }
