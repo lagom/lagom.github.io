@@ -38,11 +38,8 @@ val runCommand = Command.make("run") { state =>
 
       val log = state.log
       val extracted = Project.extract(state)
-      val extraSettings = Seq(
-        javaOptions += "-Ddev",
-        fork := true // required for javaOptions to take effect
-      )
-      val (webStageState, stageDir) = extracted.runTask(WebKeys.stage, extracted.append(extraSettings, state))
+
+      val stageDir = extracted.get(WebKeys.stagingDirectory)
 
       log.info(s"\u001b[32mRunning HTTP server on port $port, press ENTER to exit...\u001b[0m")
       val httpServerProcess = Process(s"python -m SimpleHTTPServer $port", stageDir).run(new ProcessLogger {
@@ -51,14 +48,19 @@ val runCommand = Command.make("run") { state =>
         override def buffer[T](f: => T): T = f
       })
 
-      val stateWithStop = "stop" :: webStageState.put(httpServer, new Closeable {
+      val stateWithStop = "stop" :: state.put(httpServer, new Closeable {
         override def close(): Unit = {
           log.info("Shutting down HTTP server")
           httpServerProcess.destroy()
         }
       }).addExitHook(() => httpServerProcess.destroy())
 
-      Parser.parse("~web-stage", stateWithStop.combinedParser) match {
+      val extraSettings = Seq(
+        javaOptions += "-Ddev",
+        fork := true // required for javaOptions to take effect
+      )
+      val stateWithExtraSettings = extracted.append(extraSettings, stateWithStop)
+      Parser.parse("~web-stage", stateWithExtraSettings.combinedParser) match {
         case Right(cmd) => cmd()
         case Left(msg) => throw sys.error(s"Invalid command:\n$msg")
       }
