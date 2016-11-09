@@ -79,11 +79,19 @@ object BlogMetaDataParser {
 
   private def getGitHubUser(name: String): GitHubUser = {
     gitHubCache.getOrElseUpdate(name, {
-      val stream = new URL(s"https://api.github.com/users/$name").openStream()
       try {
-        Json.parse(stream).as[GitHubUser]
-      } finally {
-        stream.close()
+        val stream = new URL(s"https://api.github.com/users/$name").openStream()
+        try {
+          Json.parse(stream).as[GitHubUser]
+        } finally {
+          stream.close()
+        }        
+      } catch {
+        case e: java.io.IOException if DocumentationGenerator.devMode => {
+          // GitHub might be rate-limiting us. If we're in development mode, just ignore this.
+          Logger.warn(s"GitHub might be rate-limiting us; using fallback for user $name")
+          GitHubUser(name, "https://www.gravatar.com/avatar/default", s"https://github.com/$name")
+        }
       }
     })
   }

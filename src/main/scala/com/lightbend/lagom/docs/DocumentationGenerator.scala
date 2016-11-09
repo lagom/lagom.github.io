@@ -6,6 +6,7 @@ import java.nio.file.{Files, StandardCopyOption}
 
 import com.lightbend.docs.{Context, TOC}
 import org.pegdown.{Extensions, LinkRenderer, PegDownProcessor, VerbatimSerializer}
+import play.api.Logger
 import play.api.libs.json.{Json, Reads}
 import play.doc.PrettifyVerbatimSerializer
 import play.twirl.api.{Html, Template1}
@@ -15,6 +16,9 @@ import scala.collection.JavaConverters._
 import scala.xml.XML
 
 object DocumentationGenerator extends App {
+
+  val devMode = sys.props.contains("dev")
+  if (devMode) Logger.info("Running in dev mode")
 
   /*
    * CONFIGURATION

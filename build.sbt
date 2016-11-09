@@ -38,7 +38,11 @@ val runCommand = Command.make("run") { state =>
 
       val log = state.log
       val extracted = Project.extract(state)
-      val (webStageState, stageDir) = extracted.runTask(WebKeys.stage, state)
+      val extraSettings = Seq(
+        javaOptions += "-Ddev",
+        fork := true // required for javaOptions to take effect
+      )
+      val (webStageState, stageDir) = extracted.runTask(WebKeys.stage, extracted.append(extraSettings, state))
 
       log.info(s"\u001b[32mRunning HTTP server on port $port, press ENTER to exit...\u001b[0m")
       val httpServerProcess = Process(s"python -m SimpleHTTPServer $port", stageDir).run(new ProcessLogger {
