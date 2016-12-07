@@ -1,5 +1,14 @@
 # Lagom Change Log
 
+## Lagom 1.2.1
+
+*Released 07 December 2016*
+
+* [307](https://github.com/lagom/lagom/pull/307) Docs: Cassandra and cluster are disabled by default. (thanks [@mihbor](https://github.com/mihbor))
+* [285](https://github.com/lagom/lagom/issues/285) Regression: Jackson exception when using immutables in lagom 1.2.0 (thanks [@mihbor](https://github.com/mihbor))
+* [301](https://github.com/lagom/lagom/pull/301) Improve tests stability 
+* [274](https://github.com/lagom/lagom/pull/274) Performance: Avoid stream materialization on requests with no body
+
 ## Lagom 1.2.0
 
 *Released 08 November 2016*

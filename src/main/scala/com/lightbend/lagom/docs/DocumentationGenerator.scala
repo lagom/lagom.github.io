@@ -25,7 +25,7 @@ object DocumentationGenerator extends App {
    */
   // Current documentation version
   val currentDocsVersion = "1.2.x"
-  val currentLagomVersion = "1.2.0"
+  val currentLagomVersion = "1.2.1"
 
   //val baseUrl = "http://jroper.github.io/lagom.github.io"
   //val context = "/lagom.github.io"
