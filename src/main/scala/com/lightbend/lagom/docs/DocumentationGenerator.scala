@@ -29,8 +29,8 @@ object DocumentationGenerator extends App {
 
   // This impacts what gets displayed on the main documentation index.
   val stableVersions = Seq(
-    VersionSummary("1.2.x", s"Lagom $currentLagomVersion (current stable release) for Scala 2.11"),
-    VersionSummary("1.1.x", s"Lagom 1.1.0 (previous stable release) for Scala 2.11")
+    VersionSummary("1.2.x", s"Lagom $currentLagomVersion (current stable release)"),
+    VersionSummary("1.1.x", s"Lagom 1.1.0 (previous stable release)")
   )
 
   val previewVersions = Seq(
@@ -38,7 +38,7 @@ object DocumentationGenerator extends App {
   )
 
   val oldVersions = Seq(
-    VersionSummary("1.0.x", s"Lagom 1.0.0 for Scala 2.11")
+    VersionSummary("1.0.x", s"Lagom 1.0.0")
   )
 
   //val baseUrl = "http://jroper.github.io/lagom.github.io"
