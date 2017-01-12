@@ -1,5 +1,11 @@
 # Lagom Change Log
 
+## Lagom 1.2.2
+
+*Released 12 January 2017*
+
+* [318](https://github.com/lagom/lagom/issues/318) bugfix: can't use JDBC persistence when usin Maven as build tool.
+
 ## Lagom 1.2.1
 
 *Released 07 December 2016*
