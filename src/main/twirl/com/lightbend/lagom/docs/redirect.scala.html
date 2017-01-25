@@ -1,10 +1,14 @@
 @(redirectUrl: String)
 <html>
     <head>
+        <link rel="canonical" href="@redirectUrl" />
         <meta http-equiv="refresh" content="0;url=@redirectUrl" />
     </head>
     <body>
         <h1>Lagom Framework</h1>
         <p>You are being redirected, if nothing happens, please <a href="@redirectUrl">follow this link</a>.</p>
+        <script type="text/javascript">
+            window.location = "@redirectUrl";
+        </script>
     </body>
 </html>

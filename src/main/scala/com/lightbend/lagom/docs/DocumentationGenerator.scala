@@ -54,13 +54,16 @@ object DocumentationGenerator extends App {
   val templatePages: Seq[(String, Template1[LagomContext, Html])] = Seq(
     "index.html" -> html.index,
     "get-involved.html" -> html.getinvolved,
-    "download.html" -> html.download
+    "get-started.html" -> html.getstarted
   )
 
   // Redirects
+  // Since this is a static site, and GitHub doesn't support redirects, we generate pages that use HTML redirects.
   val redirects: Seq[(String, String)] = Seq(
     "/documentation/scala/index.html" -> s"$context/documentation/$currentDocsVersion/scala/Home.html",
-    "/documentation/java/index.html" -> s"$context/documentation/$currentDocsVersion/java/Home.html"
+    "/documentation/java/index.html" -> s"$context/documentation/$currentDocsVersion/java/Home.html",
+    // Redirect anyone heading to the old download page to the get started page
+    "/download.html" -> "/get-started.html"
   )
 
   val activatorRelease = {
