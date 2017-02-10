@@ -1,0 +1,139 @@
+@import com.lightbend.lagom.docs.svg.html._
+@import com.lightbend.lagom.docs.LagomContext
+
+@(implicit context: LagomContext)
+
+@main(None)()() {
+    <div class="fw-wrapper lgm-purple hero-banner">
+        <div class="row">
+            <div class="small-12 columns">
+                <a href="@context.path/" class="logo"><img src="@context.path/images/logos/lagom-reverse.svg"></a>
+                <h1>Using Lagom with Java</h1>
+            </div>
+        </div>
+    </div>
+    <article class="download-content">
+        <section class="fw-wrapper">
+            <div class="row">
+                <div class="small-12 columns">
+
+                    <p>
+                        You can use Maven or sbt to build apps you create with the Lagom Java API.
+                        If you aren’t using one of these tools already, see these links to help you choose:
+                    </p>
+
+                    <ul>
+                        <li><a href="http://www.scala-sbt.org/0.13/docs/index.html">sbt</a></li>
+                        <li><a href="https://maven.apache.org">Maven</a></li>
+                    </ul>
+
+                    <h3>Prerequisites for using Lagom with Java</h3>
+
+                    <ul>
+                        <li>JDK 8</li>
+                        <li>sbt 0.13.13 or Maven 3.3 (or higher)</li>
+                    </ul>
+
+                    <p>
+                        See <a href="@context.path/documentation/@context.currentDocsVersion/java/Installation.html">detailed instructions</a>
+                            for help setting up the prerequisites and getting started.
+                            Or, if you are raring to go, just follow the simple steps for your build tool:
+                    </p>
+
+                    <p>
+                        <a href="#maven" class="btn glass small">Maven</a>
+                        <a href="#sbt" class="btn glass small">sbt</a>
+                    </p>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="maven" class="fw-wrapper">
+            <div class="row">
+                <div class="small-12 columns">
+                    <h2>Using Lagom with Java and Maven</h2>
+
+                    <p>
+                        Prerequisites for using Lagom with Maven
+                    </p>
+
+                    <ul>
+                        <li>JDK 8</li>
+                        <li>Maven 3.3 or higher</li>
+                    </ul>
+
+                    <p>
+                        See <a href="@context.path/documentation/@context.currentDocsVersion/java/GettingStartedMaven.html">detailed instructions</a>
+                        for help setting up the prerequisites and getting started. Or, if you are raring to go, just follow these simple steps:
+                    </p>
+
+                    <ol>
+                        <li>
+                            <p>
+                                Create a new project from the command line (all on one line):
+                            </p>
+
+                            <pre class="prettyprint"><code>mvn archetype:generate -DarchetypeGroupId=com.lightbend.lagom -DarchetypeArtifactId=maven-archetype-lagom-java -DarchetypeVersion=1.1.0</code></pre>
+                        </li>
+
+                        <li>
+                            Maven will prompt you for <code>groupId</code> (which becomes the package name), <code>artifactId</code>
+                            (which becomes the name of the project’s folder), and <code>version</code>.
+                        </li>
+
+                        <li>
+                            <p>
+                                Change into the project folder and run it:
+                            </p>
+
+                            <pre><code>mvn runAll</code></pre>
+                        </li>
+                    </ol>
+
+                    <p>
+                        See <a href="@context.path/documentation/@context.currentDocsVersion/java/Home.html">the documentation</a>
+                            to test and understand your new project. <!-- TODO Check out the <a href="@context.path/example-apps.html">example applications</a>. -->
+                    </p>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="sbt" class="fw-wrapper">
+            <div class="row">
+                <div class="small-12 columns">
+                    <h2>Using Lagom with Java and sbt</h2>
+
+                    <p>
+                        Prerequisites for using Lagom with sbt
+                    </p>
+
+                    <ul>
+                        <li>JDK 8</li>
+                        <li>sbt 0.13.13</li>
+                    </ul>
+
+                    <p>
+                        See <a href="@context.path/documentation/@context.currentDocsVersion/java/GettingStartedSbt.html">detailed instructions</a>
+                        for help setting up the prerequisites and getting started. Or, if you are raring to go, just follow these simple steps:
+                    </p>
+
+                    <p>
+                        Create and run a new project from the command line:
+                    </p>
+
+                    <pre class="prettyprint"><code>sbt new lagom/lagom-java.g8 --name=hello
+cd hello
+sbt runAll</code></pre>
+
+                    <p>
+                        See <a href="@context.path/documentation/@context.currentDocsVersion/java/Home.html">the documentation</a>
+                            to test and understand your new project.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </article>
+
+}

@@ -17,181 +17,40 @@
     <article class="download-content">
         <section class="fw-wrapper">
             <div class="row">
-                <div class="small-12 columns">
-                    <p>Lagom integrates with industry standard build tools which will download and run everything you need to get started with developing your Lagom system.</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="small-12 columns">
-                    <h2>Select your language:</h2>
-                    <a class="btn glass small" href="#java" data-select-language="java">Java</a>
-                    <a class="btn glass small" href="#scala-sbt" data-select-language="scala">Scala</a>
-
-                    <p>Lagom provides a Java API and a Scala API. Both APIs support the full range of Lagom features and provide a great microservice development experience, which language you select is up to you.</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="small-12 columns" style="display: none;" id="select-language-java-extra">
-                    <h2>Select your build tool:</h2>
-                    <a class="btn glass small" href="#java-sbt" data-select-java-build-tool="sbt">sbt</a>
-                    <a class="btn glass small" href="#java-maven" data-select-java-build-tool="maven">Maven</a>
-
-                    <p>You can develop Lagom Java services using either sbt or Maven. Both build tools offer the full range of Lagom features and provide a great microservice development experience. If you don't have an opinion on which build tool you want to use, we recommend using sbt.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="fw-wrapper lb-off-white-dkr" id="scroll-java-sbt">
-            <div class="row">
-                <div class="small-12 large-6 columns">
-                    <img src="@context.path/images/ui/activator-new.png" />
-                </div>
-                <div class="small-12 large-6 columns">
-                    <h2>Lagom Java API with sbt</h2>
+                <p class="small-12 columns">
+                    <h2>It’s quick and easy</h2>
                     <p>
-                        Download and install <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html">JDK 8</a>.
-                    </p>
-                    <p>
-                        Download and install <a href="http://www.scala-sbt.org/0.13/docs/Setup.html">sbt 0.13.13</a>.
-                    </p>
-                    <p>
-                        Create a new project from the command line:
-                    </p>
-                    <pre><code>$ sbt new lagom/lagom-java.g8</code></pre>
-                    <p>
-                        Run an existing project from its directory:
-                    </p>
-                    <pre><code>$ sbt runAll</code></pre>
-                    <p>
-                        <a href="@context.path/documentation/@context.currentDocsVersion/java/Installation.html">Detailed instructions</a>
-                    </p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="small-12 medium-6 columns medium-centered">
-                    <h2>Lagom Java sbt example applications</h2>
-
-                    <p>
-                        The following example applications are examples of how Lagom Java API with sbt can be used with various technologies.
+                        Industry-standard build tools automatically download what you need to get started developing a Lagom system.
+                        Use a Maven archetype or an sbt template to create a new project with two simple Hello World services.
+                        No need to download or set up anything else!
                     </p>
 
-                    <table>
-                        <tr>
-                            <td>Online auction with Cassandra</td>
-                            <td>Download (zip)</td>
-                            <td>View on GitHub</td>
-                        </tr>
-                        <tr>
-                            <td>Online auction with JDBC</td>
-                            <td>Download (zip)</td>
-                            <td>View on GitHub</td>
-                        </tr>
-                    </table>
+                    <p>
+                        One simple command runs the following:
+                    </p>
+
+                    <ul>
+                        <li>Cassandra</li>
+                        <li>Kafka</li>
+                        <li>A service locator</li>
+                        <li>A service gateway</li>
+                        <li>Your Lagom services</li>
+                    </ul>
+
+                    <p>
+                        Lagom provides APIs for Java and Scala.
+                        Both support the full range of Lagom features to provide a great microservice development experience.
+                    </p>
+
+                    <h3>Choose your language:</h3>
+
+                    <p>
+                        <a class="btn glass small" href="@context.path/get-started-java.html">Java</a>
+                        <a class="btn glass small" href="@context.path/get-started-scala.html">Scala</a>
+                    </p>
                 </div>
             </div>
         </section>
-
-        <section class="fw-wrapper" id="scroll-java-maven">
-            <div class="row">
-                <div class="small-12 large-6 columns">
-                    <h2>Lagom Java API with sbt</h2>
-                    <p>
-                        Download and install <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html">JDK 8</a>.
-                    </p>
-                    <p>
-                        Download and install <a href="http://maven.apache.org/install.html">Maven</a>.
-                    </p>
-                    <p>
-                        Create a new project from the command line:
-                    </p>
-                    <pre><code>$ mvn archetype:generate -DarchetypeGroupId=com.lightbend.lagom \
-  -DarchetypeArtifactId=maven-archetype-lagom-java -DarchetypeVersion=1.1.0</code></pre>
-                    <p>
-                        Run an existing project from its directory:
-                    </p>
-                    <pre><code>$ mvn lagom:runAll</code></pre>
-                    <p>
-                        <a href="@context.path/documentation/@context.currentDocsVersion/java/Installation.html">Detailed instructions</a>
-                    </p>
-                </div>
-                <div class="small-12 large-6 columns">
-                    <img src="@context.path/images/ui/activator-new.png" />
-                </div>
-            </div>
-            <div class="row">
-                <div class="small-12 medium-6 columns medium-centered">
-                    <h2>Lagom Java Maven example applications</h2>
-
-                    <p>
-                        The following example applications are examples of how Lagom Java API with Maven can be used with various technologies.
-                    </p>
-
-                    <table>
-                        <tr>
-                            <td>Online auction with Cassandra</td>
-                            <td>Download (zip)</td>
-                            <td>View on GitHub</td>
-                        </tr>
-                        <tr>
-                            <td>Online auction with JDBC</td>
-                            <td>Download (zip)</td>
-                            <td>View on GitHub</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <section class="fw-wrapper lb-off-white-dkr" id="scroll-scala-sbt">
-            <div class="row">
-                <div class="small-12 large-6 columns">
-                    <img src="@context.path/images/ui/activator-new.png" />
-                </div>
-                <div class="small-12 large-6 columns">
-                    <h2>Lagom Scala API with sbt</h2>
-                    <p>
-                        Download and install <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html">JDK 8</a>.
-                    </p>
-                    <p>
-                        Download and install <a href="http://www.scala-sbt.org/0.13/docs/Setup.html">sbt 0.13.13</a>.
-                    </p>
-                    <p>
-                        Create a new project from the command line:
-                    </p>
-                    <pre><code>$ sbt new lagom/lagom-scala.g8</code></pre>
-                    <p>
-                        Run an existing project from its directory:
-                    </p>
-                    <pre><code>$ sbt runAll</code></pre>
-                    <p>
-                        <a href="@context.path/documentation/@context.currentDocsVersion/scala/Installation.html">Detailed instructions</a>
-                    </p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="small-12 medium-6 columns medium-centered">
-                    <h2>Lagom Scala sbt example applications</h2>
-
-                    <p>
-                        The following example applications are examples of how the Lagom Scala API with sbt can be used with various technologies.
-                    </p>
-
-                    <table>
-                        <tr>
-                            <td>Online auction with Cassandra</td>
-                            <td>Download (zip)</td>
-                            <td>View on GitHub</td>
-                        </tr>
-                        <tr>
-                            <td>Online auction with JDBC</td>
-                            <td>Download (zip)</td>
-                            <td>View on GitHub</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        </section>
-
     </article>
 
 }

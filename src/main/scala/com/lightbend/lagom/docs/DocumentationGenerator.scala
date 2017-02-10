@@ -54,7 +54,9 @@ object DocumentationGenerator extends App {
   val templatePages: Seq[(String, Template1[LagomContext, Html])] = Seq(
     "index.html" -> html.index,
     "get-involved.html" -> html.getinvolved,
-    "get-started.html" -> html.getstarted
+    "get-started.html" -> html.getstarted,
+    "get-started-java.html" -> html.getstartedjava,
+    "get-started-scala.html" -> html.getstartedscala
   )
 
   // Redirects
