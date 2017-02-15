@@ -27,23 +27,16 @@
                         <li><a href="https://maven.apache.org">Maven</a></li>
                     </ul>
 
-                    <h3>Prerequisites for using Lagom with Java</h3>
-
-                    <ul>
-                        <li>JDK 8</li>
-                        <li>sbt 0.13.13 or Maven 3.3 (or higher)</li>
-                    </ul>
-
                     <p>
                         See <a href="@context.path/documentation/@context.currentDocsVersion/java/Installation.html">detailed instructions</a>
                             for help setting up the prerequisites and getting started.
                             Or, if you are raring to go, just follow the simple steps for your build tool:
                     </p>
 
-                    <p>
-                        <a href="#maven" class="btn glass small">Maven</a>
-                        <a href="#sbt" class="btn glass small">sbt</a>
-                    </p>
+                    <div class="get-started-buttons">
+                        <a href="#maven" class="lagom-logo-button">Maven</a>
+                        <a href="#sbt" class="lagom-logo-button">sbt</a>
+                    </div>
 
                 </div>
             </div>
@@ -51,7 +44,7 @@
 
         <section id="maven" class="fw-wrapper">
             <div class="row">
-                <div class="small-12 columns">
+                <div class="small-12 large-6 columns">
                     <h2>Using Lagom with Java and Maven</h2>
 
                     <p>
@@ -74,7 +67,7 @@
                                 Create a new project from the command line (all on one line):
                             </p>
 
-                            <pre class="prettyprint"><code>mvn archetype:generate -DarchetypeGroupId=com.lightbend.lagom -DarchetypeArtifactId=maven-archetype-lagom-java -DarchetypeVersion=1.1.0</code></pre>
+                            <pre class="prettyprint"><code>mvn archetype:generate -DarchetypeGroupId=com.lightbend.lagom -DarchetypeArtifactId=maven-archetype-lagom-java -DarchetypeVersion=1.2.2</code></pre>
                         </li>
 
                         <li>
@@ -87,7 +80,7 @@
                                 Change into the project folder and run it:
                             </p>
 
-                            <pre><code>mvn runAll</code></pre>
+                            <pre class="prettyprint"><code>mvn lagom:runAll</code></pre>
                         </li>
                     </ol>
 
@@ -97,12 +90,15 @@
                     </p>
 
                 </div>
+                <div class="small-12 large-6 columns">
+                    <img src="@context.path/images/ui/maven-java-run-all.png"/>
+                </div>
             </div>
         </section>
 
         <section id="sbt" class="fw-wrapper">
             <div class="row">
-                <div class="small-12 columns">
+                <div class="small-12 large-6 columns">
                     <h2>Using Lagom with Java and sbt</h2>
 
                     <p>
@@ -131,6 +127,9 @@ sbt runAll</code></pre>
                         See <a href="@context.path/documentation/@context.currentDocsVersion/java/Home.html">the documentation</a>
                             to test and understand your new project.
                     </p>
+                </div>
+                <div class="small-12 large-6 columns">
+                    <img src="@context.path/images/ui/sbt-java-run-all.png"/>
                 </div>
             </div>
         </section>
