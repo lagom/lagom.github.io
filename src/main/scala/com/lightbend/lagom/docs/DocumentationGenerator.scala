@@ -1,13 +1,12 @@
 package com.lightbend.lagom.docs
 
 import java.io.File
-import java.net.URL
 import java.nio.file.{Files, StandardCopyOption}
 
 import com.lightbend.docs.{Context, TOC}
 import org.pegdown.{Extensions, LinkRenderer, PegDownProcessor, VerbatimSerializer}
 import play.api.Logger
-import play.api.libs.json.{Json, Reads}
+import play.api.libs.json.Json
 import play.doc.PrettifyVerbatimSerializer
 import play.twirl.api.{Html, Template1}
 import play.utils.UriEncoding
@@ -24,20 +23,20 @@ object DocumentationGenerator extends App {
    * CONFIGURATION
    */
   // Current documentation version
-  val currentDocsVersion = "1.2.x"
-  val currentLagomVersion = "1.2.2"
+  val currentDocsVersion = "1.3.x"
+  val currentLagomVersion = "1.3.0"
 
   // This impacts what gets displayed on the main documentation index.
   val stableVersions = Seq(
-    VersionSummary("1.2.x", s"Lagom $currentLagomVersion (current stable release)"),
-    VersionSummary("1.1.x", s"Lagom 1.1.0 (previous stable release)")
+    VersionSummary("1.3.x", s"Lagom $currentLagomVersion (current stable release)"),
+    VersionSummary("1.2.x", s"Lagom 1.2.2 (previous stable release)")
   )
 
   val previewVersions = Seq(
-    VersionSummary("1.3.x", s"Lagom 1.3.0-RC2")
   )
 
   val oldVersions = Seq(
+    VersionSummary("1.1.x", s"Lagom 1.1.0"),
     VersionSummary("1.0.x", s"Lagom 1.0.0")
   )
 
@@ -68,15 +67,6 @@ object DocumentationGenerator extends App {
     "/download.html" -> "/get-started.html"
   )
 
-  val activatorRelease = {
-    val stream = new URL("https://www.lightbend.com/activator/latest").openStream()
-    try {
-      Json.parse(stream).as[ActivatorRelease]
-    } finally {
-      stream.close()
-    }
-  }
-
   val outputDir = new File(args(0))
   val docsDir = new File(args(1))
   val markdownDir = new File(args(2))
@@ -102,7 +92,7 @@ object DocumentationGenerator extends App {
   }
 
   implicit val lagomContext = LagomContext(baseUrl, context, currentLagomVersion, currentDocsVersion,
-    activatorRelease, blogSummary, assetFingerPrint)
+    blogSummary, assetFingerPrint)
 
   def generatePage(name: String, template: Template1[LagomContext, Html]): OutputFile = {
     savePage(name, template.render(lagomContext))
@@ -320,16 +310,9 @@ case class OutputFile(file: File, sitemapUrl: String, includeInSitemap: Boolean,
   *
   * @param currentLagomVersion The current version of Lagom.
   * @param currentDocsVersion The current version of the docs.
-  * @param activatorRelease The current version of Activator.
   */
 case class LagomContext(baseUrl: String, path: String, currentLagomVersion: String, currentDocsVersion: String,
-                        activatorRelease: ActivatorRelease, blogSummary: BlogSummary, assetFingerPrint: String)
-
-case class ActivatorRelease(url: String, miniUrl: String, version: String, size: String, miniSize: String)
-
-object ActivatorRelease {
-  implicit val reads: Reads[ActivatorRelease] = Json.reads[ActivatorRelease]
-}
+                        blogSummary: BlogSummary, assetFingerPrint: String)
 
 case class VersionSummary(name: String, title: String)
 
