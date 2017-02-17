@@ -17,7 +17,7 @@ package helloservice {
       import Service._
       named("hello").withCalls(
         pathCall("/api/hello/:id", hello _),
-        pathCall("/api/hello/:id", useGreeting _)
+        pathCall("/api/greeting/:id", useGreeting _)
       ).withAutoAcl(true)
     }
   }
