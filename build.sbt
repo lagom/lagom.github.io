@@ -17,6 +17,8 @@ libraryDependencies ++= Seq(
 
 resolvers += Resolver.bintrayIvyRepo("typesafe", "ivy-releases")
 
+lazy val assetFingerPrint = "git rev-parse HEAD".!!.trim
+
 val httpServer = AttributeKey[Closeable]("http-server")
 
 val stopCommand = Command.command("stop") { state =>
@@ -83,19 +85,20 @@ generateHtml <<= Def.taskDyn {
       outputDir,
       docsDir,
       markdownDir,
-      blogDir
+      blogDir,
+      assetFingerPrint
     ).mkString(" ", " ", "")).value
     outputDir.***.filter(_.isFile).get
   }
 }
 
 Concat.groups := Seq(
-  "all-styles-concat.css" -> group(Seq(
+  s"$assetFingerPrint-all-styles-concat.css" -> group(Seq(
       "lib/foundation/dist/foundation.min.css",
       "lib/prettify/prettify.css",
       "main.min.css"
   )),
-  "all-scripts-concat.js" -> group(Seq(
+  s"$assetFingerPrint-all-scripts-concat.js" -> group(Seq(
     "lib/jquery/jquery.min.js",
     "lib/foundation/dist/foundation.min.js",
     "lib/waypoints/lib/jquery.waypoints.min.js",

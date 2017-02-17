@@ -76,6 +76,7 @@ object DocumentationGenerator extends App {
   val docsDir = new File(args(1))
   val markdownDir = new File(args(2))
   val blogDir = new File(args(3))
+  val assetFingerPrint = args(4)
 
   val pegdown = new PegDownProcessor(Extensions.ALL)
   def markdownToHtml(markdown: String) = {
@@ -96,7 +97,7 @@ object DocumentationGenerator extends App {
   }
 
   implicit val lagomContext = LagomContext(baseUrl, context, currentLagomVersion, currentDocsVersion,
-    activatorRelease, blogSummary)
+    activatorRelease, blogSummary, assetFingerPrint)
 
   def generatePage(name: String, template: Template1[LagomContext, Html]): OutputFile = {
     savePage(name, template.render(lagomContext))
@@ -317,7 +318,7 @@ case class OutputFile(file: File, sitemapUrl: String, includeInSitemap: Boolean,
   * @param activatorRelease The current version of Activator.
   */
 case class LagomContext(baseUrl: String, path: String, currentLagomVersion: String, currentDocsVersion: String,
-                        activatorRelease: ActivatorRelease, blogSummary: BlogSummary)
+                        activatorRelease: ActivatorRelease, blogSummary: BlogSummary, assetFingerPrint: String)
 
 case class ActivatorRelease(url: String, miniUrl: String, version: String, size: String, miniSize: String)
 
