@@ -1,5 +1,18 @@
 # Lagom Change Log
 
+## Lagom 1.3.0
+
+*Released 24 February 2017*
+
+The main features of this release are:
+
+* [Scala API](/documentation/1.3.x/scala/Home.html)
+* [JPA support](/documentation/1.3.x/java/ReadSideJPA.html)
+* [Improved testing APIs for message broker support](/documentation/1.3.x/java/MessageBrokerTesting.html)
+* Switch from Activator to sbt 0.13.13 with Giter8 templates
+
+For a full list of issues fixed in 1.3.0, see [GitHub](https://github.com/lagom/lagom/issues?utf8=%E2%9C%93&q=milestone%3A1.3.0).
+
 ## Lagom 1.2.2
 
 *Released 12 January 2017*
