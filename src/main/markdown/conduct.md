@@ -28,7 +28,7 @@ Although this list cannot be exhaustive, we explicitly honor diversity in age, c
 
 We recommend you first speak with respective project leads and committers about the issue.
 
-If that doesn't work, or if you want to report issues privately, please fill out the [contact owner](https://groups.google.com/forum/#!contactowner/play-framework) form for the Lagom mailing list.
+If that doesn't work, or if you want to report issues privately, please fill out the [contact owner](https://groups.google.com/forum/#!contactowner/lagom-framework) form for the Lagom mailing list.
 
 ## Thanks
 
