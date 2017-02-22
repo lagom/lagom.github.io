@@ -38,10 +38,10 @@
 &lt;/plugin&gt;
 </code></pre>
 <p>In sbt, let&rsquo;s assume you have the following Lagom project in your build:</p>
-<pre class="prettyprint"><code class="language-sbt">lazy val usersImpl = (project in file(&quot;usersImpl&quot;)).enablePlugins(LagomJava)
+<pre class="prettyprint"><code class="language-sbt">lazy val usersImpl = (project in file(&quot;usersImpl&quot;)).enablePlugins(LagomScala)
   .settings(name := &quot;users-impl&quot;)</code></pre>
 <p>Because the project&rsquo;s name is <code>users-impl</code>, the generated Cassandra keyspace will be <code>users_impl</code> (note that dashes are replaced with underscores). If you&rsquo;d prefer the keyspace to be named simply <code>users</code>, you could either change the project&rsquo;s <code>name</code> to be <code>users</code>, or alternatively add the following setting:</p>
-<pre class="prettyprint"><code class="language-sbt">lazy val usersImpl = (project in file(&quot;usersImpl&quot;)).enablePlugins(LagomJava)
+<pre class="prettyprint"><code class="language-sbt">lazy val usersImpl = (project in file(&quot;usersImpl&quot;)).enablePlugins(LagomScala)
   .settings(
     name := &quot;users-impl&quot;,
     lagomCassandraKeyspace := &quot;users&quot;
