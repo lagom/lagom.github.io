@@ -2,13 +2,13 @@
 <p>Lagom uses SLF4J for logging, backed by <a href="http://logback.qos.ch/">Logback</a> as its default logging engine. Here is a short example showcasing how you can access the logger:</p>
 <pre class="prettyprint"><code class="language-java">package docs.logging;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 public class LoggingExample {
-    private final Logger log = LoggerFactory.getLogger(LoggingExample.class);
+    private final log: Logger = LoggerFactory.getLogger(classOf[LoggingExample])
 
-    public void demonstrateLogging(String msg) {
+    def demonstrateLogging(msg: String): Unit {
         log.debug(&quot;Here is a message at debug level: {}.&quot;, msg);
     }
 }</code></pre>
@@ -33,13 +33,17 @@ lazy val usersApi = (project in file(&quot;usersApi&quot;))
 <p>Lagom can be configured to use <a href="https://logging.apache.org/log4j/2.x/">Log4j 2</a> as its default logging engine. Using Log4j 2 can use either the SLF4J API for logging as shown above or the Log4j 2 API. For example, using the Log4j 2 API:</p>
 <pre class="prettyprint"><code class="language-java">package docs.logging;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 
-public class Log4j2Example {
-    private static final Logger LOGGER = LogManager.getLogger();
+object Log4j2Example {
+    private final val LOGGER: Logger = LogManager.getLogger()
+}
 
-    public void demonstrateLogging(String msg) {
+class Log4j2Example {
+    import Log4j2Example._
+
+    def demonstrateLogging(msg: String): Unit {
         LOGGER.debug(&quot;Here is a message at the debug level: {}&quot;, msg);
     }
 }</code></pre>
