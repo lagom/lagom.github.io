@@ -3,12 +3,12 @@
 
 ## Prerequisites
 
-Before making a contribution, it is important to make sure that the change you wish to make and the approach you wish to take will likely be accepted, otherwise you may end up doing a lot of work for nothing. The Lagom site is the sum of several sources, make sure the change you are working on happens or the proper repository. In case of doubt,feel free to open an [issue](https://github.com/lagom/lagom.github.io/issues) to discuss the proper approach.
+Before making a contribution, it is important to make sure that the change you wish to make and the approach you wish to take will likely be accepted, otherwise you may end up doing a lot of work for nothing. The Lagom site is the sum of several sources, make sure the change you are working on happens in the proper repository. In case of doubt, feel free to open an [issue](https://github.com/lagom/lagom.github.io/issues) to discuss the proper approach.
 
 ## Development tips
 
-- See README.md for instructions on running the Lagom site locally.
-- The Lagom's site is the materialization of several sources: [lagom.github.io's _template_ branch](https://github.com/lagom/lagom.github.io/tree/template), [Lagom's `docs/` folder](https://github.com/lagom/lagom/tree/master/docs) and Lagom's API docs for both Java and Scala as generated from the sources in the [Lagom repository](https://github.com/lagom/lagom). All information coming from the [Lagom repository](https://github.com/lagom/lagom) is created from several branches so that many versions of the docs can be maintained.
+- See [README.md](README.md) for instructions on running the Lagom site locally.
+- The Lagom site is the materialization of several sources: [lagom.github.io's _template_ branch](https://github.com/lagom/lagom.github.io/tree/template), [Lagom's `docs/` folder](https://github.com/lagom/lagom/tree/master/docs) and Lagom's API docs for both Java and Scala as generated from the sources in the [Lagom repository](https://github.com/lagom/lagom). All information coming from the [Lagom repository](https://github.com/lagom/lagom) is created from several branches so that many versions of the docs can be maintained.
 
 ## Contributing to the documentation
 
