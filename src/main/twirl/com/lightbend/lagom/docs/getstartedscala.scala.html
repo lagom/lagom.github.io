@@ -15,13 +15,9 @@
     <article class="download-content">
         <section class="fw-wrapper">
             <div class="row">
-                <div class="small-12 large-6 columns">
+                <div class="small-12  columns">
 
-                    <p>
-                        The Lagom Scala API supports sbt. If you are using Scala, you probably already have sbt installed,
-                        but make sure it is the right version.
-                    </p>
-
+                    
                     <p>
                         Prerequisites for using Lagom with Scala:
                     </p>
@@ -32,29 +28,44 @@
                     </ul>
 
                     <p>
-                        See <a href="@context.path/documentation/@context.currentDocsVersion/scala/Installation.html">detailed instructions</a>
-                        for help setting up the prerequisites and getting started.
-                        Or, if you are raring to go, just follow these simple steps.
-
+                        If you have the prerequisites installed and are familiar with sbt, 
+                        follow the steps below. Otherwise, see <a href="@context.path/documentation/@context.currentDocsVersion/scala/Installation.html">detailed instructions</a>
+                        for help setting up the prerequisites and getting started. 
                     </p>
+<ol>
+                    <li>
+                    From a command prompt with administrative privileges, enter the following to create a new Lagom project:
+                    </li>
 
+                    <pre class="prettyprint"><code>sbt new lagom/lagom-java.g8</code></pre>
+                    
+                    <li>The sbt Lagom template prompts for the following parameters. Press <code>Enter</code> to accept the defaults or specify your own values:</p>
+<ul>                    
+                  <li><code>name</code> - Becomes the name of the top-level directory.</li>
+                  <li><code>organization</code> - Used as a package name.</li>
+                  <li><code>version</code> - A version number for your system.</li>
+                  <li><code>lagom-version</code> - The version number of Lagom. Be sure to use the <a href="http://www.lagomframework.com/documentation/">current stable release</a></li></ul>
+                <p>When you finish, sbt downloads all of the project dependencies.</p>
+                </li>
+                  
+                  <li>Change into the top-level directory of the project you just created. For example, if you used the default name, <code>hello</code>:
+                    <code>cd hello</code></li>
+                    
+                    <li>Start sbt and the Lagom development environment:
+                      <code>sbt runAll</code></li>
+                      
+                      <li>Verify that the services are indeed up and running by invoking the <code>hello</code> service endpoint from any HTTP client, such as a browser: 
+                      
                     <p>
-                        Create and run a new project from the command line:
+                      <code>http://localhost:9000/api/hello/World</code>
                     </p>
-
-                    <pre class="prettyprint"><code>sbt new lagom/lagom-scala.g8 --name=hello
-cd hello
-sbt runAll</code></pre>
-
-                    <p>
-                        See <a href="@context.path/documentation/@context.currentDocsVersion/scala/IntroGetStarted.html#Run-Hello-World">the documentation</a>
-                            to test and understand your new project.
-                    </p>
-
+                      The request returns the message <code>Hello, World!</code>.</li>
+                        </ol>
+                      <p>Congratulations! You've created and run your first Lagom system. See <a href="@context.path/documentation/@context.currentDocsVersion/scala/UnderstandHelloScala.html">the documentation</a>
+                              to understand your new project.</p>
+                      
                 </div>
-                <div class="small-12 large-6 columns">
-                    <img src="@context.path/images/ui/sbt-scala-run-all.png"/>
-                </div>
+                
             </div>
         </section>
     </article>
