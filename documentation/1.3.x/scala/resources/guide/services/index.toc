@@ -1,8 +1,0 @@
-ServiceDescriptors:Service descriptors
-ServiceImplementation:Implementing services
-ServiceInfo:Service Metadata
-ServiceClients:Consuming services
-TestingServices:Testing Services
-MessageSerializers:Message serializers
-HeaderFilters:Header Filters
-ServiceErrorHandling:Error handling

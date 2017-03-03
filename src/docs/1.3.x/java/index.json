@@ -320,13 +320,13 @@
   }, {
     "title" : "Lagom releases",
     "children" : [ {
-      "title" : "Lagom 1.2 Migration Guide",
-      "url" : "Migration12.html",
-      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.3.x/docs/manual/java/releases/Migration12.md"
-    }, {
       "title" : "Lagom 1.3 Migration Guide",
       "url" : "Migration13.html",
       "sourceUrl" : "https://github.com/lagom/lagom/edit/1.3.x/docs/manual/java/releases/Migration13.md"
+    }, {
+      "title" : "Lagom 1.2 Migration Guide",
+      "url" : "Migration12.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.3.x/docs/manual/java/releases/Migration12.md"
     } ]
   } ]
 }
