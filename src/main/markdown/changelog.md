@@ -1,5 +1,15 @@
 # Lagom Change Log
 
+## Lagom 1.3.1
+
+*Released 06 March 2017*
+
+* [511](https://github.com/lagom/lagom/issues/511) Look Kafka broker config up from the service locator
+* [532](https://github.com/lagom/lagom/issues/532) Circuit breakers are off by default in Scala API
+* [553](https://github.com/lagom/lagom/issues/553) Update Akka to 2.4.17
+* [564](https://github.com/lagom/lagom/issues/564) ConductR is not setting seed node information for a Lagom Scala app
+* [498](https://github.com/lagom/lagom/issues/498) JDBC generate tables check for existing table does not work with a schema other than public
+
 ## Lagom 1.3.0
 
 *Released 23 February 2017*
@@ -13,6 +23,18 @@ The main features of this release are:
 
 For a full list of issues fixed in 1.3.0, see [GitHub](https://github.com/lagom/lagom/issues?utf8=%E2%9C%93&q=milestone%3A1.3.0).
 
+## Lagom 1.2.3
+
+*Released 06 March 2017*
+
+* [476](https://github.com/lagom/lagom/issues/476) Invalid keyspaces when using lagom:runAll in Maven with unmanaged Cassandra
+* [446](https://github.com/lagom/lagom/issues/446) Persistence tables fail to be created in MySQL
+* [449](https://github.com/lagom/lagom/issues/449) No way to disable JDBC offset table creation
+* [403](https://github.com/lagom/lagom/issues/403) KafkaLocalServer should not be loading properties from the classpath
+* [426](https://github.com/lagom/lagom/issues/426) lagomExternalProject is broken
+* [519](https://github.com/lagom/lagom/pull/519) Fixed Eclipse warnings for Maven archetype
+* [498](https://github.com/lagom/lagom/issues/498) JDBC generate tables check for existing table does not work with a schema other than public
+
 ## Lagom 1.2.2
 
 *Released 12 January 2017*
@@ -25,7 +47,7 @@ For a full list of issues fixed in 1.3.0, see [GitHub](https://github.com/lagom/
 
 * [307](https://github.com/lagom/lagom/pull/307) Docs: Cassandra and cluster are disabled by default. (thanks [@mihbor](https://github.com/mihbor))
 * [285](https://github.com/lagom/lagom/issues/285) Regression: Jackson exception when using immutables in lagom 1.2.0 (thanks [@mihbor](https://github.com/mihbor))
-* [301](https://github.com/lagom/lagom/pull/301) Improve tests stability 
+* [301](https://github.com/lagom/lagom/pull/301) Improve tests stability
 * [274](https://github.com/lagom/lagom/pull/274) Performance: Avoid stream materialization on requests with no body
 
 ## Lagom 1.2.0
