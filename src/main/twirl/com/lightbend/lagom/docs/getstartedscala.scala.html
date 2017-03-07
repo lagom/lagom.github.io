@@ -15,8 +15,7 @@
     <article class="download-content">
         <section class="fw-wrapper">
             <div class="row">
-                <div class="small-12  columns">
-
+                <div class="small-12 columns">
                     
                     <p>
                         Prerequisites for using Lagom with Scala:
@@ -29,40 +28,64 @@
 
                     <p>
                         If you have the prerequisites installed and are familiar with sbt, 
-                        follow the steps below. Otherwise, see <a href="@context.path/documentation/@context.currentDocsVersion/scala/Installation.html">detailed instructions</a>
-                        for help setting up the prerequisites and getting started. 
+                        follow the steps below. Otherwise, see
+                        <a href="@context.path/documentation/@context.currentDocsVersion/scala/Installation.html">detailed
+                        instructions</a> for help setting up the prerequisites and getting started.
                     </p>
-<ol>
-                    <li>
-                    From a command prompt, enter the following to create a new Lagom project:
-                    </li>
 
-                    <pre class="prettyprint"><code>sbt new lagom/lagom-java.g8</code></pre>
-                    
-                    <li>The sbt Lagom template prompts for the following parameters. Press <code>Enter</code> to accept the defaults or specify your own values:</p>
-<ul>                    
-                  <li><code>name</code> - Becomes the name of the top-level directory.</li>
-                  <li><code>organization</code> - Used as a package name.</li>
-                  <li><code>version</code> - A version number for your system.</li>
-                  <li><code>lagom-version</code> - The version number of Lagom. Be sure to use the <a href="http://www.lagomframework.com/documentation/">current stable release</a></li></ul>
-                <p>When you finish, sbt downloads all of the project dependencies.</p>
-                </li>
-                  
-                  <li>Change into the top-level directory of the project you just created. For example, if you used the default name, <code>hello</code>:
-                    <code>cd hello</code></li>
-                    
-                    <li>Start sbt and the Lagom development environment:
-                      <code>sbt runAll</code></li>
-                      
-                      <li>Verify that the services are indeed up and running by invoking the <code>hello</code> service endpoint from any HTTP client, such as a browser: 
-                      
+                    <ol>
+                        <li>
+                            <p>
+                                From a command prompt, enter the following to create a new Lagom project:
+                            </p>
+
+                            <pre class="prettyprint"><code class="language-sh">sbt new lagom/lagom-java.g8</code></pre>
+                        </li>
+
+                        <li>
+                            <p>
+                                The sbt Lagom template prompts for the following parameters. Press <code>Enter</code> to
+                                accept the defaults or specify your own values:
+                            </p>
+                            <ul>
+                                <li><code>name</code> - Becomes the name of the top-level directory.</li>
+                                <li><code>organization</code> - Used as a package name.</li>
+                                <li><code>version</code> - A version number for your system.</li>
+                                <li><code>lagom-version</code> - The version number of Lagom. Be sure to use the <a href="http://www.lagomframework.com/documentation/">current stable release</a></li>
+                            </ul>
+
+                            <p>When you finish, sbt downloads all of the project dependencies.</p>
+                        </li>
+                        <li>
+                            <p>
+                                Change into the top-level directory of the project you just created. For example, if you
+                                used the default name, <code>hello</code>:
+                            </p>
+                            <pre class="prettyprint"><code class="language-sh">cd hello</code></pre>
+                        </li>
+                        <li>
+                            <p>
+                                Start sbt and the Lagom development environment:
+                            </p>
+                            <pre class="prettyprint"><code class="language-sh">sbt runAll</code></pre>
+                        </li>
+                        <li>
+                            <p>
+                                Verify that the services are indeed up and running by invoking the <code>hello</code>
+                                service endpoint from any HTTP client, such as a browser:
+                                <a href="http://localhost:9000/api/hello/World" target="_blank">http://localhost:9000/api/hello/World</a>
+                            </p>
+
+                            <p>
+                                The request returns the message <code>Hello, World!</code>.
+                            </p>
+                        </li>
+                    </ol>
                     <p>
-                      <code>http://localhost:9000/api/hello/World</code>
+                        Congratulations! You've created and run your first Lagom system. See
+                        <a href="@context.path/documentation/@context.currentDocsVersion/scala/UnderstandHelloScala.html">the
+                        documentation</a> to understand your new project.
                     </p>
-                      The request returns the message <code>Hello, World!</code>.</li>
-                        </ol>
-                      <p>Congratulations! You've created and run your first Lagom system. See <a href="@context.path/documentation/@context.currentDocsVersion/scala/UnderstandHelloScala.html">the documentation</a>
-                              to understand your new project.</p>
                       
                 </div>
                 

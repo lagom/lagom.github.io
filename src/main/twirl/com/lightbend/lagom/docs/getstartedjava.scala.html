@@ -15,58 +15,43 @@
     <article class="download-content">
         <section class="fw-wrapper">
             <div class="row">
-                <div class="small-12 large- 6 columns">
-
+                <div class="small-12 columns">
                     <p>
                         You can use Maven or sbt to build services you create with the Lagom Java API.
-                        (If you aren’t using one of these tools already, see this information to 
-                        help you choose
-                  between <a href="http://www.scala-sbt.org/0.13/docs/index.html">sbt</a> and  
-                        <a href="https://maven.apache.org">Maven</a>.) The Lagom development environment runs on Windows, Mac, and Linux operating systems.
-                     Try it from the command line to get started and later integrate your 
-                     project into an IDE. Maven and sbt plugins make it especially easy to integrate the Lagom development environment with Eclipse or IntelliJ IDEA.</p> 
-                    
-                    <p>The following screen shows a successful run of the Lagom development 
-                      environment with Maven:
-                    </div>
-                  <br/>
-                                      
-                     <div class="small-12 large-6 columns">
-                    
-                           <img src="@context.path/images/ui/maven-java-run-all.png"/>
-                           <br/>
-                           <p></p>
-                           <p></p>
-                  
-                     </div>
-                     
-                     
-                    
-                     
-                     <div class="small-12 columns">
+                        (If you aren’t using one of these tools already, see this information to
+                        help you choose between <a href="http://www.scala-sbt.org/0.13/docs/index.html">sbt</a> and
+                        <a href="https://maven.apache.org">Maven</a>.) The Lagom development environment runs on
+                        Windows, Mac, and Linux operating systems. Try it from the command line to get started and later
+                        integrate your project into an IDE. Maven and sbt plugins make it especially easy to integrate
+                        the Lagom development environment with Eclipse or IntelliJ IDEA.
+                    </p>
+
+                    <p>
+                        The following screen shows a successful run of the Lagom development environment with Maven:
+                    </p>
+                </div>
+
+                <div class="small-12 large-6 columns">
+                    <img src="@context.path/images/ui/maven-java-run-all.png"/>
+                </div>
+
+                <div class="small-12 columns">
                     <div class="get-started-buttons">
                         <hr>
-                      <br>
-                      <p></p>
                         <h5>Jump to information on getting started with:</h5>
                         <a href="#maven" class="lagom-logo-button">Maven</a>
                         <a href="#sbt" class="lagom-logo-button">sbt</a>
-                        <p></p>
-                        <p></p>
-                        <p></p>
-                        <p></p>
-                        <p></p>
-                        <br>
-                          <hr>
+                        <hr>
                     </div>
-</div
-                
+                </div>
+
             </div>
         </section>
-  <section id="maven" class="fw-wrapper">
+
+        <section id="maven" class="fw-wrapper">
             <div class="row">
                 <div class="small-12 columns">
-            
+
                     <h2>Using Lagom with Java and Maven</h2>
 
                     <p>
@@ -79,66 +64,86 @@
                     </ul>
 
                     <p>
-                        If you have the prerequisites installed and are familiar with Maven, 
-                        create a Hello World project using the commands below. Otherwise, see <a href="@context.path/documentation/@context.currentDocsVersion/java/JavaPrereqs.html">detailed instructions</a>
-                        for help setting up the prerequisites and getting started.
+                        If you have the prerequisites installed and are familiar with Maven, create a Hello World
+                        project using the commands below. Otherwise, see
+                        <a href="@context.path/documentation/@context.currentDocsVersion/java/JavaPrereqs.html">detailed
+                        instructions</a> for help setting up the prerequisites and getting started.
                     </p>
 
                     <ol>
                         <li>
-                          
+                            <p>
                                 From a command prompt, create a new project by entering the following (all on one line):
-                            
+                            </p>
 
-                            <pre class="prettyprint"><code>mvn archetype:generate -DarchetypeGroupId=com.lightbend.lagom -DarchetypeArtifactId=maven-archetype-lagom-java -DarchetypeVersion=1.3.0</code></pre>
+                            <pre class="prettyprint"><code class="language-sh">mvn archetype:generate -DarchetypeGroupId=com.lightbend.lagom -DarchetypeArtifactId=maven-archetype-lagom-java -DarchetypeVersion=1.3.0</code></pre>
                         </li>
-
                         <li>
-                            Maven prompts you for:
-                            <p><ul><li>The number corresponding with the lagom archetype, at this time only one is available, enter the number <code>1</code> to select it.</li>
-                              <li>The Lagom version, press <b>Enter</b> to accept the default.</li>
-                              <li><code>groupId</code> &#8212; becomes the package name, typically something like com.example.com. </li>
-                              <li><code>artifactId</code> &#8212; becomes the top-level folder name, for example, my-first-project.</li>
-                              <li><code>version</code> &#8212; the version for your project, press <b>Enter</b> to accept the default.</li>
-                              <li><code>package</code> &#8212; defaults to the same value as the <code>groupId</code>
-                        </li></ul></p>
-                         <li>Enter <code>Y</code> to accept the values. Maven creates the project and downloads all of the necessary dependencies.</li>
+                            <p>Maven prompts you for:</p>
+                            <ul>
+                                <li> The number corresponding with the lagom archetype, at this time only one is available, enter the number <code> 1</code> to select it. </li>
+                                <li>The Lagom version, press <b>Enter</b> to accept the default.</li>
+                                <li><code>groupId</code> &#8212; becomes the package name, typically something like com.example.com.</li>
+                                <li><code>artifactId</code> &#8212; becomes the top-level folder name, for example, my-first-project.</li>
+                                <li><code>version</code> &#8212; the version for your project, press <b>Enter</b> to accept the default.</li>
+                                <li><code>package</code> &#8212; defaults to the same value as the <code>groupId</code></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <p>
+                                Enter <code>Y</code> to accept the values. Maven creates the project and downloads all
+                                of the necessary dependencies.
+                            </p>
+                        </li>
                         <li>
                             <p>
                                 Change into the top-level project folder and run it:
                             </p>
 
-                            <pre class="prettyprint"><code>mvn lagom:runAll</code></pre>
-                            <p>The <code>runAll</code> command starts Hello World microservices and registers them in a service directory. It also starts a web server, which enables you to test the microservices immediately.</p>
-                        
+                            <pre class="prettyprint"><code class="language-sh">mvn lagom:runAll</code></pre>
+
+                            <p>
+                                The <code>runAll</code> command starts Hello World microservices and registers them in a
+                                service directory. It also starts a web server, which enables you to test the
+                                microservices immediately.
+                            </p>
                         </li>
-                        <li>Verify that the services are indeed up and running by invoking the <code>hello</code> service endpoint from any HTTP client, such as a browser: 
-                        
-                      
-                        <code>http://localhost:9000/api/hello/World</code>
-                        
-                        The request returns the message <code>Hello, World!</code>.</li>
-                          </ol>
-                        <p>Congratulations! You've created and run your first Lagom system. 
-                        See <a href="@context.path/documentation/@context.currentDocsVersion/java/UnderstandHello.html">the documentation</a>
-                            to understand your new project.</p>
-                  
-                    
+                        <li>
+                            <p>
+                                Verify that the services are indeed up and running by invoking the <code>hello</code>
+                                service endpoint from any HTTP client, such as a browser:
+                                <a href="http://localhost:9000/api/hello/World" target="_blank">http://localhost:9000/api/hello/World</a>
+                            </p>
+
+                            <p>
+                                The request returns the message <code>Hello, World!</code>.
+                            </p>
+                        </li>
+                    </ol>
+
                     <p>
-                         <!-- TODO Check out the <a href="@context.path/example-apps.html">example applications</a>. -->
+                        Congratulations! You've created and run your first Lagom system. See
+                        <a href="@context.path/documentation/@context.currentDocsVersion/java/UnderstandHello.html">the
+                        documentation</a> to understand your new project.
                     </p>
 
+                    @*
+                    <p>
+                    <!-- TODO Check out the <a href="@context.path/example-apps.html">example applications</a>. -->
+                    </p>
+                    *@
+
                 </div>
-                <br>
-                <p></p>
+
                 <hr>
             </div>
-          
+
         </section>
 
         <section id="sbt" class="fw-wrapper">
             <div class="row">
-                <div class="small-12  columns">
+                <div class="small-12 columns">
+
                     <h2>Using Lagom with Java and sbt</h2>
 
                     <p>
@@ -151,44 +156,68 @@
                     </ul>
 
                     <p>
-                        If you have the prerequisites installed and are familiar with sbt, follow the steps below. Otherwise, see <a href="@context.path/documentation/@context.currentDocsVersion/java/JavaPrereqs.html">detailed instructions</a>
-                        for help setting up the prerequisites and getting started. 
+                        If you have the prerequisites installed and are familiar with sbt, follow the steps below.
+                        Otherwise, see
+                        <a href="@context.path/documentation/@context.currentDocsVersion/java/JavaPrereqs.html">detailed
+                        instructions</a> for help setting up the prerequisites and getting started.
                     </p>
-<ol>
-                    <li>
-                      From a command prompt, create and run a new project by entering the following:
-                    </li>
 
-                    <pre class="prettyprint"><code>sbt new lagom/lagom-java.g8</code></pre>
-                    
-                    <li>The sbt Lagom template prompts for the following parameters. Press <code>Enter</code> to accept the defaults or specify your own values:</p>
-<ul>                    
-                  <li><code>name</code> - Becomes the name of the top-level directory.</li>
-                  <li><code>organization</code> - Used as a package name.</li>
-                  <li><code>version</code> - A version number for your system.</li>
-                  <li><code>lagom-version</code> - The version number of Lagom. Be sure to use the <a href="http://www.lagomframework.com/documentation/">current stable release</a></li></ul>
-                <p>When you finish, sbt downloads all of the project dependencies.</p>
-                </li>
-                  
-                  <li>Change into the top-level directory of the project you just created. For example, if you used the default name, <code>hello</code>:
-                    <p><code>cd hello</code></p></li>
-                    
-                    <li>Start sbt and the Lagom development environment:
-                      <code>sbt runAll</code></li>
-                      <li>Verify that the services are indeed up and running by invoking the <code>hello</code> service endpoint from any HTTP client, such as a browser: 
-                      
+                    <ol>
+                        <li>
+                            <p>
+                                From a command prompt, create and run a new project by entering the following:
+                            </p>
+
+                            <pre class="prettyprint"><code class="language-sh">sbt new lagom/lagom-java.g8</code></pre>
+                        </li>
+                        <li>
+                            <p>
+                                The sbt Lagom template prompts for the following parameters. Press <code>Enter</code> to
+                                accept the defaults or specify your own values:
+                            </p>
+                            <ul>
+                                <li><code>name</code> - Becomes the name of the top-level directory.</li>
+                                <li><code>organization</code> - Used as a package name.</li>
+                                <li><code>version</code> - A version number for your system.</li>
+                                <li><code>lagom-version</code> - The version number of Lagom. Be sure to use the <a href="http://www.lagomframework.com/documentation/">current stable release</a></li>
+                            </ul>
+
+                            <p>When you finish, sbt downloads all of the project dependencies.</p>
+                        </li>
+                        <li>
+                            <p>
+                                Change into the top-level directory of the project you just created. For example, if you
+                                used the default name, <code>hello</code>:
+                            </p>
+                            <pre class="prettyprint"><code class="language-sh">cd hello</code></pre>
+                        </li>
+                        <li>
+                            <p>
+                                Start sbt and the Lagom development environment:
+                            </p>
+                            <pre class="prettyprint"><code class="language-sh">sbt runAll</code></pre>
+                        </li>
+                        <li>
+                            <p>
+                                Verify that the services are indeed up and running by invoking the <code>hello</code>
+                                service endpoint from any HTTP client, such as a browser:
+                                <a href="http://localhost:9000/api/hello/World" target="_blank">http://localhost:9000/api/hello/World</a>
+                            </p>
+
+                            <p>
+                                The request returns the message <code>Hello, World!</code>.
+                            </p>
+                        </li>
+                    </ol>
+
                     <p>
-                      <code>http://localhost:9000/api/hello/World</code>
+                        Congratulations! You've created and run your first Lagom system. See
+                        <a href="@context.path/documentation/@context.currentDocsVersion/java/UnderstandHello.html">the
+                        documentation</a> to understand your new project.
                     </p>
-                      The request returns the message <code>Hello, World!</code>.</li>
-                        </ol>
-                      <p>Congratulations! You've created and run your first Lagom system. See <a href="@context.path/documentation/@context.currentDocsVersion/java/UnderstandHello.html">the documentation</a>
-                              to understand your new project.</p>
-                      
 
-                  
                 </div>
-                
+
             </div>
         </section>
     </article>
