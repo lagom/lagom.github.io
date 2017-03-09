@@ -1,8 +1,10 @@
 package com.lightbend.lagom.docs
 
-import java.io.{File, FileInputStream}
+import java.io.{ File, FileInputStream, IOException }
 
 import org.joda.time.DateTime
+
+import scala.util.control.NonFatal
 
 object Blog {
 
@@ -14,6 +16,8 @@ object Blog {
       val stream = new FileInputStream(file)
       try {
         BlogMetaDataParser.parsePostFrontMatter(stream, file.getName.dropRight(3))
+      } catch {
+        case NonFatal(e) => throw new IOException(s"Unable to parse ${file.getName}", e)
       } finally {
         stream.close()
       }

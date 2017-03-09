@@ -2,6 +2,7 @@ package com.lightbend.lagom.docs
 
 import java.io.InputStream
 import java.net.URL
+import java.nio.charset.Charset
 
 import org.joda.time.DateTime
 
@@ -9,17 +10,19 @@ import scala.reflect.ClassTag
 import play.api.Logger
 import java.util.Date
 
-import play.api.libs.json.{Json, Reads}
+import play.api.libs.json.{ Json, Reads }
 
 import scala.collection.concurrent.TrieMap
 import scala.util.control.NonFatal
-import scala.io.Source
+import scala.io.{ Codec, Source }
 
 object BlogMetaDataParser {
 
   private implicit class IteratorOps[T](i: Iterator[T]) {
     def nextOption = if (i.hasNext) Option(i.next()) else None
   }
+
+  private implicit val codec = Codec(Charset.forName("US-ASCII"))
 
   private val gitHubCache = TrieMap.empty[String, GitHubUser]
 
