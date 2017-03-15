@@ -1,5 +1,7 @@
 import java.io.Closeable
 
+import scala.concurrent.Await
+
 lazy val `lagom-docs` = (project in file("."))
   .enablePlugins(SbtTwirl, SbtWeb)
 
@@ -33,29 +35,27 @@ val stopCommand = Command.command("stop") { state =>
 val runCommand = Command.make("run") { state =>
   import complete.Parsers._
   import complete.Parser
+  import scala.concurrent.duration._
 
   (Space ~> NatBasic).?.map { maybePort =>
     () =>
-      val port = maybePort.getOrElse(8000)
+      val port = maybePort.getOrElse(8080)
 
       val log = state.log
       val extracted = Project.extract(state)
 
       val stageDir = extracted.get(WebKeys.stagingDirectory)
 
-      log.info(s"\u001b[32mRunning HTTP server on port $port, press ENTER to exit...\u001b[0m")
-      val httpServerProcess = Process(s"python -m SimpleHTTPServer $port", stageDir).run(new ProcessLogger {
-        override def info(s: => String): Unit = log.info(s)
-        override def error(s: => String): Unit = log.info(s)
-        override def buffer[T](f: => T): T = f
-      })
+      log.info(s"\u001b[32mRunning HTTP server on http://localhost:$port, press ENTER to exit...\u001b[0m")
+      val simpleHttpServer = SimpleHTTPServer(stageDir, port)
+      Await.ready(simpleHttpServer.bindingFuture, 5.seconds)
 
       val stateWithStop = "stop" :: state.put(httpServer, new Closeable {
         override def close(): Unit = {
           log.info("Shutting down HTTP server")
-          httpServerProcess.destroy()
+          simpleHttpServer.close()
         }
-      }).addExitHook(() => httpServerProcess.destroy())
+      }).addExitHook(() => simpleHttpServer.close())
 
       val extraSettings = Seq(
         javaOptions += "-Ddev",
