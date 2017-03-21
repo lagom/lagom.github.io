@@ -21,21 +21,18 @@ class SimpleHTTPServer(webDirectory: File, port: Int) extends Closeable {
   private implicit val executionContext = system.dispatcher
 
   private val route =
-  // TODO: this needs improving. IT'd be good to have a generic fallback to serving 'index.html' from the
-  // appropriate folder anytime the path in the request leaves the last segment (filename) blank.
-    pathPrefix("documentation") {
-      pathEndOrSingleSlash {
-        getFromFile(new File(new File(webDirectory, "documentation"), "index.html"))
-      }
-    } ~
-      pathPrefix("blog") {
+    getFromDirectory(webDirectory.getAbsolutePath) ~
+      // TODO: this needs improving. IT only supports one-folder deep fallback. It'd be good to have a generic fallback
+      // to serving 'index.html' from the appropriate folder anytime the path in the request leaves the last
+      // segment (filename) blank.
+      pathPrefix(Segment) { folderName =>
         pathEndOrSingleSlash {
-          getFromFile(new File(new File(webDirectory, "blog"), "index.html"))
+          getFromFile(new File(new File(webDirectory, folderName), "index.html"))
         }
       } ~
-      getFromDirectory(webDirectory.getAbsolutePath) ~
-      getFromFile(new File(webDirectory, "index.html"))
-
+      pathEndOrSingleSlash {
+        getFromFile(new File(webDirectory, "index.html"))
+      }
 
   val bindingFuture: Future[ServerBinding] = Http().bindAndHandle(route, "localhost", port)
 
