@@ -178,7 +178,9 @@ object DocumentationGenerator extends App {
       val indexJson = new File(languageDir, "index.json")
       val toc = Json.parse(Files.readAllBytes(indexJson.toPath)).as[TOC]
       LanguageVersion(versionDir.getName, languageDir.getName, languageDir, toc)
-    }
+    }.sortWith( _.language < _.language)  // enforce consistent ordering of languages
+    //sortWith( _.language < _.language)  will list 'Java' before 'Scala'. Change
+    // sorting function or reimplement for more elaborate scenarios.
 
     Version(versionDir.getName, languages)
   }.sortBy(_.name) // Will need a better sort in future
