@@ -8,17 +8,17 @@
         <div class="row">
             <div class="small-12 columns">
                 <a href="@context.path/" class="logo"><img src="@context.path/images/logos/lagom-reverse.svg"></a>
-                <h1>Using Lagom with Scala</h1>
+                <h1>Using Lagom with Java and sbt</h1>
             </div>
         </div>
     </div>
     <article class="download-content">
-        <section class="fw-wrapper">
+        <section id="sbt" class="fw-wrapper">
             <div class="row">
                 <div class="small-12 columns">
-                    
+
                     <p>
-                        Prerequisites for using Lagom with Scala:
+                        Prerequisites for using Lagom with sbt
                     </p>
 
                     <ul>
@@ -27,21 +27,20 @@
                     </ul>
 
                     <p>
-                        If you have the prerequisites installed and are familiar with sbt, 
-                        follow the steps below. Otherwise, see
-                        <a href="@context.path/documentation/@context.currentDocsVersion/scala/Installation.html">detailed
+                        If you have the prerequisites installed and are familiar with sbt, follow the steps below.
+                        Otherwise, see
+                        <a href="@context.path/documentation/@context.currentDocsVersion/java/JavaPrereqs.html">detailed
                         instructions</a> for help setting up the prerequisites and getting started.
                     </p>
 
                     <ol>
                         <li>
                             <p>
-                                From a command prompt, enter the following to create a new Lagom project:
+                                From a command prompt, create and run a new project by entering the following:
                             </p>
 
-                            <pre class="prettyprint"><code class="language-sh">sbt new lagom/lagom-scala.g8</code></pre>
+                            <pre class="prettyprint"><code class="language-sh">sbt new lagom/lagom-java.g8</code></pre>
                         </li>
-
                         <li>
                             <p>
                                 The sbt Lagom template prompts for the following parameters. Press <code>Enter</code> to
@@ -88,15 +87,17 @@
                             </p>
                         </li>
                     </ol>
+
                     <p>
                         Congratulations! You've created and run your first Lagom system. See
-                        <a href="@context.path/documentation/@context.currentDocsVersion/scala/UnderstandHelloScala.html">the
+                        <a href="@context.path/documentation/@context.currentDocsVersion/java/UnderstandHello.html">the
                         documentation</a> to understand your new project.
                     </p>
-                      
+
                 </div>
-                
+
             </div>
         </section>
     </article>
+
 }

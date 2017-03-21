@@ -8,73 +8,75 @@
         <div class="row">
             <div class="small-12 columns">
                 <a href="@context.path/" class="logo"><img src="@context.path/images/logos/lagom-reverse.svg"></a>
-                <h1>Using Lagom with Scala</h1>
+                <h1>Using Lagom with Java and Maven</h1>
             </div>
         </div>
     </div>
     <article class="download-content">
-        <section class="fw-wrapper">
+        <section id="maven" class="fw-wrapper">
             <div class="row">
                 <div class="small-12 columns">
-                    
+
                     <p>
-                        Prerequisites for using Lagom with Scala:
+                        Prerequisites for using Lagom with Maven
                     </p>
 
                     <ul>
                         <li>JDK 8</li>
-                        <li>sbt 0.13.13</li>
+                        <li>Maven 3.3 or higher</li>
                     </ul>
 
                     <p>
-                        If you have the prerequisites installed and are familiar with sbt, 
-                        follow the steps below. Otherwise, see
-                        <a href="@context.path/documentation/@context.currentDocsVersion/scala/Installation.html">detailed
+                        If you have the prerequisites installed and are familiar with Maven, create a Hello World
+                        project using the commands below. Otherwise, see
+                        <a href="@context.path/documentation/@context.currentDocsVersion/java/JavaPrereqs.html">detailed
                         instructions</a> for help setting up the prerequisites and getting started.
                     </p>
 
                     <ol>
                         <li>
                             <p>
-                                From a command prompt, enter the following to create a new Lagom project:
+                                From a command prompt, create a new project by entering the following (all on one line):
                             </p>
 
-                            <pre class="prettyprint"><code class="language-sh">sbt new lagom/lagom-scala.g8</code></pre>
+                            <pre class="prettyprint"><code class="language-sh">mvn archetype:generate -DarchetypeGroupId=com.lightbend.lagom -DarchetypeArtifactId=maven-archetype-lagom-java -DarchetypeVersion=@context.currentLagomVersion</code></pre>
                         </li>
-
                         <li>
-                            <p>
-                                The sbt Lagom template prompts for the following parameters. Press <code>Enter</code> to
-                                accept the defaults or specify your own values:
-                            </p>
+                            <p>Maven prompts you for:</p>
                             <ul>
                                 <li>
-                                    <code>name</code> - Becomes the name of the top-level directory.
+                                    <code>groupId</code> &#8212; typically something like com.example.
                                 </li>
                                 <li>
-                                    <code>organization</code> - Used as a package name.
+                                    <code>artifactId</code> &#8212; becomes the top-level folder name, for example,
+                                    my-first-project.
                                 </li>
                                 <li>
-                                    <code>version</code> - A version number for your system.
+                                    <code>version</code> &#8212; the version for your project, press <b>Enter</b> to
+                                    accept the default.
                                 </li>
                                 <li>
-                                    <code>lagom_version</code> - The version number of Lagom. Be sure to use the current
-                                    stable release (@context.currentLagomVersion)
+                                    <code>package</code> &#8212; defaults to the same value as the <code>groupId</code>
                                 </li>
                             </ul>
                         </li>
                         <li>
                             <p>
-                                Change into the top-level directory of the project you just created. For example, if you
-                                used the default name, <code>hello</code>:
+                                Enter <code>Y</code> to accept the values. Maven creates the project.
                             </p>
-                            <pre class="prettyprint"><code class="language-sh">cd hello</code></pre>
                         </li>
                         <li>
                             <p>
-                                Start sbt and the Lagom development environment:
+                                Change into the top-level project folder and run it:
                             </p>
-                            <pre class="prettyprint"><code class="language-sh">sbt runAll</code></pre>
+
+                            <pre class="prettyprint"><code class="language-sh">mvn lagom:runAll</code></pre>
+
+                            <p>
+                                The <code>runAll</code> command starts Hello World microservices and registers them in a
+                                service directory. It also starts a web server, which enables you to test the
+                                microservices immediately.
+                            </p>
                         </li>
                         <li>
                             <p>
@@ -88,15 +90,26 @@
                             </p>
                         </li>
                     </ol>
+
                     <p>
                         Congratulations! You've created and run your first Lagom system. See
-                        <a href="@context.path/documentation/@context.currentDocsVersion/scala/UnderstandHelloScala.html">the
+                        <a href="@context.path/documentation/@context.currentDocsVersion/java/UnderstandHello.html">the
                         documentation</a> to understand your new project.
                     </p>
-                      
+
+                    @*
+                    <p>
+                    <!-- TODO Check out the <a href="@context.path/example-apps.html">example applications</a>. -->
+                    </p>
+                    *@
+
                 </div>
-                
+
+                <hr>
             </div>
+
         </section>
+
     </article>
+
 }
