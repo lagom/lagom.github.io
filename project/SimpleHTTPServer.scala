@@ -1,4 +1,4 @@
-import java.io.{Closeable, File}
+import java.io.{ Closeable, File }
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
@@ -22,16 +22,9 @@ class SimpleHTTPServer(webDirectory: File, port: Int) extends Closeable {
 
   private val route =
     getFromDirectory(webDirectory.getAbsolutePath) ~
-      // TODO: this needs improving. IT only supports one-folder deep fallback. It'd be good to have a generic fallback
-      // to serving 'index.html' from the appropriate folder anytime the path in the request leaves the last
-      // segment (filename) blank.
-      pathPrefix(Segment) { folderName =>
-        pathEndOrSingleSlash {
-          getFromFile(new File(new File(webDirectory, folderName), "index.html"))
-        }
-      } ~
-      pathEndOrSingleSlash {
-        getFromFile(new File(webDirectory, "index.html"))
+      pathPrefix(Segments) { folderNameSeq =>
+        val absoluteFolder = folderNameSeq.foldLeft(webDirectory)((acc, subfolder) => new File(acc, subfolder))
+        getFromFile(new File(absoluteFolder, "index.html"))
       }
 
   val bindingFuture: Future[ServerBinding] = Http().bindAndHandle(route, "localhost", port)
