@@ -17,26 +17,27 @@
             <div class="row">
                 <div class="small-12 columns">
                     
-                    <p>
-                        Prerequisites for using Lagom with Scala:
-                    </p>
-
-                    <ul>
-                        <li>JDK 8</li>
-                        <li>sbt 0.13.13</li>
-                    </ul>
+                    
 
                     <p>
                         If you have the prerequisites installed and are familiar with sbt, 
                         follow the steps below. Otherwise, see
                         <a href="@context.path/documentation/@context.currentDocsVersion/scala/Installation.html">detailed
-                        instructions</a> for help setting up the prerequisites and getting started.
-                    </p>
-
-                    <ol>
+                        instructions</a> for help setting up the prerequisites and getting started. Prerequisites for using Lagom with Scala include:
+                    
+                    
+                    <ul>
+                        <li>JDK 8</li>
+                        <li>sbt 0.13.13</li>
+                    </ul></p>
+                    <p>After confirming the prerequisites, open a console or command window and follow these steps:</p>
+                  
+                  <ol>
+                    <li><p>Create a new directory for your project.</p></li>
+                      
                         <li>
                             <p>
-                                From a command prompt, enter the following to create a new Lagom project:
+                                Change into the new directory and enter the following to create a new Lagom project:
                             </p>
 
                             <pre class="prettyprint"><code class="language-sh">sbt new lagom/lagom-scala.g8</code></pre>
@@ -59,7 +60,7 @@
                                 </li>
                                 <li>
                                     <code>lagom_version</code> - The version number of Lagom. Be sure to use the current
-                                    stable release (@context.currentLagomVersion)
+                                    stable release (@context.currentLagomVersion).
                                 </li>
                             </ul>
                         </li>

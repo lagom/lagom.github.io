@@ -17,26 +17,26 @@
             <div class="row">
                 <div class="small-12 columns">
 
-                    <p>
-                        Prerequisites for using Lagom with sbt
-                    </p>
-
-                    <ul>
-                        <li>JDK 8</li>
-                        <li>sbt 0.13.13</li>
-                    </ul>
+                    
 
                     <p>
                         If you have the prerequisites installed and are familiar with sbt, follow the steps below.
                         Otherwise, see
                         <a href="@context.path/documentation/@context.currentDocsVersion/java/JavaPrereqs.html">detailed
-                        instructions</a> for help setting up the prerequisites and getting started.
+                        instructions</a> for help setting up the prerequisites and getting started. Prerequisites for using Lagom with sbt include:
+                              
+                    <ul>
+                        <li>JDK 8</li>
+                        <li>sbt 0.13.13</li>
+                    </ul>
                     </p>
-
-                    <ol>
+                    <p>After confirming the prerequisites, open a console or command window and follow these steps:</p>
+                  
+                  <ol>
+                    <li><p>Create a new directory for your project.</p></li>
                         <li>
                             <p>
-                                From a command prompt, create and run a new project by entering the following:
+                                Change into the new directory and enter the following:
                             </p>
 
                             <pre class="prettyprint"><code class="language-sh">sbt new lagom/lagom-java.g8</code></pre>

@@ -17,26 +17,27 @@
             <div class="row">
                 <div class="small-12 columns">
 
-                    <p>
-                        Prerequisites for using Lagom with Maven
-                    </p>
+                    
 
+                    <p>
+                        If you have the prerequisites installed and are familiar with Maven, create a Hello World
+                        project using the procedures on this page. Otherwise, see
+                        <a href="@context.path/documentation/@context.currentDocsVersion/java/JavaPrereqs.html">detailed
+                        instructions</a> for help to set up the prerequisites and get started. Prerequisites for using Lagom with Maven include:
+                  
+                    
                     <ul>
                         <li>JDK 8</li>
                         <li>Maven 3.3 or higher</li>
                     </ul>
-
-                    <p>
-                        If you have the prerequisites installed and are familiar with Maven, create a Hello World
-                        project using the commands below. Otherwise, see
-                        <a href="@context.path/documentation/@context.currentDocsVersion/java/JavaPrereqs.html">detailed
-                        instructions</a> for help setting up the prerequisites and getting started.
-                    </p>
-
+                      </p>
+                      <p>After confirming the prerequisites, open a console or command window and follow these steps:</p>
+                    
                     <ol>
+                      <li><p>Create a new directory for your project.</p></li>
                         <li>
                             <p>
-                                From a command prompt, create a new project by entering the following (all on one line):
+                                Change into the new directory and enter the following (all on one line):
                             </p>
 
                             <pre class="prettyprint"><code class="language-sh">mvn archetype:generate -DarchetypeGroupId=com.lightbend.lagom -DarchetypeArtifactId=maven-archetype-lagom-java -DarchetypeVersion=@context.currentLagomVersion</code></pre>
