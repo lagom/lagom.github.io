@@ -20,7 +20,9 @@
                     
 
                     <p>
-                        If you have the prerequisites installed and are familiar with sbt, 
+                        The Lagom Giter8 template makes it easy to get started. The template downloads all dependencies and creates the basic project structure. It can take a few seconds to a few minutes to complete.</p>
+                        
+                        <p>If you have the prerequisites installed and are familiar with sbt, 
                         follow the steps below. Otherwise, see
                         <a href="@context.path/documentation/@context.currentDocsVersion/scala/Installation.html">detailed
                         instructions</a> for help setting up the prerequisites and getting started. Prerequisites for using Lagom with Scala include:
@@ -40,7 +42,7 @@
                                 Change into the new directory and enter the following to create a new Lagom project:
                             </p>
 
-                            <pre class="prettyprint"><code class="language-sh">sbt new lagom/lagom-scala.g8</code></pre>
+                            <pre class="prettyprint"><code class="language-sh">sbt new -Dsbt.version=0.13.13 lagom/lagom-scala.g8</code></pre>
                         </li>
 
                         <li>
@@ -79,6 +81,7 @@
                         </li>
                         <li>
                             <p>
+                                It will take a bit of time for the services to start. When finished, the console displays the message 'Services started, ...'. 
                                 Verify that the services are indeed up and running by invoking the <code>hello</code>
                                 service endpoint from any HTTP client, such as a browser:
                                 <a href="http://localhost:9000/api/hello/World" target="_blank">http://localhost:9000/api/hello/World</a>

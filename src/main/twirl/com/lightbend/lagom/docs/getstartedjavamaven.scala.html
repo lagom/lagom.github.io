@@ -31,7 +31,7 @@
                         <li>Maven 3.3 or higher</li>
                     </ul>
                       </p>
-                      <p>After confirming the prerequisites, open a console or command window and follow these steps:</p>
+                      <p>Maven downloads dependencies and creates the project structure for you. It can take from a few seconds to a few minutes to complete. After confirming the prerequisites, open a console or command window and follow these steps:</p>
                     
                     <ol>
                       <li><p>Create a new directory for your project.</p></li>
@@ -41,6 +41,7 @@
                             </p>
 
                             <pre class="prettyprint"><code class="language-sh">mvn archetype:generate -DarchetypeGroupId=com.lightbend.lagom -DarchetypeArtifactId=maven-archetype-lagom-java -DarchetypeVersion=@context.currentLagomVersion</code></pre>
+                        
                         </li>
                         <li>
                             <p>Maven prompts you for:</p>
@@ -74,14 +75,13 @@
                             <pre class="prettyprint"><code class="language-sh">mvn lagom:runAll</code></pre>
 
                             <p>
-                                The <code>runAll</code> command starts Hello World microservices and registers them in a
-                                service directory. It also starts a web server, which enables you to test the
-                                microservices immediately.
+                                The <code>runAll</code> command takes a bit of time. It starts Hello World microservices and registers them in a
+                                service directory. It also starts a Cassandra server and a web server.
                             </p>
                         </li>
                         <li>
                             <p>
-                                Verify that the services are indeed up and running by invoking the <code>hello</code>
+                                When you see the message, `Services started, ...`, verify that the services are indeed up and running by invoking the <code>hello</code>
                                 service endpoint from any HTTP client, such as a browser:
                                 <a href="http://localhost:9000/api/hello/World" target="_blank">http://localhost:9000/api/hello/World</a>
                             </p>
