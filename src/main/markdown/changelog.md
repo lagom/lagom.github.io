@@ -1,5 +1,24 @@
 # Lagom Change Log
 
+## Lagom 1.3.2
+
+*Released 19 April 2017*
+
+* [554](https://github.com/lagom/lagom/pull/554) Update Akka to 2.4.17
+* [581](https://github.com/lagom/lagom/pull/581) Refactored dependencies into separate file
+* [588](https://github.com/lagom/lagom/pull/588) Remove version from manifest to get serialiser from the registry
+* [586](https://github.com/lagom/lagom/pull/586) Created dependency whitelist validation
+* [599](https://github.com/lagom/lagom/pull/599) Created Maven dependency management pom
+* [601](https://github.com/lagom/lagom/pull/601) Configure the Cassandra keyspace in the Maven archetype
+* [600](https://github.com/lagom/lagom/pull/600) Remove unused archetype properties
+* [609](https://github.com/lagom/lagom/pull/609) Add new `BadRequest` transport exception
+* [594](https://github.com/lagom/lagom/pull/594) Adds test for ServiceDiscovery in LagomScala
+* [613](https://github.com/lagom/lagom/pull/613) Deprecate the Cassandra keyspace build config
+* [624](https://github.com/lagom/lagom/pull/624) Fix comment typo in `Reloader.scala`
+* [632](https://github.com/lagom/lagom/pull/632) Warn on implicit keyspace config
+* [636](https://github.com/lagom/lagom/pull/636) Remove reference to Cassandra in the `JdbcReadside` API documentation
+* [684](https://github.com/lagom/lagom/pull/684) Ensure maven plugin adds right dependency for Play integration
+
 ## Lagom 1.3.1
 
 *Released 06 March 2017*
