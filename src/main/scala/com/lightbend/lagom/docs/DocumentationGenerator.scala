@@ -40,6 +40,23 @@ object DocumentationGenerator extends App {
     VersionSummary("1.0.x", s"Lagom 1.0.0")
   )
 
+  val communityContents = Seq(
+//    CommunityContent("title", "href", "hrefTitle"),
+    CommunityContent("Guide to Reactive Microservices Using Lagom Framework",
+      "http://www.baeldung.com/lagom-reactive-microservices",
+      "Baeldung"),
+    CommunityContent("CQRS and Event Sourcing with Lagom",
+      "https://blog.codecentric.de/en/2017/02/cqrs-event-sourcing-lagom/",
+      "codecentric Blog"),
+    CommunityContent("Lagom 1.2: What's New?",
+      "https://ordina-jworks.github.io/microservices/2017/02/01/Lagom-1-2.html",
+      "JWORKS TECH BLOG"),
+    CommunityContent("Run a Lagom service standalone with Zookeeper",
+      "https://thecoderwriter.wordpress.com/2016/09/24/run-a-lagom-service-standalone-with-zookeeper/",
+      "Coder's IO")
+
+  )
+
   // Set this to Some("your-github-account-name") if you want to deploy the docs to the gh-pages of your own fork
   // of the repo
   val gitHubAccount: Option[String] = None
@@ -268,7 +285,7 @@ object DocumentationGenerator extends App {
   }
 
   val generated = templatePages.map((generatePage _).tupled) ++
-    Seq(savePage("documentation/index.html", html.documentationIndex(stableVersions, previewVersions, oldVersions, versions))) ++
+    Seq(savePage("documentation/index.html", html.documentationIndex(stableVersions, previewVersions, oldVersions, versions, communityContents))) ++
     versions.map { version =>
       savePage(s"documentation/${version.name}/index.html", html.documentationVersionIndex(version), includeInSitemap = false)
     } ++
@@ -320,6 +337,8 @@ case class LagomContext(baseUrl: String, path: String, currentLagomVersion: Stri
                         blogSummary: BlogSummary, assetFingerPrint: String)
 
 case class VersionSummary(name: String, title: String)
+
+case class CommunityContent(description:String, href:String, hrefTitle:String)
 
 case class Version(name: String, languages: Seq[LanguageVersion]) {
   def versionFor(language: String): Option[LanguageVersion] = languages.find(_.language == language)

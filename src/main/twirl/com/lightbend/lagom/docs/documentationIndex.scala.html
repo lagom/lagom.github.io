@@ -1,24 +1,29 @@
 @import com.lightbend.lagom.docs.VersionSummary
+@import com.lightbend.lagom.docs.CommunityContent
 @import com.lightbend.lagom.docs.Version
 @import com.lightbend.lagom.docs.LagomContext
 
-@(stableVersions: Seq[VersionSummary], previewVersions: Seq[VersionSummary], oldVersions: Seq[VersionSummary], versions: Seq[Version])(implicit ctx: LagomContext)
+@(stableVersions: Seq[VersionSummary], previewVersions: Seq[VersionSummary], oldVersions: Seq[VersionSummary], versions: Seq[Version], communityContents: Seq[CommunityContent])(implicit ctx: LagomContext)
 
 @toTitleCase(s: String) = {@s.head.toUpper@s.tail}
 
 @renderVersion(summary: VersionSummary) = {
-    <h2>@summary.title</h2>
-
+    <h3>@summary.title</h3>
     @for(version <- versions.find(_.name == summary.name)) {
+        <ul>
         @for(lang <- version.languages) {
-            <h3>@toTitleCase(lang.language)</h3>
-
-            <ul>
-                <li><a href="@ctx.path/documentation/@version.name/@lang.language/Home.html">Reference manual</a></li>
-                <li><a href="@ctx.path/documentation/@version.name/@lang.language/api/index.html">API docs</a></li>
-            </ul>
-        }
+            <li>@toTitleCase(lang.language): <a href="@ctx.path/documentation/@version.name/@lang.language/Home.html">Reference manual</a> and <a href="@ctx.path/documentation/@version.name/@lang.language/api/index.html">API docs</a>.</li>
+            }
+        </ul>
     }
+}
+
+@renderContent(communityContents: Seq[CommunityContent]) = {
+    <ul>
+    @for(cc <- communityContents) {
+        <li>@{cc.description} (<a href="@cc.href">@cc.hrefTitle</a>)</li>
+    }
+    </ul>
 }
 
 @page("Lagom documentation") {
@@ -55,6 +60,17 @@
         @for(oldVersion <- oldVersions) {
             @renderVersion(oldVersion)
         }
+    }
+
+    @if(communityContents) {
+        <h1>Community Content</h1>
+
+        <p>
+            Blog posts, webinars, tutorials and other content provided by the community.
+        </p>
+
+        @renderContent(communityContents)
+
     }
 
 
