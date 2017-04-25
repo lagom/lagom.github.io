@@ -16,33 +16,33 @@
         <section class="fw-wrapper">
             <div class="row">
                 <div class="small-12 columns">
-                    
-                    
+
+
 
                     <p>
                         The Lagom Giter8 template makes it easy to get started. The template downloads all dependencies and creates the basic project structure. It can take a few seconds to a few minutes to complete.</p>
-                        
-                        <p>If you have the prerequisites installed and are familiar with sbt, 
+
+                        <p>If you have the prerequisites installed and are familiar with sbt,
                         follow the steps below to create a Hello World project. Otherwise, see
                         <a href="@context.path/documentation/@context.currentDocsVersion/scala/Installation.html">detailed
                         instructions</a> for help setting up the prerequisites and getting started. Prerequisites for using Lagom with Scala include:
-                    
-                    
+
+
                     <ul>
                         <li>JDK 8</li>
                         <li>sbt 0.13.13</li>
                     </ul></p>
                     <p>After confirming the prerequisites, open a console or command window and follow these steps:</p>
-                  
+
                   <ol>
                     <li><p>Create a new directory for your project.</p></li>
-                      
+
                         <li>
                             <p>
                                 Change into the new directory and enter the following to create a new Lagom project:
                             </p>
 
-                            <pre class="prettyprint"><code class="language-sh">sbt new -Dsbt.version=0.13.13 lagom/lagom-scala.g8</code></pre>
+                            <pre class="prettyprint"><code class="language-sh">sbt -Dsbt.version=0.13.15 new https://github.com/lagom/lagom-scala.g8</code></pre>
                         </li>
 
                         <li>
@@ -81,7 +81,7 @@
                         </li>
                         <li>
                             <p>
-                                It will take a bit of time for the services to start. When finished, the console displays the message 'Services started, ...'. 
+                                It will take a bit of time for the services to start. When finished, the console displays the message 'Services started, ...'.
                                 Verify that the services are indeed up and running by invoking the <code>hello</code>
                                 service endpoint from any HTTP client, such as a browser:
                                 <a href="http://localhost:9000/api/hello/World" target="_blank">http://localhost:9000/api/hello/World</a>
@@ -97,9 +97,9 @@
                         <a href="@context.path/documentation/@context.currentDocsVersion/scala/UnderstandHelloScala.html">the
                         documentation</a> to understand your new project.
                     </p>
-                      
+
                 </div>
-                
+
             </div>
         </section>
     </article>
