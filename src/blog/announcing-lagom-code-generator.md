@@ -1,6 +1,6 @@
 ---
 title: Introducing the Lagom code generator
-date: 2017-05-12
+date: 2017-05-15
 author_github: ignasi35
 tags: news scala java code
 summary: >
@@ -9,9 +9,13 @@ summary: >
 
 We're happy to announce the first _alpha_ release of the [Lagom Descriptor Generator](https://github.com/lagom/sbt-lagom-descriptor-generator) a project started as a proof-of-concept and that we've recently improved. The motivation is to ease consuming third party APIs (be it lagom services, other services on your organization or public APIs in the wild) reducing the amount of code required.
 
-We want Lagom to increase the types of services it can talk to and we will work on supporting gRPC both for producing services and to consume 3rd party gRPC endpoints. Working in both a fully featured code generator from OpenAPI specs and gRPC support is beyond our capacity at the moment, today we are calling the community to continue our work in the code generator.[Lagom Descriptor Generator](https://github.com/lagom/sbt-lagom-descriptor-generator) does not have contributors, it only has maintainers —frequent and infrequent— and everyone helps out. It's a repo that loves new maintainers as well as old maintainers. :-) The Lagom core team keeps an eye on the project to assure its overall coherence but does not fully support it.
+We want Lagom to increase the types of services it can talk to. Until now Lagom was focused on providing RPC via HTTP/JSON as default and we already started workin on an gRPC transport for Lagom both for producing services and consuming 3rd party gRPC endpoints. 
 
-### Status 
+We had to make a decision since working in both (1) a fully featured code generator from OpenAPI specs to Lagom source code and (a) adding gRPC support into Lagom was beyond our capacity. Today we are calling the community to continue our work in the Lagom code generator while we focus our attention to gRPC. The _Lagom Descriptor Generator_ project may eventually generate Lagom API descriptor sources from seveal API specification format. At the moment only OpenaAPI v2 (aka _Swagger specs_) is supported.
+
+The [Lagom Descriptor Generator](https://github.com/lagom/sbt-lagom-descriptor-generator) does not have contributors, it only has maintainers —frequent and infrequent— and everyone helps out. It's a repo that loves new maintainers as well as old maintainers. :-) The Lagom core team keeps an eye on the project to assure its overall coherence but does not fully support it.
+
+### Project Status 
 
 The current implementation is a _crude_ generator that will convert a `swagger.json` (or yaml) into Lagom API source code. It is currently available as an `sbt` plugin but it could be [extended into a Maven plugin](https://github.com/lagom/sbt-lagom-descriptor-generator/issues/11) too. The GitHub repository includes `sbt-` on the name but that is a [mistake](https://github.com/lagom/sbt-lagom-descriptor-generator/issues/4).
 
