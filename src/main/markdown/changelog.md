@@ -1,5 +1,24 @@
 # Lagom Change Log
 
+## Lagom 1.3.4
+
+*Released 16 May 2017*
+
+* [700](https://github.com/lagom/lagom/issues/700) Fixed deprecation warning produced by forServer macro
+* [740](https://github.com/lagom/lagom/issues/740) Allow disabling offsetStore auto creation (thanks [@vladimirshin](https://github.com/vladimirshin))
+* [738](https://github.com/lagom/lagom/issues/738) Fixed default header checking for WebSockets (hat tip [@2beaucoup](https://github.com/2beaucoup)
+* [741](https://github.com/lagom/lagom/issues/741) Adds missing placeholder on log
+* [724](https://github.com/lagom/lagom/issues/724) Update RP docs and links to SBR  documentation
+* [735](https://github.com/lagom/lagom/issues/735) Use a non-conflicting Cassandra config file name
+* [707](https://github.com/lagom/lagom/issues/707) Support well known ports in the service registry
+* [728](https://github.com/lagom/lagom/issues/728) Kafka service name override (thanks [@markusjura](https://github.com/markusjura))
+* [729](https://github.com/lagom/lagom/issues/729) Ignores lagomCassandraPort when embedded C* is disabled
+* [715](https://github.com/lagom/lagom/issues/715) Removes obsolete 'cassandra-config' from mvn archetype
+* [716](https://github.com/lagom/lagom/issues/716) Improves sample tests to prevent flaky-ness
+* [745](https://github.com/lagom/lagom/issues/745) Use https links where possible in documentation 
+* [725](https://github.com/lagom/lagom/issues/725) Update more links to HTTPS
+
+
 ## Lagom 1.3.3
 
 *Released 28 April 2017*
