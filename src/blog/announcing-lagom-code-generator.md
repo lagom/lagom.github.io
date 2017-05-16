@@ -1,19 +1,19 @@
 ---
 title: Introducing the Lagom code generator
-date: 2017-05-15
+date: 2017-05-16
 author_github: ignasi35
-tags: news scala java code
+tags: news scala java generator
 summary: >
     Consuming 3rd party services with a Swagger spec just got easier!
 ---
 
 We're happy to announce the first _alpha_ release of the [Lagom Descriptor Generator](https://github.com/lagom/sbt-lagom-descriptor-generator) a project started as a proof-of-concept and that we've recently improved. The motivation is to ease consuming third party APIs (be it lagom services, other services on your organization or public APIs in the wild) reducing the amount of code required.
 
-We want Lagom to increase the types of services it can talk to. Until now Lagom was focused on providing RPC via HTTP/JSON as default and we already started workin on an gRPC transport for Lagom both for producing services and consuming 3rd party gRPC endpoints. 
+We want Lagom to increase the types of services it can talk to. Until now Lagom was focused on providing RPC via HTTP/JSON as default and we already started working on an gRPC transport for Lagom both for producing services and consuming 3rd party gRPC endpoints. 
 
 We had to make a decision since working in both (1) a fully featured code generator from OpenAPI specs to Lagom source code and (a) adding gRPC support into Lagom was beyond our capacity. Today we are calling the community to continue our work in the Lagom code generator while we focus our attention to gRPC. The _Lagom Descriptor Generator_ project may eventually generate Lagom API descriptor sources from seveal API specification format. At the moment only OpenaAPI v2 (aka _Swagger specs_) is supported.
 
-The [Lagom Descriptor Generator](https://github.com/lagom/sbt-lagom-descriptor-generator) does not have contributors, it only has maintainers —frequent and infrequent— and everyone helps out. It's a repo that loves new maintainers as well as old maintainers. :-) The Lagom core team keeps an eye on the project to assure its overall coherence but does not fully support it.
+The [Lagom Descriptor Generator](https://github.com/lagom/sbt-lagom-descriptor-generator) is open to community contributions —frequent and infrequent—, everyone helps out. It's a repo that loves new code and fixes. The Lagom core team will remain in an [integrator](https://www.lagomframework.com/community-process.html#definitions) role, the team will keep an eye on the project to assure its overall coherence but does not fully support it.
 
 ### Project Status 
 
