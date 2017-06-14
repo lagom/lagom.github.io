@@ -15,7 +15,7 @@
 * [757](https://github.com/lagom/lagom/issues/757) Avoid relying on default contact-point settings
 * [751](https://github.com/lagom/lagom/issues/751) Update jackson reference.conf to use concatenation  (thanks [@jaiew](https://github.com/jaiew))
 * [752](https://github.com/lagom/lagom/issues/752) Allow Kafka consumers to batch messages  
-* [798](https://github.com/lagom/lagom/issues/798) Increase barrier-timeout for multi-jvm tests
+* [799](https://github.com/lagom/lagom/issues/799) Bumps APC version to 0.29
 * [777](https://github.com/lagom/lagom/issues/777) Plug Circuit breaker to Java ConfigurationServiceLocator  
 
 
