@@ -7,9 +7,9 @@ summary: >
     Lagom 1.3.5 is ready!
 ---
 
-This has been quite a busy month since we released 1.3.4. [Scaladays Copenhagen](http://event.scaladays.org/scaladays-cph-2017) took a lot of time from our schedules and this 1.3.5 was delayed more than we'd hoped for.
+This has been quite a busy month since we released 1.3.4. [Scala Days Copenhagen](http://event.scaladays.org/scaladays-cph-2017) took a lot of time from our schedules and thus 1.3.5 was delayed more than we'd hoped for.
 
-This release is a bugfix release with a couple of community contributions. We're seeing a constant flow of community contributions in this past releases and that is great news! Special thanks to [crfeliz](https://github.com/crfeliz) , [edouardKaiser](https://github.com/edouardKaiser) and [jaiew](https://github.com/jaiew) for their great work.
+This release is a bugfix release with a couple of community contributions. We're seeing a constant flow of community contributions in the past few releases and that is great news! Special thanks to [crfeliz](https://github.com/crfeliz), [edouardKaiser](https://github.com/edouardKaiser) and [jaiew](https://github.com/jaiew) for their great work.
 
 ## Updating
 
