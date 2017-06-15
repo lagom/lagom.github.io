@@ -5,20 +5,20 @@
 *Released 13 June 2017*
 
 * [794](https://github.com/lagom/lagom/issues/794) Bumps akka to 2.4.19 as suggested by Akka team
-* [796](https://github.com/lagom/lagom/issues/796) Update jboss-logging to 3.3.0.Final  enhancement
-* [789](https://github.com/lagom/lagom/issues/789) Updates PlayJsonSerializer to first perform the class rename migratio…  (thanks [@crfeliz](https://github.com/crfeliz))
+* [796](https://github.com/lagom/lagom/issues/796) Update jboss-logging to 3.3.0.Final
+* [789](https://github.com/lagom/lagom/issues/789) Updates PlayJsonSerializer to first perform the class rename migration and then look up the transformation migration by the new class name (thanks [@crfeliz](https://github.com/crfeliz))
 * [781](https://github.com/lagom/lagom/issues/781) Register a shutdown hook for ActorSytem in scaladsl lagom client 
 * [778](https://github.com/lagom/lagom/issues/778) Doc Fix: Update MessageBrokerApi.md  documentation (thanks [@crfeliz](https://github.com/crfeliz))
 * [776](https://github.com/lagom/lagom/issues/776) Align maven archetype with lagom-java.g8 
 * [768](https://github.com/lagom/lagom/issues/768) Fixes Flaky Kafka tests
 * [765](https://github.com/lagom/lagom/issues/765) Use appropriate offset in topic build op  
 * [757](https://github.com/lagom/lagom/issues/757) Avoid relying on default contact-point settings
-* [751](https://github.com/lagom/lagom/issues/751) Update jackson reference.conf to use concatenation  (thanks [@jaiew](https://github.com/jaiew))
+* [751](https://github.com/lagom/lagom/issues/751) Update jackson reference.conf to use concatenation (thanks [@jaiew](https://github.com/jaiew))
 * [752](https://github.com/lagom/lagom/issues/752) Allow Kafka consumers to batch messages  
 * [799](https://github.com/lagom/lagom/issues/799) Bumps APC version to 0.29
-* [777](https://github.com/lagom/lagom/issues/777) Plug Circuit breaker to Java ConfigurationServiceLocator  
-
-
+* [777](https://github.com/lagom/lagom/issues/777) Plug Circuit breaker to Java ConfigurationServiceLocator (thanks [@edouardKaiser](https://github.com/edouardKaiser))
+* [782](https://github.com/lagom/lagom/issues/782) Actions.empty should be publicly accessible (thanks [@guizmaii](https://github.com/guizmaii))
+* [775](https://github.com/lagom/lagom/issues/775) Add a PathParamSerializer for Double (thanks [@guizmaii](https://github.com/guizmaii))
 
 ## Lagom 1.3.4
 
