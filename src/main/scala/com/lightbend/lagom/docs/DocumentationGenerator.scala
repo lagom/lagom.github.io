@@ -41,7 +41,13 @@ object DocumentationGenerator extends App {
   )
 
   val communityContents = Seq(
-//    CommunityContent("title", "href", "hrefTitle"),
+  //    CommunityContent("title", "href", "hrefTitle"),
+    CommunityContent("Lagom Circuit Breaker: What, Why and How?",
+      "https://blog.knoldus.com/2017/06/15/lagom-circuit-breaker-what-why-and-how/",
+      "Knoldus"),
+    CommunityContent("Tour de Lagom (blog post series)",
+      "https://manuel.bernhardt.io/2017/06/05/tour-de-lagom-part-1-lagom-microservices/",
+      "Manuel Bernhardt")
     CommunityContent("Guide to Reactive Microservices Using Lagom Framework",
       "http://www.baeldung.com/lagom-reactive-microservices",
       "Baeldung"),
