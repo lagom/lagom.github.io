@@ -1,5 +1,38 @@
 # Lagom Change Log
 
+## Lagom 1.4.0-M1
+
+*Released 28 June 2017*
+
+* [840](https://github.com/lagom/lagom/issues/840) Bumps play to 2.6 GA
+* [837](https://github.com/lagom/lagom/issues/837) bump sbt version to 0.13.15 and removes deprecated syntax. (thanks [erip](https://github.com/erip))
+* [666](https://github.com/lagom/lagom/issues/666) Update sbt to 0.13.15
+* [681](https://github.com/lagom/lagom/issues/681) Test Play 2.6 RC
+* [680](https://github.com/lagom/lagom/issues/680) Update Akka to 2.5.0
+* [820](https://github.com/lagom/lagom/issues/820) Prepares Lagom to run whitesource in `master`
+* [766](https://github.com/lagom/lagom/issues/766) Adds documentation for SlickReadSide
+* [763](https://github.com/lagom/lagom/issues/763) Added the ability add custom infrastructure services
+* [750](https://github.com/lagom/lagom/issues/750) Fix deprecation warnings in the sbt plugin
+* [737](https://github.com/lagom/lagom/issues/737) Fixes both header and formatting for multi-jvm. Enables check on CI.
+* [229](https://github.com/lagom/lagom/issues/229) Update Reactive Platform installation instructions
+* [733](https://github.com/lagom/lagom/issues/733) Add a script to help configure Cassandra keyspaces
+* [718](https://github.com/lagom/lagom/issues/718) Refactor the service locator holder to expose a future to avoid polling
+* [714](https://github.com/lagom/lagom/issues/714) Slick read side (thanks [odwrotnie](https://github.com/odwrotnie))
+* [717](https://github.com/lagom/lagom/issues/717) Removes unnecessary, hardcoded execution context
+* [704](https://github.com/lagom/lagom/issues/704) Update Scala to 2.11.11
+* [691](https://github.com/lagom/lagom/issues/691) Introduce a convenience method on TopicProducer for tagged streams
+* [676](https://github.com/lagom/lagom/issues/676) Replace Immutable with Lombok in the Maven Java projects (thanks [yg-apaza](https://github.com/yg-apaza))
+* [663](https://github.com/lagom/lagom/issues/663) Fail on missing keyspace configuration
+* [649](https://github.com/lagom/lagom/issues/649) Use new Slick 3.2 DB profile classes in configuration defaults and examples
+* [546](https://github.com/lagom/lagom/issues/546) Update Slick to 3.2.0
+* [642](https://github.com/lagom/lagom/issues/642) Update Akka Persistence JDBC to 2.4.17.1 and Slick to 3.2.0
+* [590](https://github.com/lagom/lagom/issues/590) Bump play version and move akka-testkit off compile scope (thanks [benmccann](https://github.com/benmccann))
+* [577](https://github.com/lagom/lagom/issues/577) [MINOR] Code refactored with unnecessary if conditions (thanks [himani1](https://github.com/himani1))
+* [567](https://github.com/lagom/lagom/issues/567) Update version on master to 1.4.0-SNAPSHOT
+* [560](https://github.com/lagom/lagom/issues/560) Increase timeouts in CqrsIntegrationTest
+* [504](https://github.com/lagom/lagom/issues/504) [Minor] Code refactored (thanks [himani1](https://github.com/himani1))
+ 
+
 ## Lagom 1.3.5
 
 *Released 13 June 2017*
