@@ -21,6 +21,8 @@ We're close to releasing a ConductR version that supports the 1.4.0 family of La
 
 ## Updating
 
+This is a minor release so there are a few deprecated APIs you should migrate from. Also, the upgrade of Play and Akka may require you attention. Please have a look at the migration guide to 1.4 ([java](/documentation/1.4.x/java/Migration14.html) or [scala](/documentation/1.4.x/scala/Migration14.html)).
+
 To update an sbt project, change the version of `lagom-sbt-plugin` in your `project/plugins.sbt` file.
 
 To update a Maven project, change the `lagom.version` property in your top-level `pom.xml`.
