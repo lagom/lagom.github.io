@@ -2,9 +2,11 @@
 @import com.lightbend.lagom.docs.LagomContext
 
 @(implicit context: LagomContext)
-
-@main(None)()() {
+ 
+@main(Some("Microservices Framework"))()() {
+  
     <div class="fw-wrapper lgm-purple hero-banner">
+  
         <div class="row">
             <div class="small-12 columns">
                 <a href="@context.path/" class="logo"><img src="@context.path/images/logos/lagom-reverse.svg"></a>
