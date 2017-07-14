@@ -19,69 +19,62 @@
 
 
 
-                    <p>
-                        The Lagom Giter8 template makes it easy to get started. The template downloads all dependencies and creates the basic project structure. It can take a few seconds to a few minutes to complete.</p>
-
-                        <p>If you have the prerequisites installed and are familiar with sbt,
-                        follow the steps below to create a Hello World project. Otherwise, see
-                        <a href="@context.path/documentation/@context.currentDocsVersion/scala/Installation.html">detailed
-                        instructions</a> for help setting up the prerequisites and getting started. Prerequisites for using Lagom with Scala include:
-
-
-                    <ul>
-                        <li>JDK 8</li>
-                        <li>sbt 0.13.13</li>
-                    </ul></p>
-                    <p>After confirming the prerequisites, open a console or command window and follow these steps:</p>
-
-                  <ol>
-                    <li><p>Create a new directory for your project.</p></li>
-
-                        <li>
-                            <p>
-                                Change into the new directory and enter the following to create a new Lagom project:
-                            </p>
-
-                            <pre class="prettyprint"><code class="language-sh">sbt -Dsbt.version=0.13.15 new https://github.com/lagom/lagom-scala.g8</code></pre>
-                        </li>
-
-                        <li>
-                            <p>
-                                The sbt Lagom template prompts for the following parameters. Press <code>Enter</code> to
-                                accept the defaults for the following:
-                            </p>
-                            <ul>
-                                <li>
-                                    <code>name</code> - Becomes the name of the top-level directory.
-                                </li>
-                                <li>
-                                    <code>organization</code> - Used as a package name.
-                                </li>
-                                <li>
-                                    <code>version</code> - A version number for your system.
-                                </li>
-                                <li>
-                                    <code>lagom_version</code> - The version number of Lagom. Be sure to use the current
-                                    stable release (@context.currentLagomVersion).
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <p>
-                                Change into the top-level directory of the project you just created. For example, if you
-                                used the default name, <code>hello</code>:
-                            </p>
-                            <pre class="prettyprint"><code class="language-sh">cd hello</code></pre>
-                        </li>
-                        <li>
-                            <p>
-                                Start sbt and the Lagom development environment:
-                            </p>
+                  <p>Before starting, make sure you have JDK 8 installed and
+                  configured. See <a class=""
+                  href="@context.path/documentation/@context.currentDocsVersion/scala/Installation.html#JDK"
+                  target="_blank">the Lagom documentation</a> if you are not
+                  sure whether you have the right version of Java or to find the
+                  link for installing it.</p>
+                  
+                   
+                  <p>The Lightbend Tech Hub Project
+                  Starter makes it simple to create your first project. It uses
+                  a Lagom Giter8 template to generate a compressed file that
+                  contains:</p>  
+                  <ul> 
+                  <li><p>A distribution of sbt, the Scala build
+                  tool.</p>
+                  </li>  
+                  <li><p>A Lagom Hello World project.</p></li> 
+                 </ul>
+                  
+              <h2>Download the project from Tech Hub</h2> 
+                  <p>Follow these
+                  steps to download a project created from the template:</p>
+                  
+                  <ol> 
+                  <li><p>Open the <a class=""
+                  href="http://developer.lightbend.com/start/?group=lagom&project=lagom-scala-sbt"
+                  target="_blank">Tech Hub Project Starter</a>.</p></li>
+                      
+                  <li><p>Click <b>CREATE A PROJECT FOR ME</b>.</p> 
+                      <p>The browser downloads a compressed project.</p>
+                  </li>
+                  </ol>
+              <h2>Extract and run the project</h2><a name="TH"></a>
+                  <p>Once you've downloaded a compressed file from Tech Hub, follow these steps:</p>
+                  <ol>      
+                  <li><p>Extract the compressed file to a directory of your choice.</p>
+                  <p>Note: On OSX, if you unzip using Archiver, you also have to make the sbt files executable:</p>
+                  <pre class="prettyprint"><code class="language-sh">chmod u+x ./sbt </code></pre>
+                  <pre class="prettyprint"><code class="language-sh">chmod u+x ./sbt-dist/bin/sbt</code></pre>
+                  
+                </li>
+                  <li><p>In a shell, change into the top-level directory of the project, <code>lagom-scala-sbt</code>. For example, if you
+                          extracted the project into a directory named <code>my-project</code>:
+                      </p>
+                      <ul>
+                            <li><p>In an OSX or Linux shell:</p> <pre class="prettyprint"><code class="language-sh">cd my-project/lagom-scala-sbt</code></pre></li>
+                            <li><p>In a Windows shell:</p> <pre class="prettyprint"><code class="language-sh">cd my-project\lagom-scala-sbt</code></pre></li> 
+                      </ul>        
+                    </li>
+                    <li><p>Start sbt and the Lagom development environment:</p>
                             <pre class="prettyprint"><code class="language-sh">sbt runAll</code></pre>
-                        </li>
+                       <p>It will take a bit of time for the project to build and run. When finished, the console displays the message <code>Services started, ...</code>.</p>
+                    </li>
                         <li>
                             <p>
-                                It will take a bit of time for the services to start. When finished, the console displays the message 'Services started, ...'.
+                              
                                 Verify that the services are indeed up and running by invoking the <code>hello</code>
                                 service endpoint from any HTTP client, such as a browser:
                                 <a href="http://localhost:9000/api/hello/World" target="_blank">http://localhost:9000/api/hello/World</a>
@@ -95,7 +88,7 @@
                     <p>
                         Congratulations! You've created and run your first Lagom system. See
                         <a href="@context.path/documentation/@context.currentDocsVersion/scala/UnderstandHelloScala.html">the
-                        documentation</a> to understand your new project.
+                        Lagom documentation</a> to learn more about your new project.
                     </p>
 
                 </div>
