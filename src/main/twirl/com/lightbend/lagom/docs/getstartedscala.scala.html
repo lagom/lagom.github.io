@@ -25,56 +25,56 @@
                   target="_blank">the Lagom documentation</a> if you are not
                   sure whether you have the right version of Java or to find the
                   link for installing it.</p>
-                  
-                   
+
+
                   <p>The Lightbend Tech Hub Project
                   Starter makes it simple to create your first project. It uses
                   a Lagom Giter8 template to generate a compressed file that
-                  contains:</p>  
-                  <ul> 
+                  contains:</p>
+                  <ul>
                   <li><p>A distribution of sbt, the Scala build
                   tool.</p>
-                  </li>  
-                  <li><p>A Lagom Hello World project.</p></li> 
+                  </li>
+                  <li><p>A Lagom Hello World project.</p></li>
                  </ul>
-                  
-              <h2>Download the project from Tech Hub</h2> 
+
+              <h2>Download the project from Tech Hub</h2>
                   <p>Follow these
                   steps to download a project created from the template:</p>
-                  
-                  <ol> 
+
+                  <ol>
                   <li><p>Open the <a class=""
                   href="http://developer.lightbend.com/start/?group=lagom&project=lagom-scala-sbt"
                   target="_blank">Tech Hub Project Starter</a>.</p></li>
-                      
-                  <li><p>Click <b>CREATE A PROJECT FOR ME</b>.</p> 
+
+                  <li><p>Click <b>CREATE A PROJECT FOR ME</b>.</p>
                       <p>The browser downloads a compressed project.</p>
                   </li>
                   </ol>
               <h2>Extract and run the project</h2><a name="TH"></a>
                   <p>Once you've downloaded a compressed file from Tech Hub, follow these steps:</p>
-                  <ol>      
+                  <ol>
                   <li><p>Extract the compressed file to a directory of your choice.</p>
                   <p>Note: On OSX, if you unzip using Archiver, you also have to make the sbt files executable:</p>
                   <pre class="prettyprint"><code class="language-sh">chmod u+x ./sbt </code></pre>
                   <pre class="prettyprint"><code class="language-sh">chmod u+x ./sbt-dist/bin/sbt</code></pre>
-                  
+
                 </li>
                   <li><p>In a shell, change into the top-level directory of the project, <code>lagom-scala-sbt</code>. For example, if you
                           extracted the project into a directory named <code>my-project</code>:
                       </p>
                       <ul>
                             <li><p>In an OSX or Linux shell:</p> <pre class="prettyprint"><code class="language-sh">cd my-project/lagom-scala-sbt</code></pre></li>
-                            <li><p>In a Windows shell:</p> <pre class="prettyprint"><code class="language-sh">cd my-project\lagom-scala-sbt</code></pre></li> 
-                      </ul>        
+                            <li><p>In a Windows shell:</p> <pre class="prettyprint"><code class="language-sh">cd my-project\lagom-scala-sbt</code></pre></li>
+                      </ul>
                     </li>
                     <li><p>Start sbt and the Lagom development environment:</p>
-                            <pre class="prettyprint"><code class="language-sh">sbt runAll</code></pre>
+                            <pre class="prettyprint"><code class="language-sh">./sbt runAll</code></pre>
                        <p>It will take a bit of time for the project to build and run. When finished, the console displays the message <code>Services started, ...</code>.</p>
                     </li>
                         <li>
                             <p>
-                              
+
                                 Verify that the services are indeed up and running by invoking the <code>hello</code>
                                 service endpoint from any HTTP client, such as a browser:
                                 <a href="http://localhost:9000/api/hello/World" target="_blank">http://localhost:9000/api/hello/World</a>
