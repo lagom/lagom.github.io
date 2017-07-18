@@ -1,5 +1,28 @@
 # Lagom Change Log
 
+## Lagom 1.3.6
+
+*Released 17 July 2017*
+
+* [865](https://github.com/lagom/lagom/issues/865) Map Descriptor in ServiceClientInvocationHandler (Edouard Kaiser)
+* [877](https://github.com/lagom/lagom/issues/877) Fix the match for failed futures (Tim Moore)
+* [873](https://github.com/lagom/lagom/issues/873) Add method completedStatements with varargs (Yuliana Apaza)
+* [859](https://github.com/lagom/lagom/issues/859) Quote sbt.version in the sbt new command (AmeerGN)
+* [849](https://github.com/lagom/lagom/issues/849) Update docs to use describeService (Tim Moore)
+* [847](https://github.com/lagom/lagom/issues/847) Warn when describeServices is overridden (Tim Moore)
+* [845](https://github.com/lagom/lagom/issues/845) Fix typo (Yuliana Apaza)
+* [843](https://github.com/lagom/lagom/issues/843) Update sbt-conductr version to 2.3.5 in docs (Ignasi Marimon-Clos)
+* [838](https://github.com/lagom/lagom/issues/838) Travis injects values using env vars, not system props (Ignasi Marimon-Clos)
+* [821](https://github.com/lagom/lagom/issues/821) Run whitesource in Travis CI (Ignasi Marimon-Clos)
+* [833](https://github.com/lagom/lagom/issues/833) Issue #831, updated mentions of Production Suite to Enterprise Suite (Ruth Stento)
+* [830](https://github.com/lagom/lagom/issues/830) Fix support for overriding describeService (Tim Moore)
+* [828](https://github.com/lagom/lagom/issues/828) Add "group: edge" to .travis.yml (Renato Cavalcanti)
+* [823](https://github.com/lagom/lagom/issues/823) deprecate Descriptor#publishing (Elijah Rippeth)
+* [818](https://github.com/lagom/lagom/issues/818) deprecate typo-infused public API by introducing preferred API. (Elijah Rippeth)
+* [810](https://github.com/lagom/lagom/issues/810) Add awaits to CqrsIntegrationTest (Ignasi Marimon-Clos)
+* [812](https://github.com/lagom/lagom/issues/812) fix link broken due to capitalisation (mihbor)
+* [803](https://github.com/lagom/lagom/issues/803) Log project names with dependency problems (Tim Moore)
+
 ## Lagom 1.4.0-M1
 
 *Released 28 June 2017*
