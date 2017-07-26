@@ -1,14 +1,57 @@
-@import com.lightbend.lagom.docs.svg.html._
 @import com.lightbend.lagom.docs.LagomContext
 
 @(implicit context: LagomContext)
 
 @page("FAQ") {
-
+  <div>
     <h1>Frequently Asked Questions</h1>
-    <p>
-    Have a question about Lagom? Post it on ...
-    </p>
+    <blockquote>
+    Have a question about Lagom? We've sorted out a sample of frequently asked questions and provided answers below. If your question is not covered here, try these resources:
+    <ul>
+      <li><a href="//gitter.im/lagom/lagom">Lagom Gitter channel</a>
+      <li><a href="//groups.google.com/forum/#!forum/lagom-framework">lagom-framework mailing list</a> </li>
+      <li><a href="//stackoverflow.com/questions/tagged/lagom">Stackoverflow Lagom questions.</a></li>
+    </blockquote>
 
-  
+
+      <h3>Is Lagom open source or commercial?</h3>  Lagom is
+      completely open source and has a vibrant and growing community. However,
+      you do have the option to purchase a <a href="https://www.lightbend.com/platform/subscription">Lightbend subscription</a> that
+      provides technical support as well as license to use Enterprise Suite,
+      which includes a range of powerful Application Management, Intelligent
+      Monitoring, Enterprise Integration and Advanced Tooling.     </p>
+      <h3>Does Lagom require me to use
+    Cassandra for persistence?</h2> 
+    <p> No. However, Cassandra
+    provides scalability and replication, which is why Lagom uses it by default
+    for storing event journals. We recommend using projections to satisfy the
+    read-side of your application.  For read-side, Lagom supports MySQL,
+    PostreSQL, Oracle, and H2 through JDBC or JPA  see
+    <a href="https://www.lagomframework.com/documentation/1.3.x/java/PersistentEntity.html#Choosing-a-database">Choosing a database</a>
+    and
+    <a href="https://www.lagomframework.com/documentation/1.3.x/java/ReadSideRDBMS.html#Choosing-between-JDBC-and-JPA">Choosing between JDBC and JPA</a>
+    for more information. </p>      
+
+        <h3>In the Java API, why are event interfaces present in
+        both API and impl classes with only slight differences between them?
+      </h3> <p>This is an example of an anti-corruption layer (ACL). In Lagom, we use
+        anti-corruption layers for all API payloads (requests/responses) and
+         published events. While it might seem like unnecessary duplication,
+        using ACLs allows the implementation to be changed in <code>-impl</code> classes without
+        changing the public API. For example, you
+        might want to enrich an internal event with some fields that you need on
+        a read side but you don’t need on the published events.     </p>
+
+        <p>
+        For more information, see Mark Needham's blog on <a href "http://www.markhneedham.com/blog/2009/07/07/domain-driven-design-anti-corruption-layer/"> anti-corruption layers</a>.
+        </p>
+
+        <h3>How can I design a service so that it can read back its own events without seeing events from other services?</h3>
+        
+        <p> One way to do this is to write events using <code>CassandraSession</code>. Each event can have an ID. Then, add a service call that queries Cassandra for
+        events by ID. Remember to de-duplicate events because Kafka will provide at-least-once delivery. If you use a unique
+        event ID as part of the primary key, it will be easy to identify duplicates.     </p>
+
+      
+    </div>
 }
