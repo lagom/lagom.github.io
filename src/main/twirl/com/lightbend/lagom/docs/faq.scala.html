@@ -44,12 +44,6 @@
         For more information, see Mark Needham's blog on <a href="http://www.markhneedham.com/blog/2009/07/07/domain-driven-design-anti-corruption-layer/"> anti-corruption layers</a>.
         </p>
 
-        <h3>How can I design a service so that it can read back its own events without seeing events from other services?</h3>
         
-        <p> One way to do this is to write events using <code>CassandraSession</code>. Each event can have an ID. Then, add a service call that queries Cassandra for
-        events by ID. Remember to de-duplicate events because Kafka will provide at-least-once delivery. If you use a unique
-        event ID as part of the primary key, it will be easy to identify duplicates.     </p>
-
-      
     </div>
 }
