@@ -1,5 +1,28 @@
 # Lagom Change Log
 
+## Lagom 1.3.7
+
+*Released 18 August 2017*
+
+* [937](https://github.com/lagom/lagom/issues/937) Adding links to new Kubernetes guide and improving deployment co… (Ruth Stento)
+* [946](https://github.com/lagom/lagom/issues/946) Reflect the new free version of ConductR (Christopher Hunt)
+* [947](https://github.com/lagom/lagom/issues/947) Update WHITESOURCE_PROJECT_NAME (Tim Moore)
+* [942](https://github.com/lagom/lagom/issues/942) Upgrade to latest sbteclipse (Ben McCann)
+* [898](https://github.com/lagom/lagom/issues/898) Highlight Lagom service clients as a feature (Ruth Stento)
+* [928](https://github.com/lagom/lagom/issues/928) Improved logging settings - defaulting to INFO instead of WARN (Renato Cavalcanti)
+* [922](https://github.com/lagom/lagom/issues/922) Stop servers before completing the Async tests (Ignasi Marimon-Clos)
+* [915](https://github.com/lagom/lagom/issues/915) Saves offset for unhandled events (Renato Cavalcanti)
+* [926](https://github.com/lagom/lagom/issues/926) Update Akka to 2.4.20 (Renato Cavalcanti)
+* [921](https://github.com/lagom/lagom/issues/921) Changed the \< and \> to < and > respectively. (Ashish Tomer)
+* [917](https://github.com/lagom/lagom/issues/917) Fix Log4jLoggerConfigurator (Renato Cavalcanti)
+* [896](https://github.com/lagom/lagom/issues/896) Fix retry logic in the subscription test example (Wayne Wang)
+* [905](https://github.com/lagom/lagom/issues/905) Add EditorConfig file (Renato Cavalcanti)
+* [894](https://github.com/lagom/lagom/issues/894) Implemented akka-http service gateway (James Roper)
+* [888](https://github.com/lagom/lagom/issues/888) Strongly type the Lagom service router (James Roper)
+* [890](https://github.com/lagom/lagom/issues/890) Format code with scalariform (Jules Ivanic)
+* [889](https://github.com/lagom/lagom/issues/889) Fix https://github.com/lagom/lagom/issues/534 (Jules Ivanic)
+* [886](https://github.com/lagom/lagom/issues/886) fixed maven plugun RunMojo (Dominik Kunz)
+
 ## Lagom 1.3.6
 
 *Released 17 July 2017*
