@@ -11,18 +11,63 @@ The Lagom team has released Lagom 1.3.7. For a list of the specific changes in L
 
 As an overview, this release contains the following:
 
-- Update Akka to 2.4.20 - (Security Patch Release)[http://akka.io/blog/news/2017/08/10/akka-2.4.20-released] 
+- Update Akka to 2.4.20 - [Security Patch Release](http://akka.io/blog/news/2017/08/10/akka-2.4.20-released)
 - Changed logging default settings - file appender removed (see details below)
 - Experimental Service Gateway based on akka-http
 - Storing read-side processor offsets for unhandled events
-- Upgrade to latest sbteclipse
-- Automatic load of `LogbackLoggerConfigurator` for Lagom Scala Applications
+- Automatic load of `LogbackLoggerConfigurator` for Lagom Scala Applications. Make sure you remove the [previously-documented](https://github.com/lagom/lagom/issues/534) workaround you might have added for it. 
 - Other small bug fixes and minor enhancements
 
-We decided to remove the existing file appender. A microservices based application must keep its services movable. In that case, it doesn’t make sense to write to files. Instead, your orchestration solution of choice would better capture the _stdout_ and aggregate it. If desired, it can be explicitly added as explained in the [Java Guide](https://www.lagomframework.com/documentation/1.3.x/java/SettingsLogger.html#Configuring-Logging) and [Scala Guide](https://www.lagomframework.com/documentation/1.3.x/scala/SettingsLogger.html#Configuring-Logging)
 
 We've continued to get great pull requests from the Lagom community. Thanks to GitHub users [Dominik Kunz](https://github.com/domkun),
 [Jules Ivanic](https://github.com/guizmaii), [Wayne Wang](https://github.com/WayneWang12), [Ashish Tomer](https://github.com/ashishtomer) and [Ben McCann](https://github.com/benmccann) for your contributions to Lagom 1.3.7!
+
+
+## Logging settings changes
+We have changed different aspects of the production and development logging settings which are explained below. Make sure you take that into consideration to avoid loosing logging information in production environments. 
+
+In case you wish to keep the previous settings, you can add your own custom logging settings as explained in [Java Guide](https://www.lagomframework.com/documentation/1.3.x/java/SettingsLogger.html#Custom-configuration) and [Scala Guide](https://www.lagomframework.com/documentation/1.3.x/scala/SettingsLogger.html#Custom-configuration). The previous settings can be founded [here](https://github.com/lagom/lagom/blob/1.3.6/logback/src/main/resources/logback-lagom-default.xml).
+
+### Logging pattern layout
+The pattern layout have changed to provide more useful information. Development and production environment share almost the same layout. 
+
+* No abbreviations of logger names and stacktraces,
+* Timestamps in UTC with millis precision and in sortable format.  
+  The datetime format for produciton is now: yyyy-MM-dd'T'HH:mm:ss.SSS'Z' in UTC,  
+  for development is: HH:mm:ss.SSS'Z' in UTC (date omitted).
+  
+If you have configured log parsers for the old format, we recommend to adapt it accordingly when upgrading.
+
+### Logging level
+Log level defaults to **INFO** instead of **WARN**. That includes the logging from Play, Akka and Lagom itself as well as the default root logger. 
+
+### File Appenders
+Since microservices should be easily movable and be location-independent, we decided to remove Lagom's file appender. Instead, you can have your orchestration solution capture stdout and aggregate it. If desired, file appenders can be added by providing your own logging configuration as explained in  [Java Guide](https://www.lagomframework.com/documentation/1.3.x/java/SettingsLogger.html#Custom-configuration) and [Scala Guide](https://www.lagomframework.com/documentation/1.3.x/scala/SettingsLogger.html#Custom-configuration).
+
+## Akka-http based Service Gateway (experimental)
+
+We introduced a new `ServiceGateway` implementation based on `akka-http`. This is still experimental and therefore not enabled by default. On the long term, this implementation will replace the current one based on Netty which will be phased out. 
+
+You can enable it by adding the following in your build.
+
+In sbt:
+
+```scala
+lagomServiceGatewayImpl in ThisBuild := "akka-http"
+```
+
+In Maven root project pom:
+
+```xml
+<plugin>
+    <groupId>com.lightbend.lagom</groupId>
+    <artifactId>lagom-maven-plugin</artifactId>
+    <version>${lagom.version}</version>
+    <configuration>
+        <serviceGatewayImpl>akka-http</serviceGatewayImpl>
+    </configuration>
+</plugin>
+```
 
 ## Updating a Lagom project to version 1.3.7
 
