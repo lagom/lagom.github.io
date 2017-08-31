@@ -9,7 +9,7 @@ summary: >
 
 The Lagom team has released Lagom 1.3.8. For a list of the specific changes in Lagom 1.3.8, see the [change log](/changelog.html).
 
-This release [fixes](https://github.com/lagom/lagom/issues/974) a deadlock when shutting down a Lagom process in some scenarios and brings Scala DSL Json Serialization feature parity by providing an opt-in [compressor](https://github.com/lagom/lagom/issues/955) for serialized messages. We also upgraded the underlying logback library.
+This release fixes [a deadlock](https://github.com/lagom/lagom/issues/974) when shutting down a Lagom process in some scenarios and brings Scala DSL Json Serialization feature-parity by providing an opt-in [compressor](https://github.com/lagom/lagom/issues/955) for serialized messages. We also [upgraded](https://github.com/lagom/lagom/issues/968) the underlying logback library.
 
 This release is no different than previous ones and we continue to have great community contributions. Thanks to GitHub users [t-h-a-l-i-s](https://github.com/t-h-a-l-i-s) and [Jimin Hsieh](https://github.com/jiminhsieh).
 
