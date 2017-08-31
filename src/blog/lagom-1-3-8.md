@@ -18,7 +18,7 @@ This release is no different than previous ones and we continue to have great co
 
 Compression, as described here, is only used for persistent events, persistent snapshots and remote messages within the service cluster. It is not used for messages that are serialized in the external API of the service.
 
-JSON can be rather verbose and for large messages it can be beneficial to enable compression. That is done by using the `JsonSerializer.compressed[T]` builder method instead of the `JsonSerializer.apply[T]` (as shown in the example snippet above):
+JSON can be rather verbose and for large messages it can be beneficial to enable compression. That is done by using the `JsonSerializer.compressed[T]` builder method instead of the `JsonSerializer.apply[T]`:
 
 ```
 import com.lightbend.lagom.scaladsl.playjson.{JsonSerializer, JsonSerializerRegistry}
