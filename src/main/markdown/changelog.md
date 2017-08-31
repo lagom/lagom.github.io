@@ -1,5 +1,17 @@
 # Lagom Change Log
 
+## Lagom 1.3.8
+
+*Released 30 August 2017*
+
+* [968](https://github.com/lagom/lagom/issues/968) Bumps Logback to 1.1.7 (Ignasi Marimon-Clos)
+* [974](https://github.com/lagom/lagom/issues/974) Improves cluster termination to avoid deadlock (Ignasi Marimon-Clos)
+* [969](https://github.com/lagom/lagom/issues/969) Corrected service name (t-h-a-l-i-s)
+* [970](https://github.com/lagom/lagom/issues/970) Fixed inconsistency in code example (t-h-a-l-i-s)
+* [955](https://github.com/lagom/lagom/issues/955) Adds JsonSerializer.compressed to conditionally compress when payload is too big (Ignasi Marimon-Clos)
+* [948](https://github.com/lagom/lagom/issues/948) Patch CONTRIBUTING.md (Jimin Hsieh)
+
+
 ## Lagom 1.3.7
 
 *Released 18 August 2017*
@@ -77,7 +89,7 @@
 * [567](https://github.com/lagom/lagom/issues/567) Update version on master to 1.4.0-SNAPSHOT
 * [560](https://github.com/lagom/lagom/issues/560) Increase timeouts in CqrsIntegrationTest
 * [504](https://github.com/lagom/lagom/issues/504) [Minor] Code refactored (thanks [himani1](https://github.com/himani1))
- 
+
 
 ## Lagom 1.3.5
 
@@ -86,9 +98,9 @@
 * [794](https://github.com/lagom/lagom/issues/794) Bumps akka to 2.4.19 as suggested by Akka team
 * [796](https://github.com/lagom/lagom/issues/796) Update jboss-logging to 3.3.0.Final
 * [789](https://github.com/lagom/lagom/issues/789) Updates PlayJsonSerializer to first perform the class rename migration and then look up the transformation migration by the new class name (thanks [@crfeliz](https://github.com/crfeliz))
-* [781](https://github.com/lagom/lagom/issues/781) Register a shutdown hook for ActorSytem in scaladsl lagom client 
+* [781](https://github.com/lagom/lagom/issues/781) Register a shutdown hook for ActorSytem in scaladsl lagom client
 * [778](https://github.com/lagom/lagom/issues/778) Doc Fix: Update MessageBrokerApi.md  documentation (thanks [@crfeliz](https://github.com/crfeliz))
-* [776](https://github.com/lagom/lagom/issues/776) Align maven archetype with lagom-java.g8 
+* [776](https://github.com/lagom/lagom/issues/776) Align maven archetype with lagom-java.g8
 * [768](https://github.com/lagom/lagom/issues/768) Fixes Flaky Kafka tests
 * [765](https://github.com/lagom/lagom/issues/765) Use appropriate offset in topic build op  
 * [757](https://github.com/lagom/lagom/issues/757) Avoid relying on default contact-point settings
@@ -114,7 +126,7 @@
 * [729](https://github.com/lagom/lagom/issues/729) Ignores lagomCassandraPort when embedded C* is disabled
 * [715](https://github.com/lagom/lagom/issues/715) Removes obsolete 'cassandra-config' from mvn archetype
 * [716](https://github.com/lagom/lagom/issues/716) Improves sample tests to prevent flaky-ness
-* [745](https://github.com/lagom/lagom/issues/745) Use https links where possible in documentation 
+* [745](https://github.com/lagom/lagom/issues/745) Use https links where possible in documentation
 * [725](https://github.com/lagom/lagom/issues/725) Update more links to HTTPS
 
 
