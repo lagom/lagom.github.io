@@ -1,5 +1,30 @@
 # Lagom Change Log
 
+## Lagom 1.4.0-M2
+
+*Released 5 September 2017*
+
+* [973](https://github.com/lagom/lagom/issues/973) Update akka-persistence-jdbc to 3.0.0 (Renato Cavalcanti)
+* [979](https://github.com/lagom/lagom/issues/979) Sets akka.cluster.jmx.multi-mbeans-in-same-jvm = on in Dev mode (fixes #906) (Renato Cavalcanti)
+* [961](https://github.com/lagom/lagom/issues/961) Document development service gateway settings (Ignasi Marimon-Clos)
+* [963](https://github.com/lagom/lagom/issues/963) Update AkkaStreamKafkaVersion and KafkaVersion (Renato Cavalcanti)
+* [958](https://github.com/lagom/lagom/issues/958) Adds docs on compression for scaladsl JSON serialization (Ignasi Marimon-Clos)
+* [959](https://github.com/lagom/lagom/issues/959) akka-http based ServiceGateway as default (resolves #912) (Renato Cavalcanti)
+* [934](https://github.com/lagom/lagom/issues/934) As new `lagomInfrastructureServices` was imported, remove old infrastructure tasks. (Wayne Wang)
+* [956](https://github.com/lagom/lagom/issues/956) upgrades AkkaStreamKafkaVersion and KafkaVersion (resolves #579) (Renato Cavalcanti)
+* [945](https://github.com/lagom/lagom/issues/945) Bumps play to 2.6.3 (Ignasi Marimon-Clos)
+* [927](https://github.com/lagom/lagom/issues/927) Update Akka to 2.5.4 (Renato Cavalcanti)
+* [893](https://github.com/lagom/lagom/issues/893) Documentation/fix metrics docs (Elijah Rippeth)
+* [878](https://github.com/lagom/lagom/issues/878) Rework the Kafka tests (Tim Moore)
+* [900](https://github.com/lagom/lagom/issues/900) Support multiple URIs to ServiceLocator (Renato Cavalcanti)
+* [880](https://github.com/lagom/lagom/issues/880) Update play 2.6.2 (Marcos Pereira)
+* [881](https://github.com/lagom/lagom/issues/881) Refactor/deprecate play config (Elijah Rippeth)
+* [841](https://github.com/lagom/lagom/issues/841) Expose CircuitBreakers as a public API (Renato Cavalcanti)
+* [868](https://github.com/lagom/lagom/issues/868) Clean whitelist (Ignasi Marimon-Clos)
+* [879](https://github.com/lagom/lagom/issues/879) Add missing space in docs (Yuliana Apaza)
+* [867](https://github.com/lagom/lagom/issues/867) Update Migration14.md (surya prakash singh)
+* [856](https://github.com/lagom/lagom/issues/856) Update 1.4.x migration guides with Akka info (Ignasi Marimon-Clos)
+
 ## Lagom 1.3.8
 
 *Released 30 August 2017*
