@@ -29,4 +29,4 @@ The Lagom 1.4.x series is not focused on providing new, big features. Instead, i
 
 ### Community Contributions
 
-This release includes great contributions from the community. Thanks Wayne Wang, Elijah Rippeth, Yuliana Apaza and surya prakash singh. Special thanks if this was your [first contribution](/get-involved.html).
+This release includes great contributions from the community. Thanks Wayne Wang, Elijah Rippeth, Yuliana Apaza and Surya Prakash Singh. Special thanks if this was your [first contribution](/get-involved.html).
