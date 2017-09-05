@@ -16,17 +16,15 @@ Unfortunately, we've decided that [supporting sbt 1.0](https://github.com/lagom/
 
 ### Migrating from other versions
 
-The Lagom 1.4.x series is not focused on providing new, big features. Instead, it provides a collection of small improvements. We have included in the [change log](/changelog.html) a list of changes _exclusive_ to this release but that list is miss-leading:
+The Lagom 1.4.x series is not focused on providing new, big features. Instead, it provides a collection of small improvements.
 
- * If you are migrating into Lagom 1.4.0-M2 from 1.4.0-M1 you should have a look at the changes introduced in Lagom version 1.3.6, 1.3.7, 1.3.8 and some other improvements targeting Lagom 1.3.9. The migration guide to 1.4 ([java](/documentation/1.4.x/java/Migration14.html) or [scala](/documentation/1.4.x/scala/Migration14.html)) has also been improved, don't forget to review it.
- * If you are migrating into Lagom 1.4.0-M2 from a version in the Lagom 1.3.x series you should have a look at changes introduced in latest versions of the Lagom 1.3.x series and specially you should read the migration guide to 1.4 ([java](/documentation/1.4.x/java/Migration14.html) or [scala](/documentation/1.4.x/scala/Migration14.html)).
+ * If you are migrating into Lagom 1.4.0-M2 from 1.4.0-M1 you should have a look at the release announcements for Lagom versions [1.3.6](/blog/lagom-1-3-6.html), [1.3.7](/blog/lagom-1-3-7.html), and [1.3.8](/blog/lagom-1-3-9.html). The migration guide to 1.4 ([java](/documentation/1.4.x/java/Migration14.html) or [scala](/documentation/1.4.x/scala/Migration14.html)) has also been improved, don't forget to review it.
+ * If you are migrating into Lagom 1.4.0-M2 from a version in the Lagom 1.3.x series you should have a look at changes introduced in latest versions of the Lagom 1.3.x series and especially you should read the migration guide to 1.4 ([java](/documentation/1.4.x/java/Migration14.html) or [scala](/documentation/1.4.x/scala/Migration14.html)).
 
 ### Improvements
 
-Here's a few improvements only available since Lagom 1.4.0-M2 (for other improvements, please review the previous section and check the [change log](/changelog.html) depending on your migration path):
-
- * Akka-HTTP based Service Gateway. The embedded Service Gateway used in Development mode is now implemented using Akka-HTTP. It is possible to switch back to the old, Netty-based implementation. Check out the [docs](/documentation/1.4.x/java/ServiceLocator.html#Default-gateway-implementation) for more details.
- * Service Locators may return many URIs. If you have implemented your own Service Locator you may use the new API so that a request for a service returns not one URI but many. This was specifically included to connect to clustered services where the service SDK expects a collection of hosts and deals with the balancing internally (e.g. Cassandra or Kafka).
+ * The Akka-HTTP based Service Gateway [introduced in Lagom 1.3.7](/blog/lagom-1-3-7.html) is enabled by default. It is possible to switch back to the old, Netty-based implementation. Please [raise an issue](https://github.com/lagom/lagom/issues/new) to let us know if you need to do this. The Netty-based implementation will be removed in a future version of Lagom, but we want to fix any regressions first. Check out the [docs](/documentation/1.4.x/java/ServiceLocator.html#Default-gateway-implementation) for more details.
+ * Service Locators may return many URIs. If you have implemented your own Service Locator you may override the new `locateAll` methods so that a request for a service location returns not just one URI, but many. This was specifically included to connect to clustered services where the service SDK expects a collection of hosts and deals with the balancing internally (e.g. Cassandra or Kafka).
  * A new [`CircuitBreakersPanel`](https://github.com/lagom/lagom/issues/841) replaces the previously internal, now deprecated `CircuitBreakers`. This change is especially relevant for Service Locator implementors so they have access to the underlying API. A `CircuitBreakersPanel` instance holds all the Circuit Breakers for the current instance to connect to all the remote services.
 
 ### Community Contributions
