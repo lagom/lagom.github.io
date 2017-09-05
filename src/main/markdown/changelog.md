@@ -4,6 +4,8 @@
 
 *Released 5 September 2017*
 
+### Changes only in 1.4.0-M2
+
 * [973](https://github.com/lagom/lagom/issues/973) Update akka-persistence-jdbc to 3.0.0 (Renato Cavalcanti)
 * [979](https://github.com/lagom/lagom/issues/979) Sets akka.cluster.jmx.multi-mbeans-in-same-jvm = on in Dev mode (fixes #906) (Renato Cavalcanti)
 * [961](https://github.com/lagom/lagom/issues/961) Document development service gateway settings (Ignasi Marimon-Clos)
@@ -25,6 +27,41 @@
 * [867](https://github.com/lagom/lagom/issues/867) Update Migration14.md (surya prakash singh)
 * [856](https://github.com/lagom/lagom/issues/856) Update 1.4.x migration guides with Akka info (Ignasi Marimon-Clos)
 
+### Changes from 1.4.0-M1 also included in the 1.3.x series
+
+* [989](https://github.com/lagom/lagom/issues/989) Remove copyright from files in Maven archetype (Tim Moore)
+* [988](https://github.com/lagom/lagom/issues/988) Update sbt to 0.13.16 (Tim Moore)
+* [987](https://github.com/lagom/lagom/issues/987) Silence "Resolving" messages in the build (Tim Moore)
+* [969](https://github.com/lagom/lagom/issues/969) Corrected service name (t-h-a-l-i-s)
+* [970](https://github.com/lagom/lagom/issues/970) Fixed inconsistency in code example (t-h-a-l-i-s)
+* [952](https://github.com/lagom/lagom/issues/952) Look up a migration using only the class name instead of the manifest containing the version as well (Olivier Deckers)
+* [934](https://github.com/lagom/lagom/issues/934) As new `lagomInfrastructureServices` was imported, remove old infrastructure tasks. (Wayne Wang)
+* [955](https://github.com/lagom/lagom/issues/955) Adds JsonSerializer.compressed to conditionally compress when payload is too big (Ignasi Marimon-Clos)
+* [948](https://github.com/lagom/lagom/issues/948) Patch CONTRIBUTING.md (Jimin Hsieh)
+* [937](https://github.com/lagom/lagom/issues/937) Add links to new Kubernetes guide and improve deployment content (Ruth Stento)
+* [939](https://github.com/lagom/lagom/issues/939) Fix ClassNotFoundException for SizeAndTimeBasedRollingPolicy (Renato Cavalcanti)
+* [946](https://github.com/lagom/lagom/issues/946) Reflect the new free version of ConductR (Christopher Hunt)
+* [942](https://github.com/lagom/lagom/issues/942) Upgrade to latest sbteclipse (Ben McCann)
+* [928](https://github.com/lagom/lagom/issues/928) Improved logging settings - defaulting to INFO instead of WARN (Renato Cavalcanti)
+* [922](https://github.com/lagom/lagom/issues/922) Stop servers before completing the Async tests (Ignasi Marimon-Clos)
+* [915](https://github.com/lagom/lagom/issues/915) Saves offset for unhandled events (Renato Cavalcanti)
+* [921](https://github.com/lagom/lagom/issues/921) Changed the \< and \> to < and > respectively. (Ashish Tomer)
+* [914](https://github.com/lagom/lagom/issues/914) Move `auto.offset.reset` to Kafka client (Renato Cavalcanti)
+* [892](https://github.com/lagom/lagom/issues/892) Fixes log4j2 configuration files and documentation (Renato Cavalcanti)
+* [896](https://github.com/lagom/lagom/issues/896) Fix retry logic in the subscription test example (Wayne Wang)
+* [905](https://github.com/lagom/lagom/issues/905) Add EditorConfig file (Renato Cavalcanti)
+* [898](https://github.com/lagom/lagom/issues/898) Highlight Lagom service clients as a feature (Ruth Stento)
+* [894](https://github.com/lagom/lagom/issues/894) Implemented akka-http service gateway (James Roper)
+* [888](https://github.com/lagom/lagom/issues/888) Strongly type the Lagom service router (James Roper)
+* [890](https://github.com/lagom/lagom/issues/890) Format code with scalariform (Jules Ivanic)
+* [889](https://github.com/lagom/lagom/issues/889) Fix https://github.com/lagom/lagom/issues/534 (Jules Ivanic)
+* [886](https://github.com/lagom/lagom/issues/886) fixed maven plugun RunMojo (Dominik Kunz)
+* [877](https://github.com/lagom/lagom/issues/877) Fix the match for failed futures (Tim Moore)
+* [873](https://github.com/lagom/lagom/issues/873) Add method completedStatements with varargs (Yuliana Apaza)
+* [865](https://github.com/lagom/lagom/issues/865) Map Descriptor in ServiceClientInvocationHandler (Edouard Kaiser)
+* [849](https://github.com/lagom/lagom/issues/849) Update docs to use describeService (Tim Moore)
+* [847](https://github.com/lagom/lagom/issues/847) Warn when describeServices is overridden (Tim Moore)
+
 ## Lagom 1.3.8
 
 *Released 30 August 2017*
@@ -35,7 +72,6 @@
 * [970](https://github.com/lagom/lagom/issues/970) Fixed inconsistency in code example (t-h-a-l-i-s)
 * [955](https://github.com/lagom/lagom/issues/955) Adds JsonSerializer.compressed to conditionally compress when payload is too big (Ignasi Marimon-Clos)
 * [948](https://github.com/lagom/lagom/issues/948) Patch CONTRIBUTING.md (Jimin Hsieh)
-
 
 ## Lagom 1.3.7
 
@@ -127,10 +163,10 @@
 * [778](https://github.com/lagom/lagom/issues/778) Doc Fix: Update MessageBrokerApi.md  documentation (thanks [@crfeliz](https://github.com/crfeliz))
 * [776](https://github.com/lagom/lagom/issues/776) Align maven archetype with lagom-java.g8
 * [768](https://github.com/lagom/lagom/issues/768) Fixes Flaky Kafka tests
-* [765](https://github.com/lagom/lagom/issues/765) Use appropriate offset in topic build op  
+* [765](https://github.com/lagom/lagom/issues/765) Use appropriate offset in topic build op
 * [757](https://github.com/lagom/lagom/issues/757) Avoid relying on default contact-point settings
 * [751](https://github.com/lagom/lagom/issues/751) Update jackson reference.conf to use concatenation (thanks [@jaiew](https://github.com/jaiew))
-* [752](https://github.com/lagom/lagom/issues/752) Allow Kafka consumers to batch messages  
+* [752](https://github.com/lagom/lagom/issues/752) Allow Kafka consumers to batch messages
 * [799](https://github.com/lagom/lagom/issues/799) Bumps APC version to 0.29
 * [777](https://github.com/lagom/lagom/issues/777) Plug Circuit breaker to Java ConfigurationServiceLocator (thanks [@edouardKaiser](https://github.com/edouardKaiser))
 * [782](https://github.com/lagom/lagom/issues/782) Actions.empty should be publicly accessible (thanks [@guizmaii](https://github.com/guizmaii))
