@@ -30,7 +30,7 @@ You can handle data persistence any way you like in a Lagom service, but we stro
 
 See more in the Lagom documentation on [Managing data persistence](/documentation/current/java/ES_CQRS.html) and [Advantages of Event Sourcing](/documentation/current/java/ESAdvantage.html).
 
-## Can I serialization methods other than JSON?
+## Can I use serialization methods other than JSON?
 
 Yes, Lagom supports extensible serialization, both for messages transmitted between different services and for internal messages and persistent data used within a service. JSON is supported by default, as it is simple and well understood. Services that require higher performance or more compact data can use alternatives such as [Protocol Buffers](https://developers.google.com/protocol-buffers/), [Apache Avro](http://avro.apache.org/), [Kryo](https://github.com/EsotericSoftware/kryo), or any other serializer that you choose.
 
