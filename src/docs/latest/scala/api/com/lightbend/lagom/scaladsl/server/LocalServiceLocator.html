@@ -53,7 +53,7 @@
 provide the local service locator.
 </p></div><dl class="attributes block"> <dt>Source</dt><dd><a href="https://github.com/lagom/lagom/tree/master//service/scaladsl/server/src/main/scala/com/lightbend/lagom/scaladsl/server/LagomApplicationLoader.scala" target="_blank">LagomApplicationLoader.scala</a></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><a href="../client/CircuitBreakerComponents.html" class="extype" name="com.lightbend.lagom.scaladsl.client.CircuitBreakerComponents">CircuitBreakerComponents</a>, <a href="RequiresLagomServicePort.html" class="extype" name="com.lightbend.lagom.scaladsl.server.RequiresLagomServicePort">RequiresLagomServicePort</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><a href="../client/CircuitBreakerComponents.html" class="extype" name="com.lightbend.lagom.scaladsl.client.CircuitBreakerComponents">CircuitBreakerComponents</a>, <a href="../api/LagomConfigComponent.html" class="extype" name="com.lightbend.lagom.scaladsl.api.LagomConfigComponent">LagomConfigComponent</a>, <a href="RequiresLagomServicePort.html" class="extype" name="com.lightbend.lagom.scaladsl.server.RequiresLagomServicePort">RequiresLagomServicePort</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -71,7 +71,7 @@ provide the local service locator.
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="com.lightbend.lagom.scaladsl.server.LocalServiceLocator"><span>LocalServiceLocator</span></li><li class="in" name="com.lightbend.lagom.scaladsl.client.CircuitBreakerComponents"><span>CircuitBreakerComponents</span></li><li class="in" name="com.lightbend.lagom.scaladsl.server.RequiresLagomServicePort"><span>RequiresLagomServicePort</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="com.lightbend.lagom.scaladsl.server.LocalServiceLocator"><span>LocalServiceLocator</span></li><li class="in" name="com.lightbend.lagom.scaladsl.client.CircuitBreakerComponents"><span>CircuitBreakerComponents</span></li><li class="in" name="com.lightbend.lagom.scaladsl.api.LagomConfigComponent"><span>LagomConfigComponent</span></li><li class="in" name="com.lightbend.lagom.scaladsl.server.RequiresLagomServicePort"><span>RequiresLagomServicePort</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
                 <span class="filtertype">Implicitly<br />
@@ -149,7 +149,7 @@ provide the local service locator.
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="com.lightbend.lagom.scaladsl.server.LocalServiceLocator">LocalServiceLocator</a> → <a href="../client/CircuitBreakerComponents.html" class="extype" name="com.lightbend.lagom.scaladsl.client.CircuitBreakerComponents">CircuitBreakerComponents</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="com.lightbend.lagom.scaladsl.server.LocalServiceLocator">LocalServiceLocator</a> → <a href="../api/LagomConfigComponent.html" class="extype" name="com.lightbend.lagom.scaladsl.api.LagomConfigComponent">LagomConfigComponent</a></dd></dl></div>
     </li><li name="com.lightbend.lagom.scaladsl.server.LocalServiceLocator#executionContext" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="executionContext:scala.concurrent.ExecutionContext"></a>
       <a id="executionContext:ExecutionContext"></a>
@@ -376,6 +376,23 @@ provide the local service locator.
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="com.lightbend.lagom.scaladsl.api.LagomConfigComponent#config" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="config:com.typesafe.config.Config"></a>
+      <a id="config:Config"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">config</span><span class="result">: <span class="extype" name="com.typesafe.config.Config">Config</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#com.lightbend.lagom.scaladsl.server.LocalServiceLocator@config:com.typesafe.config.Config" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../api/LagomConfigComponent.html" class="extype" name="com.lightbend.lagom.scaladsl.api.LagomConfigComponent">LagomConfigComponent</a></dd></dl></div>
     </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a>
       <a id="ensuring((LocalServiceLocator)⇒Boolean,⇒Any):LocalServiceLocator"></a>
@@ -831,6 +848,8 @@ provide the local service locator.
         <div id="inheritedMembers">
         <div class="parent" name="com.lightbend.lagom.scaladsl.client.CircuitBreakerComponents">
               <h3>Inherited from <a href="../client/CircuitBreakerComponents.html" class="extype" name="com.lightbend.lagom.scaladsl.client.CircuitBreakerComponents">CircuitBreakerComponents</a></h3>
+            </div><div class="parent" name="com.lightbend.lagom.scaladsl.api.LagomConfigComponent">
+              <h3>Inherited from <a href="../api/LagomConfigComponent.html" class="extype" name="com.lightbend.lagom.scaladsl.api.LagomConfigComponent">LagomConfigComponent</a></h3>
             </div><div class="parent" name="com.lightbend.lagom.scaladsl.server.RequiresLagomServicePort">
               <h3>Inherited from <a href="RequiresLagomServicePort.html" class="extype" name="com.lightbend.lagom.scaladsl.server.RequiresLagomServicePort">RequiresLagomServicePort</a></h3>
             </div><div class="parent" name="scala.AnyRef">

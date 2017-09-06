@@ -52,7 +52,7 @@
           <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Components for using the round robin service locator.
 </p></div><dl class="attributes block"> <dt>Source</dt><dd><a href="https://github.com/lagom/lagom/tree/master//service/scaladsl/client/src/main/scala/com/lightbend/lagom/scaladsl/client/ServiceLocators.scala" target="_blank">ServiceLocators.scala</a></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><a href="CircuitBreakerComponents.html" class="extype" name="com.lightbend.lagom.scaladsl.client.CircuitBreakerComponents">CircuitBreakerComponents</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><a href="CircuitBreakerComponents.html" class="extype" name="com.lightbend.lagom.scaladsl.client.CircuitBreakerComponents">CircuitBreakerComponents</a>, <a href="../api/LagomConfigComponent.html" class="extype" name="com.lightbend.lagom.scaladsl.api.LagomConfigComponent">LagomConfigComponent</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -70,7 +70,7 @@
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="com.lightbend.lagom.scaladsl.client.RoundRobinServiceLocatorComponents"><span>RoundRobinServiceLocatorComponents</span></li><li class="in" name="com.lightbend.lagom.scaladsl.client.CircuitBreakerComponents"><span>CircuitBreakerComponents</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="com.lightbend.lagom.scaladsl.client.RoundRobinServiceLocatorComponents"><span>RoundRobinServiceLocatorComponents</span></li><li class="in" name="com.lightbend.lagom.scaladsl.client.CircuitBreakerComponents"><span>CircuitBreakerComponents</span></li><li class="in" name="com.lightbend.lagom.scaladsl.api.LagomConfigComponent"><span>LagomConfigComponent</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
                 <span class="filtertype">Implicitly<br />
@@ -132,7 +132,7 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="CircuitBreakerComponents.html" class="extype" name="com.lightbend.lagom.scaladsl.client.CircuitBreakerComponents">CircuitBreakerComponents</a></dd></dl></div>
-    </li><li name="com.lightbend.lagom.scaladsl.client.CircuitBreakerComponents#configuration" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+    </li><li name="com.lightbend.lagom.scaladsl.api.LagomConfigComponent#configuration" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="configuration:play.api.Configuration"></a>
       <a id="configuration:Configuration"></a>
       <h4 class="signature">
@@ -148,7 +148,7 @@
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="CircuitBreakerComponents.html" class="extype" name="com.lightbend.lagom.scaladsl.client.CircuitBreakerComponents">CircuitBreakerComponents</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../api/LagomConfigComponent.html" class="extype" name="com.lightbend.lagom.scaladsl.api.LagomConfigComponent">LagomConfigComponent</a></dd></dl></div>
     </li><li name="com.lightbend.lagom.scaladsl.client.CircuitBreakerComponents#executionContext" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="executionContext:scala.concurrent.ExecutionContext"></a>
       <a id="executionContext:ExecutionContext"></a>
@@ -375,6 +375,23 @@
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="com.lightbend.lagom.scaladsl.api.LagomConfigComponent#config" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="config:com.typesafe.config.Config"></a>
+      <a id="config:Config"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">config</span><span class="result">: <span class="extype" name="com.typesafe.config.Config">Config</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#com.lightbend.lagom.scaladsl.client.RoundRobinServiceLocatorComponents@config:com.typesafe.config.Config" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../api/LagomConfigComponent.html" class="extype" name="com.lightbend.lagom.scaladsl.api.LagomConfigComponent">LagomConfigComponent</a></dd></dl></div>
     </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a>
       <a id="ensuring((RoundRobinServiceLocatorComponents)⇒Boolean,⇒Any):RoundRobinServiceLocatorComponents"></a>
@@ -794,6 +811,8 @@
         <div id="inheritedMembers">
         <div class="parent" name="com.lightbend.lagom.scaladsl.client.CircuitBreakerComponents">
               <h3>Inherited from <a href="CircuitBreakerComponents.html" class="extype" name="com.lightbend.lagom.scaladsl.client.CircuitBreakerComponents">CircuitBreakerComponents</a></h3>
+            </div><div class="parent" name="com.lightbend.lagom.scaladsl.api.LagomConfigComponent">
+              <h3>Inherited from <a href="../api/LagomConfigComponent.html" class="extype" name="com.lightbend.lagom.scaladsl.api.LagomConfigComponent">LagomConfigComponent</a></h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">

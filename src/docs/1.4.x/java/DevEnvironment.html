@@ -67,12 +67,14 @@ startElasticSearch in ThisBuild := {
 <!-- copied this section to concepts, perhaps it can be removed later -->
 <p>What&rsquo;s happening behind the scenes when you <code>runAll</code>?</p>
 <ul>
-  <li>an embedded Service Locator is started</li>
-  <li>a Cassandra server is started</li>
-  <li>a Kafka server is started</li>
+  <li>an embedded <a href="ServiceLocator.html">Service Locator</a> is started</li>
+  <li>an embedded <a href="ServiceLocator.html#Service-Gateway">Service Gateway</a> is started</li>
+  <li>a <a href="CassandraServer.html">Cassandra server</a> is started</li>
+  <li>a <a href="KafkaServer.html">Kafka server</a> is started</li>
   <li>your services start
     <ul>
       <li>&hellip;and register with the Service Locator</li>
+      <li>&hellip;and register the publicly accessible paths in the Service Gateway</li>
     </ul>
   </li>
 </ul>

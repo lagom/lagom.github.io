@@ -1,6 +1,6 @@
 <h1 id="Lightbend-ConductR"><a class="section-marker" href="#Lightbend-ConductR">§</a>Lightbend ConductR</h1>
 <p>ConductR is a container orchestration tool with the main goal of delivering operational productivity. ConductR is also designed to host your Lagom services with resilience.</p>
-<p>ConductR is free for development usage and comes with a &ldquo;sandbox&rdquo; so that you can run ConductR locally and test your services. For more information on ConductR go to:</p>
+<p>ConductR is free for using on up to 3 nodes and also comes with a &ldquo;sandbox&rdquo; so that you can run it locally to test your services. For more information on ConductR go to:</p>
 <ul>
   <li><a href="https://www.lightbend.com/products/conductr">ConductR product page</a></li>
   <li><a href="https://conductr.lightbend.com">ConductR documentation</a></li>
@@ -14,17 +14,7 @@
   <li>Load and run services during and outside of development</li>
 </ul>
 <p>If you&rsquo;d like to know more about our commercial license then <a href="https://www.lightbend.com/company/contact">please contact us</a>.</p><h2 id="Installing-ConductR-sandbox"><a class="section-marker" href="#Installing-ConductR-sandbox">§</a>Installing ConductR sandbox</h2>
-<p>The ConductR sandbox is a utility to easily create a ConductR cluster locally. To run ConductR on your development machine follow the instructions on the <a href="https://www.lightbend.com/product/conductr/developer">ConductR developer page</a> up to the section <strong>Configure address aliases</strong>. We will run the sandbox later on in this guide. Note that in order to access this page you need to login with your Lightbend account. If you don&rsquo;t have an account yet, head out to the <a href="https://www.lightbend.com/account/register">Sign Up page</a> and create a free account.</p>
-<p>Verify the successful installation of the <code>conductr-cli</code> by running the <code>conduct</code> command within the terminal:</p>
-<pre class="prettyprint"><code class="language-console">$ conduct
-usage: conduct [-h]
-               {version,info,services,acls,load,run,stop,unload,events,logs}
-               ...
-</code></pre>
-<p>You can also verify the successful installation of the ConductR sandbox by running <code>sandbox</code> within the terminal:</p>
-<pre class="prettyprint"><code class="language-console">$ sandbox
-usage: sandbox [-h] {run,debug,stop,init} ...
-</code></pre><h2 id="Using-ConductR-with-your-build"><a class="section-marker" href="#Using-ConductR-with-your-build">§</a>Using ConductR with your build</h2>
+<p>We have made it super easy to get started with ConductR as part of the Lightbend Enterprise Suite getting started experience. Please <a href="https://www.lightbend.com/platform/enterprise-suite">visit the Lightbend Enterprise Suite getting started page</a> and then return here.</p><h2 id="Using-ConductR-with-your-build"><a class="section-marker" href="#Using-ConductR-with-your-build">§</a>Using ConductR with your build</h2>
 <p>To use ConductR within sbt, add the <a href="https://github.com/typesafehub/sbt-conductr">sbt-conductr plugin</a> to your <code>project/plugins.sbt</code>:</p>
 <pre class="prettyprint"><code class="language-sbt">addSbtPlugin(&quot;com.lightbend.conductr&quot; % &quot;sbt-conductr&quot; % &quot;2.3.5&quot;)</code></pre>
 <p>sbt-conductr adds several commands to the sbt console:</p>

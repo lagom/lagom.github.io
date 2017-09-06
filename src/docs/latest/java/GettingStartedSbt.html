@@ -1,6 +1,6 @@
 <h1 id="Creating-and-running-Hello-World-with-sbt"><a class="section-marker" href="#Creating-and-running-Hello-World-with-sbt">§</a>Creating and running Hello World with sbt</h1>
-<p>A Lagom system is typically made up of a set of sbt builds, with each build containing multiple services. The easiest way to get started with sbt is to create a new build using the sbt Giter8 <code>lagom</code> template. </p>
-<p>The <code>lagom-java</code> template uses the <code>.sbtopts</code> file to increase the memory used by the <code>JVM</code> when starting your project. See <a href="JVMMemoryOnDev.html">Increase Memory in sbt</a> for other ways to configure memory usage. </p>
+<p>A Lagom system is typically made up of a set of sbt builds, with each build containing multiple services. The easiest way to get started with sbt is to create a new build using the sbt Giter8 <code>lagom</code> template.</p>
+<p>The <code>lagom-java</code> template uses the <code>.sbtopts</code> file to increase the memory used by the <code>JVM</code> when starting your project. See <a href="JVMMemoryOnDev.html">Increase Memory in sbt</a> for other ways to configure memory usage.</p>
 <p>Follow these steps to create your first Lagom build:</p>
 <ol>
   <li><a href="#Create-a-new-Lagom-build">Create a new Lagom build</a></li>
@@ -14,7 +14,7 @@
   <p>Open a console and change into the directory you selected for your project.</p></li>
   <li>
   <p>Enter the following command to invoke <code>sbt new</code> using the Lagom Giter8 template:<br/> <code>
-   sbt -Dsbt.version=0.13.15 new https://github.com/lagom/lagom-java.g8
+   sbt -Dsbt.version=0.13.16 new https://github.com/lagom/lagom-java.g8
 </code></p></li>
   <li>The sbt Lagom template prompts for the following parameters. Press <code>Enter</code> to accept the defaults or specify your own values:</li>
 </ol>
@@ -59,4 +59,4 @@ sbt
 <p>You can verify that the services are indeed up and running by invoking a service endpoint from any HTTP client, such as a browser:</p>
 <pre class="prettyprint"><code>http://localhost:9000/api/hello/World
 </code></pre>
-<p>The service returns the message, <code>Hello, World!</code>. Congratulations! You&rsquo;ve created and run your first Lagom system. </p>
+<p>The service returns the message, <code>Hello, World!</code>. Congratulations! You&rsquo;ve created and run your first Lagom system.</p>

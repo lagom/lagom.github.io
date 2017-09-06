@@ -18,7 +18,7 @@ Consider the sample system below:
 
 ![Lagom project structure](resources/guide/build/lagom-project-structure.png)
 
-This system has two services, one called `hello`, and one called `hello-stream`.  Each service has two sbt projects defined, an API project, `hello-api` and `hello-stream-api`, and an implementation project, `hello-impl` and `hello-stream-impl`.  Additionally, `hello-stream-impl` depends on `hello-api`, and uses that to invoke calls on `hello-stream`.
+This system has two services, one called `hello`, and one called `hello-stream`.  Each service has two sbt projects defined, an API project, `hello-api` and `hello-stream-api`, and an implementation project, `hello-impl` and `hello-stream-impl`.  Additionally, `hello-stream-impl` depends on `hello-api`, and uses that to invoke calls on `hello`.
 
 * [Defining a build in Maven](#Defining-a-build-in-Maven)
 * [Defining a build in sbt](#Defining-a-build-in-sbt)
@@ -27,7 +27,7 @@ This system has two services, one called `hello`, and one called `hello-stream`.
 
 ### Configuring the root project
 
-In Lagom, it is typical to use a multi module build. The Lagom maven plugin will generally be configured in the root project, which can be done by adding it to the `\<plugins\>` section of your `pom.xml`:
+In Lagom, it is typical to use a multi module build. The Lagom maven plugin will generally be configured in the root project, which can be done by adding it to the `<plugins>` section of your `pom.xml`:
 
 ```xml
 <plugin>

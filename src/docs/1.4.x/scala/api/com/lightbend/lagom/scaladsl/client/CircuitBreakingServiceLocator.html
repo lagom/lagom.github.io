@@ -125,7 +125,7 @@ handle failures in some way.
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name deprecated" title="Deprecated: (Since version 1.4.0) Use constructor accepting {@link com.lightbend.lagom.scaladsl.client.CircuitBreakersPanel} instead">CircuitBreakingServiceLocator</span><span class="params">(<span name="circuitBreakers">circuitBreakers: <span class="extype" name="com.lightbend.lagom.internal.client.CircuitBreakers">CircuitBreakers</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ec">ec: <a href="http://www.scala-lang.org/api/2.11.11/index.html#scala.concurrent.ExecutionContext" class="extype" target="_top">ExecutionContext</a></span>)</span>
+        <span class="name deprecated" title="Deprecated: (Since version 1.4.0) Use constructor accepting CircuitBreakersPanel instead">CircuitBreakingServiceLocator</span><span class="params">(<span name="circuitBreakers">circuitBreakers: <span class="extype" name="com.lightbend.lagom.internal.client.CircuitBreakers">CircuitBreakers</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ec">ec: <a href="http://www.scala-lang.org/api/2.11.11/index.html#scala.concurrent.ExecutionContext" class="extype" target="_top">ExecutionContext</a></span>)</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../../index.html#com.lightbend.lagom.scaladsl.client.CircuitBreakingServiceLocator@&lt;init&gt;(circuitBreakers:com.lightbend.lagom.internal.client.CircuitBreakers)(implicitec:scala.concurrent.ExecutionContext):com.lightbend.lagom.scaladsl.client.CircuitBreakingServiceLocator" title="Permalink" target="_top">
@@ -135,7 +135,7 @@ handle failures in some way.
       <div class="fullcomment"><dl class="attributes block"> <dt>Annotations</dt><dd>
                 <span class="name">@deprecated</span>
               
-        </dd><dt>Deprecated</dt><dd class="cmt"><p><i>(Since version 1.4.0)</i> Use constructor accepting {@link com.lightbend.lagom.scaladsl.client.CircuitBreakersPanel} instead</p></dd></dl></div>
+        </dd><dt>Deprecated</dt><dd class="cmt"><p><i>(Since version 1.4.0)</i> Use constructor accepting CircuitBreakersPanel instead</p></dd></dl></div>
     </li></ol>
             </div>
 
@@ -159,7 +159,7 @@ handle failures in some way.
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">Locate a service with the given name.</p><div class="fullcomment"><div class="comment cmt"><p>Locate a service with the given name.
+      <p class="shortcomment cmt">Locate a service's URI for the given name.</p><div class="fullcomment"><div class="comment cmt"><p>Locate a service's URI for the given name.
 </p></div><dl class="paramcmts block"><dt class="param">name</dt><dd class="cmt"><p>The name of the service.</p></dd><dt class="param">serviceCall</dt><dd class="cmt"><p>The service call descriptor that this lookup is for.</p></dd><dt>returns</dt><dd class="cmt"><p>The URI for that service, if it exists.</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../api/ServiceLocator.html" class="extype" name="com.lightbend.lagom.scaladsl.api.ServiceLocator">ServiceLocator</a></dd></dl></div>
     </li></ol>
             </div>
@@ -575,8 +575,44 @@ can be overridden if the service locator wants to inject other behaviour after t
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">Locate a service with the given name.</p><div class="fullcomment"><div class="comment cmt"><p>Locate a service with the given name.
+      <p class="shortcomment cmt">Locate a service's URI for the given name.</p><div class="fullcomment"><div class="comment cmt"><p>Locate a service's URI for the given name.
 </p></div><dl class="paramcmts block"><dt class="param">name</dt><dd class="cmt"><p>The name of the service.</p></dd><dt>returns</dt><dd class="cmt"><p>The URI for that service, if it exists.</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../api/ServiceLocator.html" class="extype" name="com.lightbend.lagom.scaladsl.api.ServiceLocator">ServiceLocator</a></dd></dl></div>
+    </li><li name="com.lightbend.lagom.scaladsl.api.ServiceLocator#locateAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="locateAll(name:String,serviceCall:com.lightbend.lagom.scaladsl.api.Descriptor.Call[_,_]):scala.concurrent.Future[List[java.net.URI]]"></a>
+      <a id="locateAll(String,Call[_,_]):Future[List[URI]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">locateAll</span><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="serviceCall">serviceCall: <a href="../api/Descriptor$$Call.html" class="extype" name="com.lightbend.lagom.scaladsl.api.Descriptor.Call">Call</a>[_, _]</span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.11/index.html#scala.concurrent.Future" class="extype" target="_top">Future</a>[<span class="extype" name="scala.List">List</span>[<span class="extype" name="java.net.URI">URI</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#com.lightbend.lagom.scaladsl.client.CircuitBreakingServiceLocator@locateAll(name:String,serviceCall:com.lightbend.lagom.scaladsl.api.Descriptor.Call[_,_]):scala.concurrent.Future[List[java.net.URI]]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Locate the service's URIs for the given name.</p><div class="fullcomment"><div class="comment cmt"><p>Locate the service's URIs for the given name.
+</p></div><dl class="paramcmts block"><dt class="param">name</dt><dd class="cmt"><p>The name of the service.</p></dd><dt class="param">serviceCall</dt><dd class="cmt"><p>The service call descriptor that this lookup is for.</p></dd><dt>returns</dt><dd class="cmt"><p>One or more URIs for that service, otherwise an empty List (<span class="extype" name="Nil">Nil</span>) if none is found.</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../api/ServiceLocator.html" class="extype" name="com.lightbend.lagom.scaladsl.api.ServiceLocator">ServiceLocator</a></dd><dt>Since</dt><dd><p>1.4</p></dd></dl></div>
+    </li><li name="com.lightbend.lagom.scaladsl.api.ServiceLocator#locateAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="locateAll(name:String):scala.concurrent.Future[List[java.net.URI]]"></a>
+      <a id="locateAll(String):Future[List[URI]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">locateAll</span><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.11/index.html#scala.concurrent.Future" class="extype" target="_top">Future</a>[<span class="extype" name="scala.List">List</span>[<span class="extype" name="java.net.URI">URI</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#com.lightbend.lagom.scaladsl.client.CircuitBreakingServiceLocator@locateAll(name:String):scala.concurrent.Future[List[java.net.URI]]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Locate the service's URIs for the given name.</p><div class="fullcomment"><div class="comment cmt"><p>Locate the service's URIs for the given name.
+</p></div><dl class="paramcmts block"><dt class="param">name</dt><dd class="cmt"><p>The name of the service.</p></dd><dt>returns</dt><dd class="cmt"><p>One or more URIs for that service, otherwise an empty List (<span class="extype" name="Nil">Nil</span>) if none is found.</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../api/ServiceLocator.html" class="extype" name="com.lightbend.lagom.scaladsl.api.ServiceLocator">ServiceLocator</a></dd><dt>Since</dt><dd><p>1.4</p></dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
       <a id="ne(AnyRef):Boolean"></a>

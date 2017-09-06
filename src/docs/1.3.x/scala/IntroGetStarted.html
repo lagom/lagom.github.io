@@ -6,16 +6,17 @@
   <li><a href="#Browse-the-build">Browse the build</a></li>
   <li><a href="#Run-Hello-World">Run Hello World</a></li>
 </ol><h2 id="Create-the-build"><a class="section-marker" href="#Create-the-build">§</a>Create the build</h2>
-<p>Choose a location on your file system for your Lagom projects. The template will prompt you for a project name and will create a directory with that name that contains the build structure and Lagom example services. </p>
+<p>Choose a location on your file system for your Lagom projects. The template will prompt you for a project name and will create a directory with that name that contains the build structure and Lagom example services. Note that it can take from a few seconds to a few minutes for sbt to download dependencies.</p>
 <p>To create your project, follow these steps:</p>
 <ol>
   <li>
   <p>Open a console and change into the directory you selected for your project.</p></li>
   <li>
   <p>Enter the following command:<br/> <code>
-   sbt &quot;-Dsbt.version=0.13.15&quot; new https://github.com/lagom/lagom-scala.g8
+   sbt -Dsbt.version=0.13.16 new https://github.com/lagom/lagom-scala.g8
 </code></p></li>
-  <li>The template prompts for the following parameters. Press <code>Enter</code> to accept the defaults or specify your own values:</li>
+  <li>
+  <p>The template prompts for the following parameters. Press <code>Enter</code> to accept the defaults or specify your own values:</p></li>
 </ol>
 <ul>
   <li><code>name</code> - Becomes the name of the top-level project directory.</li>
@@ -45,7 +46,7 @@ sbt
 ... (booting up)
 &gt; runAll
 </code></pre>
-<p>Among other messages, you should see the following:</p>
+<p>It will take a bit of time to build the project and start the services. Among other messages, you should see the following:</p>
 <pre class="prettyprint"><code>[info] Starting embedded Cassandra server
 ..........
 [info] Cassandra server running at 127.0.0.1:4000
@@ -55,6 +56,7 @@ sbt
 [info] Service hello-stream-impl listening for HTTP on 0:0:0:0:0:0:0:0:26230
 (Services started, press enter to stop and go back to the console...)
 </code></pre>
-<p>Verify that the services are indeed up and running by invoking one of its endpoints from any HTTP client, such as a browser. The following request returns the message <code>Hello, World!</code>:</p>
+<p>Verify that the services are indeed up and running by invoking one of its endpoints from any HTTP client, such as a browser:</p>
 <pre class="prettyprint"><code>http://localhost:9000/api/hello/World
 </code></pre>
+<p>The service returns the message, <code>Hello, World!</code>. Congratulations, you&rsquo;ve built your first Lagom project!</p>

@@ -98,10 +98,8 @@ lagom.circuit-breaker {
   default.call-timeout = 5s
 }
 </code></pre><h3 id="Circuit-breaker-metrics"><a class="section-marker" href="#Circuit-breaker-metrics">§</a>Circuit breaker metrics</h3>
-<p>Lagom allows you to publish metrics for circuit breakers via a metrics service. To enable this service, mix in the <a href="api/com/lightbend/lagom/scaladsl/server/status/MetricsServiceComponents.html"><code>MetricsServiceComponents</code></a> trait into your application, and add the provided <code>metricsServiceBinding</code> to your service bindings in your <code>lagomServer</code> declaration, like so:</p>
-<pre class="prettyprint"><code class="language-scala">import com.lightbend.lagom.scaladsl.server.status.MetricsServiceComponents
-
-abstract class MyApplication(context: LagomApplicationContext)
+<p>Lagom allows you to publish metrics for circuit breakers via a metrics service. To enable this service, add <code>metricsServiceBinding</code> to your service bindings in your <code>lagomServer</code> declaration, like so:</p>
+<pre class="prettyprint"><code class="language-scala"><br/>abstract class MyApplication(context: LagomApplicationContext)
   extends LagomApplication(context)
     with AhcWSComponents {
 

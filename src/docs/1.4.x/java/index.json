@@ -186,7 +186,7 @@
         "url" : "ServicePort.html",
         "sourceUrl" : "https://github.com/lagom/lagom/edit/master/docs/manual/common/guide/devmode/ServicePort.md"
       }, {
-        "title" : "Service Locator",
+        "title" : "Service Locator and Service Gateway",
         "url" : "ServiceLocator.html",
         "sourceUrl" : "https://github.com/lagom/lagom/edit/master/docs/manual/java/guide/devmode/ServiceLocator.md"
       }, {

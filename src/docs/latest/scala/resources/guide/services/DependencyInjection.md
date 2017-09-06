@@ -10,7 +10,7 @@ In "[Dependency Injection in Scala: guide](https://di-in-scala.github.io/#module
 
 ## Wiring together a Lagom application
 
-In section [[Service descriptors|ServiceDescriptors]] and [[Implementing services|ServiceImplementation]] we created a Service and its implementation, we now want to bind them and create a Lagom server with them. Lagom's Scala API is built on top of Play Framework, and uses Play's [compile time dependency injection support](https://www.playframework.com/documentation/2.5.x/ScalaCompileTimeDependencyInjection) to wire together a Lagom application. Play's compile time dependency injection support is based on the thin cake pattern we just described.
+In section [[Service descriptors|ServiceDescriptors]] and [[Implementing services|ServiceImplementation]] we created a Service and its implementation, we now want to bind them and create a Lagom server with them. Lagom's Scala API is built on top of Play Framework, and uses Play's [compile time dependency injection support](https://www.playframework.com/documentation/2.6.x/ScalaCompileTimeDependencyInjection) to wire together a Lagom application. Play's compile time dependency injection support is based on the thin cake pattern we just described.
 
 Once you are creating your Application you will use Components provided by Lagom and obtain your dependencies from them (e.g., an Akka Actor System or a `CassandraSession` for your read-side processor to access the database). Although it's not strictly necessary, we recommend that you use [Macwire](https://github.com/adamw/macwire) to assist in wiring dependencies into your code. Macwire provides some very lightweight macros that locate dependencies for the components you wish to create so that you don't have to manually wire them together yourself. Macwire can be added to your service by adding the following to your service implementations dependencies:
 
@@ -37,7 +37,7 @@ A third method, `describeService`, is optional, but may be used by tooling, for 
 
 Finally, we need to tell Play about our application loader. We can do that by adding the following configuration to `application.conf`:
 
-    play.application.loader = com.example.HelloLoader
+    play.application.loader = com.example.HelloApplicationLoader
 
 
 ## Defining your own components

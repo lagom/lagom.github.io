@@ -99,7 +99,7 @@ case object BlogPostPublished {
  &quot;event_type&quot;: &quot;postPublished&quot;
 }
 </code></pre>
-<p>You can do that using <a href="https://www.playframework.com/documentation/2.5.x/ScalaJsonTransformers#Case-5:-Put-a-given-value-in-a-new-branch">Play JSON transformers</a>:</p>
+<p>You can do that using <a href="https://www.playframework.com/documentation/2.6.x/ScalaJsonTransformers#Case-5:-Put-a-given-value-in-a-new-branch">Play JSON transformers</a>:</p>
 <pre class="prettyprint"><code class="language-scala">object BlogPostEvent {
   implicit val reads: Reads[BlogPostEvent] = {
     (__ \ &quot;event_type&quot;).read[String].flatMap {

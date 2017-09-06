@@ -300,7 +300,7 @@ extends Object</pre>
 <pre>public&nbsp;void&nbsp;withServer(<a href="../../../../../com/lightbend/lagom/javadsl/testkit/ServiceTest.Setup.html" title="interface in com.lightbend.lagom.javadsl.testkit">ServiceTest.Setup</a>&nbsp;setup,
                        akka.japi.function.Procedure&lt;<a href="../../../../../com/lightbend/lagom/javadsl/testkit/ServiceTest.TestServer.html" title="class in com.lightbend.lagom.javadsl.testkit">ServiceTest.TestServer</a>&gt;&nbsp;block)</pre>
 <div class="block">Start the test server with the given <code>setup</code> and run the <code>block</code> (lambda). When
- the <code>block returns or throws the test server will automatically be stopped.</code>
+ the <code>block</code> returns or throws the test server will automatically be stopped.
  <p>
  This method should be used when the server can be started and stopped for each test
  method. When your test have several test methods, and especially when using persistence, it is
@@ -322,7 +322,7 @@ extends Object</pre>
  <p>
  When your test have several test methods, and especially when using persistence, it is
  faster to only start the server once in a static method annotated with <code>@BeforeClass</code>
- and stop it in a method annotated with <code>@AfterClass</code>. Otherwise <a href="../../../../../com/lightbend/lagom/javadsl/testkit/ServiceTest$.html#withServer-com.lightbend.lagom.javadsl.testkit.ServiceTest.Setup-akka.japi.function.Procedure-"><code>withServer</code></a> is
+ and stop it in a method annotated with <code>@AfterClass</code>. Otherwise <a href="../../../../../com/lightbend/lagom/javadsl/testkit/ServiceTest$.html#withServer-com.lightbend.lagom.javadsl.testkit.ServiceTest.Setup-akka.japi.function.Procedure-"><code>withServer(com.lightbend.lagom.javadsl.testkit.ServiceTest.Setup, akka.japi.function.Procedure&lt;com.lightbend.lagom.javadsl.testkit.ServiceTest.TestServer&gt;)</code></a> is
  more convenient.
  <p>
  You can get the service client from the returned <code>TestServer</code>.</div>

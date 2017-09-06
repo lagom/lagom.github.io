@@ -144,7 +144,7 @@ invocation of the passed in block with a circuit breaker.
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">Locate a service with the given name.</p><div class="fullcomment"><div class="comment cmt"><p>Locate a service with the given name.
+      <p class="shortcomment cmt">Locate a service's URI for the given name.</p><div class="fullcomment"><div class="comment cmt"><p>Locate a service's URI for the given name.
 </p></div><dl class="paramcmts block"><dt class="param">name</dt><dd class="cmt"><p>The name of the service.</p></dd><dt class="param">serviceCall</dt><dd class="cmt"><p>The service call descriptor that this lookup is for.</p></dd><dt>returns</dt><dd class="cmt"><p>The URI for that service, if it exists.</p></dd></dl></div>
     </li></ol>
             </div>
@@ -519,8 +519,44 @@ invocation of the passed in block with a circuit breaker.
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">Locate a service with the given name.</p><div class="fullcomment"><div class="comment cmt"><p>Locate a service with the given name.
+      <p class="shortcomment cmt">Locate a service's URI for the given name.</p><div class="fullcomment"><div class="comment cmt"><p>Locate a service's URI for the given name.
 </p></div><dl class="paramcmts block"><dt class="param">name</dt><dd class="cmt"><p>The name of the service.</p></dd><dt>returns</dt><dd class="cmt"><p>The URI for that service, if it exists.</p></dd></dl></div>
+    </li><li name="com.lightbend.lagom.scaladsl.api.ServiceLocator#locateAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="locateAll(name:String,serviceCall:com.lightbend.lagom.scaladsl.api.Descriptor.Call[_,_]):scala.concurrent.Future[List[java.net.URI]]"></a>
+      <a id="locateAll(String,Call[_,_]):Future[List[URI]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">locateAll</span><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="serviceCall">serviceCall: <a href="Descriptor$$Call.html" class="extype" name="com.lightbend.lagom.scaladsl.api.Descriptor.Call">Call</a>[_, _]</span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.11/index.html#scala.concurrent.Future" class="extype" target="_top">Future</a>[<span class="extype" name="scala.List">List</span>[<span class="extype" name="java.net.URI">URI</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#com.lightbend.lagom.scaladsl.api.ServiceLocator@locateAll(name:String,serviceCall:com.lightbend.lagom.scaladsl.api.Descriptor.Call[_,_]):scala.concurrent.Future[List[java.net.URI]]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Locate the service's URIs for the given name.</p><div class="fullcomment"><div class="comment cmt"><p>Locate the service's URIs for the given name.
+</p></div><dl class="paramcmts block"><dt class="param">name</dt><dd class="cmt"><p>The name of the service.</p></dd><dt class="param">serviceCall</dt><dd class="cmt"><p>The service call descriptor that this lookup is for.</p></dd><dt>returns</dt><dd class="cmt"><p>One or more URIs for that service, otherwise an empty List (<span class="extype" name="Nil">Nil</span>) if none is found.</p></dd></dl><dl class="attributes block"> <dt>Since</dt><dd><p>1.4</p></dd></dl></div>
+    </li><li name="com.lightbend.lagom.scaladsl.api.ServiceLocator#locateAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="locateAll(name:String):scala.concurrent.Future[List[java.net.URI]]"></a>
+      <a id="locateAll(String):Future[List[URI]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">locateAll</span><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.11/index.html#scala.concurrent.Future" class="extype" target="_top">Future</a>[<span class="extype" name="scala.List">List</span>[<span class="extype" name="java.net.URI">URI</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#com.lightbend.lagom.scaladsl.api.ServiceLocator@locateAll(name:String):scala.concurrent.Future[List[java.net.URI]]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Locate the service's URIs for the given name.</p><div class="fullcomment"><div class="comment cmt"><p>Locate the service's URIs for the given name.
+</p></div><dl class="paramcmts block"><dt class="param">name</dt><dd class="cmt"><p>The name of the service.</p></dd><dt>returns</dt><dd class="cmt"><p>One or more URIs for that service, otherwise an empty List (<span class="extype" name="Nil">Nil</span>) if none is found.</p></dd></dl><dl class="attributes block"> <dt>Since</dt><dd><p>1.4</p></dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
       <a id="ne(AnyRef):Boolean"></a>

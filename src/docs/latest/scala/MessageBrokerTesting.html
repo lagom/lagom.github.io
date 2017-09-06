@@ -30,7 +30,7 @@
   <li>With the <code>producerStub</code> instance a service stub can be build to replace the production ready upstream service. This will have to use the topic bound to the <code>ProducerStub</code> created in the previous step.</li>
   <li>Use the <code>ProducerStub</code> on the tests to send messages into the topic and interact normally with the service under test to verify the Service code.</li>
 </ol>
-<pre class="prettyprint"><code class="language-scala">class AnotherServiceSpec extends AsyncWordSpec with Matchers with Eventually {
+<pre class="prettyprint"><code class="language-scala">class AnotherServiceSpec extends WordSpec with Matchers with Eventually with ScalaFutures {
   var producerStub: ProducerStub[GreetingMessage] = _
 
   &quot;The AnotherService&quot; should {
@@ -54,11 +54,13 @@
 
         // create a service client to assert the message was consumed
         eventually(timeout(Span(5, Seconds))) {
-          server.serviceClient.implement[AnotherService].foo.invoke().map { resp =&gt;
+          // cannot use async specs here because eventually only detects raised exceptions to retry.
+          // if a future fail at the first time, eventually won&#39;t retry though future will succeed later.
+          // see https://github.com/lagom/lagom/issues/876 for detail info.
+          val futureResp = server.serviceClient.implement[AnotherService].foo.invoke()
+          whenReady(futureResp) { resp =&gt;
             resp should ===(&quot;Hi there!&quot;)
           }
-        }.recover {
-          case t: Throwable =&gt; fail(t)
         }
       }
   }
