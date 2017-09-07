@@ -42,12 +42,6 @@ Yes, Lagom supports extensible serialization, both for messages transmitted betw
 
 See more in the Lagom documentation on Message Serializers ([Java](/documentation/current/java/MessageSerializers.html)/[Scala](/documentation/current/scala/MessageSerializers.html)) and Persistent Entity Serialization ([Java](/documentation/current/java/Serialization.html)/[Scala](/documentation/current/scala/Serialization.html)).
 
-## In the example applications, why are data classes duplicated between the service API and implementation projects?
-
-This is an example of an anti-corruption layer. In Lagom, we use anti-corruption layers for all API payloads (requests/responses) and published events. While it might seem like unnecessary duplication, using anti-corruption layers allows the internal implementation to be changed without changing the public API. For example, you might want to enrich an internal event with some fields that you need on a read side but you don’t need on the published events.
-
-For more information, see Mark Needham's blog on [anti-corruption layers](http://www.markhneedham.com/blog/2009/07/07/domain-driven-design-anti-corruption-layer/).
-
 ## Do I have to use ConductR to deploy Lagom services? Can I deploy with Kubernetes?
 
 Lagom doesn't prescribe any particular production environment, however out of the box support for Lagom is provided by [Lightbend ConductR](https://www.lightbend.com/products/conductr). If you are interested in deploying on [Kubernetes](https://kubernetes.io/), see our guide that demonstrates [how to deploy the Chirper example application](https://developer.lightbend.com/guides/k8s-microservices/).
