@@ -1,5 +1,29 @@
 # Lagom Change Log
 
+
+## Lagom 1.3.9
+
+*Release 10 October 2017*
+
+* [1026](https://github.com/lagom/lagom/issues/1026) removed scalastyle warnings, gramatical errors and spelling mistakes (Pallavi Singh)
+* [1024](https://github.com/lagom/lagom/issues/1024) Change to execute to avoid syntax error (dr3s)
+* [1025](https://github.com/lagom/lagom/issues/1025) align scala documentation with java one (Renato Cavalcanti)
+* [1019](https://github.com/lagom/lagom/issues/1019) Improved the documentation to remove ambiguity in call description (Pallavi Singh)
+* [1020](https://github.com/lagom/lagom/issues/1020) Adds link to CoC (Ignasi Marimon-Clos)
+* [1017](https://github.com/lagom/lagom/issues/1017) Updates dependencies on docs (play akka and scala) (Ignasi Marimon-Clos)
+* [1016](https://github.com/lagom/lagom/issues/1016) Adds .gitignore on maven archetype (Ignasi Marimon-Clos)
+* [1011](https://github.com/lagom/lagom/issues/1011) Bumps play version to 2.5.17 (Ignasi Marimon-Clos)
+* [1010](https://github.com/lagom/lagom/issues/1010) Allow no passivation to be configured (James Roper)
+* [978](https://github.com/lagom/lagom/issues/978) Simplifies the actor system termination and JVM shutdown (Ignasi Marimon-Clos)
+* [995](https://github.com/lagom/lagom/issues/995) Handle null state in persistent entity test driver (Tim Moore)
+* [952](https://github.com/lagom/lagom/issues/952) Look up a migration using only the class name instead of the manifest containing the version as well (Olivier Deckers)
+* [914](https://github.com/lagom/lagom/issues/914) Move `auto.offset.reset` to Kafka client (Renato Cavalcanti)
+* Update sbt-header to 1.8.0 (Tim Moore)
+* [989](https://github.com/lagom/lagom/issues/989) Remove copyright from files in Maven archetype (Tim Moore)
+* [988](https://github.com/lagom/lagom/issues/988) Update sbt to 0.13.16 (Tim Moore)
+* [987](https://github.com/lagom/lagom/issues/987) Silence "Resolving" messages in the build (Tim Moore)
+* [986](https://github.com/lagom/lagom/issues/986) Update ZooKeeper to 3.4.10 (Tim Moore)
+
 ## Lagom 1.4.0-M2
 
 *Released 5 September 2017*
