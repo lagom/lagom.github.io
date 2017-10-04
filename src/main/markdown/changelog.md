@@ -5,6 +5,7 @@
 
 *Release 10 October 2017*
 
+* [1029](https://github.com/lagom/lagom/issues/1029) wrap sql statement call in try / finally block (Renato Cavalcanti)
 * [1026](https://github.com/lagom/lagom/issues/1026) removed scalastyle warnings, gramatical errors and spelling mistakes (Pallavi Singh)
 * [1024](https://github.com/lagom/lagom/issues/1024) Change to execute to avoid syntax error (dr3s)
 * [1025](https://github.com/lagom/lagom/issues/1025) align scala documentation with java one (Renato Cavalcanti)
