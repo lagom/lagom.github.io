@@ -14,7 +14,7 @@ This release provides a few bug fixes and minor improvements. As an overview, th
 - a few dependencies updates (Play 2.5.17, Sbt 0.13.16 and ZooKeeper 3.4.10)
 - simplified actor system termination and JVM shutdown [978](https://github.com/lagom/lagom/issues/978) 
 - a fix for a bug preventing the usage of MariaDB JDBC driver [1024](https://github.com/lagom/lagom/issues/1024)
-- Look up a migration using only the class name instead of the manifest containing the version as well [952](https://github.com/lagom/lagom/issues/952
+- look up a migration using only the class name instead of the manifest containing the version number [952](https://github.com/lagom/lagom/issues/952
 
 We've continued to get great pull requests from the Lagom community. Thanks to GitHub users [Pallavi Sing](https://github.com/PallaviSingh1992),
 [dr3s](https://github.com/dr3s) and [Olivier Deckers](https://github.com/olivierdeckers) for your contributions to Lagom 1.3.9!
