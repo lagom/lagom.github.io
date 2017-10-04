@@ -7,7 +7,7 @@
 <p>The implementation project will naturally also depend on the API project, in order to implement it.</p>
 <p>Consider the sample system below:</p>
 <p><img src="resources/guide/build/lagom-project-structure.png" alt="Lagom project structure" /></p>
-<p>This system has two services, one called <code>hello</code>, and one called <code>hello-stream</code>. Each service has two sbt projects defined, an API project, <code>hello-api</code> and <code>hello-stream-api</code>, and an implementation project, <code>hello-impl</code> and <code>hello-stream-impl</code>. Additionally, <code>hello-stream-impl</code> depends on <code>hello-api</code>, and uses that to invoke calls on <code>hello-stream</code>.</p>
+<p>This system has two services, one called <code>hello</code>, and one called <code>hello-stream</code>. Each service has two sbt projects defined, an API project, <code>hello-api</code> and <code>hello-stream-api</code>, and an implementation project, <code>hello-impl</code> and <code>hello-stream-impl</code>. Additionally, <code>hello-stream-impl</code> depends on <code>hello-api</code>, and uses that to invoke calls on <code>hello</code>.</p>
 <ul>
   <li><a href="#Defining-a-build-in-Maven">Defining a build in Maven</a></li>
   <li><a href="#Defining-a-build-in-sbt">Defining a build in sbt</a></li>

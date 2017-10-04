@@ -33,7 +33,33 @@ import com.lightbend.lagom.scaladsl.playjson.JsonSerializerRegistry
 
 val system = ActorSystem(&quot;my-actor-system&quot;, ActorSystemSetup(
   JsonSerializerRegistry.serializationSetupFor(MyRegistry)
-))</code></pre><h2 id="Automated-mapping"><a class="section-marker" href="#Automated-mapping">§</a>Automated mapping</h2>
+))</code></pre><h2 id="Compression"><a class="section-marker" href="#Compression">§</a>Compression</h2>
+<p>Compression, as described here, is only used for persistent events, persistent snapshots and remote messages with the service cluster. It is not used for messages that are serialized in the external API of the service.</p>
+<p>JSON can be rather verbose and for large messages it can be beneficial to enable compression. That is done by using the <a href="api/com/lightbend/lagom/scaladsl/playjson/JsonSerializer$.html"><code>JsonSerializer.compressed[T]</code></a> builder method instead of the <code>JsonSerializer.apply[T]</code> (as shown in the example snippet above):</p>
+<pre class="prettyprint"><code class="language-scala">import com.lightbend.lagom.scaladsl.playjson.{JsonSerializer, JsonSerializerRegistry}
+
+object RegistryWithCompression extends JsonSerializerRegistry {
+  override val serializers = Vector(
+
+    // &#39;AddComment&#39; uses `apply[T]()` .
+    JsonSerializer[AddComment],
+
+    // The AddPost message is usually rather big, so we want it compressed
+    // when it&#39;s too large.
+    JsonSerializer.compressed[AddPost]
+
+  )
+}</code></pre>
+<p>The serializer will by default only compress messages that are larger than 1024 bytes. This threshold can be changed with configuration property:</p>
+<pre class="prettyprint"><code class="language-conf">lagom.serialization.json {
+
+  # The serializer will compress the payload if the message class
+  # was registered using JsonSerializer.compressed and the payload
+  # is larger than this value. Only used for remote messages within
+  # the cluster of the service.
+  compress-larger-than = 1024b
+
+}</code></pre><h2 id="Automated-mapping"><a class="section-marker" href="#Automated-mapping">§</a>Automated mapping</h2>
 <p>The <a href="https://www.playframework.com/documentation/2.6.x/api/scala/index.html#play.api.libs.json.Json$@format[A]:play.api.libs.json.OFormat[A]">Json.format[MyClass]</a> macro will inspect a <code>case class</code> for what fields it contains and produce a <code>Format</code> that uses the field names and types of the class in the resulting JSON.</p>
 <p>The macro allows for defining formats based on the exact structure of the class which is handy and avoids spending development time on explicitly defining the format, on the other hand it tightly couples the structure of the JSON with the structure of the class so that a refactoring of the class unexpectedly leads to the format being unable to read JSON that was serialized before the change. There are tools in place to deal with this (see <a href="#Schema-Evolution">schema evolution</a>) but care must be taken.</p>
 <p>If the class contains fields of complex types, it pulls those in from <code>implicit</code> marked <code>Format</code>s in the scope. This means that you must provide such implicit formats for all the complex types used inside a class before calling the macro.</p>

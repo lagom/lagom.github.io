@@ -31,72 +31,53 @@
                         <li>Maven 3.3 or higher</li>
                     </ul>
                       </p>
-                      <p>Maven downloads dependencies and creates the project structure for you. It can take from a few seconds to a few minutes to complete. After confirming the prerequisites, open a console or command window and follow these steps:</p>
+                      <p>The Lightbend Tech Hub Project Starter makes it simple to create your first project. It invokes the Maven <code>mvn archetype:generate</code> command to create a Lagom Hello World project and compresses it in a zip file.
+                      </p>
+  
+                <h2>Download the project from Tech Hub</h2>
+                      <p>Follow these steps to download a project created from the template:</p>
+                      <ol>
+                        <li><p>Open the <a class="" href="http://developer.lightbend.com/start/?group=lagom&project=lagom-java-maven" target="_blank">Tech Hub Project Starter</a>.</p></li>
+                        <li><p>Click <b>CREATE A PROJECT FOR ME</b>.</p>
+                            <p>The browser downloads a compressed project.</p>
+                        </li>
+                        </ol>
+                <h2>Extract and run the project</h2><a name="TH"></a>
+                        <p>After downloading the compressed file from Tech Hub, follow these steps:</p>
+                        <ol>
+                          <li><p>Extract the compressed file to a directory of your choice.</p>
+                          </li>
+                          <li><p>In a shell, change into the top-level directory of the project, <code>lagom-java-maven</code>. For example, if you
+                              extracted the project into a directory named <code>my-project</code>:
+                              </p>
+                              <ul>
+                                <li>In a macOS or Linux shell: <pre class="prettyprint"><code class="language-sh">cd my-project/lagom-java-maven</code></pre></li>
+                                <li>In a Windows shell: <pre class="prettyprint"><code class="language-sh">cd my-project\lagom-java-maven</code></pre></li>
+                            </ul></li>
+                            <li><p>Start Maven and the Lagom development environment:
+                                <pre class="prettyprint"><code class="language-sh">runAll</code></pre></p>
+                                <p>It will take a bit of time to build and run the project. When finished, the console displays the message: <code>Services started, ...</code>.</p>
+                            </li>
+                            <li><p>
+                                    Verify that the services are indeed up and running by invoking the <code>hello</code>
+                                    service endpoint from any HTTP client, such as a browser:
+                                    <a href="http://localhost:9000/api/hello/World" target="_blank">http://localhost:9000/api/hello/World</a>
+                                </p>
+  
+                                <p>The request returns the message <code>Hello, World!</code>.
+                                </p>
+                            </li>
                     
-                    <ol>
-                      <li><p>Create a new directory for your project.</p></li>
-                        <li>
-                            <p>
-                                Change into the new directory and enter the following (all on one line):
-                            </p>
-
-                            <pre class="prettyprint"><code class="language-sh">mvn archetype:generate -DarchetypeGroupId=com.lightbend.lagom -DarchetypeArtifactId=maven-archetype-lagom-java -DarchetypeVersion=@context.currentLagomVersion</code></pre>
-                        
-                        </li>
-                        <li>
-                            <p>Maven prompts you for:</p>
-                            <ul>
-                                <li>
-                                    <code>groupId</code> &#8212; typically something like com.example.
-                                </li>
-                                <li>
-                                    <code>artifactId</code> &#8212; becomes the top-level folder name, for example,
-                                    my-first-project.
-                                </li>
-                                <li>
-                                    <code>version</code> &#8212; the version for your project, press <b>Enter</b> to
-                                    accept the default.
-                                </li>
-                                <li>
-                                    <code>package</code> &#8212; defaults to the same value as the <code>groupId</code>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <p>
-                                Enter <code>Y</code> to accept the values. Maven creates the project.
-                            </p>
-                        </li>
-                        <li>
-                            <p>
-                                Change into the top-level project folder and run it:
-                            </p>
-
-                            <pre class="prettyprint"><code class="language-sh">mvn lagom:runAll</code></pre>
-
-                            <p>
-                                The <code>runAll</code> command takes a bit of time. It starts Hello World microservices and registers them in a
-                                service directory. It also starts a Cassandra server and a web server.
-                            </p>
-                        </li>
-                        <li>
-                            <p>
-                                When you see the message, `Services started, ...`, verify that the services are indeed up and running by invoking the <code>hello</code>
-                                service endpoint from any HTTP client, such as a browser:
-                                <a href="http://localhost:9000/api/hello/World" target="_blank">http://localhost:9000/api/hello/World</a>
-                            </p>
-
-                            <p>
-                                The request returns the message <code>Hello, World!</code>.
-                            </p>
-                        </li>
                     </ol>
 
                     <p>
                         Congratulations! You've created and run your first Lagom system. See
                         <a href="@context.path/documentation/@context.currentDocsVersion/java/UnderstandHello.html">the
                         documentation</a> to understand your new project.
+                        
+                      
                     </p>
+                    <p>You might find the Hello World template useful when starting a new project of your own. If you prefer to customize it more, see the <a href="https://www.lagomframework.com/documentation/1.3.x/java/GettingStartedMaven.html"> manual instructions for generating a project from the Lagom Maven archetype</a>. 
 
                     @*
                     <p>

@@ -39,18 +39,18 @@ Choose a number or apply filter (format: [groupId:]artifactId, case sensitive co
    [INFO] Finished at: 2017-02-24T11:58:08-06:00
    [INFO] Final Memory: 17M/252M
    [INFO] ------------------------------------------------------------------------
-   
+
 </code></pre><h2 id="Browse-the-project-structure"><a class="section-marker" href="#Browse-the-project-structure">§</a>Browse the project structure</h2>
 <p>The structure for a project created with the Maven archetype generate command will look similar to the following (assuming <code>my-first-system</code> as an <code>artifactId</code>):</p>
-<pre class="prettyprint"><code>my-first-system 
+<pre class="prettyprint"><code>my-first-system
  └ hello-api/             → hello world api project dir
- └ hello-impl/            → hello world implementation dir 
+ └ hello-impl/            → hello world implementation dir
  └ integration-tests/
  └ stream-api/            → stream api project dir
  └ stream-impl/           → stream implementation project dir
  └ pom.xml                → Project group build file
 </code></pre>
-<p>Note that the <code>hello</code> and <code>stream</code> services each have: </p>
+<p>Note that the <code>hello</code> and <code>stream</code> services each have:</p>
 <ul>
   <li>An <code>api</code> project that contains a service interface through which consumers can interact with the service.</li>
   <li>An <code>impl</code> project that contains the service implementation.</li>
@@ -65,15 +65,15 @@ mvn lagom:runAll
 [info] Starting embedded Cassandra server
 ..........
 [info] Cassandra server running at 127.0.0.1:4000
-[info] Service locator is running at http://localhost:8000
+[info] Service locator is running at http://localhost:9008
 [info] Service gateway is running at http://localhost:9000
 ...
 [info] Service hello-impl listening for HTTP on 0:0:0:0:0:0:0:0:24266
 [info] Service stream-impl listening for HTTP on 0:0:0:0:0:0:0:0:26230
 (Services started, press enter to stop and go back to the console...)
 </code></pre>
-<p>Verify that the services are indeed up and running by invoking the <code>hello</code> service endpoint from any HTTP client, such as a browser: </p>
+<p>Verify that the services are indeed up and running by invoking the <code>hello</code> service endpoint from any HTTP client, such as a browser:</p>
 <pre class="prettyprint"><code>http://localhost:9000/api/hello/World
 </code></pre>
 <p>The request returns the message <code>Hello, World!</code>.</p>
-<p>Congratulations! You&rsquo;ve created and run your first Lagom system. </p>
+<p>Congratulations! You&rsquo;ve created and run your first Lagom system.</p>

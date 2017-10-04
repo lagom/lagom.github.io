@@ -28,7 +28,7 @@
   url = &quot;jdbc:postgresql://database.example.com/playdb&quot;
 }
 
-jdbc-defaults.slick.driver = &quot;slick.jdbc.PostgresProfile$&quot;
+jdbc-defaults.slick.profile = &quot;slick.jdbc.PostgresProfile$&quot;
 </code></pre><h2 id="Table-creation"><a class="section-marker" href="#Table-creation">§</a>Table creation</h2>
 <p>By default, Lagom will automatically create the tables it needs for you if they don&rsquo;t already exist. This is great for development and testing, but in some circumstances may not be appropriate for production. The table auto creation feature can be disabled by using the following configuration:</p>
 <pre class="prettyprint"><code>lagom.persistence.jdbc.create-tables.auto = false
@@ -38,8 +38,9 @@ jdbc-defaults.slick.driver = &quot;slick.jdbc.PostgresProfile$&quot;
 <pre class="prettyprint"><code class="language-conf"># Defaults to use for each Akka persistence plugin
 jdbc-defaults.slick {
 
-  # The driver to use
-  driver = &quot;slick.jdbc.H2Profile$&quot;
+  # The Slick profile to use
+  # set to one of: slick.jdbc.PostgresProfile$, slick.jdbc.MySQLProfile$, slick.jdbc.OracleProfile$ or slick.jdbc.H2Profile$
+  # profile = &quot;slick.jdbc.PostgresProfile$&quot;
 
   # The JNDI name
   jndiName = &quot;DefaultDS&quot;

@@ -9,38 +9,31 @@
 
   &lt;conversionRule conversionWord=&quot;coloredLevel&quot; converterClass=&quot;com.lightbend.lagom.internal.logback.ColoredLevel&quot; /&gt;
 
-  &lt;appender name=&quot;FILE&quot; class=&quot;ch.qos.logback.core.FileAppender&quot;&gt;
-     &lt;file&gt;${application.home:-.}/logs/application.log&lt;/file&gt;
-     &lt;encoder&gt;
-       &lt;pattern&gt;%date [%level] from %logger in %thread - %message%n%xException&lt;/pattern&gt;
-     &lt;/encoder&gt;
-   &lt;/appender&gt;
-
   &lt;appender name=&quot;STDOUT&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&gt;
     &lt;encoder&gt;
-      &lt;pattern&gt;%coloredLevel %logger{15} - %message%n%xException{10}&lt;/pattern&gt;
+      &lt;pattern&gt;%date{&quot;HH:mm:ss.SSS&quot;} %coloredLevel %logger [%mdc] - %msg%n&lt;/pattern&gt;
     &lt;/encoder&gt;
   &lt;/appender&gt;
-  
+
   &lt;!-- Set logging for all Play library classes to INFO --&gt;
-  &lt;logger name=&quot;play&quot; level=&quot;WARN&quot; /&gt;
-  &lt;!-- Set logging for all Akka library classes to WARN --&gt;
-  &lt;logger name=&quot;akka&quot; level=&quot;WARN&quot; /&gt;
-  &lt;!-- Set logging for all Lagom library classes to WARN --&gt;
-  &lt;logger name=&quot;com.lightbend.lagom&quot; level=&quot;WARN&quot; /&gt;
+  &lt;logger name=&quot;play&quot; level=&quot;INFO&quot; /&gt;
+  &lt;!-- Set logging for all Akka library classes to INFO --&gt;
+  &lt;logger name=&quot;akka&quot; level=&quot;INFO&quot; /&gt;
+  &lt;!-- Set logging for all Lagom library classes to INFO --&gt;
+  &lt;logger name=&quot;com.lightbend.lagom&quot; level=&quot;INFO&quot; /&gt;
+
   &lt;!-- Cassandra and the datasta driver are used by the Lagom event sourcing modules --&gt;
   &lt;logger name=&quot;org.apache.cassandra&quot; level=&quot;ERROR&quot; /&gt;
   &lt;logger name=&quot;com.datastax.driver&quot; level=&quot;ERROR&quot; /&gt;
-  &lt;!-- Turning off connection error logging to avoid noise when services are forcely stopped --&gt;
+  &lt;!-- Turning off connection error logging to avoid noise when services are forcibly stopped --&gt;
   &lt;logger name=&quot;com.datastax.driver.core.ControlConnection&quot; level=&quot;OFF&quot; /&gt;
   &lt;!-- Turn down Kafka noise --&gt;
   &lt;logger name=&quot;org.apache.kafka&quot; level=&quot;WARN&quot; /&gt;
 
   &lt;root level=&quot;INFO&quot;&gt;
     &lt;appender-ref ref=&quot;STDOUT&quot; /&gt;
-    &lt;appender-ref ref=&quot;FILE&quot; /&gt;
   &lt;/root&gt;
-  
+
 &lt;/configuration&gt;</code></pre>
 <p>While it uses the following one in production:</p>
 <pre class="prettyprint"><code class="language-xml">&lt;!--
@@ -48,24 +41,13 @@
   --&gt;
 &lt;!-- The default logback configuration that Lagom uses if no other configuration is provided --&gt;
 &lt;configuration&gt;
-    
-  &lt;conversionRule conversionWord=&quot;coloredLevel&quot; converterClass=&quot;com.lightbend.lagom.internal.logback.ColoredLevel&quot; /&gt;
 
-  &lt;appender name=&quot;FILE&quot; class=&quot;ch.qos.logback.core.FileAppender&quot;&gt;
-     &lt;file&gt;${application.home:-.}/logs/application.log&lt;/file&gt;
-     &lt;encoder&gt;
-       &lt;pattern&gt;%date [%level] from %logger in %thread - %message%n%xException&lt;/pattern&gt;
-     &lt;/encoder&gt;
-  &lt;/appender&gt;
+  &lt;conversionRule conversionWord=&quot;coloredLevel&quot; converterClass=&quot;com.lightbend.lagom.internal.logback.ColoredLevel&quot; /&gt;
 
   &lt;appender name=&quot;STDOUT&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&gt;
     &lt;encoder&gt;
-      &lt;pattern&gt;%coloredLevel %logger{15} - %message%n%xException{10}&lt;/pattern&gt;
+      &lt;pattern&gt;%date{&quot;yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSS&#39;Z&#39;&quot;,UTC} %coloredLevel %logger [%mdc] - %msg%n&lt;/pattern&gt;
     &lt;/encoder&gt;
-  &lt;/appender&gt;
-
-  &lt;appender name=&quot;ASYNCFILE&quot; class=&quot;ch.qos.logback.classic.AsyncAppender&quot;&gt;
-    &lt;appender-ref ref=&quot;FILE&quot; /&gt;
   &lt;/appender&gt;
 
   &lt;appender name=&quot;ASYNCSTDOUT&quot; class=&quot;ch.qos.logback.classic.AsyncAppender&quot;&gt;
@@ -73,29 +55,28 @@
   &lt;/appender&gt;
 
   &lt;!-- Set logging for all Play library classes to INFO --&gt;
-  &lt;logger name=&quot;play&quot; level=&quot;WARN&quot; /&gt;
-  &lt;!-- Set logging for all Akka library classes to WARN --&gt;
-  &lt;logger name=&quot;akka&quot; level=&quot;WARN&quot; /&gt;
-  &lt;!-- Set logging for all Lagom library classes to WARN --&gt;
-  &lt;logger name=&quot;com.lightbend.lagom&quot; level=&quot;WARN&quot; /&gt;
+  &lt;logger name=&quot;play&quot; level=&quot;INFO&quot; /&gt;
+  &lt;!-- Set logging for all Akka library classes to INFO --&gt;
+  &lt;logger name=&quot;akka&quot; level=&quot;INFO&quot; /&gt;
+  &lt;!-- Set logging for all Lagom library classes to INFO --&gt;
+  &lt;logger name=&quot;com.lightbend.lagom&quot; level=&quot;INFO&quot; /&gt;
+
   &lt;!-- Cassandra and the datasta driver are used by the Lagom event sourcing modules --&gt;
   &lt;logger name=&quot;org.apache.cassandra&quot; level=&quot;ERROR&quot; /&gt;
   &lt;logger name=&quot;com.datastax.driver&quot; level=&quot;ERROR&quot; /&gt;
   &lt;!-- Turn down Kafka noise --&gt;
   &lt;logger name=&quot;org.apache.kafka&quot; level=&quot;WARN&quot; /&gt;
 
-  &lt;root level=&quot;WARN&quot;&gt;
-    &lt;appender-ref ref=&quot;ASYNCFILE&quot; /&gt;
+  &lt;root level=&quot;INFO&quot;&gt;
     &lt;appender-ref ref=&quot;ASYNCSTDOUT&quot; /&gt;
   &lt;/root&gt;
-  
+
 &lt;/configuration&gt;</code></pre>
 <p>A few things to note:</p>
 <ul>
-  <li>A file appender that writes to <code>logs/application.log</code> is declared.</li>
-  <li>The file logger logs full exception stack traces, while the console logger only logs 10 lines of an exception stack trace.</li>
+  <li>The logger logs full exception stack traces and full-qualified logger names.</li>
   <li>Lagom uses ANSI color codes by default in level messages.</li>
-  <li>In production, Lagom puts both the console and the file logger behind the logback <a href="https://logback.qos.ch/manual/appenders.html#AsyncAppender">AsyncAppender</a>. For details on the performance implications on this, see this <a href="http://blog.takipi.com/how-to-instantly-improve-your-java-logging-with-7-logback-tweaks/">blog post</a>.</li>
+  <li>In production, Lagom puts the logger behind the logback <a href="https://logback.qos.ch/manual/appenders.html#AsyncAppender">AsyncAppender</a>. For details on the performance implications on this, see this <a href="http://blog.takipi.com/how-to-instantly-improve-your-java-logging-with-7-logback-tweaks/">blog post</a>.</li>
 </ul><h2 id="Custom-configuration"><a class="section-marker" href="#Custom-configuration">§</a>Custom configuration</h2>
 <p>For any custom configuration, you need to provide your own Logback configuration file.</p><h3 id="Using-a-configuration-file-from-project-source"><a class="section-marker" href="#Using-a-configuration-file-from-project-source">§</a>Using a configuration file from project source</h3>
 <p>You can provide a default logging configuration by creating a <code>logback.xml</code> file in the project&rsquo;s resource folder. Furthermore, for testing purposes, you can also create a <code>logback-test.xml</code> and place it in the <code>src/test/resources</code> directory of your project. When both <code>logback.xml</code> and <code>logback-test.xml</code> are in the classpath, the latter has higher precedence.</p><h3 id="Using-an-external-configuration-file"><a class="section-marker" href="#Using-an-external-configuration-file">§</a>Using an external configuration file</h3>
@@ -132,36 +113,30 @@
 &lt;!-- The default log4j2 configuration that Lagom uses in dev mode if no other configuration is provided --&gt;
 &lt;Configuration name=&quot;DevelopmentLagomConfig&quot;&gt;
   &lt;Appenders&gt;
-    &lt;File name=&quot;FILE&quot; fileName=&quot;logs/application.log&quot;&gt;
-      &lt;PatternLayout&gt;
-        &lt;Pattern&gt;%date [%level] from %logger in %thread - %message%n%xException&lt;/Pattern&gt;
-      &lt;/PatternLayout&gt;
-    &lt;/File&gt;
-
     &lt;Console name=&quot;STDOUT&quot;&gt;
       &lt;PatternLayout&gt;
-        &lt;Pattern&gt;%highlight{%level} %logger{15} - %message%n%xException{10}&lt;/Pattern&gt;
+        &lt;Pattern&gt;%d{HH:mm:ss.SSS} %highlight{%level} %logger [%mdc] - %msg%n&lt;/Pattern&gt;
       &lt;/PatternLayout&gt;
     &lt;/Console&gt;
   &lt;/Appenders&gt;
 
   &lt;Loggers&gt;
-    &lt;!-- Set logging for all Play library classes to WARN --&gt;
-    &lt;Logger name=&quot;play&quot; level=&quot;WARN&quot;/&gt;
-    &lt;!-- Set logging for all Akka library classes to WARN --&gt;
-    &lt;Logger name=&quot;akka&quot; level=&quot;WARN&quot;/&gt;
-    &lt;!-- Set logging for all Lagom library classes to WARN --&gt;
-    &lt;Logger name=&quot;com.lightbend.lagom&quot; level=&quot;WARN&quot;/&gt;
+    &lt;!-- Set logging for all Play library classes to INFO --&gt;
+    &lt;Logger name=&quot;play&quot; level=&quot;INFO&quot;/&gt;
+    &lt;!-- Set logging for all Akka library classes to INFO --&gt;
+    &lt;Logger name=&quot;akka&quot; level=&quot;INFO&quot;/&gt;
+    &lt;!-- Set logging for all Lagom library classes to INFO --&gt;
+    &lt;Logger name=&quot;com.lightbend.lagom&quot; level=&quot;INFO&quot;/&gt;
+
     &lt;!-- Cassandra and the datastax driver are used by the Lagom event sourcing modules --&gt;
     &lt;Logger name=&quot;org.apache.cassandra&quot; level=&quot;ERROR&quot;/&gt;
     &lt;Logger name=&quot;com.datastax.driver&quot; level=&quot;ERROR&quot;/&gt;
-    &lt;!-- Turning off connection error logging to avoid noise when services are forcely stopped --&gt;
+    &lt;!-- Turning off connection error logging to avoid noise when services are forcibly stopped --&gt;
     &lt;Logger name=&quot;com.datastax.driver.core.ControlConnection&quot; level=&quot;OFF&quot;/&gt;
     &lt;!-- Turn down Kafka noise --&gt;
     &lt;Logger name=&quot;org.apache.kafka&quot; level=&quot;WARN&quot;/&gt;
 
-    &lt;AsyncRoot level=&quot;WARN&quot;&gt;
-      &lt;AppenderRef ref=&quot;FILE&quot;/&gt;
+    &lt;AsyncRoot level=&quot;INFO&quot;&gt;
       &lt;AppenderRef ref=&quot;STDOUT&quot;/&gt;
     &lt;/AsyncRoot&gt;
   &lt;/Loggers&gt;
@@ -174,38 +149,31 @@
 &lt;!-- The default log4j2 configuration that Lagom uses if no other configuration is provided --&gt;
 &lt;Configuration name=&quot;DefaultLagomConfig&quot;&gt;
   &lt;Appenders&gt;
-    &lt;File name=&quot;FILE&quot; fileName=&quot;logs/application.log&quot;&gt;
-      &lt;PatternLayout&gt;
-        &lt;Pattern&gt;%date [%level] from %logger in %thread - %message%n%xException&lt;/Pattern&gt;
-      &lt;/PatternLayout&gt;
-    &lt;/File&gt;
-
     &lt;Console name=&quot;STDOUT&quot;&gt;
       &lt;PatternLayout&gt;
-        &lt;Pattern&gt;%highlight{%level} %logger{15} - %message%n%xException{10}&lt;/Pattern&gt;
+        &lt;Pattern&gt;%d{yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSS&#39;Z&#39;}{GMT+0} %highlight{%level} %logger [%mdc] - %msg%n&lt;/Pattern&gt;
       &lt;/PatternLayout&gt;
     &lt;/Console&gt;
   &lt;/Appenders&gt;
 
   &lt;Loggers&gt;
-    &lt;!-- Set logging for all Play library classes to WARN --&gt;
-    &lt;Logger name=&quot;play&quot; level=&quot;WARN&quot;/&gt;
-    &lt;!-- Set logging for all Akka library classes to WARN --&gt;
-    &lt;Logger name=&quot;akka&quot; level=&quot;WARN&quot;/&gt;
-    &lt;!-- Set logging for all Lagom library classes to WARN --&gt;
-    &lt;Logger name=&quot;com.lightbend.lagom&quot; level=&quot;WARN&quot;/&gt;
+    &lt;!-- Set logging for all Play library classes to INFO --&gt;
+    &lt;Logger name=&quot;play&quot; level=&quot;INFO&quot;/&gt;
+    &lt;!-- Set logging for all Akka library classes to INFO --&gt;
+    &lt;Logger name=&quot;akka&quot; level=&quot;INFO&quot;/&gt;
+    &lt;!-- Set logging for all Lagom library classes to INFO --&gt;
+    &lt;Logger name=&quot;com.lightbend.lagom&quot; level=&quot;INFO&quot;/&gt;
+
     &lt;!-- Cassandra and the datastax driver are used by the Lagom event sourcing modules --&gt;
     &lt;Logger name=&quot;org.apache.cassandra&quot; level=&quot;ERROR&quot;/&gt;
     &lt;Logger name=&quot;com.datastax.driver&quot; level=&quot;ERROR&quot;/&gt;
     &lt;!-- Turn down Kafka noise --&gt;
     &lt;Logger name=&quot;org.apache.kafka&quot; level=&quot;WARN&quot;/&gt;
 
-    &lt;AsyncRoot level=&quot;WARN&quot;&gt;
-      &lt;AppenderRef ref=&quot;FILE&quot;/&gt;
+    &lt;AsyncRoot level=&quot;INFO&quot;&gt;
       &lt;AppenderRef ref=&quot;STDOUT&quot;/&gt;
     &lt;/AsyncRoot&gt;
   &lt;/Loggers&gt;
-
 &lt;/Configuration&gt;</code></pre>
 <p>A few things to note:</p>
 <ul>

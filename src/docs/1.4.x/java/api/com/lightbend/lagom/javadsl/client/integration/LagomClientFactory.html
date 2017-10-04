@@ -274,7 +274,7 @@ implements java.io.Closeable</pre>
 <pre>public&nbsp;&lt;T&gt;&nbsp;T&nbsp;createDevClient(Class&lt;T&gt;&nbsp;clientInterface)</pre>
 <div class="block">Create a Lagom service client that uses the Lagom dev mode service locator to locate the service.
 
- This uses the default Lagom service locator port, that is, localhost:8000.</div>
+ This uses the default Lagom service locator port, that is, localhost:9008.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>clientInterface</code> - The client interface for the service.</dd>
@@ -295,7 +295,7 @@ implements java.io.Closeable</pre>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>clientInterface</code> - The client interface for the service.</dd>
-<dd><code>serviceLocatorUri</code> - The URI of the Lagom dev mode service locator - usually http://localhost:8000.</dd>
+<dd><code>serviceLocatorUri</code> - The URI of the Lagom dev mode service locator - usually http://localhost:9008.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>An implementation of the client interface.</dd>
 </dl>
