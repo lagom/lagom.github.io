@@ -3,7 +3,7 @@
 
 ## Lagom 1.3.9
 
-*Release 10 October 2017*
+*Release 5 October 2017*
 
 * [1029](https://github.com/lagom/lagom/issues/1029) wrap sql statement call in try / finally block (Renato Cavalcanti)
 * [1026](https://github.com/lagom/lagom/issues/1026) removed scalastyle warnings, gramatical errors and spelling mistakes (Pallavi Singh)
