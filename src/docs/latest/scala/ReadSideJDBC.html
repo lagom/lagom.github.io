@@ -78,7 +78,14 @@ import com.lightbend.lagom.scaladsl.persistence.jdbc.JdbcSession.tryWith
 <pre class="prettyprint"><code class="language-scala">builder.setGlobalPrepare(createTable)</code></pre><h3 id="Prepare"><a class="section-marker" href="#Prepare">§</a>Prepare</h3>
 <p>In addition to the global prepare callback, there is also a prepare callback that can be specified by calling <a href="api/index.html#com.lightbend.lagom.scaladsl.persistence.jdbc.JdbcReadSide$ReadSideHandlerBuilder@setPrepare">builder.setPrepare</a>. This will be executed once per shard, when the read side processor starts up.</p>
 <p>If you read the <a href="ReadSideCassandra.html">Cassandra read-side support</a> guide, you may have seen this used to prepare database statements for later use. JDBC <code>PreparedStatement</code> instances, however, are not guaranteed to be thread-safe, so the prepare callback should not be used for this purpose with relational databases.</p>
-<p>Again this callback is optional, and in our example we have no need for a prepare callback, so none is specified.</p><h3 id="Event-handlers"><a class="section-marker" href="#Event-handlers">§</a>Event handlers</h3>
+<p>Again this callback is optional, and in our example we have no need for a prepare callback, so none is specified.</p><h3 id="Registering-your-read-side-processor"><a class="section-marker" href="#Registering-your-read-side-processor">§</a>Registering your read-side processor</h3>
+<p>Once you&rsquo;ve created your read-side processor, you need to register it with Lagom. This is done using the <a href="api/index.html#com/lightbend/lagom/scaladsl/persistence/ReadSide"><code>ReadSide</code></a> component:</p>
+<pre class="prettyprint"><code class="language-scala">class BlogServiceImpl(
+  persistentEntityRegistry: PersistentEntityRegistry,
+  readSide: ReadSide,
+  myDatabase: MyDatabase) extends BlogService {
+
+  readSide.register[BlogEvent](new BlogEventProcessor(myDatabase))</code></pre><h3 id="Event-handlers"><a class="section-marker" href="#Event-handlers">§</a>Event handlers</h3>
 <p>The event handlers take an event and a connection, and update the read-side accordingly.</p>
 <p>Here&rsquo;s an example callback for handling the <code>PostAdded</code> event:</p>
 <pre class="prettyprint"><code class="language-scala">private def processPostAdded(connection: Connection,

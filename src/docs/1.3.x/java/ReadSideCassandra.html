@@ -109,7 +109,16 @@ private CompletionStage&lt;Done&gt; prepareWriteTitle() {
             });
 }</code></pre>
 <p>And then to register them:</p>
-<pre class="prettyprint"><code class="language-java">builder.setPrepare(tag -&gt; prepareWriteTitle());</code></pre><h3 id="Event-handlers"><a class="section-marker" href="#Event-handlers">§</a>Event handlers</h3>
+<pre class="prettyprint"><code class="language-java">builder.setPrepare(tag -&gt; prepareWriteTitle());</code></pre><h3 id="Registering-your-read-side-processor"><a class="section-marker" href="#Registering-your-read-side-processor">§</a>Registering your read-side processor</h3>
+<p>Once you&rsquo;ve created your read-side processor, you need to register it with Lagom. This is done using the <a href="api/index.html?com/lightbend/lagom/javadsl/persistence/ReadSide.html"><code>ReadSide</code></a> component:</p>
+<pre class="prettyprint"><code class="language-java">@Inject
+public BlogServiceImpl(
+        PersistentEntityRegistry persistentEntityRegistry,
+        ReadSide readSide) {
+  this.persistentEntityRegistry = persistentEntityRegistry;
+
+  readSide.register(BlogEventProcessor.class);
+}</code></pre><h3 id="Event-handlers"><a class="section-marker" href="#Event-handlers">§</a>Event handlers</h3>
 <p>The event handlers take an event, and return a list of bound statements. Rather than executing updates in the handler itself, it is recommended that you return the statements that you want to execute to Lagom. This allows Lagom to batch those statements with the offset table update statement, which Lagom will then executed as a logged batch, which Cassandra executes atomically. By doing this you can ensure exactly once processing of all events, otherwise processing may be at least once.</p>
 <p>Here&rsquo;s an example callback for handling the <code>PostAdded</code> event:</p>
 <pre class="prettyprint"><code class="language-java">private CompletionStage&lt;List&lt;BoundStatement&gt;&gt; processPostAdded(BlogEvent.PostAdded event) {
