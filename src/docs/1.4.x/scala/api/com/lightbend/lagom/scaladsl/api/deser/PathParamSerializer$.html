@@ -47,13 +47,13 @@
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <span class="name">PathParamSerializer</span>
+        <span class="name">PathParamSerializer</span><span class="result"> extends <a href="DefaultPathParamSerializers.html" class="extype" name="com.lightbend.lagom.scaladsl.api.deser.DefaultPathParamSerializers">DefaultPathParamSerializers</a></span>
       </span>
       </h4>
       
           <div id="comment" class="fullcommenttop"><dl class="attributes block"> <dt>Source</dt><dd><a href="https://github.com/lagom/lagom/tree/master//service/scaladsl/api/src/main/scala/com/lightbend/lagom/scaladsl/api/deser/PathParamSerializer.scala" target="_blank">PathParamSerializer.scala</a></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><a href="DefaultPathParamSerializers.html" class="extype" name="com.lightbend.lagom.scaladsl.api.deser.DefaultPathParamSerializers">DefaultPathParamSerializers</a>, <a href="LowPriorityPathParamSerializers.html" class="extype" name="com.lightbend.lagom.scaladsl.api.deser.LowPriorityPathParamSerializers">LowPriorityPathParamSerializers</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -71,7 +71,7 @@
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer"><span>PathParamSerializer</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer"><span>PathParamSerializer</span></li><li class="in" name="com.lightbend.lagom.scaladsl.api.deser.DefaultPathParamSerializers"><span>DefaultPathParamSerializers</span></li><li class="in" name="com.lightbend.lagom.scaladsl.api.deser.LowPriorityPathParamSerializers"><span>LowPriorityPathParamSerializers</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -90,7 +90,27 @@
         <div id="allMembers">
         
 
-        
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="com.lightbend.lagom.scaladsl.api.deser.LowPriorityPathParamSerializers.NamedPathParamSerializer" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="NamedPathParamSerializer[Param]extendsPathParamSerializer[Param]"></a>
+      <a id="NamedPathParamSerializer[Param]:NamedPathParamSerializer[Param]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="LowPriorityPathParamSerializers$NamedPathParamSerializer.html"><span class="name">NamedPathParamSerializer</span></a><span class="tparams">[<span name="Param">Param</span>]</span><span class="result"> extends <a href="PathParamSerializer.html" class="extype" name="com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer">PathParamSerializer</a>[<span class="extype" name="com.lightbend.lagom.scaladsl.api.deser.LowPriorityPathParamSerializers.NamedPathParamSerializer.Param">Param</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../../index.html#com.lightbend.lagom.scaladsl.api.deser.LowPriorityPathParamSerializers@NamedPathParamSerializer[Param]extendsPathParamSerializer[Param]" title="Permalink" target="_top">
+        <img src="../../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="LowPriorityPathParamSerializers.html" class="extype" name="com.lightbend.lagom.scaladsl.api.deser.LowPriorityPathParamSerializers">LowPriorityPathParamSerializers</a></dd></dl></div>
+    </li></ol>
+            </div>
 
         
 
@@ -147,7 +167,7 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer#BooleanPathParamSerializer" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="com.lightbend.lagom.scaladsl.api.deser.DefaultPathParamSerializers#BooleanPathParamSerializer" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="BooleanPathParamSerializer:com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer[Boolean]"></a>
       <a id="BooleanPathParamSerializer:PathParamSerializer[Boolean]"></a>
       <h4 class="signature">
@@ -164,8 +184,9 @@
       </a>
     </span>
       <p class="shortcomment cmt">A Boolean path parameter serializer
-</p>
-    </li><li name="com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer#DoublePathParamSerializer" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+</p><div class="fullcomment"><div class="comment cmt"><p>A Boolean path parameter serializer
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="DefaultPathParamSerializers.html" class="extype" name="com.lightbend.lagom.scaladsl.api.deser.DefaultPathParamSerializers">DefaultPathParamSerializers</a></dd></dl></div>
+    </li><li name="com.lightbend.lagom.scaladsl.api.deser.DefaultPathParamSerializers#DoublePathParamSerializer" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="DoublePathParamSerializer:com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer[Double]"></a>
       <a id="DoublePathParamSerializer:PathParamSerializer[Double]"></a>
       <h4 class="signature">
@@ -182,8 +203,9 @@
       </a>
     </span>
       <p class="shortcomment cmt">An Double path parameter serializer
-</p>
-    </li><li name="com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer#IntPathParamSerializer" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+</p><div class="fullcomment"><div class="comment cmt"><p>An Double path parameter serializer
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="DefaultPathParamSerializers.html" class="extype" name="com.lightbend.lagom.scaladsl.api.deser.DefaultPathParamSerializers">DefaultPathParamSerializers</a></dd></dl></div>
+    </li><li name="com.lightbend.lagom.scaladsl.api.deser.DefaultPathParamSerializers#IntPathParamSerializer" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="IntPathParamSerializer:com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer[Int]"></a>
       <a id="IntPathParamSerializer:PathParamSerializer[Int]"></a>
       <h4 class="signature">
@@ -200,8 +222,9 @@
       </a>
     </span>
       <p class="shortcomment cmt">An Int path parameter serializer
-</p>
-    </li><li name="com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer#LongPathParamSerializer" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+</p><div class="fullcomment"><div class="comment cmt"><p>An Int path parameter serializer
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="DefaultPathParamSerializers.html" class="extype" name="com.lightbend.lagom.scaladsl.api.deser.DefaultPathParamSerializers">DefaultPathParamSerializers</a></dd></dl></div>
+    </li><li name="com.lightbend.lagom.scaladsl.api.deser.DefaultPathParamSerializers#LongPathParamSerializer" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="LongPathParamSerializer:com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer[Long]"></a>
       <a id="LongPathParamSerializer:PathParamSerializer[Long]"></a>
       <h4 class="signature">
@@ -218,8 +241,9 @@
       </a>
     </span>
       <p class="shortcomment cmt">A Long path parameter serializer
-</p>
-    </li><li name="com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer#StringPathParamSerializer" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+</p><div class="fullcomment"><div class="comment cmt"><p>A Long path parameter serializer
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="DefaultPathParamSerializers.html" class="extype" name="com.lightbend.lagom.scaladsl.api.deser.DefaultPathParamSerializers">DefaultPathParamSerializers</a></dd></dl></div>
+    </li><li name="com.lightbend.lagom.scaladsl.api.deser.DefaultPathParamSerializers#StringPathParamSerializer" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="StringPathParamSerializer:com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer[String]"></a>
       <a id="StringPathParamSerializer:PathParamSerializer[String]"></a>
       <h4 class="signature">
@@ -236,8 +260,9 @@
       </a>
     </span>
       <p class="shortcomment cmt">A String path parameter serializer
-</p>
-    </li><li name="com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer#UuidPathParamSerializer" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+</p><div class="fullcomment"><div class="comment cmt"><p>A String path parameter serializer
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="DefaultPathParamSerializers.html" class="extype" name="com.lightbend.lagom.scaladsl.api.deser.DefaultPathParamSerializers">DefaultPathParamSerializers</a></dd></dl></div>
+    </li><li name="com.lightbend.lagom.scaladsl.api.deser.DefaultPathParamSerializers#UuidPathParamSerializer" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="UuidPathParamSerializer:com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer[java.util.UUID]"></a>
       <a id="UuidPathParamSerializer:PathParamSerializer[UUID]"></a>
       <h4 class="signature">
@@ -254,7 +279,8 @@
       </a>
     </span>
       <p class="shortcomment cmt">A UUID path parameter serializer
-</p>
+</p><div class="fullcomment"><div class="comment cmt"><p>A UUID path parameter serializer
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="DefaultPathParamSerializers.html" class="extype" name="com.lightbend.lagom.scaladsl.api.deser.DefaultPathParamSerializers">DefaultPathParamSerializers</a></dd></dl></div>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <a id="asInstanceOf[T0]:T0"></a>
@@ -454,8 +480,8 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer#optionPathParamSerializer" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="optionPathParamSerializer[Param](implicitevidence$1:com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer[Param]):com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer[Option[Param]]"></a>
+    </li><li name="com.lightbend.lagom.scaladsl.api.deser.DefaultPathParamSerializers#optionPathParamSerializer" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="optionPathParamSerializer[Param](implicitdelegate:com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer[Param]):com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer[Option[Param]]"></a>
       <a id="optionPathParamSerializer[Param](PathParamSerializer[Param]):PathParamSerializer[Option[Param]]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -463,16 +489,17 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">optionPathParamSerializer</span><span class="tparams">[<span name="Param">Param</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <a href="PathParamSerializer.html" class="extype" name="com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer">PathParamSerializer</a>[<span class="extype" name="com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer.optionPathParamSerializer.Param">Param</span>]</span>)</span><span class="result">: <a href="PathParamSerializer.html" class="extype" name="com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer">PathParamSerializer</a>[<a href="http://www.scala-lang.org/api/2.11.11/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer.optionPathParamSerializer.Param">Param</span>]]</span>
+        <span class="name">optionPathParamSerializer</span><span class="tparams">[<span name="Param">Param</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="delegate">delegate: <a href="PathParamSerializer.html" class="extype" name="com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer">PathParamSerializer</a>[<span class="extype" name="com.lightbend.lagom.scaladsl.api.deser.DefaultPathParamSerializers.optionPathParamSerializer.Param">Param</span>]</span>)</span><span class="result">: <a href="PathParamSerializer.html" class="extype" name="com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer">PathParamSerializer</a>[<a href="http://www.scala-lang.org/api/2.11.11/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="com.lightbend.lagom.scaladsl.api.deser.DefaultPathParamSerializers.optionPathParamSerializer.Param">Param</span>]]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../../index.html#com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer$@optionPathParamSerializer[Param](implicitevidence$1:com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer[Param]):com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer[Option[Param]]" title="Permalink" target="_top">
+      <a href="../../../../../../index.html#com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer$@optionPathParamSerializer[Param](implicitdelegate:com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer[Param]):com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer[Option[Param]]" title="Permalink" target="_top">
         <img src="../../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <p class="shortcomment cmt">An option path param serializer
-</p>
-    </li><li name="com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer#required" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+</p><div class="fullcomment"><div class="comment cmt"><p>An option path param serializer
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="DefaultPathParamSerializers.html" class="extype" name="com.lightbend.lagom.scaladsl.api.deser.DefaultPathParamSerializers">DefaultPathParamSerializers</a></dd></dl></div>
+    </li><li name="com.lightbend.lagom.scaladsl.api.deser.DefaultPathParamSerializers#required" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="required[Param](name:String)(deserializeFunction:String=&gt;Param)(serializeFunction:Param=&gt;String):com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer[Param]"></a>
       <a id="required[Param](String)((String)⇒Param)((Param)⇒String):PathParamSerializer[Param]"></a>
       <h4 class="signature">
@@ -481,14 +508,15 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">required</span><span class="tparams">[<span name="Param">Param</span>]</span><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="params">(<span name="deserializeFunction">deserializeFunction: (<span class="extype" name="scala.Predef.String">String</span>) ⇒ <span class="extype" name="com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer.required.Param">Param</span></span>)</span><span class="params">(<span name="serializeFunction">serializeFunction: (<span class="extype" name="com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer.required.Param">Param</span>) ⇒ <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <a href="PathParamSerializer.html" class="extype" name="com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer">PathParamSerializer</a>[<span class="extype" name="com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer.required.Param">Param</span>]</span>
+        <span class="name">required</span><span class="tparams">[<span name="Param">Param</span>]</span><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="params">(<span name="deserializeFunction">deserializeFunction: (<span class="extype" name="scala.Predef.String">String</span>) ⇒ <span class="extype" name="com.lightbend.lagom.scaladsl.api.deser.DefaultPathParamSerializers.required.Param">Param</span></span>)</span><span class="params">(<span name="serializeFunction">serializeFunction: (<span class="extype" name="com.lightbend.lagom.scaladsl.api.deser.DefaultPathParamSerializers.required.Param">Param</span>) ⇒ <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <a href="PathParamSerializer.html" class="extype" name="com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer">PathParamSerializer</a>[<span class="extype" name="com.lightbend.lagom.scaladsl.api.deser.DefaultPathParamSerializers.required.Param">Param</span>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../../../index.html#com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer$@required[Param](name:String)(deserializeFunction:String=&gt;Param)(serializeFunction:Param=&gt;String):com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer[Param]" title="Permalink" target="_top">
         <img src="../../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">Create a PathParamSerializer for required parameters.</p>
+      <p class="shortcomment cmt">Create a PathParamSerializer for required parameters.</p><div class="fullcomment"><div class="comment cmt"><p>Create a PathParamSerializer for required parameters.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="DefaultPathParamSerializers.html" class="extype" name="com.lightbend.lagom.scaladsl.api.deser.DefaultPathParamSerializers">DefaultPathParamSerializers</a></dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
@@ -523,6 +551,25 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="com.lightbend.lagom.scaladsl.api.deser.LowPriorityPathParamSerializers#traversablePathParamSerializer" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="traversablePathParamSerializer[CC[X]&lt;:Traversable[X],Param](implicitevidence$1:com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer[Param],implicitdelegate:com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer[Param],implicitbf:scala.collection.generic.CanBuildFrom[CC[_],Param,CC[Param]]):com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer[CC[Param]]"></a>
+      <a id="traversablePathParamSerializer[CC[X]&lt;:Traversable[X],Param](PathParamSerializer[Param],PathParamSerializer[Param],CanBuildFrom[CC[_],Param,CC[Param]]):PathParamSerializer[CC[Param]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">traversablePathParamSerializer</span><span class="tparams">[<span name="CC">CC<span class="tparams">[<span name="X">X</span>]</span> &lt;: <span class="extype" name="scala.Traversable">Traversable</span>[<span class="extype" name="com.lightbend.lagom.scaladsl.api.deser.LowPriorityPathParamSerializers.traversablePathParamSerializer.CC.X">X</span>]</span>, <span name="Param">Param</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <a href="PathParamSerializer.html" class="extype" name="com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer">PathParamSerializer</a>[<span class="extype" name="com.lightbend.lagom.scaladsl.api.deser.LowPriorityPathParamSerializers.traversablePathParamSerializer.Param">Param</span>]</span>, <span name="delegate">delegate: <a href="PathParamSerializer.html" class="extype" name="com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer">PathParamSerializer</a>[<span class="extype" name="com.lightbend.lagom.scaladsl.api.deser.LowPriorityPathParamSerializers.traversablePathParamSerializer.Param">Param</span>]</span>, <span name="bf">bf: <a href="http://www.scala-lang.org/api/2.11.11/index.html#scala.collection.generic.CanBuildFrom" class="extype" target="_top">CanBuildFrom</a>[<span class="extype" name="com.lightbend.lagom.scaladsl.api.deser.LowPriorityPathParamSerializers.traversablePathParamSerializer.CC">CC</span>[_], <span class="extype" name="com.lightbend.lagom.scaladsl.api.deser.LowPriorityPathParamSerializers.traversablePathParamSerializer.Param">Param</span>, <span class="extype" name="com.lightbend.lagom.scaladsl.api.deser.LowPriorityPathParamSerializers.traversablePathParamSerializer.CC">CC</span>[<span class="extype" name="com.lightbend.lagom.scaladsl.api.deser.LowPriorityPathParamSerializers.traversablePathParamSerializer.Param">Param</span>]]</span>)</span><span class="result">: <a href="PathParamSerializer.html" class="extype" name="com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer">PathParamSerializer</a>[<span class="extype" name="com.lightbend.lagom.scaladsl.api.deser.LowPriorityPathParamSerializers.traversablePathParamSerializer.CC">CC</span>[<span class="extype" name="com.lightbend.lagom.scaladsl.api.deser.LowPriorityPathParamSerializers.traversablePathParamSerializer.Param">Param</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../../index.html#com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer$@traversablePathParamSerializer[CC[X]&lt;:Traversable[X],Param](implicitevidence$1:com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer[Param],implicitdelegate:com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer[Param],implicitbf:scala.collection.generic.CanBuildFrom[CC[_],Param,CC[Param]]):com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer[CC[Param]]" title="Permalink" target="_top">
+        <img src="../../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A traversable path param serializer
+</p><div class="fullcomment"><div class="comment cmt"><p>A traversable path param serializer
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="LowPriorityPathParamSerializers.html" class="extype" name="com.lightbend.lagom.scaladsl.api.deser.LowPriorityPathParamSerializers">LowPriorityPathParamSerializers</a></dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <a id="wait():Unit"></a>
@@ -601,7 +648,11 @@
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="scala.AnyRef">
+        <div class="parent" name="com.lightbend.lagom.scaladsl.api.deser.DefaultPathParamSerializers">
+              <h3>Inherited from <a href="DefaultPathParamSerializers.html" class="extype" name="com.lightbend.lagom.scaladsl.api.deser.DefaultPathParamSerializers">DefaultPathParamSerializers</a></h3>
+            </div><div class="parent" name="com.lightbend.lagom.scaladsl.api.deser.LowPriorityPathParamSerializers">
+              <h3>Inherited from <a href="LowPriorityPathParamSerializers.html" class="extype" name="com.lightbend.lagom.scaladsl.api.deser.LowPriorityPathParamSerializers">LowPriorityPathParamSerializers</a></h3>
+            </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>

@@ -1,7 +1,7 @@
 ---
 title: Lagom 1.3.7 is released!
 date: 2017-08-18
-author_github: rcavalcanti
+author_github: renatocaval
 tags: news
 summary: >
     The Lagom team has released Lagom 1.3.7

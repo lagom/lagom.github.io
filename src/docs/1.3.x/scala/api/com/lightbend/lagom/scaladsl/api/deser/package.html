@@ -85,6 +85,23 @@
       <p class="shortcomment cmt">The default exception serializer.</p><div class="fullcomment"><div class="comment cmt"><p>The default exception serializer.</p><p>Serializes exception messages to JSON.</p><p>This serializer is capable of converting Lagom built-in exceptions to and from JSON. Custom sub classes of
 TransportException can also be deserialized by extending this class and overriding <span class="extype" name="fromCodeAndMessage()">fromCodeAndMessage()</span>.
 </p></div></div>
+    </li><li name="com.lightbend.lagom.scaladsl.api.deser.DefaultPathParamSerializers" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="DefaultPathParamSerializersextendsLowPriorityPathParamSerializers"></a>
+      <a id="DefaultPathParamSerializers:DefaultPathParamSerializers"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="DefaultPathParamSerializers.html"><span class="name">DefaultPathParamSerializers</span></a><span class="result"> extends <a href="LowPriorityPathParamSerializers.html" class="extype" name="com.lightbend.lagom.scaladsl.api.deser.LowPriorityPathParamSerializers">LowPriorityPathParamSerializers</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../../index.html#com.lightbend.lagom.scaladsl.api.deser.package@DefaultPathParamSerializersextendsLowPriorityPathParamSerializers" title="Permalink" target="_top">
+        <img src="../../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="com.lightbend.lagom.scaladsl.api.deser.ExceptionSerializer" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="ExceptionSerializerextendsAnyRef"></a>
       <a id="ExceptionSerializer:ExceptionSerializer"></a>
@@ -115,6 +132,23 @@ TransportException can also be deserialized by extending this class and overridi
       </span>
       </h4><span class="permalink">
       <a href="../../../../../../index.html#com.lightbend.lagom.scaladsl.api.deser.package@LowPriorityMessageSerializerImplicitsextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="com.lightbend.lagom.scaladsl.api.deser.LowPriorityPathParamSerializers" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="LowPriorityPathParamSerializersextendsAnyRef"></a>
+      <a id="LowPriorityPathParamSerializers:LowPriorityPathParamSerializers"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="LowPriorityPathParamSerializers.html"><span class="name">LowPriorityPathParamSerializers</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../../index.html#com.lightbend.lagom.scaladsl.api.deser.package@LowPriorityPathParamSerializersextendsAnyRef" title="Permalink" target="_top">
         <img src="../../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -267,7 +301,7 @@ than an Akka streams <code>Source</code>.
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="PathParamSerializer$.html"><span class="name">PathParamSerializer</span></a>
+        <a href="PathParamSerializer$.html"><span class="name">PathParamSerializer</span></a><span class="result"> extends <a href="DefaultPathParamSerializers.html" class="extype" name="com.lightbend.lagom.scaladsl.api.deser.DefaultPathParamSerializers">DefaultPathParamSerializers</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../../../index.html#com.lightbend.lagom.scaladsl.api.deser.package@PathParamSerializer" title="Permalink" target="_top">
