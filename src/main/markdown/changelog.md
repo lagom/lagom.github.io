@@ -1,9 +1,27 @@
 # Lagom Change Log
 
+## Lagom 1.3.10
+
+*Released 1 November 2017*
+
+* [1079](https://github.com/lagom/lagom/issues/1079) Fix unhandled event issue message in PersistentEntityTestDriver (HSalaila)
+* [1081](https://github.com/lagom/lagom/issues/1081) Delete PersistentEntityTestDriver.runOne (James Roper)
+* [1021](https://github.com/lagom/lagom/issues/1021) PathParamSerializer derived instances for traversables (Julien Jean Paul Sirocchi)
+* [1070](https://github.com/lagom/lagom/issues/1070) Ensures .gitignore file is copied to the Maven archetype (Saniya Tech)
+* [1056](https://github.com/lagom/lagom/issues/1056) OffSet storage need the eventProcessorId (NOUGUIER Olivier)
+* [1063](https://github.com/lagom/lagom/issues/1063) Align the Lagom logback version with the Play one. (Jules Ivanic)
+* [1062](https://github.com/lagom/lagom/issues/1062) Upgrades AkkaStreamKafkaVersion and KafkaVersion for Lagom 1.3 (Jules Ivanic)
+* [1053](https://github.com/lagom/lagom/issues/1053) Service Router actions should use filtered request (Ignasi Marimon-Clos)
+* [1052](https://github.com/lagom/lagom/issues/1052) Document ReadSide.register in the Cassandra/RDBMS read-side documentation (Micho)
+* [1039](https://github.com/lagom/lagom/issues/1039) Lagom always returns binary data via websocket to Firefox (Jirka Kremser)
+* [1049](https://github.com/lagom/lagom/issues/1049) Update Akka Persistence Cassandra to 0.30 (Tim Moore)
+* [1044](https://github.com/lagom/lagom/issues/1044) Added serializer for ClusterStartupTaskActor.Execute (James Roper)
+* [1046](https://github.com/lagom/lagom/issues/1046) Update Play to 2.5.18 (Tim Moore)
+
 
 ## Lagom 1.3.9
 
-*Release 5 October 2017*
+*Released 5 October 2017*
 
 * [1029](https://github.com/lagom/lagom/issues/1029) wrap sql statement call in try / finally block (Renato Cavalcanti)
 * [1026](https://github.com/lagom/lagom/issues/1026) removed scalastyle warnings, gramatical errors and spelling mistakes (Pallavi Singh)
