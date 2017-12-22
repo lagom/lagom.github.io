@@ -14,7 +14,7 @@ Contrary to the previous milestone releases, a RC is production ready. We are no
 
 ### Migrating from other versions
 
- * If you are migrating into Lagom 1.4.0-RC1 from 1.4.0-M3 you should have a look at the release announcements for Lagom versions [1.3.9](/blog/lagom-1-3-9.html) and [1.3.10](/blog/lagom-1-3-10.html). The migration guide to 1.4 ([Java](/documentation/1.4.x/java/Migration14.html)/[Scala](/documentation/1.4.x/scala/Migration14.html)) has also been improved, don't forget to review it.
+ * If you are migrating to Lagom 1.4.0-RC1 from 1.4.0-M3, look out for new deprecation warnings. The migration guide to 1.4 ([Java](/documentation/1.4.x/java/Migration14.html)/[Scala](/documentation/1.4.x/scala/Migration14.html)) has also been improved, don't forget to review it.
  * If you are migrating into Lagom 1.4.0-RC1 from a version in the Lagom 1.3.x series you should have a look at changes introduced in latest versions of the Lagom 1.3.x series and especially you should read the migration guide to 1.4 ([Java](/documentation/1.4.x/java/Migration14.html)/[Scala](/documentation/1.4.x/scala/Migration14.html)). We also recommend updating to the latest stable 1.3.x release (currently 1.3.10 as of this writing) before attempting to update to 1.4.
 
 ### Changelog
@@ -24,7 +24,7 @@ See the [full list of changes](https://github.com/lagom/lagom/compare/1.4.0-M3..
 * Ensure Akka cluster is left gracefully based on new [Akka Coordinated Shutdown](https://doc.akka.io/docs/akka/current/actors.html?language=scala#coordinated-shutdown)
 * Maven Dependency POM and Archetype supporting Scala 2.11 and 2.12
 * Upgraded to Akka 2.5.8
-* Upgraded to AkkaHttp 10.0.11 
+* Upgraded to Akka HTTP 10.0.11 
 * Upgraded to Play 2.6.10
 * Upgraded to akka-persistence-jdbc to 3.1.0
 * Akka-HTTP as default backend
