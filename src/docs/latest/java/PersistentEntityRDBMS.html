@@ -20,11 +20,12 @@
 </ul>
 <p>We advise against using H2 in production, however, it is suitable for use in development and testing.</p>
 <p>In Lagom&rsquo;s default configuration, Lagom will use Play&rsquo;s JDBC support to configure and create a connection pool. Details on how to configure it can be found <a href="https://www.playframework.com/documentation/2.6.x/JavaDatabase">here</a>. Play should be configured to provide a JNDI binding for the datasource, by default Lagom binds it to <code>DefaultDS</code>.</p>
-<p>Lagom then configures <code>akka-persistence-jdbc</code> to use that <code>DefaultDS</code> JNDI binding. <code>akka-persistence-jdbc</code> uses <a href="http://slick.lightbend.com/">Slick</a> to map tables and manage asynchronous execution of JDBC calls. This means we need to configure it to use the right Slick profile for your database, by default Lagom will use the H2 profile.</p>
+<p>Lagom then configures a <a href="http://slick.lightbend.com/">Slick</a> Database to use that datasource in combination with a <a href="http://slick.lightbend.com/doc/3.2.1/api/index.html#slick.util.AsyncExecutor">AsyncExecutor</a> that manages the thread pool for asynchronous execution of Database I/O Actions. Lagom will also take care that the connection pool is configured correctly according to the AsyncExecutor settings. The Slick Database is then bound to the JNDI name <code>DefaultDB</code> and it&rsquo;s used to configure the <code>akka-persistence-jdbc</code> plugin.</p>
+<p>The <code>akka-persistence-jdbc</code> plugin uses Slick to map tables and manage asynchronous execution of JDBC calls. This means Lagom internally configures it to use the right Slick profile for your database.</p>
 <p>So for example, to configure a PostgreSQL database, you can add the following to your <code>application.conf</code>:</p>
 <pre class="prettyprint"><code>db.default {
   driver = &quot;org.postgresql.Driver&quot;
-  url = &quot;jdbc:postgresql://database.example.com/playdb&quot;
+  url = &quot;jdbc:postgresql://database.example.com/lagom-db&quot;
 }
 
 jdbc-defaults.slick.profile = &quot;slick.jdbc.PostgresProfile$&quot;
@@ -41,12 +42,67 @@ jdbc-defaults.slick {
   # set to one of: slick.jdbc.PostgresProfile$, slick.jdbc.MySQLProfile$, slick.jdbc.OracleProfile$ or slick.jdbc.H2Profile$
   # profile = &quot;slick.jdbc.PostgresProfile$&quot;
 
-  # The JNDI name
-  jndiName = &quot;DefaultDS&quot;
+  # The JNDI name for the Slick pre-configured DB
+  # By default, this value will be used by all akka-persistence-jdbc plugin components (journal, read-journal and snapshot).
+  # you may configure each plugin component to use different DB settings
+  jndiDbName=DefaultDB
 }
 
-# Configure the default database to be bound to JNDI
-db.default.jndiName=DefaultDS
+
+db.default {
+
+  # The JNDI name for this DataSource
+  # Play, and therefore Lagom, will automatically register this DataSource as a JNDI resource using this name.
+  # This DataSource will be used to build a pre-configured Slick DB
+  jndiName=DefaultDS
+
+  # Lagom will configure a Slick Database, using the async-executor settings below
+  # and register it as a JNDI resource using this name.
+  # By default, all akka-persistence-jdbc plugin components will use this JDNI name
+  # to lookup for this pre-configured Slick DB
+  jndiDbName=DefaultDB
+
+  async-executor {
+    # number of objects that can be queued by the async executor
+    queueSize = 10000
+
+    # 5 * number of cores
+    numThreads = 20
+
+    # number of threads
+    minConnections = 20
+
+    # 5 * number of threads
+    maxConnections = 100
+  }
+
+  # Hikari is the default connection pool and it&#39;s fine-tuned to use the same
+  # values for minimum and maximum connections as defined for the async-executor above
+  hikaricp {
+    minimumIdle = ${db.default.async-executor.minConnections}
+    maximumPoolSize = ${db.default.async-executor.maxConnections}
+  }
+
+  # Alternatively, BoneCP can be used instead of Hikari.
+  # More information on how to switch to BoneCP can be found here:
+  # https://www.playframework.com/documentation/2.6.x/ScalaDatabase#Selecting-and-configuring-the-connection-pool
+  #
+  # The settings below configured it to use the same
+  # values for minimum and maximum connections as defined for the async-executor above
+  bonecp {
+    # the pool partition count
+    partitionCount = 1
+
+    # the value below is dependent on the partitionCount
+    # it must be equal or less than async-executor.minConnections / partitionCount
+    minConnectionsPerPartition = ${db.default.async-executor.minConnections}
+
+    # the value below is dependent on the partitionCount
+    # it must be equal or less than async-executor.maxConnections / partitionCount
+    maxConnectionsPerPartition = ${db.default.async-executor.maxConnections}
+  }
+}
+
 
 lagom.persistence.jdbc {
 

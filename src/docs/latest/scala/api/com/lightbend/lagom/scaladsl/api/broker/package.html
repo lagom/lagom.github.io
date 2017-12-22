@@ -66,36 +66,71 @@
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="com.lightbend.lagom.scaladsl.api.broker.Subscriber" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="Subscriber[Message]extendsAnyRef"></a>
-      <a id="Subscriber[Message]:Subscriber[Message]"></a>
+              <ol><li name="com.lightbend.lagom.scaladsl.api.broker.Message" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="Message[Payload]extendsAnyRef"></a>
+      <a id="Message[Payload]:Message[Payload]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Message.html"><span class="name">Message</span></a><span class="tparams">[<span name="Payload">Payload</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../../index.html#com.lightbend.lagom.scaladsl.api.broker.package@Message[Payload]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A message broker message.</p><div class="fullcomment"><div class="comment cmt"><p>A message broker message.</p><p>This provides access to both the message payload, and the metadata.
+</p></div></div>
+    </li><li name="com.lightbend.lagom.scaladsl.api.broker.MetadataKey" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="MetadataKey[Metadata]extendsAnyRef"></a>
+      <a id="MetadataKey[Metadata]:MetadataKey[Metadata]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="MetadataKey.html"><span class="name">MetadataKey</span></a><span class="tparams">[<span name="Metadata">Metadata</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../../index.html#com.lightbend.lagom.scaladsl.api.broker.package@MetadataKey[Metadata]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A metadata key.</p>
+    </li><li name="com.lightbend.lagom.scaladsl.api.broker.Subscriber" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="Subscriber[Payload]extendsAnyRef"></a>
+      <a id="Subscriber[Payload]:Subscriber[Payload]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a href="Subscriber.html"><span class="name">Subscriber</span></a><span class="tparams">[<span name="Message">Message</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <a href="Subscriber.html"><span class="name">Subscriber</span></a><span class="tparams">[<span name="Payload">Payload</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../../index.html#com.lightbend.lagom.scaladsl.api.broker.package@Subscriber[Message]extendsAnyRef" title="Permalink" target="_top">
+      <a href="../../../../../../index.html#com.lightbend.lagom.scaladsl.api.broker.package@Subscriber[Payload]extendsAnyRef" title="Permalink" target="_top">
         <img src="../../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <p class="shortcomment cmt">A Subscriber for consuming messages from a message broker.</p>
     </li><li name="com.lightbend.lagom.scaladsl.api.broker.Topic" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="Topic[Message]extendsAnyRef"></a>
-      <a id="Topic[Message]:Topic[Message]"></a>
+      <a id="Topic[Payload]extendsAnyRef"></a>
+      <a id="Topic[Payload]:Topic[Payload]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a href="Topic.html"><span class="name">Topic</span></a><span class="tparams">[<span name="Message">Message</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <a href="Topic.html"><span class="name">Topic</span></a><span class="tparams">[<span name="Payload">Payload</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../../index.html#com.lightbend.lagom.scaladsl.api.broker.package@Topic[Message]extendsAnyRef" title="Permalink" target="_top">
+      <a href="../../../../../../index.html#com.lightbend.lagom.scaladsl.api.broker.package@Topic[Payload]extendsAnyRef" title="Permalink" target="_top">
         <img src="../../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -107,7 +142,41 @@
 
         <div id="values" class="values members">
               <h3>Value Members</h3>
-              <ol><li name="com.lightbend.lagom.scaladsl.api.broker.Subscriber" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="com.lightbend.lagom.scaladsl.api.broker.Message" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Message"></a>
+      <a id="Message:Message"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Message$.html"><span class="name">Message</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../../index.html#com.lightbend.lagom.scaladsl.api.broker.package@Message" title="Permalink" target="_top">
+        <img src="../../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="com.lightbend.lagom.scaladsl.api.broker.MetadataKey" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="MetadataKey"></a>
+      <a id="MetadataKey:MetadataKey"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="MetadataKey$.html"><span class="name">MetadataKey</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../../index.html#com.lightbend.lagom.scaladsl.api.broker.package@MetadataKey" title="Permalink" target="_top">
+        <img src="../../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="com.lightbend.lagom.scaladsl.api.broker.Subscriber" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="Subscriber"></a>
       <a id="Subscriber:Subscriber"></a>
       <h4 class="signature">

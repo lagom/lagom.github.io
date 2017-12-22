@@ -8,7 +8,7 @@
 <p>The following Lagom characteristics promote these best practices:</p>
 <ul>
   <li>
-  <p>Lagom is asynchronous by default &mdash; its APIs make inter-service communication via streaming a first-class concept. All Lagom APIs use the asynchronous IO capabilities of <a href="http://akka.io/">Akka Stream</a> for asynchronous streaming; the Java API uses <a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CompletionStage.html">JDK8 <code>CompletionStage</code></a> for asynchronous computation; the Scala API uses <a href="https://www.scala-lang.org/api/2.11.8/#scala.concurrent.Future">Futures</a>.</p></li>
+  <p>Lagom is asynchronous by default &mdash; its APIs make inter-service communication via streaming a first-class concept. All Lagom APIs use the asynchronous IO capabilities of <a href="https://akka.io/">Akka Stream</a> for asynchronous streaming; the Java API uses <a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CompletionStage.html">JDK8 <code>CompletionStage</code></a> for asynchronous computation; the Scala API uses <a href="https://www.scala-lang.org/api/2.11.8/#scala.concurrent.Future">Futures</a>.</p></li>
   <li>
   <p>Lagom favors distributed persistent patterns in contrast with traditional centralized databases. We encourage &mdash; but do not require &mdash; an event-sourced architecture for data persistence. The default pattern for persisting entities takes advantage of Event Sourcing (ES) with Command Query Responsibility Segregation (CQRS). <a href="ES_CQRS.html">Managing data persistence</a> explains at a high level what event sourcing is and why it is valuable. <a href="PersistentEntity.html">Persistent Entity</a> introduces Lagom&rsquo;s implementation of event sourcing.</p></li>
   <li>

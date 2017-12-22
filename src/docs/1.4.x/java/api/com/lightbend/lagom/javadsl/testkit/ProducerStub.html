@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10};
+var methods = {"i0":10,"i1":10,"i2":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -150,11 +150,17 @@ extends Object</pre>
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/lightbend/lagom/javadsl/testkit/ProducerStub.html#send-com.lightbend.lagom.javadsl.api.broker.Message-">send</a></span>(<a href="../../../../../com/lightbend/lagom/javadsl/api/broker/Message.html" title="class in com.lightbend.lagom.javadsl.api.broker">Message</a>&lt;<a href="../../../../../com/lightbend/lagom/javadsl/testkit/ProducerStub.html" title="type parameter in ProducerStub">T</a>&gt;&nbsp;message)</code>
+<div class="block">Send a message wrapped with metadata to the topic.</div>
+</td>
+</tr>
+<tr id="i1" class="rowColor">
+<td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/lightbend/lagom/javadsl/testkit/ProducerStub.html#send-T-">send</a></span>(<a href="../../../../../com/lightbend/lagom/javadsl/testkit/ProducerStub.html" title="type parameter in ProducerStub">T</a>&nbsp;message)</code>
 <div class="block">Sends the message via the <a href="../../../../../com/lightbend/lagom/javadsl/api/broker/Topic.html" title="interface in com.lightbend.lagom.javadsl.api.broker"><code>Topic</code></a> where this <a href="../../../../../com/lightbend/lagom/javadsl/testkit/ProducerStub.html" title="class in com.lightbend.lagom.javadsl.testkit"><code>ProducerStub</code></a> is connected to.</div>
 </td>
 </tr>
-<tr id="i1" class="rowColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code><a href="../../../../../com/lightbend/lagom/javadsl/api/broker/Topic.html" title="interface in com.lightbend.lagom.javadsl.api.broker">Topic</a>&lt;<a href="../../../../../com/lightbend/lagom/javadsl/testkit/ProducerStub.html" title="type parameter in ProducerStub">T</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/lightbend/lagom/javadsl/testkit/ProducerStub.html#topic--">topic</a></span>()</code>
 <div class="block">Returns the <a href="../../../../../com/lightbend/lagom/javadsl/api/broker/Topic.html" title="interface in com.lightbend.lagom.javadsl.api.broker"><code>Topic</code></a> where this <a href="../../../../../com/lightbend/lagom/javadsl/testkit/ProducerStub.html" title="class in com.lightbend.lagom.javadsl.testkit"><code>ProducerStub</code></a> is connected to.</div>
@@ -216,7 +222,7 @@ extends Object</pre>
 </a><a name="send-T-">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>send</h4>
 <pre>public&nbsp;void&nbsp;send(<a href="../../../../../com/lightbend/lagom/javadsl/testkit/ProducerStub.html" title="type parameter in ProducerStub">T</a>&nbsp;message)</pre>
@@ -225,6 +231,21 @@ extends Object</pre>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>message</code> - </dd>
+</dl>
+</li>
+</ul>
+<a name="send-com.lightbend.lagom.javadsl.api.broker.Message-">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>send</h4>
+<pre>public&nbsp;void&nbsp;send(<a href="../../../../../com/lightbend/lagom/javadsl/api/broker/Message.html" title="class in com.lightbend.lagom.javadsl.api.broker">Message</a>&lt;<a href="../../../../../com/lightbend/lagom/javadsl/testkit/ProducerStub.html" title="type parameter in ProducerStub">T</a>&gt;&nbsp;message)</pre>
+<div class="block">Send a message wrapped with metadata to the topic.
+ <p></div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>message</code> - The message to send.</dd>
 </dl>
 </li>
 </ul>

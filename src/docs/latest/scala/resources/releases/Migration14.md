@@ -7,7 +7,7 @@ This guide explains how to migrate from Lagom 1.3 to Lagom 1.4. If you are upgra
 The version of Lagom can be updated by editing the `project/plugins.sbt` file, and updating the version of the Lagom sbt plugin. For example:
 
 ```scala
-addSbtPlugin("com.lightbend.lagom" % "lagom-sbt-plugin" % "1.4.0-M1")
+addSbtPlugin("com.lightbend.lagom" % "lagom-sbt-plugin" % "1.4.0-M3")
 ```
 
 ## Binding services
@@ -88,17 +88,57 @@ In Lagom 1.4, services that use Cassandra persistence will fail on startup when 
 
 See [[Storing Persistent Entities in Cassandra|PersistentEntityCassandra#Configuration]] for more details.
 
+## Relational Databases - Akka Persistence JDBC
+
+If you are using Lagom's `Persistent Entity` API with a relational database, you will need to add an index to your journal table.
+
+The relational database support is based on `akka-persistence-jdbc` plugin. The plugin was updated to version 3.1.0, which include an important [bug fix](https://github.com/dnvriend/akka-persistence-jdbc/issues/96) that requires a new column index. Failing in updating your database schema will result in degraded performance when querying events.
+
+Bellow you will find the index creation statement for each supported database.
+
+### Postgres
+
+```sql
+CREATE UNIQUE INDEX journal_ordering_idx ON public.journal(ordering);
+```
+
+### MySQL
+
+```sql
+CREATE UNIQUE INDEX journal_ordering_idx ON journal(ordering);
+```
+
+### Oracle
+
+```sql
+CREATE UNIQUE INDEX "journal_ordering_idx" ON "journal"("ordering")
+```
+
+### H2 Database (for use in development only)
+
+```sql
+CREATE UNIQUE INDEX "journal_ordering_idx" ON PUBLIC."journal"("ordering");
+```
+
+Moreover, in `akka-persistence-jdbc` 3.1.x series, the `Events` query treats the offset as exclusive instead of inclusive. In general, this should not be a problem. Previous versions of Lagom had a workaround for it and this change in behavior should be transparent. This will only impact you if you were using the `Akka Persistence Query` directly.
+
+In addition to that, this new plugin version removed the dependency on `JournalRow` in `ReadJournalDao`. This is a breaking change for everyone who implements a custom `ReadJournalDao`. Note, this is not being used by Lagom and Lagom users are, in principle, not impacted by this. However, if for some reason you have implemented a DAO extending the plugin's `ReadJournalDao`, you will need to migrate your code manually. For details can be found [here](https://github.com/dnvriend/akka-persistence-jdbc/pull/148).
+
 ## Upgrading to Play 2.6 and Akka 2.5
 
-The internal upgrade to latest major versions of Play and Akka may need some changes in your code if you are using either of them directly. Please refer to the [Play 2.6 migration guide](https://www.playframework.com/documentation/2.6.x/Migration26) and the [Akka 2.5 migration guide](http://doc.akka.io/docs/akka/current/scala/project/migration-guide-2.4.x-2.5.x.html) for more details.
+The internal upgrade to latest major versions of Play and Akka may need some changes in your code if you are using either of them directly. Please refer to the [Play 2.6 migration guide](https://www.playframework.com/documentation/2.6.x/Migration26) and the [Akka 2.5 migration guide](https://doc.akka.io/docs/akka/current/project/migration-guide-2.4.x-2.5.x.html?language=scala) for more details.
+
+### Default Service Locator port
+
+Historically, Lagom's service locator has listened on port 8000. Because port 8000 is a common port on which apps listen, its default value has been changed to 9008.
 
 ### Rolling upgrade
 
-When running a rolling upgrade the nodes composing your Akka cluster must keep the ability to connect to each other and must use the same serialization formats. 
+When running a rolling upgrade the nodes composing your Akka cluster must keep the ability to connect to each other and must use the same serialization formats.
 
-One relevant change Akka 2.5 introduced involves a new method (DData) to [internally handle the sharding](http://doc.akka.io/docs/akka/current/scala/project/migration-guide-2.4.x-2.5.x.html#cluster-sharding-state-store-mode) of your Persistent Entities in Lagom. We have decided to not enable that new method so your migration from Lagom 1.3.x to 1.4.x should be fine. You may opt in and use DData instead of the default persistence-based one. Switching from persistence-based to DData requires a complete-cluster shutdown.
+One relevant change Akka 2.5 introduced involves a new method (DData) to [internally handle the sharding](https://doc.akka.io/docs/akka/current/project/migration-guide-2.4.x-2.5.x.html?language=scala#cluster-sharding-state-store-mode) of your Persistent Entities in Lagom. We have decided to not enable that new method so your migration from Lagom 1.3.x to 1.4.x should be fine. You may opt in and use DData instead of the default persistence-based one. Switching from persistence-based to DData requires a complete-cluster shutdown.
 
-The Java serialization was already discouraged and since Lagom 1.4.0 it is not the default anymore. This is a setting we inherit from Akka and which we are propagating transparently. If your code was dependant on the Java serialization you will need to review your serializers. This change in the defaults will also affect your ability to do a rolling upgrade. If you must support rolling upgrades and you depended on the default serializations you may override the new defaults using the [additional-serialization-bindings](http://doc.akka.io/docs/akka/current/scala/project/migration-guide-2.4.x-2.5.x.html#additional-serialization-bindings) settings.
+The Java serialization was already discouraged and since Lagom 1.4.0 it is not the default anymore. This is a setting we inherit from Akka and which we are propagating transparently. If your code was dependant on the Java serialization you will need to review your serializers. This change in the defaults will also affect your ability to do a rolling upgrade. If you must support rolling upgrades and you depended on the default serializations you may override the new defaults using the [additional-serialization-bindings](https://doc.akka.io/docs/akka/current/project/migration-guide-2.4.x-2.5.x.html?language=scala#additional-serialization-bindings) settings.
 
 Lagom 1.4.x has switched to a new serialization format for one of its internal messages. This new format was added in Lagom 1.3.10, but not enabled. If you are doing a rolling upgrading from 1.3.10 or later to 1.4.x, then the change over will work with no problems. However, if you're doing a rolling upgrading from 1.3.9 or earlier to 1.4.x, then you will need to add the following configuration to your application to disable the new serializer until all nodes are upgraded to a version of Lagom that has the serializer:
 
@@ -109,3 +149,43 @@ akka.actor.serialization-bindings {
 ```
 
 Once all nodes are upgraded to 1.4.x, you should then remove the above configuration for the next rolling upgrade. For more details on this process and why it's needed, see [here](https://github.com/lagom/lagom/issues/933#issuecomment-327738303).
+
+
+### HTTP Backend
+
+
+Play 2.6 introduces a new HTTP backend implemented using Akka HTTP instead of Netty. This switch on the HTTP backend is part of an ongoing effort to replace all building blocks in Lagom for an Akka-based equivalent. Note that when consuming HTTP services, Lagom's Client Factory still relies on a Netty-based Play-WS instance.
+
+If you want to use the new Akka HTTP you won't need to change anything. Once you upgrade the version of the Lagom sbt plugin in `project/plugins.sbt` any new build will use Akka HTTP.
+
+You can opt-out of Akka HTTP to use Netty: in `sbt` you have to explicitly disable the `LagomAkkaHttpServer` plugin and enable the `LagomNettyServer` plugin. Note that the `LagomAkkaHttpServer` plugin is added by default on any `LagomJava` or `LagomScala` project.
+
+```scala
+lazy val `inventory-service-impl` = (project in file("inventory-impl"))
+  .enablePlugins(LagomScala, LagomNettyServer) // Adds LagomNettyServer
+  .disablePlugins(LagomAkkaHttpServer)         // Removes LagomAkkaHttpServer
+  .settings( /* ... */ )
+  .dependsOn(`inventory-api`)
+```
+
+## Breaking Changes
+
+The return types of the method below were changed, which could result in deprecation warnings:
+
+* Typesafe config is now used instead of Play config in `AdditionalConfiguration.configuration`, see [881](https://github.com/lagom/lagom/pull/881)
+* The return types of `LagomServerBuilder.buildRouter`, `LagomServerBuilder.router`, and `LagomServer.router` were changed to be strongly typed from `Router` to `LagomServiceRouter` in [888](https://github.com/lagom/lagom/pull/888)
+* `PlayJsonSerializer` serialization of Non-`JsObject`s was fixed in [1071](https://github.com/lagom/lagom/pull/1071), changing the return type of `JsonMigration.transfrorm` from `JsObject` to `JsValue`
+
+## ConductR
+
+ConductR users must update to `conductr-lib` 2.1.1 for full compatibility with Lagom 1.4.0.
+
+You can find more information in the [`conductr-lib` README file](https://github.com/typesafehub/conductr-lib/blob/master/README.md).
+
+Edit the `project/plugins.sbt` file to update `sbt-conductr` to version 2.5.1 or later:
+
+```scala
+addSbtPlugin("com.lightbend.conductr" % "sbt-conductr" % "2.5.1")
+```
+
+This automatically includes the correct version of `conductr-lib`.

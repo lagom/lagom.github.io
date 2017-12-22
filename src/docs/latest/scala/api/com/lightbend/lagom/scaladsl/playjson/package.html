@@ -90,7 +90,7 @@ be implemented in a concrete subclass or provided through the
 factories in <a href="JsonMigrations$.html" class="extype" name="com.lightbend.lagom.scaladsl.playjson.JsonMigrations">JsonMigrations</a> and configured to be used by the
 <code>PlayJsonSerializer</code> for a changed class.</p><p>It is used when deserializing data of older version than the
 <a href="JsonMigration.html#currentVersion:Int" class="extmbr" name="com.lightbend.lagom.scaladsl.playjson.JsonMigration#currentVersion">currentVersion</a>. You implement the transformation of the
-JSON structure in the <a href="JsonMigration.html#transform(fromVersion:Int,json:play.api.libs.json.JsObject):play.api.libs.json.JsObject" class="extmbr" name="com.lightbend.lagom.scaladsl.playjson.JsonMigration#transform">transform</a> method. If you have changed the
+JSON structure in the <a href="JsonMigration.html#transform(fromVersion:Int,json:play.api.libs.json.JsObject):play.api.libs.json.JsValue" class="extmbr" name="com.lightbend.lagom.scaladsl.playjson.JsonMigration#transform">transform</a> method. If you have changed the
 class name you should override <a href="JsonMigration.html#transformClassName(fromVersion:Int,className:String):String" class="extmbr" name="com.lightbend.lagom.scaladsl.playjson.JsonMigration#transformClassName">transformClassName</a> and return
 current class name.
 </p></div></div>

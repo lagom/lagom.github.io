@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":9,"i1":9};
+var methods = {"i0":9,"i1":9,"i2":9,"i3":9,"i4":9};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -135,15 +135,27 @@ extends Object</pre>
 </td>
 </tr>
 <tr class="rowColor">
+<td class="colFirst"><code>static <a href="../../../../../../com/lightbend/lagom/javadsl/api/deser/PathParamSerializer.html" title="interface in com.lightbend.lagom.javadsl.api.deser">PathParamSerializer</a>&lt;java.util.Collection&lt;Object&gt;&gt;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/lightbend/lagom/javadsl/api/deser/PathParamSerializers.html#COLLECTION">COLLECTION</a></span></code>
+<div class="block">A generic (unresolved) Collection serializer.</div>
+</td>
+</tr>
+<tr class="altColor">
 <td class="colFirst"><code>static <a href="../../../../../../com/lightbend/lagom/javadsl/api/deser/PathParamSerializer.html" title="interface in com.lightbend.lagom.javadsl.api.deser">PathParamSerializer</a>&lt;Double&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/lightbend/lagom/javadsl/api/deser/PathParamSerializers.html#DOUBLE">DOUBLE</a></span></code>
 <div class="block">An Double path param serializer.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code>static <a href="../../../../../../com/lightbend/lagom/javadsl/api/deser/PathParamSerializer.html" title="interface in com.lightbend.lagom.javadsl.api.deser">PathParamSerializer</a>&lt;Integer&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/lightbend/lagom/javadsl/api/deser/PathParamSerializers.html#INTEGER">INTEGER</a></span></code>
 <div class="block">An Integer path param serializer.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="../../../../../../com/lightbend/lagom/javadsl/api/deser/PathParamSerializer.html" title="interface in com.lightbend.lagom.javadsl.api.deser">PathParamSerializer</a>&lt;java.util.List&lt;Object&gt;&gt;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/lightbend/lagom/javadsl/api/deser/PathParamSerializers.html#LIST">LIST</a></span></code>
+<div class="block">A generic (unresolved) List serializer.</div>
 </td>
 </tr>
 <tr class="rowColor">
@@ -155,16 +167,22 @@ extends Object</pre>
 <tr class="altColor">
 <td class="colFirst"><code>static <a href="../../../../../../com/lightbend/lagom/javadsl/api/deser/PathParamSerializer.html" title="interface in com.lightbend.lagom.javadsl.api.deser">PathParamSerializer</a>&lt;java.util.Optional&lt;Object&gt;&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/lightbend/lagom/javadsl/api/deser/PathParamSerializers.html#OPTIONAL">OPTIONAL</a></span></code>
-<div class="block">A generic (unresolved) optional serializer.</div>
+<div class="block">A generic (unresolved) Optional serializer.</div>
 </td>
 </tr>
 <tr class="rowColor">
+<td class="colFirst"><code>static <a href="../../../../../../com/lightbend/lagom/javadsl/api/deser/PathParamSerializer.html" title="interface in com.lightbend.lagom.javadsl.api.deser">PathParamSerializer</a>&lt;java.util.Set&lt;Object&gt;&gt;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/lightbend/lagom/javadsl/api/deser/PathParamSerializers.html#SET">SET</a></span></code>
+<div class="block">A generic (unresolved) Set serializer.</div>
+</td>
+</tr>
+<tr class="altColor">
 <td class="colFirst"><code>static <a href="../../../../../../com/lightbend/lagom/javadsl/api/deser/PathParamSerializer.html" title="interface in com.lightbend.lagom.javadsl.api.deser">PathParamSerializer</a>&lt;String&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/lightbend/lagom/javadsl/api/deser/PathParamSerializers.html#STRING">STRING</a></span></code>
 <div class="block">A String path param serializer.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code>static <a href="../../../../../../com/lightbend/lagom/javadsl/api/deser/PathParamSerializer.html" title="interface in com.lightbend.lagom.javadsl.api.deser">PathParamSerializer</a>&lt;java.util.UUID&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/lightbend/lagom/javadsl/api/deser/PathParamSerializers.html#UUID">UUID</a></span></code>
 <div class="block">A UUID path param serializer.</div>
@@ -186,6 +204,22 @@ extends Object</pre>
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr id="i0" class="altColor">
+<td class="colFirst"><code>static &lt;Param&gt;&nbsp;<a href="../../../../../../com/lightbend/lagom/javadsl/api/deser/PathParamSerializer.html" title="interface in com.lightbend.lagom.javadsl.api.deser">PathParamSerializer</a>&lt;java.util.Collection&lt;Param&gt;&gt;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/lightbend/lagom/javadsl/api/deser/PathParamSerializers.html#collection-java.lang.String-java.util.function.Function-java.util.function.Function-">collection</a></span>(String&nbsp;name,
+          java.util.function.Function&lt;org.pcollections.PSequence&lt;String&gt;,Param&gt;&nbsp;deserialize,
+          java.util.function.Function&lt;Param,org.pcollections.PSequence&lt;String&gt;&gt;&nbsp;serialize)</code>
+<div class="block">Create a PathParamSerializer for Collection parameters.</div>
+</td>
+</tr>
+<tr id="i1" class="rowColor">
+<td class="colFirst"><code>static &lt;Param&gt;&nbsp;<a href="../../../../../../com/lightbend/lagom/javadsl/api/deser/PathParamSerializer.html" title="interface in com.lightbend.lagom.javadsl.api.deser">PathParamSerializer</a>&lt;java.util.List&lt;Param&gt;&gt;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/lightbend/lagom/javadsl/api/deser/PathParamSerializers.html#list-java.lang.String-java.util.function.Function-java.util.function.Function-">list</a></span>(String&nbsp;name,
+    java.util.function.Function&lt;org.pcollections.PSequence&lt;String&gt;,Param&gt;&nbsp;deserialize,
+    java.util.function.Function&lt;Param,org.pcollections.PSequence&lt;String&gt;&gt;&nbsp;serialize)</code>
+<div class="block">Create a PathParamSerializer for List parameters.</div>
+</td>
+</tr>
+<tr id="i2" class="altColor">
 <td class="colFirst"><code>static &lt;Param&gt;&nbsp;<a href="../../../../../../com/lightbend/lagom/javadsl/api/deser/PathParamSerializer.html" title="interface in com.lightbend.lagom.javadsl.api.deser">PathParamSerializer</a>&lt;java.util.Optional&lt;Param&gt;&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/lightbend/lagom/javadsl/api/deser/PathParamSerializers.html#optional-java.lang.String-java.util.function.Function-java.util.function.Function-">optional</a></span>(String&nbsp;name,
         java.util.function.Function&lt;String,Param&gt;&nbsp;deserialize,
@@ -193,12 +227,20 @@ extends Object</pre>
 <div class="block">Create a PathParamSerializer for optional parameters.</div>
 </td>
 </tr>
-<tr id="i1" class="rowColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>static &lt;Param&gt;&nbsp;<a href="../../../../../../com/lightbend/lagom/javadsl/api/deser/PathParamSerializer.html" title="interface in com.lightbend.lagom.javadsl.api.deser">PathParamSerializer</a>&lt;Param&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/lightbend/lagom/javadsl/api/deser/PathParamSerializers.html#required-java.lang.String-java.util.function.Function-java.util.function.Function-">required</a></span>(String&nbsp;name,
         java.util.function.Function&lt;String,Param&gt;&nbsp;deserialize,
         java.util.function.Function&lt;Param,String&gt;&nbsp;serialize)</code>
 <div class="block">Create a PathParamSerializer for required parameters.</div>
+</td>
+</tr>
+<tr id="i4" class="altColor">
+<td class="colFirst"><code>static &lt;Param&gt;&nbsp;<a href="../../../../../../com/lightbend/lagom/javadsl/api/deser/PathParamSerializer.html" title="interface in com.lightbend.lagom.javadsl.api.deser">PathParamSerializer</a>&lt;java.util.Set&lt;Param&gt;&gt;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/lightbend/lagom/javadsl/api/deser/PathParamSerializers.html#set-java.lang.String-java.util.function.Function-java.util.function.Function-">set</a></span>(String&nbsp;name,
+   java.util.function.Function&lt;org.pcollections.PSequence&lt;String&gt;,Param&gt;&nbsp;deserialize,
+   java.util.function.Function&lt;Param,org.pcollections.PSequence&lt;String&gt;&gt;&nbsp;serialize)</code>
+<div class="block">Create a PathParamSerializer for Set parameters.</div>
 </td>
 </tr>
 </table>
@@ -286,11 +328,41 @@ extends Object</pre>
 <a name="OPTIONAL">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>OPTIONAL</h4>
 <pre>public static final&nbsp;<a href="../../../../../../com/lightbend/lagom/javadsl/api/deser/PathParamSerializer.html" title="interface in com.lightbend.lagom.javadsl.api.deser">PathParamSerializer</a>&lt;java.util.Optional&lt;Object&gt;&gt; OPTIONAL</pre>
-<div class="block">A generic (unresolved) optional serializer.</div>
+<div class="block">A generic (unresolved) Optional serializer.</div>
+</li>
+</ul>
+<a name="LIST">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>LIST</h4>
+<pre>public static final&nbsp;<a href="../../../../../../com/lightbend/lagom/javadsl/api/deser/PathParamSerializer.html" title="interface in com.lightbend.lagom.javadsl.api.deser">PathParamSerializer</a>&lt;java.util.List&lt;Object&gt;&gt; LIST</pre>
+<div class="block">A generic (unresolved) List serializer.</div>
+</li>
+</ul>
+<a name="SET">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>SET</h4>
+<pre>public static final&nbsp;<a href="../../../../../../com/lightbend/lagom/javadsl/api/deser/PathParamSerializer.html" title="interface in com.lightbend.lagom.javadsl.api.deser">PathParamSerializer</a>&lt;java.util.Set&lt;Object&gt;&gt; SET</pre>
+<div class="block">A generic (unresolved) Set serializer.</div>
+</li>
+</ul>
+<a name="COLLECTION">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>COLLECTION</h4>
+<pre>public static final&nbsp;<a href="../../../../../../com/lightbend/lagom/javadsl/api/deser/PathParamSerializer.html" title="interface in com.lightbend.lagom.javadsl.api.deser">PathParamSerializer</a>&lt;java.util.Collection&lt;Object&gt;&gt; COLLECTION</pre>
+<div class="block">A generic (unresolved) Collection serializer.</div>
 </li>
 </ul>
 </li>
@@ -316,13 +388,49 @@ extends Object</pre>
 <a name="optional-java.lang.String-java.util.function.Function-java.util.function.Function-">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>optional</h4>
 <pre>public static&nbsp;&lt;Param&gt;&nbsp;<a href="../../../../../../com/lightbend/lagom/javadsl/api/deser/PathParamSerializer.html" title="interface in com.lightbend.lagom.javadsl.api.deser">PathParamSerializer</a>&lt;java.util.Optional&lt;Param&gt;&gt;&nbsp;optional(String&nbsp;name,
                                                                               java.util.function.Function&lt;String,Param&gt;&nbsp;deserialize,
                                                                               java.util.function.Function&lt;Param,String&gt;&nbsp;serialize)</pre>
 <div class="block">Create a PathParamSerializer for optional parameters.</div>
+</li>
+</ul>
+<a name="list-java.lang.String-java.util.function.Function-java.util.function.Function-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>list</h4>
+<pre>public static&nbsp;&lt;Param&gt;&nbsp;<a href="../../../../../../com/lightbend/lagom/javadsl/api/deser/PathParamSerializer.html" title="interface in com.lightbend.lagom.javadsl.api.deser">PathParamSerializer</a>&lt;java.util.List&lt;Param&gt;&gt;&nbsp;list(String&nbsp;name,
+                                                                      java.util.function.Function&lt;org.pcollections.PSequence&lt;String&gt;,Param&gt;&nbsp;deserialize,
+                                                                      java.util.function.Function&lt;Param,org.pcollections.PSequence&lt;String&gt;&gt;&nbsp;serialize)</pre>
+<div class="block">Create a PathParamSerializer for List parameters.</div>
+</li>
+</ul>
+<a name="set-java.lang.String-java.util.function.Function-java.util.function.Function-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>set</h4>
+<pre>public static&nbsp;&lt;Param&gt;&nbsp;<a href="../../../../../../com/lightbend/lagom/javadsl/api/deser/PathParamSerializer.html" title="interface in com.lightbend.lagom.javadsl.api.deser">PathParamSerializer</a>&lt;java.util.Set&lt;Param&gt;&gt;&nbsp;set(String&nbsp;name,
+                                                                    java.util.function.Function&lt;org.pcollections.PSequence&lt;String&gt;,Param&gt;&nbsp;deserialize,
+                                                                    java.util.function.Function&lt;Param,org.pcollections.PSequence&lt;String&gt;&gt;&nbsp;serialize)</pre>
+<div class="block">Create a PathParamSerializer for Set parameters.</div>
+</li>
+</ul>
+<a name="collection-java.lang.String-java.util.function.Function-java.util.function.Function-">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>collection</h4>
+<pre>public static&nbsp;&lt;Param&gt;&nbsp;<a href="../../../../../../com/lightbend/lagom/javadsl/api/deser/PathParamSerializer.html" title="interface in com.lightbend.lagom.javadsl.api.deser">PathParamSerializer</a>&lt;java.util.Collection&lt;Param&gt;&gt;&nbsp;collection(String&nbsp;name,
+                                                                                  java.util.function.Function&lt;org.pcollections.PSequence&lt;String&gt;,Param&gt;&nbsp;deserialize,
+                                                                                  java.util.function.Function&lt;Param,org.pcollections.PSequence&lt;String&gt;&gt;&nbsp;serialize)</pre>
+<div class="block">Create a PathParamSerializer for Collection parameters.</div>
 </li>
 </ul>
 </li>

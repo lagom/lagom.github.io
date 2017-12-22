@@ -67,7 +67,7 @@
         <div id="types" class="types members">
               <h3>Type Members</h3>
               <ol><li name="com.lightbend.lagom.scaladsl.persistence.jdbc.JdbcPersistenceComponents" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="JdbcPersistenceComponentsextendsPersistenceComponentswithReadSideJdbcPersistenceComponents"></a>
+      <a id="JdbcPersistenceComponentsextendsPersistenceComponentswithReadSideJdbcPersistenceComponentswithWriteSideJdbcPersistenceComponents"></a>
       <a id="JdbcPersistenceComponents:JdbcPersistenceComponents"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -75,10 +75,10 @@
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a href="JdbcPersistenceComponents.html"><span class="name">JdbcPersistenceComponents</span></a><span class="result"> extends <a href="../PersistenceComponents.html" class="extype" name="com.lightbend.lagom.scaladsl.persistence.PersistenceComponents">PersistenceComponents</a> with <a href="ReadSideJdbcPersistenceComponents.html" class="extype" name="com.lightbend.lagom.scaladsl.persistence.jdbc.ReadSideJdbcPersistenceComponents">ReadSideJdbcPersistenceComponents</a></span>
+        <a href="JdbcPersistenceComponents.html"><span class="name">JdbcPersistenceComponents</span></a><span class="result"> extends <a href="../PersistenceComponents.html" class="extype" name="com.lightbend.lagom.scaladsl.persistence.PersistenceComponents">PersistenceComponents</a> with <a href="ReadSideJdbcPersistenceComponents.html" class="extype" name="com.lightbend.lagom.scaladsl.persistence.jdbc.ReadSideJdbcPersistenceComponents">ReadSideJdbcPersistenceComponents</a> with <a href="WriteSideJdbcPersistenceComponents.html" class="extype" name="com.lightbend.lagom.scaladsl.persistence.jdbc.WriteSideJdbcPersistenceComponents">WriteSideJdbcPersistenceComponents</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../../index.html#com.lightbend.lagom.scaladsl.persistence.jdbc.package@JdbcPersistenceComponentsextendsPersistenceComponentswithReadSideJdbcPersistenceComponents" title="Permalink" target="_top">
+      <a href="../../../../../../index.html#com.lightbend.lagom.scaladsl.persistence.jdbc.package@JdbcPersistenceComponentsextendsPersistenceComponentswithReadSideJdbcPersistenceComponentswithWriteSideJdbcPersistenceComponents" title="Permalink" target="_top">
         <img src="../../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -120,7 +120,7 @@ or succeed.</p><p>Offsets are automatically handled.
     </span>
       
     </li><li name="com.lightbend.lagom.scaladsl.persistence.jdbc.ReadSideJdbcPersistenceComponents" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="ReadSideJdbcPersistenceComponentsextendsReadSidePersistenceComponentswithWriteSideJdbcPersistenceComponents"></a>
+      <a id="ReadSideJdbcPersistenceComponentsextendsReadSidePersistenceComponentswithSlickProviderComponents"></a>
       <a id="ReadSideJdbcPersistenceComponents:ReadSideJdbcPersistenceComponents"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -128,16 +128,16 @@ or succeed.</p><p>Offsets are automatically handled.
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a href="ReadSideJdbcPersistenceComponents.html"><span class="name">ReadSideJdbcPersistenceComponents</span></a><span class="result"> extends <a href="../ReadSidePersistenceComponents.html" class="extype" name="com.lightbend.lagom.scaladsl.persistence.ReadSidePersistenceComponents">ReadSidePersistenceComponents</a> with <a href="WriteSideJdbcPersistenceComponents.html" class="extype" name="com.lightbend.lagom.scaladsl.persistence.jdbc.WriteSideJdbcPersistenceComponents">WriteSideJdbcPersistenceComponents</a></span>
+        <a href="ReadSideJdbcPersistenceComponents.html"><span class="name">ReadSideJdbcPersistenceComponents</span></a><span class="result"> extends <a href="../ReadSidePersistenceComponents.html" class="extype" name="com.lightbend.lagom.scaladsl.persistence.ReadSidePersistenceComponents">ReadSidePersistenceComponents</a> with <span class="extype" name="com.lightbend.lagom.scaladsl.persistence.jdbc.SlickProviderComponents">SlickProviderComponents</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../../index.html#com.lightbend.lagom.scaladsl.persistence.jdbc.package@ReadSideJdbcPersistenceComponentsextendsReadSidePersistenceComponentswithWriteSideJdbcPersistenceComponents" title="Permalink" target="_top">
+      <a href="../../../../../../index.html#com.lightbend.lagom.scaladsl.persistence.jdbc.package@ReadSideJdbcPersistenceComponentsextendsReadSidePersistenceComponentswithSlickProviderComponents" title="Permalink" target="_top">
         <img src="../../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <p class="shortcomment cmt">Read-side persistence JDBC components (for compile-time injection).</p>
     </li><li name="com.lightbend.lagom.scaladsl.persistence.jdbc.WriteSideJdbcPersistenceComponents" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="WriteSideJdbcPersistenceComponentsextendsWriteSidePersistenceComponentswithDBComponents"></a>
+      <a id="WriteSideJdbcPersistenceComponentsextendsWriteSidePersistenceComponentswithSlickProviderComponents"></a>
       <a id="WriteSideJdbcPersistenceComponents:WriteSideJdbcPersistenceComponents"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -145,10 +145,10 @@ or succeed.</p><p>Offsets are automatically handled.
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a href="WriteSideJdbcPersistenceComponents.html"><span class="name">WriteSideJdbcPersistenceComponents</span></a><span class="result"> extends <a href="../WriteSidePersistenceComponents.html" class="extype" name="com.lightbend.lagom.scaladsl.persistence.WriteSidePersistenceComponents">WriteSidePersistenceComponents</a> with <span class="extype" name="play.api.db.DBComponents">DBComponents</span></span>
+        <a href="WriteSideJdbcPersistenceComponents.html"><span class="name">WriteSideJdbcPersistenceComponents</span></a><span class="result"> extends <a href="../WriteSidePersistenceComponents.html" class="extype" name="com.lightbend.lagom.scaladsl.persistence.WriteSidePersistenceComponents">WriteSidePersistenceComponents</a> with <span class="extype" name="com.lightbend.lagom.scaladsl.persistence.jdbc.SlickProviderComponents">SlickProviderComponents</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../../index.html#com.lightbend.lagom.scaladsl.persistence.jdbc.package@WriteSideJdbcPersistenceComponentsextendsWriteSidePersistenceComponentswithDBComponents" title="Permalink" target="_top">
+      <a href="../../../../../../index.html#com.lightbend.lagom.scaladsl.persistence.jdbc.package@WriteSideJdbcPersistenceComponentsextendsWriteSidePersistenceComponentswithSlickProviderComponents" title="Permalink" target="_top">
         <img src="../../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>

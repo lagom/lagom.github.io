@@ -43,7 +43,7 @@ class WorkerServiceImpl(system: ActorSystem) extends WorkerService {
     (workerRouter ? job).mapTo[JobAccepted]
   }
 }</code></pre>
-<p>Notice how the <code>ActorSystem</code> is injected through the constructor. We create worker actors on each node that has the &ldquo;worker-node&rdquo; role. We create a consistent hashing group router that delegates jobs to the workers. Details on these features are in the <a href="http://doc.akka.io/docs/akka/2.4/scala.html">Akka documentation</a>.</p>
+<p>Notice how the <code>ActorSystem</code> is injected through the constructor. We create worker actors on each node that has the &ldquo;worker-node&rdquo; role. We create a consistent hashing group router that delegates jobs to the workers. Details on these features are in the <a href="https://doc.akka.io/docs/akka/2.5/?language=scala">Akka documentation</a>.</p>
 <p>The worker actor looks like this:</p>
 <pre class="prettyprint"><code class="language-scala">import akka.actor.{Actor, Props}
 import akka.event.Logging

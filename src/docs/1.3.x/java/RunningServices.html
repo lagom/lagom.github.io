@@ -4,5 +4,8 @@
 <p>In Maven, you can execute the <code>run</code> task on a particular service by using the maven project list flag, like so:</p>
 <pre class="prettyprint"><code>$ mvn -pl &lt;your-project-name&gt; lagom:run
 </code></pre>
-<p>In sbt, you can specify the project to run on the sbt console by simply prefixing the service project&rsquo;s name, i.e., <code>&lt;your-lagom-project-name&gt;/run</code>.</p>
+<p>In sbt, you can specify the project to run on the sbt console by simply prefixing the service project&rsquo;s name, i.e.:</p>
+<pre class="prettyprint"><code>$ sbt
+&gt; &lt;your-project-name&gt;/run
+</code></pre>
 <p>One thing you should remember is that <code>run</code> only starts the specific service, it doesn&rsquo;t start neither the Service Locator, nor the Cassandra server. Hence, prior to manually starting services, you may want to manually start both the <a href="ServiceLocator.html#Start-and-stop">Service Locator</a>, and the <a href="CassandraServer.html#Start-and-stop">Cassandra server</a>.</p>

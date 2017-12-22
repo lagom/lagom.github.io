@@ -114,7 +114,7 @@ class HelloServiceSpec extends AsyncWordSpec with Matchers with BeforeAndAfterAl
     )
   }
 }</code></pre>
-<p>When writing tests for that the <a href="http://doc.akka.io/docs/akka/2.4/java/stream/stream-testkit.html#Streams_TestKit">Akka Streams TestKit</a> is very useful. We use the Streams TestKit together with the Lagom <code>ServiceTest</code> utilities:</p>
+<p>When writing tests for that the <a href="https://doc.akka.io/docs/akka/2.5/stream/stream-testkit.html?language=scala#streams-testkit">Akka Streams TestKit</a> is very useful. We use the Streams TestKit together with the Lagom <code>ServiceTest</code> utilities:</p>
 <pre class="prettyprint"><code class="language-scala">&quot;The EchoService&quot; should {
   &quot;echo&quot; in {
     // Use a source that never terminates (concat Source.maybe) so we
@@ -131,6 +131,6 @@ class HelloServiceSpec extends AsyncWordSpec with Matchers with BeforeAndAfterAl
     }
   }
 }</code></pre>
-<p>Read more about it in the documentation of the <a href="http://doc.akka.io/docs/akka/2.4/java/stream/stream-testkit.html#Streams_TestKit">Akka Streams TestKit</a>.</p><h2 id="How-to-test-a-persistent-entity"><a class="section-marker" href="#How-to-test-a-persistent-entity">§</a>How to test a persistent entity</h2>
+<p>Read more about it in the documentation of the <a href="https://doc.akka.io/docs/akka/2.5/stream/stream-testkit.html?language=scala#streams-testkit">Akka Streams TestKit</a>.</p><h2 id="How-to-test-a-persistent-entity"><a class="section-marker" href="#How-to-test-a-persistent-entity">§</a>How to test a persistent entity</h2>
 <p><a href="PersistentEntity.html">Persistent Entities</a> can be used in the service tests described above. In addition to that you should write unit tests using the <a href="api/com/lightbend/lagom/scaladsl/testkit/PersistentEntityTestDriver.html">PersistentEntityTestDriver</a>, which will run the <code>PersistentEntity</code> without using a database.</p>
 <p>This is described in the <a href="PersistentEntity.html#Unit-Testing">Persistent Entity</a> documentation.</p>

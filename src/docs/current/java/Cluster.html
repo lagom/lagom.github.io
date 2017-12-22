@@ -15,10 +15,7 @@
 <pre class="prettyprint"><code class="language-sbt">libraryDependencies += lagomJavadslCluster</code></pre><h2 id="Cluster-composition"><a class="section-marker" href="#Cluster-composition">§</a>Cluster composition</h2>
 <p>A cluster should only span nodes that are running the same service.</p>
 <p>You could imagine using cluster features across different services, but we recommend against that, because it would couple the services too tightly. Different services should only interact with each other through each service&rsquo;s API.</p><h2 id="Joining"><a class="section-marker" href="#Joining">§</a>Joining</h2>
-<p>A service instance joins a cluster when the service starts up.</p><h3 id="Joining-during-development"><a class="section-marker" href="#Joining-during-development">§</a>Joining during development</h3>
-<p>In development you are typically only running the service on one cluster node. No explicit joining is necessary; the <a href="DevEnvironment.html">Lagom Development Environment</a> handles it automatically.</p><h3 id="Joining-via-ConductR"><a class="section-marker" href="#Joining-via-ConductR">§</a>Joining via ConductR</h3>
-<p>In production, <a href="ConductR.html">Lightbend ConductR</a> automatically takes care of joining the nodes.</p><h3 id="Joining-without-ConductR"><a class="section-marker" href="#Joining-without-ConductR">§</a>Joining without ConductR</h3>
-<p>If you are not using ConductR, you need to implement the joining yourself as follows.</p>
+<p>A service instance joins a cluster when the service starts up. In development you are typically only running the service on one cluster node. No explicit joining is necessary; the <a href="DevEnvironment.html">Lagom Development Environment</a> handles it automatically. In production, you need to implement the joining yourself as follows.</p>
 <p>First, define some initial contact points of the cluster, so-called seed nodes. You can define seed nodes in <code>application.conf</code>:</p>
 <pre class="prettyprint"><code>akka.cluster.seed-nodes = [
   &quot;akka.tcp://MyService@host1:2552&quot;,

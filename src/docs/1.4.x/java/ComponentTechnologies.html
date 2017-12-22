@@ -2,19 +2,17 @@
 <p>As a complete microservices platform, Lagom assembles a collection of technologies and adds value on top of them. Some of the libraries, tools, and servers that Lagom uses and supports were developed at <a href="https://lightbend.com">Lightbend</a>, others are third-party and open-source. As you develop with Lagom, you can also take advantage of these technologies:</p>
 <ul>
   <li>
-    <p>Akka &mdash; Lagom <a href="PersistentEntity.html">Persistence</a>, <a href="PubSub.html">Publish-Subscribe</a>, and <a href="Cluster.html">Cluster</a> are implemented on top of <a href="http://akka.io/">Akka</a>, Lightbend&rsquo;s toolkit for building concurrent, distributed, and resilient message-driven applications. (This is an implementation detail that does not directly concern you when developing simple microservices. However, you can call also <a href="Akka.html">Akka APIs</a> directly.)</p>
+    <p>Akka &mdash; Lagom <a href="PersistentEntity.html">Persistence</a>, <a href="PubSub.html">Publish-Subscribe</a>, and <a href="Cluster.html">Cluster</a> are implemented on top of <a href="https://akka.io/">Akka</a>, Lightbend&rsquo;s toolkit for building concurrent, distributed, and resilient message-driven applications. (This is an implementation detail that does not directly concern you when developing simple microservices. However, you can call also <a href="Akka.html">Akka APIs</a> directly.)</p>
     <ul>
       <li>
-      <p>To scale your microservices out across multiple servers, Lagom provides clustering via <a href="http://doc.akka.io/docs/akka/2.4/java/cluster-usage.html">Akka Cluster</a>.</p></li>
+      <p>To scale your microservices out across multiple servers, Lagom provides clustering via <a href="https://doc.akka.io/docs/akka/2.5/cluster-usage.html">Akka Cluster</a>.</p></li>
       <li>
-      <p>As described in <a href="ServiceImplementation.html">Implementing services</a>, A Lagom service may be &ldquo;simple&rdquo; or &ldquo;streamed&rdquo;. Streaming, asynchronous Lagom services are built on top of <a href="http://doc.akka.io/docs/akka/2.4/java/stream/index.html">Akka Streams</a>.</p></li>
+      <p>As described in <a href="ServiceImplementation.html">Implementing services</a>, A Lagom service may be &ldquo;simple&rdquo; or &ldquo;streamed&rdquo;. Streaming, asynchronous Lagom services are built on top of <a href="https://doc.akka.io/docs/akka/2.5/stream/index.html">Akka Streams</a>.</p></li>
     </ul>
   </li>
   <li>
     <p>Lightbend customers can additionally use <a href="https://www.lightbend.com/platform/production">Enterprise Suite</a> components to operationalize and production-harden their systems.</p>
     <ul>
-      <li>
-      <p><a href="ConductR.html">Lightbend ConductR</a> greatly simplifies service orchestration.</p></li>
       <li>
       <p>Akka&rsquo;s <a href="https://tech-hub.lightbend.com/docs/akka-commercial-addons/current/split-brain-resolver.html">Split Brain Resolver</a> handles network failures and system crashes.</p></li>
       <li>

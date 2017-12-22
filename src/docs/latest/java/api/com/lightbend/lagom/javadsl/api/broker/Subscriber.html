@@ -17,8 +17,8 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":6,"i1":6,"i2":6};
-var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"]};
+var methods = {"i0":6,"i1":6,"i2":6,"i3":18};
+var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"],16:["t5","Default Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
 var tableTab = "tableTab";
@@ -47,7 +47,7 @@ var activeTableTab = "activeTableTab";
 </div>
 <div class="subNav">
 <ul class="navList">
-<li>Prev&nbsp;Class</li>
+<li><a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/MetadataKey.html" title="class in com.lightbend.lagom.javadsl.api.broker"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
 <li><a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/Subscriber.GroupId.html" title="interface in com.lightbend.lagom.javadsl.api.broker"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
@@ -91,7 +91,7 @@ var activeTableTab = "activeTableTab";
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
 <div class="subTitle">com.lightbend.lagom.javadsl.api.broker</div>
-<h2 title="Interface Subscriber" class="title">Interface Subscriber&lt;Message&gt;</h2>
+<h2 title="Interface Subscriber" class="title">Interface Subscriber&lt;Payload&gt;</h2>
 </div>
 <div class="contentContainer">
 <div class="description">
@@ -99,13 +99,13 @@ var activeTableTab = "activeTableTab";
 <li class="blockList">
 <dl>
 <dt><span class="paramLabel">Type Parameters:</span></dt>
-<dd><code>Message</code> - The message type.
+<dd><code>Payload</code> - The message type.
 
  Note: This class is not meant to be extended by client code.</dd>
 </dl>
 <hr>
 <br>
-<pre>public interface <span class="typeNameLabel">Subscriber&lt;Message&gt;</span></pre>
+<pre>public interface <span class="typeNameLabel">Subscriber&lt;Payload&gt;</span></pre>
 <div class="block">A Subscriber for consuming messages from a message broker.</div>
 </li>
 </ul>
@@ -141,28 +141,36 @@ var activeTableTab = "activeTableTab";
 </a>
 <h3>Method Summary</h3>
 <table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Method Summary table, listing methods, and an explanation">
-<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t3" class="tableTab"><span><a href="javascript:show(4);">Abstract Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
+<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t3" class="tableTab"><span><a href="javascript:show(4);">Abstract Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t5" class="tableTab"><span><a href="javascript:show(16);">Default Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
 <tr>
 <th class="colFirst" scope="col">Modifier and Type</th>
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>java.util.concurrent.CompletionStage&lt;akka.Done&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/Subscriber.html#atLeastOnce-akka.stream.javadsl.Flow-">atLeastOnce</a></span>(akka.stream.javadsl.Flow&lt;<a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/Subscriber.html" title="type parameter in Subscriber">Message</a>,akka.Done,?&gt;&nbsp;flow)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/Subscriber.html#atLeastOnce-akka.stream.javadsl.Flow-">atLeastOnce</a></span>(akka.stream.javadsl.Flow&lt;<a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/Subscriber.html" title="type parameter in Subscriber">Payload</a>,akka.Done,?&gt;&nbsp;flow)</code>
 <div class="block">Applies the passed <code>flow</code> to the messages processed by this
  subscriber.</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code>akka.stream.javadsl.Source&lt;<a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/Subscriber.html" title="type parameter in Subscriber">Message</a>,?&gt;</code></td>
+<td class="colFirst"><code>akka.stream.javadsl.Source&lt;<a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/Subscriber.html" title="type parameter in Subscriber">Payload</a>,?&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/Subscriber.html#atMostOnceSource--">atMostOnceSource</a></span>()</code>
 <div class="block">Returns a stream of messages with at most once delivery semantic.</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
-<td class="colFirst"><code><a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/Subscriber.html" title="interface in com.lightbend.lagom.javadsl.api.broker">Subscriber</a>&lt;<a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/Subscriber.html" title="type parameter in Subscriber">Message</a>&gt;</code></td>
+<td class="colFirst"><code><a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/Subscriber.html" title="interface in com.lightbend.lagom.javadsl.api.broker">Subscriber</a>&lt;<a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/Subscriber.html" title="type parameter in Subscriber">Payload</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/Subscriber.html#withGroupId-java.lang.String-">withGroupId</a></span>(String&nbsp;groupId)</code>
 <div class="block">Returns a copy of this subscriber with the passed group id.</div>
+</td>
+</tr>
+<tr id="i3" class="rowColor">
+<td class="colFirst"><code>default <a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/Subscriber.html" title="interface in com.lightbend.lagom.javadsl.api.broker">Subscriber</a>&lt;<a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/Message.html" title="class in com.lightbend.lagom.javadsl.api.broker">Message</a>&lt;<a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/Subscriber.html" title="type parameter in Subscriber">Payload</a>&gt;&gt;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/Subscriber.html#withMetadata--">withMetadata</a></span>()</code>
+<div class="block">Returns this subscriber, but message payloads are wrapped
+ in <a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/Message.html" title="class in com.lightbend.lagom.javadsl.api.broker"><code>Message</code></a> instances to allow accessing any metadata
+ associated with the message.</div>
 </td>
 </tr>
 </table>
@@ -186,7 +194,7 @@ var activeTableTab = "activeTableTab";
 <ul class="blockList">
 <li class="blockList">
 <h4>withGroupId</h4>
-<pre><a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/Subscriber.html" title="interface in com.lightbend.lagom.javadsl.api.broker">Subscriber</a>&lt;<a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/Subscriber.html" title="type parameter in Subscriber">Message</a>&gt;&nbsp;withGroupId(String&nbsp;groupId)
+<pre><a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/Subscriber.html" title="interface in com.lightbend.lagom.javadsl.api.broker">Subscriber</a>&lt;<a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/Subscriber.html" title="type parameter in Subscriber">Payload</a>&gt;&nbsp;withGroupId(String&nbsp;groupId)
                          throws IllegalArgumentException</pre>
 <div class="block">Returns a copy of this subscriber with the passed group id.</div>
 <dl>
@@ -199,13 +207,29 @@ var activeTableTab = "activeTableTab";
 </dl>
 </li>
 </ul>
+<a name="withMetadata--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>withMetadata</h4>
+<pre>default&nbsp;<a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/Subscriber.html" title="interface in com.lightbend.lagom.javadsl.api.broker">Subscriber</a>&lt;<a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/Message.html" title="class in com.lightbend.lagom.javadsl.api.broker">Message</a>&lt;<a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/Subscriber.html" title="type parameter in Subscriber">Payload</a>&gt;&gt;&nbsp;withMetadata()</pre>
+<div class="block">Returns this subscriber, but message payloads are wrapped
+ in <a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/Message.html" title="class in com.lightbend.lagom.javadsl.api.broker"><code>Message</code></a> instances to allow accessing any metadata
+ associated with the message.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>A copy of this subscriber.</dd>
+</dl>
+</li>
+</ul>
 <a name="atMostOnceSource--">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>atMostOnceSource</h4>
-<pre>akka.stream.javadsl.Source&lt;<a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/Subscriber.html" title="type parameter in Subscriber">Message</a>,?&gt;&nbsp;atMostOnceSource()</pre>
+<pre>akka.stream.javadsl.Source&lt;<a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/Subscriber.html" title="type parameter in Subscriber">Payload</a>,?&gt;&nbsp;atMostOnceSource()</pre>
 <div class="block">Returns a stream of messages with at most once delivery semantic.
 
  If a failure occurs (e.g., an exception is thrown), the user is responsible
@@ -218,7 +242,7 @@ var activeTableTab = "activeTableTab";
 <ul class="blockListLast">
 <li class="blockList">
 <h4>atLeastOnce</h4>
-<pre>java.util.concurrent.CompletionStage&lt;akka.Done&gt;&nbsp;atLeastOnce(akka.stream.javadsl.Flow&lt;<a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/Subscriber.html" title="type parameter in Subscriber">Message</a>,akka.Done,?&gt;&nbsp;flow)</pre>
+<pre>java.util.concurrent.CompletionStage&lt;akka.Done&gt;&nbsp;atLeastOnce(akka.stream.javadsl.Flow&lt;<a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/Subscriber.html" title="type parameter in Subscriber">Payload</a>,akka.Done,?&gt;&nbsp;flow)</pre>
 <div class="block">Applies the passed <code>flow</code> to the messages processed by this
  subscriber. Messages are delivered to the passed <code>flow</code> at least
  once.
@@ -278,7 +302,7 @@ var activeTableTab = "activeTableTab";
 </div>
 <div class="subNav">
 <ul class="navList">
-<li>Prev&nbsp;Class</li>
+<li><a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/MetadataKey.html" title="class in com.lightbend.lagom.javadsl.api.broker"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
 <li><a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/Subscriber.GroupId.html" title="interface in com.lightbend.lagom.javadsl.api.broker"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">

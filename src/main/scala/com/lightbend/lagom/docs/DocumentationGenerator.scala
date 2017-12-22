@@ -24,7 +24,7 @@ object DocumentationGenerator extends App {
    */
   // Current documentation version
   val currentDocsVersion = "1.3.x"
-  val currentLagomVersion = "1.3.9"
+  val currentLagomVersion = "1.3.10"
 
   // This impacts what gets displayed on the main documentation index.
   val stableVersions = Seq(
@@ -33,7 +33,7 @@ object DocumentationGenerator extends App {
   )
 
   val previewVersions = Seq(
-    VersionSummary("1.4.x", s"Lagom 1.4.0-M2 (preview)")
+    VersionSummary("1.4.x", s"Lagom 1.4.0-M3 (preview)")
   )
 
   val oldVersions = Seq(
@@ -81,7 +81,8 @@ object DocumentationGenerator extends App {
     "get-started-java.html" -> html.getstartedjava,
     "get-started-java-sbt.html" -> html.getstartedjavasbt,
     "get-started-java-maven.html" -> html.getstartedjavamaven,
-    "get-started-scala.html" -> html.getstartedscala
+    "get-started-scala.html" -> html.getstartedscala,
+    "support.html" -> html.support
   )
 
   // Redirects

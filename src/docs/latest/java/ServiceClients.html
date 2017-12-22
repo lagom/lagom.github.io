@@ -44,7 +44,22 @@ public class ServiceModule extends AbstractModule implements ServiceGuiceSupport
       );
     };
   }
-}</code></pre><h2 id="Circuit-Breakers"><a class="section-marker" href="#Circuit-Breakers">§</a>Circuit Breakers</h2>
+}</code></pre><h2 id="Streaming-service-client-configuration"><a class="section-marker" href="#Streaming-service-client-configuration">§</a>Streaming service client configuration</h2>
+<p>When using a streaming service client, Lagom will use internally a WebSocket client which has a max frame length parameter. This parameter limits the allowed maximum size for the messages flowing through the WebSocket. This can be configured in <code>application.conf</code> on the client-side and the default configuration is:</p>
+<pre class="prettyprint"><code class="language-conf">#This configures the websocket clients used by this service.
+#This is a global configuration and it is currently not possible 
+#to provide different configurations if multiple websocket services 
+#are consumed.
+lagom.client.websocket {
+
+  #This parameter limits the allowed maximum size for the messages 
+  #flowing through the WebSocket. A similar limit exists on 
+  #the server side, see: 
+  #https://www.playframework.com/documentation/2.6.x/ScalaWebSockets#Configuring-WebSocket-Frame-Length
+  frame.maxLength = 65536
+}</code></pre>
+<p>This configuration will affect all streaming services that the service client consumes. It is not possible to provide different configurations when multiple streaming services are consumed.</p>
+<p>Note that the same parameter has to be configured on the server-side using <a href="https://www.playframework.com/documentation/2.6.x/JavaWebSockets#Configuring-WebSocket-Frame-Length">Play server configuration</a></p><h2 id="Circuit-Breakers"><a class="section-marker" href="#Circuit-Breakers">§</a>Circuit Breakers</h2>
 <p>A <a href="https://martinfowler.com/bliki/CircuitBreaker.html">circuit breaker</a> is used to provide stability and prevent cascading failures in distributed systems. These should be used in conjunction with judicious timeouts at the interfaces between services to prevent the failure of a single service from bringing down other services.</p>
 <p>As an example, we have a web application interacting with a third-party web service. Let&rsquo;s say the third-party has oversold their capacity and their database melts down under load. Assume that the database fails in such a way that it takes a very long time to hand back an error to the third-party web service. This in turn makes calls fail after a long period of time. Back to our web application, the users have noticed that their form submissions take much longer seeming to hang. The users do what they know to do which is use the refresh button, adding more requests to their already running requests. This eventually causes the failure of the web application due to resource exhaustion.</p>
 <p>Introducing circuit breakers on the web service call would cause the requests to begin to fail-fast, letting the user know that something is wrong and that they need not refresh their request. This also confines the failure behavior to only those users that are using functionality dependent on the third-party, other users are no longer affected as there is no resource exhaustion. Circuit breakers can also allow savvy developers to mark portions of the site that use the functionality unavailable, or perhaps show some cached content as appropriate while the breaker is open.</p>

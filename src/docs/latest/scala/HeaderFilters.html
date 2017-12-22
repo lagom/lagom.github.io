@@ -2,7 +2,7 @@
 <p>In Lagom you may add <code>HeaderFilter</code>s to your service descriptor. In a <code>HeaderFilter</code> you will usually handle protocol negotiation or authentication. </p>
 <p>A single <code>HeaderFilter</code> implementation may transform a request leaving a client or entering a server and a response leaving a server and entering a client. Here&rsquo;s an example that uses the <code>User-Agent</code> header to read the service name:</p>
 <pre class="prettyprint"><code class="language-scala">object UserAgentHeaderFilter extends HeaderFilter {
-  override def transformClientRequest(request: RequestHeader) = {
+  override def transformClientRequest(request: RequestHeader): RequestHeader = {
     request.principal match {
       case Some(principal: ServicePrincipal) =&gt;
         request.withHeader(HeaderNames.USER_AGENT, principal.serviceName)
@@ -10,7 +10,7 @@
     }
   }
 
-  override def transformServerRequest(request: RequestHeader) = {
+  override def transformServerRequest(request: RequestHeader): RequestHeader = {
     request.getHeader(HeaderNames.USER_AGENT) match {
       case Some(userAgent) =&gt;
         request.withPrincipal(ServicePrincipal.forServiceNamed(userAgent))
@@ -22,12 +22,12 @@
   override def transformServerResponse(
     response: ResponseHeader,
     request:  RequestHeader
-  ) = response
+  ): ResponseHeader = response
 
   override def transformClientResponse(
     response: ResponseHeader,
     request:  RequestHeader
-  ) = response
+  ): ResponseHeader = response
 }</code></pre>
 <p>This <a href="api/com/lightbend/lagom/scaladsl/api/transport/UserAgentHeaderFilter$.html"><code>UserAgentHeaderFilter</code></a> is the default <code>HeaderFilter</code> any Lagom service will use if none is specified. It uses a <code>ServicePrincipal</code> which identifies the client with the service name.</p>
 <p>In <code>UserAgentHeaderFilter</code> the code at <code>transformClientRequest</code> will be invoked when preparing a client invocation to add a <code>User-Agent</code> header if a <a href="api/com/lightbend/lagom/scaladsl/api/security/ServicePrincipal.html"><code>ServicePrincipal</code></a> was specified on the request. Note that by default, Lagom will automatically pass the current services name as the <code>ServicePrincipal</code> when it makes a request. On the server end <code>transformServerRequest</code> will be used to read the <code>User-Agent</code> header and set that value as the request&rsquo;s <a href="https://docs.oracle.com/javase/8/docs/api/java/security/Principal.html">Principal</a>.</p>

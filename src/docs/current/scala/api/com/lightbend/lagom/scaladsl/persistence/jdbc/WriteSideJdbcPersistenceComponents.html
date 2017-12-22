@@ -45,17 +45,17 @@
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <span class="name">WriteSideJdbcPersistenceComponents</span><span class="result"> extends <a href="../WriteSidePersistenceComponents.html" class="extype" name="com.lightbend.lagom.scaladsl.persistence.WriteSidePersistenceComponents">WriteSidePersistenceComponents</a> with <span class="extype" name="play.api.db.DBComponents">DBComponents</span></span>
+        <span class="name">WriteSideJdbcPersistenceComponents</span><span class="result"> extends <a href="../WriteSidePersistenceComponents.html" class="extype" name="com.lightbend.lagom.scaladsl.persistence.WriteSidePersistenceComponents">WriteSidePersistenceComponents</a> with <span class="extype" name="com.lightbend.lagom.scaladsl.persistence.jdbc.SlickProviderComponents">SlickProviderComponents</span></span>
       </span>
       </h4>
       
           <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Write-side persistence JDBC components (for compile-time injection).
 </p></div><dl class="attributes block"> <dt>Source</dt><dd><a href="https://github.com/lagom/lagom/tree/master//persistence-jdbc/scaladsl/src/main/scala/com/lightbend/lagom/scaladsl/persistence/jdbc/JdbcPersistenceComponents.scala" target="_blank">JdbcPersistenceComponents.scala</a></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><span class="extype" name="play.api.db.DBComponents">DBComponents</span>, <a href="../WriteSidePersistenceComponents.html" class="extype" name="com.lightbend.lagom.scaladsl.persistence.WriteSidePersistenceComponents">WriteSidePersistenceComponents</a>, <a href="../../cluster/ClusterComponents.html" class="extype" name="com.lightbend.lagom.scaladsl.cluster.ClusterComponents">ClusterComponents</a>, <a href="../../playjson/RequiresJsonSerializerRegistry.html" class="extype" name="com.lightbend.lagom.scaladsl.playjson.RequiresJsonSerializerRegistry">RequiresJsonSerializerRegistry</a>, <a href="../../playjson/ProvidesJsonSerializerRegistry.html" class="extype" name="com.lightbend.lagom.scaladsl.playjson.ProvidesJsonSerializerRegistry">ProvidesJsonSerializerRegistry</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="com.lightbend.lagom.scaladsl.persistence.jdbc.SlickProviderComponents">SlickProviderComponents</span>, <span class="extype" name="play.api.db.DBComponents">DBComponents</span>, <a href="../WriteSidePersistenceComponents.html" class="extype" name="com.lightbend.lagom.scaladsl.persistence.WriteSidePersistenceComponents">WriteSidePersistenceComponents</a>, <a href="../../cluster/ClusterComponents.html" class="extype" name="com.lightbend.lagom.scaladsl.cluster.ClusterComponents">ClusterComponents</a>, <a href="../../playjson/RequiresJsonSerializerRegistry.html" class="extype" name="com.lightbend.lagom.scaladsl.playjson.RequiresJsonSerializerRegistry">RequiresJsonSerializerRegistry</a>, <a href="../../playjson/ProvidesJsonSerializerRegistry.html" class="extype" name="com.lightbend.lagom.scaladsl.playjson.ProvidesJsonSerializerRegistry">ProvidesJsonSerializerRegistry</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div><div class="toggleContainer block">
             <span class="toggle">Known Subclasses</span>
-            <div class="subClasses hiddenContent"><a href="JdbcPersistenceComponents.html" class="extype" name="com.lightbend.lagom.scaladsl.persistence.jdbc.JdbcPersistenceComponents">JdbcPersistenceComponents</a>, <a href="ReadSideJdbcPersistenceComponents.html" class="extype" name="com.lightbend.lagom.scaladsl.persistence.jdbc.ReadSideJdbcPersistenceComponents">ReadSideJdbcPersistenceComponents</a></div>
+            <div class="subClasses hiddenContent"><a href="JdbcPersistenceComponents.html" class="extype" name="com.lightbend.lagom.scaladsl.persistence.jdbc.JdbcPersistenceComponents">JdbcPersistenceComponents</a></div>
           </div></div>
         
 
@@ -73,7 +73,7 @@
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="com.lightbend.lagom.scaladsl.persistence.jdbc.WriteSideJdbcPersistenceComponents"><span>WriteSideJdbcPersistenceComponents</span></li><li class="in" name="play.api.db.DBComponents"><span>DBComponents</span></li><li class="in" name="com.lightbend.lagom.scaladsl.persistence.WriteSidePersistenceComponents"><span>WriteSidePersistenceComponents</span></li><li class="in" name="com.lightbend.lagom.scaladsl.cluster.ClusterComponents"><span>ClusterComponents</span></li><li class="in" name="com.lightbend.lagom.scaladsl.playjson.RequiresJsonSerializerRegistry"><span>RequiresJsonSerializerRegistry</span></li><li class="in" name="com.lightbend.lagom.scaladsl.playjson.ProvidesJsonSerializerRegistry"><span>ProvidesJsonSerializerRegistry</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="com.lightbend.lagom.scaladsl.persistence.jdbc.WriteSideJdbcPersistenceComponents"><span>WriteSideJdbcPersistenceComponents</span></li><li class="in" name="com.lightbend.lagom.scaladsl.persistence.jdbc.SlickProviderComponents"><span>SlickProviderComponents</span></li><li class="in" name="play.api.db.DBComponents"><span>DBComponents</span></li><li class="in" name="com.lightbend.lagom.scaladsl.persistence.WriteSidePersistenceComponents"><span>WriteSidePersistenceComponents</span></li><li class="in" name="com.lightbend.lagom.scaladsl.cluster.ClusterComponents"><span>ClusterComponents</span></li><li class="in" name="com.lightbend.lagom.scaladsl.playjson.RequiresJsonSerializerRegistry"><span>RequiresJsonSerializerRegistry</span></li><li class="in" name="com.lightbend.lagom.scaladsl.playjson.ProvidesJsonSerializerRegistry"><span>ProvidesJsonSerializerRegistry</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
                 <span class="filtertype">Implicitly<br />
@@ -117,7 +117,7 @@
         <img src="../../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="com.lightbend.lagom.scaladsl.persistence.jdbc.WriteSideJdbcPersistenceComponents">WriteSideJdbcPersistenceComponents</a> → <a href="../../cluster/ClusterComponents.html" class="extype" name="com.lightbend.lagom.scaladsl.cluster.ClusterComponents">ClusterComponents</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="com.lightbend.lagom.scaladsl.persistence.jdbc.WriteSideJdbcPersistenceComponents">WriteSideJdbcPersistenceComponents</a> → SlickProviderComponents → <a href="../../cluster/ClusterComponents.html" class="extype" name="com.lightbend.lagom.scaladsl.cluster.ClusterComponents">ClusterComponents</a></dd></dl></div>
     </li><li name="play.api.db.DBComponents#applicationLifecycle" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="applicationLifecycle:play.api.inject.ApplicationLifecycle"></a>
       <a id="applicationLifecycle:ApplicationLifecycle"></a>
@@ -186,7 +186,7 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>DBComponents</dd></dl></div>
-    </li><li name="com.lightbend.lagom.scaladsl.persistence.jdbc.WriteSideJdbcPersistenceComponents#executionContext" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+    </li><li name="com.lightbend.lagom.scaladsl.persistence.jdbc.WriteSideJdbcPersistenceComponents#executionContext" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="executionContext:scala.concurrent.ExecutionContext"></a>
       <a id="executionContext:ExecutionContext"></a>
       <h4 class="signature">
@@ -202,7 +202,7 @@
         <img src="../../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="com.lightbend.lagom.scaladsl.persistence.jdbc.WriteSideJdbcPersistenceComponents">WriteSideJdbcPersistenceComponents</a> → SlickProviderComponents</dd></dl></div>
     </li><li name="com.lightbend.lagom.scaladsl.playjson.RequiresJsonSerializerRegistry#jsonSerializerRegistry" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="jsonSerializerRegistry:com.lightbend.lagom.scaladsl.playjson.JsonSerializerRegistry"></a>
       <a id="jsonSerializerRegistry:JsonSerializerRegistry"></a>
@@ -701,7 +701,7 @@ traits.
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="com.lightbend.lagom.scaladsl.persistence.jdbc.WriteSideJdbcPersistenceComponents">WriteSideJdbcPersistenceComponents</a> → <a href="../WriteSidePersistenceComponents.html" class="extype" name="com.lightbend.lagom.scaladsl.persistence.WriteSidePersistenceComponents">WriteSidePersistenceComponents</a></dd></dl></div>
-    </li><li name="com.lightbend.lagom.scaladsl.persistence.jdbc.WriteSideJdbcPersistenceComponents#slickProvider" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="com.lightbend.lagom.scaladsl.persistence.jdbc.SlickProviderComponents#slickProvider" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="slickProvider:com.lightbend.lagom.internal.persistence.jdbc.SlickProvider"></a>
       <a id="slickProvider:SlickProvider"></a>
       <h4 class="signature">
@@ -717,7 +717,7 @@ traits.
         <img src="../../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>SlickProviderComponents</dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
@@ -851,7 +851,9 @@ traits.
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="play.api.db.DBComponents">
+        <div class="parent" name="com.lightbend.lagom.scaladsl.persistence.jdbc.SlickProviderComponents">
+              <h3>Inherited from <span class="extype" name="com.lightbend.lagom.scaladsl.persistence.jdbc.SlickProviderComponents">SlickProviderComponents</span></h3>
+            </div><div class="parent" name="play.api.db.DBComponents">
               <h3>Inherited from <span class="extype" name="play.api.db.DBComponents">DBComponents</span></h3>
             </div><div class="parent" name="com.lightbend.lagom.scaladsl.persistence.WriteSidePersistenceComponents">
               <h3>Inherited from <a href="../WriteSidePersistenceComponents.html" class="extype" name="com.lightbend.lagom.scaladsl.persistence.WriteSidePersistenceComponents">WriteSidePersistenceComponents</a></h3>

@@ -1,17 +1,5 @@
 <h1 id="Production"><a class="section-marker" href="#Production">§</a>Production</h1>
-<p>Lagom doesn&rsquo;t prescribe any particular production environment. Out-of-the-box support is provided for <a href="https://www.lightbend.com/products/conductr">Lightbend ConductR</a>. Lightbend ConductR is a perfect match for Lagom, as it provides the following features:</p>
-<ul>
-  <li>a means to manage configuration distinctly from your packaged artifact;</li>
-  <li>consolidated logging across many nodes;</li>
-  <li>a supervisory system whereby if your service(s) terminate unexpectedly then they are automatically restarted;</li>
-  <li>the ability to scale up and down with ease and with speed;</li>
-  <li>handling of network failures, in particular those that can lead to a split brain scenario;</li>
-  <li>automated seed node discovery when requiring more than one instance of your service so that they may share a cluster;</li>
-  <li>the ability to perform rolling updates of your services;</li>
-  <li>support for your services being monitored across a cluster; and</li>
-  <li>the ability to test your services locally prior to them being deployed.</li>
-</ul>
-<p>To deploy your Lagom services using ConductR, see <a href="ConductR.html">ConductR</a>. If you are interested in deploying on <a href="https://kubernetes.io/">Kubernetes</a>, see our guide that demonstrates <a href="https://developer.lightbend.com/guides/k8s-microservices/">how to deploy the Chirper example application</a>.</p><h2 id="Considerations-for-deploying-to-other-platforms"><a class="section-marker" href="#Considerations-for-deploying-to-other-platforms">§</a>Considerations for deploying to other platforms</h2>
+<p>Lagom doesn&rsquo;t prescribe any particular production environment. If you are interested in deploying on <a href="https://kubernetes.io/">Kubernetes</a>, see our guide that demonstrates <a href="https://developer.lightbend.com/guides/k8s-microservices/">how to deploy the Chirper example application</a>.</p><h2 id="Deployment-considerations"><a class="section-marker" href="#Deployment-considerations">§</a>Deployment considerations</h2>
 <p>The deployment platform determines the type of archive you will need to use for packaging your microservices as well as the way you set up service location. For packaging: </p>
 <ul>
   <li>

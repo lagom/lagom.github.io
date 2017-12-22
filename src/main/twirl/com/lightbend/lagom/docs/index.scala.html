@@ -2,16 +2,15 @@
 @import com.lightbend.lagom.docs.LagomContext
 
 @(implicit context: LagomContext)
- 
+
 @main(Some("Microservices Framework"))()() {
-  
+
     <div class="fw-wrapper lgm-purple hero-banner">
-  
         <div class="row">
             <div class="small-12 columns">
                 <a href="@context.path/" class="logo"><img src="@context.path/images/logos/lagom-reverse.svg"></a>
-                <h1>The Opinionated Microservices Framework<br>
-                for moving away from the Monolith</h1>
+                <h1>The opinionated microservices framework<br>
+                    for moving away from the monolith</h1>
             </div>
         </div>
     </div>
@@ -19,23 +18,32 @@
     <article class="fw-wrapper lb-light-grey-ltr home-content">
         <header class="row meet-lagom">
             <div class="small-12 medium-10 large-8 small-centered columns text-left">
+
+
                 <h1>Meet Lagom</h1>
-                <p>The Lagom framework includes Java and Scala APIs to simplify development of 
-                  microservices. Lagom's integrated development environment accelerates 
-                  development &#8212; by allowing you to focus on solving business problems 
-                  instead of wiring services together. 
-                  A single command builds the project and starts all of your services 
-                   as well as the supporting Lagom infrastructure, which includes a web server for testing. The environment hot-reloads services when you change your code.</p>
-                   
-                 
-                  <p>Lagom is built on top of Akka and Play, proven technologies that are in production today, delivering scalability and resilience to 
-                  some of the most demanding applications on the web. While Lagom is open source, you can adopt it with confidence knowing that Lightbend offers subscriptions for support, assistance during development, and access to additional tools for deployment and monitoring. 
+
+
+                <p>an open source framework for building reactive microservice systems in Java or Scala. Lagom builds on <a href="https://akka.io/" target="_blank">Akka</a> and <a href="https://www.playframework.com/" target="_blank">Play</a>, proven technologies that are in production in some of the most demanding applications today.</p>
+
+                <p>Lagom's integrated development environment allows you to focus on solving business problems instead of wiring services together. A single command builds the project, starts supporting components and your microservices,  as well as the Lagom infrastructure. The build hot-reloads when it detects changes to source code.</p>
+
+                <p>Right-sized services created with Lagom enable:</p>
+                <ul>
+                    <li>better defined development responsibilities&#8212;to increase agility</li>
+                    <li>more frequent releases with less risk&#8212;to improve time to market</li>
+                    <li>systems with reactive qualities: responsiveness,
+                        resilience, scalability, and elasticticity&#8212;to make best use of modern computing environments and meet demanding user expectations</li>
+                </ul>
+
                 <p>Watch the 3-minute <i>Meet Lagom</i> video below, or try Lagom yourself. <a class="" href="@context.path/get-started.html" target="_blank">Create a Lagom project and test a simple Hello World service</a> in just a few minutes.</p>
-                <div class="flex-video widescreen">
+
+                <div id="meet-lagom" class="flex-video widescreen">
                     <iframe id="player" class="youtube-embed-player" src="//www.youtube.com/embed/d1jT0UOVx9U?rel=0&amp;autohide=1&amp;modestbranding=0&amp;showinfo=1" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe>
                 </div>
             </div>
         </header>
+
+
         <div class="row get-started">
             <div class="small-12 small-centered columns text-center">
                 <h1>Learn more</h1>
@@ -44,7 +52,7 @@
             </div>
         </div>
 
-        <div class="row video-repeater">
+        <div id="intro-to-lagom" class="row video-repeater">
             <div class="small-12 medium-6 large-5 medium-push-6 large-push-7 columns">
                 <h1>Introduction To Lagom</h1>
                 <h3>With James Roper (14 Min)</h3>
@@ -58,7 +66,7 @@
             </div>
         </div>
 
-        <div class="row video-repeater">
+        <div id="developer-setup" class="row video-repeater">
             <div class="small-12 medium-6 large-5 columns medium-text-right">
                 <h1>Developer Setup</h1>
                 <h3>With Mirco Dotta (11 Min)</h3>
@@ -72,7 +80,7 @@
             </div>
         </div>
 
-        <div class="row video-repeater vertical-buffer-bottom-60">
+        <div id="managing-data-persistence" class="row video-repeater vertical-buffer-bottom-60">
             <div class="small-12 medium-6 large-5 medium-push-6 large-push-7 columns">
                 <h1>Managing Data Persistence</h1>
                 <h3>With Patrik Nordwall (16 Min)</h3>
@@ -85,19 +93,7 @@
             </div>
         </div>
 
-        <div class="row video-repeater vertical-buffer-bottom-60">
-            <div class="small-12 medium-6 large-5 columns medium-text-right">
-                <h1>Lagom ConductR Deployment</h1>
-                <h3>With Christopher Hunt (13 Min)</h3>
-                <p>Deployment is seamless. Your services are already set up for production. With one command, you safely scale out in production.</p>
-            </div>
-            <div class="small-12 medium-6 large-7 columns">
-                <div class="flex-video widescreen">
-                    <iframe id="player" class="youtube-embed-player" src="//www.youtube.com/embed/0Z0UIZxW1aw?rel=0&amp;autohide=1&amp;modestbranding=0&amp;showinfo=1" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe>
-                </div>
-            </div>
-        </div>
-    </article>
+        </article>
     <aside class="fw-wrapper home-blog-listing">
         <header class="row">
             <div class="small-12 columns">

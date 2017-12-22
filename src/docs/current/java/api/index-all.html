@@ -478,6 +478,14 @@
 <dd>
 <div class="block"><span class="deprecatedLabel">Deprecated.</span></div>
 &nbsp;</dd>
+<dt><span class="memberNameLink"><a href="com/lightbend/lagom/javadsl/api/deser/PathParamSerializers.html#COLLECTION">COLLECTION</a></span> - Static variable in class com.lightbend.lagom.javadsl.api.deser.<a href="com/lightbend/lagom/javadsl/api/deser/PathParamSerializers.html" title="class in com.lightbend.lagom.javadsl.api.deser">PathParamSerializers</a></dt>
+<dd>
+<div class="block">A generic (unresolved) Collection serializer.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/lightbend/lagom/javadsl/api/deser/PathParamSerializers.html#collection-java.lang.String-java.util.function.Function-java.util.function.Function-">collection(String, Function&lt;PSequence&lt;String&gt;, Param&gt;, Function&lt;Param, PSequence&lt;String&gt;&gt;)</a></span> - Static method in class com.lightbend.lagom.javadsl.api.deser.<a href="com/lightbend/lagom/javadsl/api/deser/PathParamSerializers.html" title="class in com.lightbend.lagom.javadsl.api.deser">PathParamSerializers</a></dt>
+<dd>
+<div class="block">Create a PathParamSerializer for Collection parameters.</div>
+</dd>
 <dt><a href="com/lightbend/lagom/javadsl/api/package-summary.html">com.lightbend.lagom.javadsl.api</a> - package com.lightbend.lagom.javadsl.api</dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/lightbend/lagom/javadsl/api/broker/package-summary.html">com.lightbend.lagom.javadsl.api.broker</a> - package com.lightbend.lagom.javadsl.api.broker</dt>
@@ -1331,6 +1339,10 @@
 <dd>
 <div class="block">Use a circuit breaker identified by the given circuit breaker ID.</div>
 </dd>
+<dt><a href="com/lightbend/lagom/javadsl/api/IllegalPathParameterException.html" title="class in com.lightbend.lagom.javadsl.api"><span class="typeNameLink">IllegalPathParameterException</span></a> - Exception in <a href="com/lightbend/lagom/javadsl/api/package-summary.html">com.lightbend.lagom.javadsl.api</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="com/lightbend/lagom/javadsl/api/IllegalPathParameterException.html#IllegalPathParameterException-java.lang.String-java.lang.Throwable-">IllegalPathParameterException(String, Throwable)</a></span> - Constructor for exception com.lightbend.lagom.javadsl.api.<a href="com/lightbend/lagom/javadsl/api/IllegalPathParameterException.html" title="class in com.lightbend.lagom.javadsl.api">IllegalPathParameterException</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="com/lightbend/lagom/javadsl/immutable/ImmutableStyle.html" title="annotation in com.lightbend.lagom.javadsl.immutable"><span class="typeNameLink">ImmutableStyle</span></a> - Annotation Type in <a href="com/lightbend/lagom/javadsl/immutable/package-summary.html">com.lightbend.lagom.javadsl.immutable</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/lightbend/lagom/javadsl/persistence/PersistentEntity.html#initialBehavior-java.util.Optional-">initialBehavior(Optional&lt;State&gt;)</a></span> - Method in class com.lightbend.lagom.javadsl.persistence.<a href="com/lightbend/lagom/javadsl/persistence/PersistentEntity.html" title="class in com.lightbend.lagom.javadsl.persistence">PersistentEntity</a></dt>
@@ -1561,6 +1573,14 @@
 <dt><span class="memberNameLink"><a href="com/lightbend/lagom/javadsl/server/status/CircuitBreakerStatus.Builder.html#latencyMicros-com.lightbend.lagom.javadsl.server.status.Latency-">latencyMicros(Latency)</a></span> - Method in class com.lightbend.lagom.javadsl.server.status.<a href="com/lightbend/lagom/javadsl/server/status/CircuitBreakerStatus.Builder.html" title="class in com.lightbend.lagom.javadsl.server.status">CircuitBreakerStatus.Builder</a></dt>
 <dd>
 <div class="block">Initializes the value for the <a href="com/lightbend/lagom/javadsl/server/status/AbstractCircuitBreakerStatus.html#getLatencyMicros--"><code>latencyMicros</code></a> attribute.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/lightbend/lagom/javadsl/api/deser/PathParamSerializers.html#LIST">LIST</a></span> - Static variable in class com.lightbend.lagom.javadsl.api.deser.<a href="com/lightbend/lagom/javadsl/api/deser/PathParamSerializers.html" title="class in com.lightbend.lagom.javadsl.api.deser">PathParamSerializers</a></dt>
+<dd>
+<div class="block">A generic (unresolved) List serializer.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/lightbend/lagom/javadsl/api/deser/PathParamSerializers.html#list-java.lang.String-java.util.function.Function-java.util.function.Function-">list(String, Function&lt;PSequence&lt;String&gt;, Param&gt;, Function&lt;Param, PSequence&lt;String&gt;&gt;)</a></span> - Static method in class com.lightbend.lagom.javadsl.api.deser.<a href="com/lightbend/lagom/javadsl/api/deser/PathParamSerializers.html" title="class in com.lightbend.lagom.javadsl.api.deser">PathParamSerializers</a></dt>
+<dd>
+<div class="block">Create a PathParamSerializer for List parameters.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/lightbend/lagom/javadsl/api/Descriptor.html#locatableService--">locatableService()</a></span> - Method in class com.lightbend.lagom.javadsl.api.<a href="com/lightbend/lagom/javadsl/api/Descriptor.html" title="class in com.lightbend.lagom.javadsl.api">Descriptor</a></dt>
 <dd>
@@ -2004,7 +2024,7 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/lightbend/lagom/javadsl/api/deser/PathParamSerializers.html#OPTIONAL">OPTIONAL</a></span> - Static variable in class com.lightbend.lagom.javadsl.api.deser.<a href="com/lightbend/lagom/javadsl/api/deser/PathParamSerializers.html" title="class in com.lightbend.lagom.javadsl.api.deser">PathParamSerializers</a></dt>
 <dd>
-<div class="block">A generic (unresolved) optional serializer.</div>
+<div class="block">A generic (unresolved) Optional serializer.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/lightbend/lagom/javadsl/api/deser/PathParamSerializers.html#optional-java.lang.String-java.util.function.Function-java.util.function.Function-">optional(String, Function&lt;String, Param&gt;, Function&lt;Param, String&gt;)</a></span> - Static method in class com.lightbend.lagom.javadsl.api.deser.<a href="com/lightbend/lagom/javadsl/api/deser/PathParamSerializers.html" title="class in com.lightbend.lagom.javadsl.api.deser">PathParamSerializers</a></dt>
 <dd>
@@ -2894,6 +2914,14 @@
 <dt><span class="memberNameLink"><a href="com/lightbend/lagom/javadsl/api/transport/TransportErrorCode.html#ServiceUnavailable">ServiceUnavailable</a></span> - Static variable in class com.lightbend.lagom.javadsl.api.transport.<a href="com/lightbend/lagom/javadsl/api/transport/TransportErrorCode.html" title="class in com.lightbend.lagom.javadsl.api.transport">TransportErrorCode</a></dt>
 <dd>
 <div class="block">Service unavailable, thrown when the service is unavailable or going away.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/lightbend/lagom/javadsl/api/deser/PathParamSerializers.html#SET">SET</a></span> - Static variable in class com.lightbend.lagom.javadsl.api.deser.<a href="com/lightbend/lagom/javadsl/api/deser/PathParamSerializers.html" title="class in com.lightbend.lagom.javadsl.api.deser">PathParamSerializers</a></dt>
+<dd>
+<div class="block">A generic (unresolved) Set serializer.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/lightbend/lagom/javadsl/api/deser/PathParamSerializers.html#set-java.lang.String-java.util.function.Function-java.util.function.Function-">set(String, Function&lt;PSequence&lt;String&gt;, Param&gt;, Function&lt;Param, PSequence&lt;String&gt;&gt;)</a></span> - Static method in class com.lightbend.lagom.javadsl.api.deser.<a href="com/lightbend/lagom/javadsl/api/deser/PathParamSerializers.html" title="class in com.lightbend.lagom.javadsl.api.deser">PathParamSerializers</a></dt>
+<dd>
+<div class="block">Create a PathParamSerializer for Set parameters.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/lightbend/lagom/javadsl/persistence/cassandra/CassandraReadSide.ReadSideHandlerBuilder.html#setEventHandler-java.lang.Class-java.util.function.Function-">setEventHandler(Class&lt;E&gt;, Function&lt;E, CompletionStage&lt;List&lt;BoundStatement&gt;&gt;&gt;)</a></span> - Method in interface com.lightbend.lagom.javadsl.persistence.cassandra.<a href="com/lightbend/lagom/javadsl/persistence/cassandra/CassandraReadSide.ReadSideHandlerBuilder.html" title="interface in com.lightbend.lagom.javadsl.persistence.cassandra">CassandraReadSide.ReadSideHandlerBuilder</a></dt>
 <dd>
