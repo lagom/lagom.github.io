@@ -1,5 +1,29 @@
 # Lagom Change Log
 
+## Lagom 1.4.0-RC1
+
+*Released 22 December 2017*
+
+* [1151](https://github.com/lagom/lagom/issues/1151) Set four-space indent for XML files (Tim Moore)
+* [1109](https://github.com/lagom/lagom/issues/1109) Ensure Akka cluster is left gracefully (Ignasi Marimon-Clos)
+* [1147](https://github.com/lagom/lagom/issues/1147) Maven Dependency POM and Archetype supporting 2.11 and 2.12 (Renato Cavalcanti)
+* [1146](https://github.com/lagom/lagom/issues/1146) Update Scala 2.11 to 2.11.12 (Tim Moore)
+* [1148](https://github.com/lagom/lagom/issues/1148) Update ConductR guides (Tim Moore)
+* [1141](https://github.com/lagom/lagom/issues/1141) Clarify sbt instructions for running a single service (Renato Cavalcanti)
+* [1145](https://github.com/lagom/lagom/issues/1145) Update play-file-watch to 1.1.7 (Tim Moore)
+* [1143](https://github.com/lagom/lagom/issues/1143) Update akka-persistence-jdbc to 3.1.0 (Renato Cavalcanti)
+* [1140](https://github.com/lagom/lagom/issues/1140) Manage JNDI lifecycle (Tim Moore)
+* [1054](https://github.com/lagom/lagom/issues/1054) Sets Akka-HTTP as default backend (Ignasi Marimon-Clos)
+* [1134](https://github.com/lagom/lagom/issues/1134) Bumps Akka 2.5.8, AkkaHttp 10.0.11 and Play 2.6.9 (Ignasi Marimon-Clos)
+* [1051](https://github.com/lagom/lagom/issues/1051) Fixed invalid type signature on PersistentEntityRef.ask (James Roper)
+* [1128](https://github.com/lagom/lagom/issues/1128) fixes formatting (Renato Cavalcanti)
+* [1125](https://github.com/lagom/lagom/issues/1125) Overrides defaults for host-connection-pool (Ignasi Marimon-Clos)
+* [1127](https://github.com/lagom/lagom/issues/1127) typo on bonecp config (Renato Cavalcanti)
+* [1112](https://github.com/lagom/lagom/issues/1112) Added a check to warn about slow startup problems (Edmondo Porcu)
+* [1121](https://github.com/lagom/lagom/issues/1121) Introduces a JndiConfigurator that is run before SlickProvider creation (Renato Cavalcanti)
+* [1123](https://github.com/lagom/lagom/issues/1123) Update the 1.4 migration guide for 1.4.0-M3 (Tim Moore)
+* [1090](https://github.com/lagom/lagom/issues/1090) Add maxFrameLength config parameter for WebSocketClient (datalchemist)
+
 ## Lagom 1.4.0-M3
 
 *Released 30 November 2017*

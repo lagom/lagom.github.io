@@ -27,7 +27,7 @@ See the [full list of changes](https://github.com/lagom/lagom/compare/1.4.0-M3..
 * Upgraded to Akka HTTP 10.0.11 
 * Upgraded to Play 2.6.10
 * Upgraded to akka-persistence-jdbc to 3.1.0
-* Akka-HTTP as default backend
+* Akka HTTP as default backend
 * maxFrameLength config parameter for WebSocketClient
 
  
