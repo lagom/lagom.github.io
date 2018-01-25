@@ -6,8 +6,9 @@
 
 ### Changes since 1.4.0-RC1
 
-**TODO: Update after merging & backporting open PRs**
-
+* [1193](https://github.com/lagom/lagom/issues/1193) Add missing items to the 1.4 migration guide (Tim Moore)
+* [1188](https://github.com/lagom/lagom/issues/1188) Use javaOptions when creating test groups (Tim Moore)
+* [1192](https://github.com/lagom/lagom/issues/1192) Fix Kafka server dependencies (Tim Moore)
 * [1187](https://github.com/lagom/lagom/issues/1187) Add HandlerDef to the Play request headers (Tim Moore)
 * [1186](https://github.com/lagom/lagom/issues/1186) Clean up ServiceTest temporary files (Tim Moore)
 * [1175](https://github.com/lagom/lagom/issues/1175) Configure Lagom build to default to Scala 2.12 (Renato Cavalcanti)
