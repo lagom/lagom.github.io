@@ -2,7 +2,7 @@
 title: Introducing the Lagom Recipes
 date: 2018-02-13
 author_github: ignasi35
-tags: news lagom recipes cookbook
+tags: news recipes cookbook
 summary: >
     Lagom recipes help you solve common problems when creating great applications with the Lagom Framework.
 ---
