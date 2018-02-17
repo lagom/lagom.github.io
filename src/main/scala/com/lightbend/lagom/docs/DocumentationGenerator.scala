@@ -59,8 +59,10 @@ object DocumentationGenerator extends App {
       "JWORKS TECH BLOG"),
     CommunityContent("Run a Lagom service standalone with Zookeeper",
       "https://thecoderwriter.wordpress.com/2016/09/24/run-a-lagom-service-standalone-with-zookeeper/",
-      "Coder's IO")
-
+      "Coder's IO"),
+    CommunityContent("The Lagom Framework for Microservices and Domain-Driven Design",
+      "https://jaxenter.com/the-lagom-framework-tutorial-130264.html",
+      "jaxenter")
   )
 
   // Set this to Some("your-github-account-name") if you want to deploy the docs to the gh-pages of your own fork
