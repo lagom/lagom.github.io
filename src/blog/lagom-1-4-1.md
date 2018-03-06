@@ -37,7 +37,8 @@ Thanks to [Lightbend](https://www.lightbend.com) for their continued sponsorship
 Special thanks to the following contributors who helped with this release:
 
 ```
-    6      87      60 Tim Moore
-    3      54     123 Renato Cavalcanti
-    1      31       7 Lutz Huehnken
+commits  added  removed
+      6     87       60  Tim Moore
+      3     54      123  Renato Cavalcanti
+      1     31        7  Lutz Huehnken
 ```
