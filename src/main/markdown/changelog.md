@@ -1,5 +1,21 @@
 # Lagom Change Log
 
+## Lagom 1.4.1
+
+*Released 6 March 2018*
+
+* [1228](https://github.com/lagom/lagom/issues/1228) Update Akka to 2.5.11 and Play to 2.6.12 (Renato Cavalcanti)
+* [1230](https://github.com/lagom/lagom/issues/1230) Fix Service Port documentation for Scala (Renato Cavalcanti)
+* [1227](https://github.com/lagom/lagom/issues/1227) Update Akka Persistence Cassandra to 0.60 (Tim Moore)
+* [1224](https://github.com/lagom/lagom/issues/1224) Remove sbt-git plugin (Tim Moore)
+* [1218](https://github.com/lagom/lagom/issues/1218) Improve Whitesource automation (Tim Moore)
+* [1210](https://github.com/lagom/lagom/issues/1210) Prevent SaveSnapshotSuccess from showing up in unhandled messages (Lutz Huehnken)
+* [1200](https://github.com/lagom/lagom/issues/1200) Remove netty-transport-native-epoll dependencies (Tim Moore)
+* [1201](https://github.com/lagom/lagom/issues/1201) Update ConductR lib/sbt versions (Tim Moore)
+* [1196](https://github.com/lagom/lagom/issues/1196) Some migration guide fixes (Renato Cavalcanti)
+* [1191](https://github.com/lagom/lagom/issues/1191) Update Whitesource project (Tim Moore)
+
+
 ## Lagom 1.4.0
 
 *Released 25 January 2018*
