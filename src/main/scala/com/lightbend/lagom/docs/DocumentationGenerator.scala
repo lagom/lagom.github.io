@@ -42,6 +42,9 @@ object DocumentationGenerator extends App {
 
   val communityContents = Seq(
   //    CommunityContent("title", "href", "hrefTitle"),
+    CommunityContent("Lagom tutorial: using Event Sourcing to create an online shopping cart",
+      "https://inviqa.com/blog/lagom-tutorial-using-event-sourcing-create-online-shopping-cart",
+      "Inviqa"),
     CommunityContent("Lagom Circuit Breaker: What, Why and How?",
       "https://blog.knoldus.com/2017/06/15/lagom-circuit-breaker-what-why-and-how/",
       "Knoldus"),
