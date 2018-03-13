@@ -1,6 +1,6 @@
 # Lagom Code of Conduct
 
-*Published 6 May 2016 (v1.0)*
+*Published 13 March 2018 (v1.1)* ([changes](https://github.com/lagom/lagom.github.io/commits/template/src/main/markdown/conduct.md))
 
 This Code of Conduct governs how we behave in any forum and whenever we will be judged by our actions. We expect it to be honored by everyone who represents the Lagom community officially or informally, claims affiliation with the project or participates directly.
 
@@ -26,12 +26,10 @@ Although this list cannot be exhaustive, we explicitly honor diversity in age, c
 
 ## Reporting Issues
 
-We recommend you first speak with respective project leads and committers about the issue.
-
-If that doesn't work, or if you want to report issues privately, please fill out the [contact owner](https://groups.google.com/forum/#!contactowner/lagom-framework) form for the Lagom mailing list.
+If you have a concern about the conduct of other community members, we recommend you first speak with respective project leads and committers about the problem. If unsure where to ask, you can contact the team by filling out the [Lightbend contact form](https://www.lightbend.com/contact) or emailing info@lightbend.com.
 
 ## Thanks
 
-Some of the ideas and wording for the statements above were based on work by the [Python](http://www.python.org/community/diversity), [Ubuntu](http://www.ubuntu.com/about/about-ubuntu/conduct), [Mozilla](https://wiki.mozilla.org/Code_of_Conduct/Draft) and [TwitterOSS](https://engineering.twitter.com/opensource/code-of-conduct) communities. We are thankful for their work.
+Some of the ideas and wording for the statements above were based on work by the [Python](http://www.python.org/community/diversity), [Ubuntu](http://www.ubuntu.com/about/about-ubuntu/conduct), [Mozilla](https://wiki.mozilla.org/Code_of_Conduct/Draft) and [TwitterOSS](https://engineering.twitter.com/opensource/code-of-conduct), and [Play Framework](https://www.playframework.com/conduct) communities. We are thankful for their work.
 
-*The Lagom of Conduct is licensed under the [Creative Commons Attribution-Share Alike 3.0 license](http://creativecommons.org/licenses/by-sa/3.0/). You may re-use it for your own project, and modify it as you wish, just please allow others to use your modifications and give credit to Lagom and other communities listed above.*
+*The Lagom Code of Conduct is licensed under the [Creative Commons Attribution-Share Alike 3.0 license](http://creativecommons.org/licenses/by-sa/3.0/). You may re-use it for your own project, and modify it as you wish, just please allow others to use your modifications and give credit to Lagom and other communities listed above.*

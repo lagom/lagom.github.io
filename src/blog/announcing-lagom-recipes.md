@@ -7,7 +7,7 @@ summary: >
     Lagom recipes help you solve common problems when creating great applications with the Lagom Framework.
 ---
 
-Lagom is an OSS framework to build microservice-based software systems. At Lightbend we sponsor the development of the framework and encourage contributions from the community, but we also help people get started, be more productive when using it or solve the bugs there may be in the framework code. We participate on the [Lagom mailing list](https://groups.google.com/forum/#!forum/lagom-framework), [Gitter](https://gitter.im/lagom/lagom) channel and, of course, [Stack Overflow](https://stackoverflow.com/questions/tagged/lagom) and [Github issues](https://github.com/lagom/lagom/issues) but Lightbend also provides support for it's [subscribers](https://www.lightbend.com/subscription) using Lagom. We sometimes detect the same questions pop up repeatedly on those channels of support. In order to reduce repeating the same answers over and over and because common problems should have readily available solutions, we created the [Lagom Recipes](https://github.com/lagom/lagom-recipes) repository.
+Lagom is an OSS framework to build microservice-based software systems. At Lightbend we sponsor the development of the framework and encourage contributions from the community, but we also help people get started, be more productive when using it or solve the bugs there may be in the framework code. We participate on the [Discuss Lagom Forum](https://discuss.lagomframework.com), [Gitter](https://gitter.im/lagom/lagom) channel and, of course, [Stack Overflow](https://stackoverflow.com/questions/tagged/lagom) and [GitHub issues](https://github.com/lagom/lagom/issues), but Lightbend also provides support for its [subscribers](https://www.lightbend.com/subscription) using Lagom. We sometimes detect the same questions pop up repeatedly on those channels of support. In order to reduce repeating the same answers over and over and because common problems should have readily available solutions, we created the [Lagom Recipes](https://github.com/lagom/lagom-recipes) repository.
 
 ### Lagom Recipes
 
@@ -21,7 +21,7 @@ Every recipe may contain a README file detailing the what files would you need t
 The current list of recipes includes solutions for problems such as:
 
 * [How do I enable CORS](https://github.com/lagom/lagom-recipes/tree/master/cors)?
-* [How do I create a Subscriber only service](https://github.com/lagom/lagom-recipes/tree/master/consumer-service)? 
+* [How do I create a Subscriber only service](https://github.com/lagom/lagom-recipes/tree/master/consumer-service)?
 * [How do I use RDBMS read-sides with Cassandra write-sides](https://github.com/lagom/lagom-recipes/tree/master/mixed-persistence)?
 * [How do I create a stateless service in Lagom for Java that uses Play's Internationalization Support](https://github.com/lagom/lagom-recipes/tree/master/i18n)?
 * [How do I manipulate Headers and Status Codes and test those cases](https://github.com/lagom/lagom-recipes/tree/master/http-header-handling)?
