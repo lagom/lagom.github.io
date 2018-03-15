@@ -42,6 +42,13 @@
                     return displayValue(suggestion, level - 1) ;
                 }
             };
+            var displaySnippet = function (suggestion) {
+              if(typeof suggestion._snippetResult !== 'undefined'){
+                return '<div class="algolia-docsearch-suggestion--text">' + suggestion._snippetResult.content.value + '</div>'
+              } else {
+                return ''
+              }
+            }
 
             autocomplete('#cross-docs-search',
                     { hint: false },
@@ -69,7 +76,8 @@
                                     '</div>' +
                                     '<div class="algolia-docsearch-suggestion--content">' +
                                         '<div class="algolia-docsearch-suggestion--subcategory-inline ">' + displayValue(suggestion, 1) + '</div>' +
-                                        '<div class="algolia-docsearch-suggestion--title algolia-docsearch-suggestion--duplicate-content">' + displayValue(suggestion, 2)  +'</span></div>' +
+                                        '<div class="algolia-docsearch-suggestion--title algolia-docsearch-suggestion--duplicate-content">' + displayValue(suggestion, 2)  +'</div>' +
+                                        displaySnippet(suggestion) +
                                     '</div>' +
                                 '</div>'+
                               '</div>';
@@ -102,7 +110,8 @@
                                         '</div>' +
                                         '<div class="algolia-docsearch-suggestion--content">' +
                                         '<div class="algolia-docsearch-suggestion--subcategory-inline ">' + displayValue(suggestion, 1) + '</div>' +
-                                        '<div class="algolia-docsearch-suggestion--title algolia-docsearch-suggestion--duplicate-content">' + displayValue(suggestion, 2)  +'</span></div>' +
+                                        '<div class="algolia-docsearch-suggestion--title algolia-docsearch-suggestion--duplicate-content">' + displayValue(suggestion, 2)  +'</div>' +
+                                        displaySnippet(suggestion) +
                                         '</div>' +
                                         '</div>' +
                                         '</div>' +
