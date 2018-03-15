@@ -12,26 +12,16 @@
     @for(css <- context.resources.stylesheets) {<link rel="stylesheet" type="text/css" href="@css"/>
     }
 } { @* Footer *@
-    <script type="text/javascript" src="//cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script>
-    <script type="text/javascript"> docsearch({
-        apiKey: "77ef1e29e6bddfca861f7a42cc51725e",
-        indexName: "lagomframework",
-        inputSelector: "#docs-search",
-        algoliaOptions: {
-            facetFilters: ["version:@version", "language:@language"]
-        }
-    });
-    </script>
-
     <script type="text/javascript" src="//cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
     <script type="text/javascript" src="//cdn.jsdelivr.net/autocomplete.js/0/autocomplete.min.js"></script>
         <!-- Cross-site search. This is using Algolia's autocomplete.js  -->
     <script>
             var clientLagom = algoliasearch('BH4D9OD16A', '77ef1e29e6bddfca861f7a42cc51725e');
-            var clientAkka = algoliasearch('BH4D9OD16A', '543bad5ad786495d9ccd445ed34ed082');
+            var clientAkka  = algoliasearch('BH4D9OD16A', '543bad5ad786495d9ccd445ed34ed082');
+            var clientPlay  = algoliasearch('BH4D9OD16A', 'a0b34e68c804cf96e76adcb02d47159b');
             var lagomIndex = clientLagom.initIndex('lagomframework');
-            var akkaIndex = clientAkka.initIndex('akka_io');
-            //initialize autocomplete on search input (ID selector must match)
+            var akkaIndex  = clientAkka.initIndex('akka_io');
+            var playIndex  = clientPlay.initIndex('playframework');
 
             var displayValue = function (suggestion, level) {
                 if (level === 0)
@@ -57,19 +47,15 @@
                     {
                         source: autocomplete.sources.hits(lagomIndex,
                                 {
-                                    hitsPerPage: 4,
+                                    hitsPerPage: 5,
                                     facetFilters: [
                                         'language:scala', // TODO: parameterize
                                         'version:current' ]
                                 }),
-                        //value to be displayed in input control after user's suggestion selection
-                        // displayKey: 'lvl0',
-                        //hash of templates used when rendering dataset
                         templates: {
                             header: '<span class="algolia-docsearch-suggestion algolia-docsearch-suggestion__main algolia-docsearch-suggestion__secondary algolia-docsearch-suggestion--category-header ">Lagom Documentation</span>',
-                            //'suggestion' templating function used to render a single suggestion
                             suggestion: function(suggestion) {
-                                return  '        <div class="algolia-docsearch-suggestion algolia-docsearch-suggestion__secondary" style="white-space: normal;">' +
+                                return  '<div class="algolia-docsearch-suggestion algolia-docsearch-suggestion__secondary" style="white-space: normal;">' +
                                  '<div class="algolia-docsearch-suggestion--wrapper">' +
                                     '<div class="algolia-docsearch-suggestion--subcategory-column ">' +
                                         '<span class="algolia-docsearch-suggestion--subcategory-column-text">' + displayValue(suggestion, 0) + '</span>' +
@@ -89,20 +75,46 @@
                     {
                         source: autocomplete.sources.hits(akkaIndex,
                                 {
-                                    hitsPerPage: 4,
+                                    hitsPerPage: 2,
                                     facetFilters: ['language:scala'] // TODO: parameterize
                                     // akka_io only indexes 'current'
                                 }),
-                        //value to be displayed in input control after user's suggestion selection
-                        // displayKey: 'lvl0',
-                        //hash of templates used when rendering dataset
                         templates: {
-                            // last item on the list must include the algolia footer
-                            footer: '<div class="algolia-docsearch-footer"><a class="algolia-docsearch-footer--logo" href="https://www.algolia.com/docsearch">Algolia</a></div>',
                             header: '<span class="akka"><span class="algolia-docsearch-suggestion algolia-docsearch-suggestion--category-header ">Akka Documentation</span></span>',
                             //'suggestion' templating function used to render a single suggestion
                             suggestion: function(suggestion) {
                                 return '<span class="akka">'+
+                                '<div class="algolia-docsearch-suggestion algolia-docsearch-suggestion__secondary" style="white-space: normal;">' +
+                                        '<div class="algolia-docsearch-suggestion--wrapper">' +
+                                        '<div class="algolia-docsearch-suggestion--subcategory-column ">' +
+                                        '<span class="algolia-docsearch-suggestion--subcategory-column-text">' + displayValue(suggestion, 0) + '</span>' +
+                                        '</div>' +
+                                        '<div class="algolia-docsearch-suggestion--content">' +
+                                        '<div class="algolia-docsearch-suggestion--subcategory-inline ">' + displayValue(suggestion, 1) + '</div>' +
+                                        '<div class="algolia-docsearch-suggestion--title algolia-docsearch-suggestion--duplicate-content">' + displayValue(suggestion, 2)  +'</div>' +
+                                        displaySnippet(suggestion) +
+                                        '</div>' +
+                                        '</div>' +
+                                        '</div>' +
+                                        '</span>';
+                            }
+                        }
+                    }
+                    ,
+                    // configure Play's index
+                    {
+                        source: autocomplete.sources.hits(playIndex,
+                                {
+                                    hitsPerPage: 2,
+                                    facetFilters: ['version:2.6.x', 'tags:en']
+                                }),
+                        templates: {
+                            // last item on the list must include the algolia footer
+                            footer: '<div class="algolia-docsearch-footer"><a class="algolia-docsearch-footer--logo" href="https://www.algolia.com/docsearch">Algolia</a></div>',
+                            header: '<span class="play"><span class="algolia-docsearch-suggestion algolia-docsearch-suggestion--category-header ">Play Documentation</span></span>',
+                            //'suggestion' templating function used to render a single suggestion
+                            suggestion: function(suggestion) {
+                                return '<span class="play">'+
                                 '<div class="algolia-docsearch-suggestion algolia-docsearch-suggestion__secondary" style="white-space: normal;">' +
                                         '<div class="algolia-docsearch-suggestion--wrapper">' +
                                         '<div class="algolia-docsearch-suggestion--subcategory-column ">' +
@@ -181,9 +193,7 @@
             <aside class="small-12 large-4 columns">
                 <nav class="side-menu">
 
-                    <input type="search" id="cross-docs-search" placeholder="Search other projects..." />
-
-                    <input type="text" id="docs-search" placeholder="Search"/>
+                    <input type="search" id="cross-docs-search" placeholder="Search..." />
 
                     <label for="docs-version">Version:</label>
                     <select id="docs-version">
