@@ -40,97 +40,59 @@
               }
             }
 
+            var wrap = function(content, wrapper){
+              if(typeof wrapper !== 'undefined'){
+                return '<span class='+wrapper+'>' + content + '</span>';
+              } else {
+                return content;
+              }
+            }
+
+            var buildIndexSettings = function(_indexObj, _hitsPerPage, _faceFilters, title, useFooter, wrapper) {
+              var _header = wrap('<span class="algolia-docsearch-suggestion algolia-docsearch-suggestion__main algolia-docsearch-suggestion__secondary algolia-docsearch-suggestion--category-header ">'+title+'</span>', wrapper);
+              var _templates =  {
+                                    header: _header,
+                                    suggestion: function(suggestion) {
+                                        var suggestionHtml = '<div class="algolia-docsearch-suggestion algolia-docsearch-suggestion__secondary" style="white-space: normal;">' +
+                                         '<div class="algolia-docsearch-suggestion--wrapper">' +
+                                            '<div class="algolia-docsearch-suggestion--subcategory-column ">' +
+                                                '<span class="algolia-docsearch-suggestion--subcategory-column-text">' + displayValue(suggestion, 0) + '</span>' +
+                                            '</div>' +
+                                            '<div class="algolia-docsearch-suggestion--content">' +
+                                                '<div class="algolia-docsearch-suggestion--subcategory-inline ">' + displayValue(suggestion, 1) + '</div>' +
+                                                '<div class="algolia-docsearch-suggestion--title algolia-docsearch-suggestion--duplicate-content">' + displayValue(suggestion, 2)  +'</div>' +
+                                                displaySnippet(suggestion) +
+                                            '</div>' +
+                                        '</div>'+
+                                      '</div>';
+                                      return wrap(suggestionHtml, wrapper)
+                                    }
+                                };
+              if(useFooter){
+                _templates['footer'] = '<div class="algolia-docsearch-footer"><a class="algolia-docsearch-footer--logo" href="https://www.algolia.com/docsearch">Algolia</a></div>';
+              }
+
+              return {
+                  source: autocomplete.sources.hits(
+                    _indexObj,
+                    {hitsPerPage: _hitsPerPage, facetFilters: _faceFilters }
+                  )
+                  ,
+                  templates: _templates
+              };
+
+            }
+
             autocomplete('#cross-docs-search',
                     { hint: false },
                     [
-                    // configure Lagom's index
-                    {
-                        source: autocomplete.sources.hits(lagomIndex,
-                                {
-                                    hitsPerPage: 5,
-                                    facetFilters: [
-                                        'language:scala', // TODO: parameterize
-                                        'version:current' ]
-                                }),
-                        templates: {
-                            header: '<span class="algolia-docsearch-suggestion algolia-docsearch-suggestion__main algolia-docsearch-suggestion__secondary algolia-docsearch-suggestion--category-header ">Lagom Documentation</span>',
-                            suggestion: function(suggestion) {
-                                return  '<div class="algolia-docsearch-suggestion algolia-docsearch-suggestion__secondary" style="white-space: normal;">' +
-                                 '<div class="algolia-docsearch-suggestion--wrapper">' +
-                                    '<div class="algolia-docsearch-suggestion--subcategory-column ">' +
-                                        '<span class="algolia-docsearch-suggestion--subcategory-column-text">' + displayValue(suggestion, 0) + '</span>' +
-                                    '</div>' +
-                                    '<div class="algolia-docsearch-suggestion--content">' +
-                                        '<div class="algolia-docsearch-suggestion--subcategory-inline ">' + displayValue(suggestion, 1) + '</div>' +
-                                        '<div class="algolia-docsearch-suggestion--title algolia-docsearch-suggestion--duplicate-content">' + displayValue(suggestion, 2)  +'</div>' +
-                                        displaySnippet(suggestion) +
-                                    '</div>' +
-                                '</div>'+
-                              '</div>';
-                            }
-                        }
-                    }
-                    ,
-                    // configure Akka's index
-                    {
-                        source: autocomplete.sources.hits(akkaIndex,
-                                {
-                                    hitsPerPage: 2,
-                                    facetFilters: ['language:scala'] // TODO: parameterize
-                                    // akka_io only indexes 'current'
-                                }),
-                        templates: {
-                            header: '<span class="akka"><span class="algolia-docsearch-suggestion algolia-docsearch-suggestion--category-header ">Akka Documentation</span></span>',
-                            //'suggestion' templating function used to render a single suggestion
-                            suggestion: function(suggestion) {
-                                return '<span class="akka">'+
-                                '<div class="algolia-docsearch-suggestion algolia-docsearch-suggestion__secondary" style="white-space: normal;">' +
-                                        '<div class="algolia-docsearch-suggestion--wrapper">' +
-                                        '<div class="algolia-docsearch-suggestion--subcategory-column ">' +
-                                        '<span class="algolia-docsearch-suggestion--subcategory-column-text">' + displayValue(suggestion, 0) + '</span>' +
-                                        '</div>' +
-                                        '<div class="algolia-docsearch-suggestion--content">' +
-                                        '<div class="algolia-docsearch-suggestion--subcategory-inline ">' + displayValue(suggestion, 1) + '</div>' +
-                                        '<div class="algolia-docsearch-suggestion--title algolia-docsearch-suggestion--duplicate-content">' + displayValue(suggestion, 2)  +'</div>' +
-                                        displaySnippet(suggestion) +
-                                        '</div>' +
-                                        '</div>' +
-                                        '</div>' +
-                                        '</span>';
-                            }
-                        }
-                    }
-                    ,
-                    // configure Play's index
-                    {
-                        source: autocomplete.sources.hits(playIndex,
-                                {
-                                    hitsPerPage: 2,
-                                    facetFilters: ['version:2.6.x', 'tags:en']
-                                }),
-                        templates: {
-                            // last item on the list must include the algolia footer
-                            footer: '<div class="algolia-docsearch-footer"><a class="algolia-docsearch-footer--logo" href="https://www.algolia.com/docsearch">Algolia</a></div>',
-                            header: '<span class="play"><span class="algolia-docsearch-suggestion algolia-docsearch-suggestion--category-header ">Play Documentation</span></span>',
-                            //'suggestion' templating function used to render a single suggestion
-                            suggestion: function(suggestion) {
-                                return '<span class="play">'+
-                                '<div class="algolia-docsearch-suggestion algolia-docsearch-suggestion__secondary" style="white-space: normal;">' +
-                                        '<div class="algolia-docsearch-suggestion--wrapper">' +
-                                        '<div class="algolia-docsearch-suggestion--subcategory-column ">' +
-                                        '<span class="algolia-docsearch-suggestion--subcategory-column-text">' + displayValue(suggestion, 0) + '</span>' +
-                                        '</div>' +
-                                        '<div class="algolia-docsearch-suggestion--content">' +
-                                        '<div class="algolia-docsearch-suggestion--subcategory-inline ">' + displayValue(suggestion, 1) + '</div>' +
-                                        '<div class="algolia-docsearch-suggestion--title algolia-docsearch-suggestion--duplicate-content">' + displayValue(suggestion, 2)  +'</div>' +
-                                        displaySnippet(suggestion) +
-                                        '</div>' +
-                                        '</div>' +
-                                        '</div>' +
-                                        '</span>';
-                            }
-                        }
-                    }
+                      // TODO: parameterize language depending on current page
+                      buildIndexSettings(lagomIndex, 5, [ 'language:scala', 'version:current' ], "Lagom Documentation", false)
+                      ,
+                      // TODO: parameterize language depending on current page
+                      buildIndexSettings(akkaIndex, 2, [ 'language:scala' ], "Akka Documentation", false, "akka")
+                      ,
+                      buildIndexSettings(playIndex, 2, ['version:2.6.x', 'tags:en'], "Play Documentation", true, "play")
                     ]
                     ).on('autocomplete:selected', function(event, suggestion, dataset) {
                               location.href = suggestion.url;
