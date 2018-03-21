@@ -5,6 +5,7 @@
 
 *Released 22 March 2018*
 
+* [1278](https://github.com/lagom/lagom/issues/1278) enabled timeout when fetch read-side offset (Renato Cavalcanti)
 * [1277](https://github.com/lagom/lagom/issues/1277) Adds Kafka message timestamps to Metadata (Ignasi Marimon-Clos)
 * [1275](https://github.com/lagom/lagom/issues/1275) Document required behaviour of flow to message broker subscriber (Jason Pickens)
 * [1265](https://github.com/lagom/lagom/issues/1265) Build Maven plugin and support for Scala 2.12 only (Tim Moore)

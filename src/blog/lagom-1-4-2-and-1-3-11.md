@@ -24,12 +24,15 @@ This release provides a several bug fixes and improvements. As an overview, this
 
 This release is the last including backports of general bugfixes and the `1.3.x` family may only get critical bugfixes backported onwards. If you are still using Lagom 1.3.x, we recommend you upgraded to latest versions of Lagom.
 
+See GitHub for the [full list of commits](https://github.com/lagom/lagom/compare/1.3.10...1.3.11) and the issues and pull requests assigned to the [1.4.2 milestone](https://github.com/lagom/lagom/milestone/24?closed=1).
+
 ## Lagom 1.4.2
 
 This release provides a few bug fixes and minor improvements over what 1.3.11 provides already (see the summary above). As an overview, this release contains the following:
 
 - Adds the message timestamp on the Kafka Message when using [metadata-rich subscriptions](https://www.lagomframework.com/documentation/1.4.x/scala/MessageBrokerApi.html#Consuming-message-metadata).  ([#1277](https://github.com/lagom/lagom/issues/1277))
 - Fixes a bug preventing conflicts between persistence backends when writing tests with mixed persistence (applies only to java API). ( [#1263](https://github.com/lagom/lagom/issues/1263))
+- Added a timeout on the offset polling when starting a read-side to prevent a potential read-side block in certain failure scenarios. [#1278](https://github.com/lagom/lagom/issues/1278)
 
 See GitHub for the [full list of commits](https://github.com/lagom/lagom/compare/1.4.1...1.4.2) and the issues and pull requests assigned to the [1.4.2 milestone](https://github.com/lagom/lagom/milestone/28?closed=1).
 
@@ -63,5 +66,6 @@ Special thanks to the following contributors who helped with the release 1.4.2:
 commits  added  removed
       9     291      56 Ignasi Marimon-Clos
       6     176     139 Tim Moore
+      1      23       5 Renato Cavalcanti
       1      12       0 Jason Pickens
 ```
