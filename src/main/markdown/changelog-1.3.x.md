@@ -4,7 +4,7 @@
 
 *Released 22 March 2018*
 
-* [1277](https://github.com/lagom/lagom/issues/1277) Move akka.test.single-expect-default setting (Tim Moore)
+* [1272](https://github.com/lagom/lagom/issues/1272) Move akka.test.single-expect-default setting (Tim Moore)
 * [1266](https://github.com/lagom/lagom/issues/1266) Sync error descriptions between Java and Scala (Ignasi Marimon-Clos)
 * [1261](https://github.com/lagom/lagom/issues/1261) Update name & link for commercial monitoring product (Brent Eritou)
 * [1256](https://github.com/lagom/lagom/issues/1256) Removes wrong prefix in config loading (Ignasi Marimon-Clos)
