@@ -70,4 +70,4 @@ See [Storing Persistent Entities in Cassandra](https://www.lagomframework.com/do
 
 ## Change log
 
-See the [change log](/changelog.html) for more details on exactly what has been fixed in each release.
+See the [change log](/changelog-1.3.x.html) for more details on exactly what has been fixed in each release.

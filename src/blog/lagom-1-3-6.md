@@ -7,7 +7,7 @@ summary: >
     The Lagom team has released Lagom 1.3.6
 ---
 
-The Lagom team has released Lagom 1.3.6. For a list of the specific changes in Lagom 1.3.6, see the [change log](/changelog.html).
+The Lagom team has released Lagom 1.3.6. For a list of the specific changes in Lagom 1.3.6, see the [change log](/changelog-1.3.x.html).
 
 As an overview, this release contains the following:
 

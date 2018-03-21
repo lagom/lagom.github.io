@@ -17,4 +17,4 @@ To update a Maven project, change the `lagom.version` property in your top-level
 
 ## Change log
 
-See the [change log](/changelog.html) for more details on exactly what has been fixed in each release.
+See the [change log](/changelog-1.3.x.html) for more details on exactly what has been fixed in each release.
