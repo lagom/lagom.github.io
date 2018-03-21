@@ -40,11 +40,28 @@ Thanks to the community for their detailed bug reports and contributions.
 
 Thanks to [Lightbend](https://www.lightbend.com) for their continued sponsorship of the Lagom core team's efforts. Lightbend offers [commercial support](https://www.lightbend.com/subscription) for Lagom.
 
-Special thanks to the following contributors who helped with this release:
+
+Special thanks to the following contributors who helped with the release 1.3.11:
 
 ```
 commits  added  removed
-      6     87       60  Tim Moore
-      3     54      123  Renato Cavalcanti
-      1     31        7  Lutz Huehnken
+    9     117      68 Tim Moore
+    6     254      35 Ignasi Marimon-Clos
+    6     668     605 Renato Cavalcanti
+    2       6       6 Sarun Rattanasiri
+    1       1       1 Bruno Unna
+    1      11      76 Ruth Stento
+    1      31       7 Lutz Huehnken
+    1      19       0 Edmondo Porcu
+    1      59       5 Neelaksh
+    1       1       1 Brent Eritou
+```
+
+Special thanks to the following contributors who helped with the release 1.4.2:
+
+```
+commits  added  removed
+      9     291      56 Ignasi Marimon-Clos
+      6     176     139 Tim Moore
+      1      12       0 Jason Pickens
 ```
