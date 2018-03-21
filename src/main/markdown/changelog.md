@@ -12,7 +12,6 @@
 * [1259](https://github.com/lagom/lagom/issues/1259) Adds more akka-misc serializers on the Migration guides and Mvn archetype (Ignasi Marimon-Clos)
 * [1258](https://github.com/lagom/lagom/issues/1258) Remove unnecessary workarounds in ServiceTestSpec (Tim Moore)
 * [1257](https://github.com/lagom/lagom/issues/1257) Applies suggested solution: use Seq(EmptyTree) for empty traits (Ignasi Marimon-Clos)
-* [1247](https://github.com/lagom/lagom/issues/1247) Fixes default exception deserialization (Ignasi Marimon-Clos)
 * [1246](https://github.com/lagom/lagom/issues/1246) Removes docs wrt the metrics service and its endpoints (Ignasi Marimon-Clos)
 
 ## Lagom 1.4.1
