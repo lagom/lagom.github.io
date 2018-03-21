@@ -24,12 +24,12 @@ object DocumentationGenerator extends App {
    */
   // Current documentation version
   val currentDocsVersion = "1.4.x"
-  val currentLagomVersion = "1.4.1"
+  val currentLagomVersion = "1.4.2"
 
   // This impacts what gets displayed on the main documentation index.
   val stableVersions = Seq(
     VersionSummary("1.4.x", s"Lagom $currentLagomVersion (current stable release)"),
-    VersionSummary("1.3.x", s"Lagom 1.3.10 (previous stable release)")
+    VersionSummary("1.3.x", s"Lagom 1.3.12 (previous stable release)")
   )
 
   val previewVersions = Seq.empty[VersionSummary]
