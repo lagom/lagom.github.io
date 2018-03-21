@@ -1,5 +1,35 @@
 # Lagom 1.3.x Change Log
 
+## Lagom 1.3.11
+
+*Released 22 March 2018*
+
+* [1272](https://github.com/lagom/lagom/issues/1272) Move akka.test.single-expect-default setting (Tim Moore)
+* [1266](https://github.com/lagom/lagom/issues/1266) Sync error descriptions between Java and Scala (Ignasi Marimon-Clos)
+* [1261](https://github.com/lagom/lagom/issues/1261) Update name & link for commercial monitoring product (Brent Eritou)
+* [1256](https://github.com/lagom/lagom/issues/1256) Removes wrong prefix in config loading (Ignasi Marimon-Clos)
+* [1254](https://github.com/lagom/lagom/issues/1254) Fixes maven plugin types (Ignasi Marimon-Clos)
+* [1247](https://github.com/lagom/lagom/issues/1247) Fixes default exception deserialization (Ignasi Marimon-Clos)
+* [1253](https://github.com/lagom/lagom/issues/1253) Update mailing list links to the new forum (Tim Moore)
+* [1252](https://github.com/lagom/lagom/issues/1252) Adds UUID PathParamSerializer to list of detauls in javadsl (Ignasi Marimon-Clos)
+* [1235](https://github.com/lagom/lagom/issues/1235) Wrong description for MaxMetaspaceSize (Bruno Unna)
+* [1224](https://github.com/lagom/lagom/issues/1224) Remove sbt-git plugin (Tim Moore)
+* [1210](https://github.com/lagom/lagom/issues/1210) Prevent SaveSnapshotSuccess from showing up in unhandled messages (Lutz Huehnken)
+* [1197](https://github.com/lagom/lagom/issues/1197) Update Scala to 2.11.12 (Renato Cavalcanti)
+* [1190](https://github.com/lagom/lagom/issues/1190) Update Whitesource project (Tim Moore)
+* [1177](https://github.com/lagom/lagom/issues/1177) Move authors.pl and changelog.sh scripts to bin (Tim Moore)
+* [1167](https://github.com/lagom/lagom/issues/1167) Fix a broken link in the Production overview document (Renato Cavalcanti)
+* [1172](https://github.com/lagom/lagom/issues/1172) Update copyright to 2018 (Renato Cavalcanti)
+* [1174](https://github.com/lagom/lagom/issues/1174) Copy the authors.pl script from Akka (Renato Cavalcanti)
+* [1159](https://github.com/lagom/lagom/issues/1159) Update Bonér's report links (Sarun Rattanasiri)
+* [1157](https://github.com/lagom/lagom/issues/1157) fix the message broker api link (Sarun Rattanasiri)
+* [1141](https://github.com/lagom/lagom/issues/1141) Clarify sbt instructions for running a single service (Renato Cavalcanti)
+* [1128](https://github.com/lagom/lagom/issues/1128) fixes formatting (Renato Cavalcanti)
+* [1112](https://github.com/lagom/lagom/issues/1112) Added a check to warn about slow startup problems (Edmondo Porcu)
+* [1103](https://github.com/lagom/lagom/issues/1103) Remove ConductR from the overview docs (Ruth Stento)
+* [1100](https://github.com/lagom/lagom/issues/1100) Break inheritance between Read/Write sides on scaladsl JDBC persistence (Ignasi Marimon-Clos)
+* [1093](https://github.com/lagom/lagom/issues/1093) Improves error messages in path param serializer resolution (Neelaksh)
+
 ## Lagom 1.3.10
 
 *Released 1 November 2017*
