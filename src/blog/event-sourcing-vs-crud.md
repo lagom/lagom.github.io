@@ -19,5 +19,5 @@ A few months ago I had the chance to speak about this topic at the Reactive Summ
 
 
 <div id="meet-lagom" class="flex-video widescreen">
-  <iframe width="560" height="315" src="//www.youtube.com/embed/d1jT0UOVx9U" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe>
+  <iframe width="560" height="315" src="//www.youtube.com/embed/holjbuSbv3k" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe>
 </div>
