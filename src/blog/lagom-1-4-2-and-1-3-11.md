@@ -7,11 +7,11 @@ summary: >
     The Lagom team has released Lagom 1.4.2 and 1.3.11.
 ---
 
-The Lagom team has released the versions 1.4.2 and 1.3.11. For a list of the specific changes in Lagom 1.4.2, see the [change log](/changelog.html), and for a lost of changes on Lagom 1.3.11 see the [change log (1.3.x)](/changelog-1.3.x.html).
+The Lagom team has released the versions 1.4.2 and 1.3.11. For a list of the specific changes in Lagom 1.4.2, see the [change log](/changelog.html), and for a list of changes on Lagom 1.3.11 see the [change log (1.3.x)](/changelog-1.3.x.html).
 
 ## Lagom 1.3.11
 
-This release provides a several bug fixes and improvements. As an overview, this release contains the following:
+This release provides several bug fixes and improvements. As an overview, this release contains the following:
 
 - Fixes a bug in loading settings from the `LagomClientFactory`. Special thanks to [two10](/two10) for the detailed report and bugfix suggestion. ([#1256](https://github.com/lagom/lagom/pull/1256))
 - Adds out-of-the-box support for UUID's on the Path Params on your `Service.Descriptors`. ([#1252](https://github.com/lagom/lagom/issues/1252))
