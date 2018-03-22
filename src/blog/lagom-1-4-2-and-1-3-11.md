@@ -24,7 +24,7 @@ This release provides a several bug fixes and improvements. As an overview, this
 
 This release is the last including backports of general bugfixes and the `1.3.x` family may only get critical bugfixes backported onwards. If you are still using Lagom 1.3.x, we recommend you upgraded to latest versions of Lagom.
 
-See GitHub for the [full list of commits](https://github.com/lagom/lagom/compare/1.3.10...1.3.11) and the issues and pull requests assigned to the [1.4.2 milestone](https://github.com/lagom/lagom/milestone/24?closed=1).
+See GitHub for the [full list of commits](https://github.com/lagom/lagom/compare/1.3.10...1.3.11) and the issues and pull requests assigned to the [1.3.11 milestone](https://github.com/lagom/lagom/milestone/24?closed=1).
 
 ## Lagom 1.4.2
 
