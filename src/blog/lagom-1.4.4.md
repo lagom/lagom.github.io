@@ -1,6 +1,6 @@
 ---
 title: Lagom 1.4.4 released!
-date: 2018-03-27
+date: 2018-03-28
 author_github: renatocaval
 tags: news
 summary: >
