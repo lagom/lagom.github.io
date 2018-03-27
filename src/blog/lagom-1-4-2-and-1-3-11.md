@@ -13,7 +13,7 @@ The Lagom team has released the versions 1.4.2 and 1.3.11. For a list of the spe
 
 This release provides several bug fixes and improvements. As an overview, this release contains the following:
 
-- Fixes a bug in loading settings from the `LagomClientFactory`. Special thanks to [two10](/two10) for the detailed report and bugfix suggestion. ([#1256](https://github.com/lagom/lagom/pull/1256))
+- Fixes a bug in loading settings from the `LagomClientFactory`. Special thanks to [two10](https://github.com/two10) for the detailed report and bugfix suggestion. ([#1256](https://github.com/lagom/lagom/pull/1256))
 - Adds out-of-the-box support for UUID's on the Path Params on your `Service.Descriptors`. ([#1252](https://github.com/lagom/lagom/issues/1252))
 - Fixes Exception deserialization for `BadRequest`. ([#1247](https://github.com/lagom/lagom/issues/1247))
 - Update to Scala 2.11.12. ([#1197](https://github.com/lagom/lagom/issues/1197))
