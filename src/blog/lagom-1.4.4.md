@@ -1,13 +1,13 @@
 ---
-title: Lagom 1.4.3 released!
+title: Lagom 1.4.4 released!
 date: 2018-03-27
 author_github: renatocaval
 tags: news
 summary: >
-    The Lagom team has released Lagom 1.4.3
+    The Lagom team has released Lagom 1.4.4
 ---
 
-The Lagom team has released Lagom 1.4.3. 
+The Lagom team has released Lagom 1.4.4. 
 
 This release provides a fix for [#1250](https://github.com/lagom/lagom/issues/1250). 
 
@@ -41,10 +41,10 @@ db.default {
 
 If you haven't changed the settings for your `async-executor`, you have nothing to do. However, if you have configured your `aync-executor` with other values, you should review it and make sure that `maxThreads == maxConnections`.
 
-See GitHub for the [full list of commits](https://github.com/lagom/lagom/compare/1.4.2...1.4.3) and the issues and pull requests assigned to the [1.4.3 milestone](https://github.com/lagom/lagom/milestone/27?closed=1).
+See GitHub for the [full list of commits](https://github.com/lagom/lagom/compare/1.4.2...1.4.4) and the issues and pull requests assigned to the [1.4.4 milestone](https://github.com/lagom/lagom/milestone/29?closed=1).
 
 
-## Updating a Lagom project to version 1.4.3
+## Updating a Lagom project to version 1.4.4
 
 To update an sbt project, change the version of `lagom-sbt-plugin` in your `project/plugins.sbt` file.
 
