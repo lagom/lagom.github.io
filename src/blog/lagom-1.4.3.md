@@ -9,7 +9,7 @@ summary: >
 
 The Lagom team has released Lagom 1.4.3. 
 
-This release provides fix for [#1250](https://github.com/lagom/lagom/issues/1250). 
+This release provides a fix for [#1250](https://github.com/lagom/lagom/issues/1250). 
 
 [#1250](https://github.com/lagom/lagom/issues/1250) only affects Lagom projects making usage of JDBC persistence layer, being it for the journal and/or for read-side tables. 
 
