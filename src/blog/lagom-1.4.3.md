@@ -17,7 +17,7 @@ This release upgrades the versions of the underlying Slick library to `3.2.3` an
 
 ## Slick 3.2.3 special note
 
-Since Slick 3.2.2, the `maxConnections` must equal `numThreads`. This is to prevent some situations where a deadlock could occur. A warning will be emitted in case `maxConnections > numThreads` and a runtime exception will be thrown if `maxConnections < numThreads`. Therefore the best possible configuration is `maxConnections == numThreads`. See https://github.com/slick/slick/pull/1855 for detailed information.
+Since Slick 3.2.2, the `maxConnections` must equal `numThreads`. This is to prevent some situations where a deadlock could occur. A warning will be emitted in case `maxConnections > numThreads` and a runtime exception will be thrown if `maxConnections < numThreads`. Therefore the best possible configuration is `maxConnections == numThreads`. See [slick/slick#1855](https://github.com/slick/slick/pull/1855) for detailed information.
 
 These values are configured by Lagom automatically under the configuration key `db.default.async-executor`.
 
