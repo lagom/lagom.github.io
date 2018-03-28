@@ -8,6 +8,7 @@ summary: >
 ---
 
 The Lagom team has released Lagom 1.4.4. 
+(we are skipping 1.4.3 due to a small mistake in the release process)
 
 This release provides a fix for [#1250](https://github.com/lagom/lagom/issues/1250). 
 
