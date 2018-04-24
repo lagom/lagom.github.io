@@ -15,6 +15,22 @@
         <meta name="viewport" content="width=device-width,maximum-scale=1"/>
         <link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" href="@context.path/@context.assetFingerPrint-all-styles-concat.css" type="text/css">
+        <!-- OneTrust Cookies Consent Notice (Production Standard, lagomframework.com, en-GB) start -->
+        <script src="https://optanon.blob.core.windows.net/consent/1ee3f0d6-9ed5-4b9e-bed7-ce6faaeaca5d.js" type="text/javascript" charset="UTF-8"></script>
+        <script type="text/javascript">
+            function OptanonWrapper() { 
+                (function($) {
+                    $(function() {
+                        //find each YT embed and only load if cookies have been approved
+                        $( ".yt-widget" ).each(function( index ) {
+                            var ytID = $(this).attr("id").slice(3);
+                            Optanon.InsertHtml('<iframe id="player" class="youtube-embed-player" src="//www.youtube.com/embed/'+ytID+'?rel=0&amp;autohide=1&amp;modestbranding=0&amp;showinfo=1" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe>', 'yt-'+ytID, null, {deleteSelectorContent: true}, 4);
+                        });
+                    });
+                })(jQuery);
+            }
+        </script>
+        <!-- OneTrust Cookies Consent Notice (Production Standard, lagomframework.com, en-GB) end -->
         @header
     </head>
     <body>
@@ -138,6 +154,18 @@
                                     <p>Lagom is released under the Apache 2 License</p>
                                 </div>
                             </div>
+                            <div class="row lb-legal">
+                                <div class="small-12 columns">
+                                    <p>
+                                        &copy; Lightbend 2018 | 
+                                        <a href="https://www.lightbend.com/legal/licenses" target="_blank">Licenses</a> | 
+                                        <a href="https://www.lightbend.com/legal/terms" target="_blank">Terms</a> | 
+                                        <a href="https://www.lightbend.com/legal/privacy" target="_blank">Privacy Policy</a> | 
+                                        <a href="@context.path/cookie.html">Cookie Listing</a> | 
+                                        <a class="optanon-toggle-display">Cookie Settings</a>
+                                    </p>
+                                </div>
+                            </div>
                         </section>
 
                     </footer>
@@ -149,7 +177,7 @@
     <script src="@context.path/@context.assetFingerPrint-all-scripts-concat.js"></script>
     @* Footer needs to be before GA, so that page experiments load first which ensure that GA can track them *@
     @footer
-    <script>
+    <script type="text/plain" class="optanon-category-2">
   		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)

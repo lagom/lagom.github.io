@@ -82,7 +82,8 @@ object DocumentationGenerator extends App {
     "get-started-java-sbt.html" -> html.getstartedjavasbt,
     "get-started-java-maven.html" -> html.getstartedjavamaven,
     "get-started-scala.html" -> html.getstartedscala,
-    "support.html" -> html.support
+    "support.html" -> html.support,
+    "cookie.html" -> html.cookiePolicy
   )
 
   // Redirects

@@ -6,8 +6,8 @@
 @main(Some(blogPost.title)){ @* head *@
     <link href="@context.path/blog/atom.xml" type="application/atom+xml" rel="home" title="ATOM Feed" />
 } { @* footer *@
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-57a0eb1ac33f75f8"></script>
-    <script>
+    <script type="text/plain" class="optanon-category-4" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-57a0eb1ac33f75f8"></script>
+    <script type="text/plain" class="optanon-category-4">
         var disqus_config = function () {
             this.page.url = "@{context.baseUrl}/blog/@{blogPost.id}.html";
             this.page.identifier = "@blogPost.id";
@@ -61,7 +61,7 @@
                 <br/>
 
                 <h2>Discuss</h2>
-                <div id="disqus_thread"></div>
+                <div id="disqus_thread">@cookieWarning()</div>
                 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 
             </div>
