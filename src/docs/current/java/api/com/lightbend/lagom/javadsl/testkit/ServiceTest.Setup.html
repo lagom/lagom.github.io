@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":38,"i7":38};
+var methods = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":38,"i10":6,"i11":6,"i12":38};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"],32:["t6","Deprecated Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -147,18 +147,36 @@ var activeTableTab = "activeTableTab";
 </td>
 </tr>
 <tr id="i4" class="altColor">
+<td class="colFirst"><code>boolean</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/lightbend/lagom/javadsl/testkit/ServiceTest.Setup.html#jdbc--">jdbc</a></span>()</code>
+<div class="block">Whether JDBC is enabled.</div>
+</td>
+</tr>
+<tr id="i5" class="rowColor">
+<td class="colFirst"><code><a href="../../../../../com/lightbend/lagom/javadsl/testkit/ServiceTest.Setup.html" title="interface in com.lightbend.lagom.javadsl.testkit">ServiceTest.Setup</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/lightbend/lagom/javadsl/testkit/ServiceTest.Setup.html#withCassandra--">withCassandra</a></span>()</code>
+<div class="block">Enable Cassandra.</div>
+</td>
+</tr>
+<tr id="i6" class="altColor">
 <td class="colFirst"><code><a href="../../../../../com/lightbend/lagom/javadsl/testkit/ServiceTest.Setup.html" title="interface in com.lightbend.lagom.javadsl.testkit">ServiceTest.Setup</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/lightbend/lagom/javadsl/testkit/ServiceTest.Setup.html#withCassandra-boolean-">withCassandra</a></span>(boolean&nbsp;enabled)</code>
 <div class="block">Enable or disable Cassandra.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../com/lightbend/lagom/javadsl/testkit/ServiceTest.Setup.html" title="interface in com.lightbend.lagom.javadsl.testkit">ServiceTest.Setup</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/lightbend/lagom/javadsl/testkit/ServiceTest.Setup.html#withCluster-boolean-">withCluster</a></span>(boolean&nbsp;enabled)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/lightbend/lagom/javadsl/testkit/ServiceTest.Setup.html#withCluster--">withCluster</a></span>()</code>
 <div class="block">Enable clustering.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i8" class="altColor">
+<td class="colFirst"><code><a href="../../../../../com/lightbend/lagom/javadsl/testkit/ServiceTest.Setup.html" title="interface in com.lightbend.lagom.javadsl.testkit">ServiceTest.Setup</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/lightbend/lagom/javadsl/testkit/ServiceTest.Setup.html#withCluster-boolean-">withCluster</a></span>(boolean&nbsp;enabled)</code>
+<div class="block">Enable or disable clustering.</div>
+</td>
+</tr>
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../com/lightbend/lagom/javadsl/testkit/ServiceTest.Setup.html" title="interface in com.lightbend.lagom.javadsl.testkit">ServiceTest.Setup</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/lightbend/lagom/javadsl/testkit/ServiceTest.Setup.html#withConfigureBuilder-java.util.function.Function-">withConfigureBuilder</a></span>(java.util.function.Function&lt;play.inject.guice.GuiceApplicationBuilder,play.inject.guice.GuiceApplicationBuilder&gt;&nbsp;configureBuilder)</code>
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
@@ -166,7 +184,19 @@ var activeTableTab = "activeTableTab";
 </div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i10" class="altColor">
+<td class="colFirst"><code><a href="../../../../../com/lightbend/lagom/javadsl/testkit/ServiceTest.Setup.html" title="interface in com.lightbend.lagom.javadsl.testkit">ServiceTest.Setup</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/lightbend/lagom/javadsl/testkit/ServiceTest.Setup.html#withJdbc--">withJdbc</a></span>()</code>
+<div class="block">Enable JDBC.</div>
+</td>
+</tr>
+<tr id="i11" class="rowColor">
+<td class="colFirst"><code><a href="../../../../../com/lightbend/lagom/javadsl/testkit/ServiceTest.Setup.html" title="interface in com.lightbend.lagom.javadsl.testkit">ServiceTest.Setup</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/lightbend/lagom/javadsl/testkit/ServiceTest.Setup.html#withJdbc-boolean-">withJdbc</a></span>(boolean&nbsp;enabled)</code>
+<div class="block">Enable or disable JDBC.</div>
+</td>
+</tr>
+<tr id="i12" class="altColor">
 <td class="colFirst"><code><a href="../../../../../com/lightbend/lagom/javadsl/testkit/ServiceTest.Setup.html" title="interface in com.lightbend.lagom.javadsl.testkit">ServiceTest.Setup</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/lightbend/lagom/javadsl/testkit/ServiceTest.Setup.html#withPersistence-boolean-">withPersistence</a></span>(boolean&nbsp;enabled)</code>
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
@@ -220,6 +250,61 @@ var activeTableTab = "activeTableTab";
 </dl>
 </li>
 </ul>
+<a name="withCassandra--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>withCassandra</h4>
+<pre><a href="../../../../../com/lightbend/lagom/javadsl/testkit/ServiceTest.Setup.html" title="interface in com.lightbend.lagom.javadsl.testkit">ServiceTest.Setup</a>&nbsp;withCassandra()</pre>
+<div class="block">Enable Cassandra.
+ <p>
+ If enabled, this will start an embedded Cassandra server before the tests start, and shut it down afterwards.
+ It will also configure Lagom to use the embedded Cassandra server. Enabling Cassandra will also enable the
+ cluster.
+ <p></div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>A copy of this setup.</dd>
+</dl>
+</li>
+</ul>
+<a name="withJdbc-boolean-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>withJdbc</h4>
+<pre><a href="../../../../../com/lightbend/lagom/javadsl/testkit/ServiceTest.Setup.html" title="interface in com.lightbend.lagom.javadsl.testkit">ServiceTest.Setup</a>&nbsp;withJdbc(boolean&nbsp;enabled)</pre>
+<div class="block">Enable or disable JDBC.
+ <p>
+ Enabling JDBC will also enable the cluster.
+ <p></div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>enabled</code> - True if JDBC should be enabled, or false if disabled.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>A copy of this setup.</dd>
+</dl>
+</li>
+</ul>
+<a name="withJdbc--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>withJdbc</h4>
+<pre><a href="../../../../../com/lightbend/lagom/javadsl/testkit/ServiceTest.Setup.html" title="interface in com.lightbend.lagom.javadsl.testkit">ServiceTest.Setup</a>&nbsp;withJdbc()</pre>
+<div class="block">Enable JDBC.
+ <p>
+ Enabling JDBC will also enable the cluster.
+ <p></div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>A copy of this setup.</dd>
+</dl>
+</li>
+</ul>
 <a name="withConfigureBuilder-java.util.function.Function-">
 <!--   -->
 </a>
@@ -257,13 +342,30 @@ var activeTableTab = "activeTableTab";
 <li class="blockList">
 <h4>withCluster</h4>
 <pre><a href="../../../../../com/lightbend/lagom/javadsl/testkit/ServiceTest.Setup.html" title="interface in com.lightbend.lagom.javadsl.testkit">ServiceTest.Setup</a>&nbsp;withCluster(boolean&nbsp;enabled)</pre>
-<div class="block">Enable clustering.
+<div class="block">Enable or disable clustering.
  <p>
  Disabling this will automatically disable any persistence plugins, since persistence requires clustering.
  <p></div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>enabled</code> - True if clustering should be enabled, or false if disabled.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>A copy of this setup.</dd>
+</dl>
+</li>
+</ul>
+<a name="withCluster--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>withCluster</h4>
+<pre><a href="../../../../../com/lightbend/lagom/javadsl/testkit/ServiceTest.Setup.html" title="interface in com.lightbend.lagom.javadsl.testkit">ServiceTest.Setup</a>&nbsp;withCluster()</pre>
+<div class="block">Enable clustering.
+ <p>
+ Disabling this will automatically disable any persistence plugins, since persistence requires clustering.
+ <p></div>
+<dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>A copy of this setup.</dd>
 </dl>
@@ -277,6 +379,16 @@ var activeTableTab = "activeTableTab";
 <h4>cassandra</h4>
 <pre>boolean&nbsp;cassandra()</pre>
 <div class="block">Whether Cassandra is enabled.</div>
+</li>
+</ul>
+<a name="jdbc--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>jdbc</h4>
+<pre>boolean&nbsp;jdbc()</pre>
+<div class="block">Whether JDBC is enabled.</div>
 </li>
 </ul>
 <a name="cluster--">

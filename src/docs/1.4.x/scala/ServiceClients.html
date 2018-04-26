@@ -118,20 +118,5 @@ lagom.circuit-breaker {
   # will be used for both sayHi and hiAgain methods
   default.call-timeout = 5s
 }
-</code></pre><h3 id="Circuit-breaker-metrics"><a class="section-marker" href="#Circuit-breaker-metrics">§</a>Circuit breaker metrics</h3>
-<p>Lagom allows you to publish metrics for circuit breakers via a metrics service. To enable this service, add <code>metricsServiceBinding</code> to your service bindings in your <code>lagomServer</code> declaration, like so:</p>
-<pre class="prettyprint"><code class="language-scala"><br/>abstract class MyApplication(context: LagomApplicationContext)
-  extends LagomApplication(context)
-    with AhcWSComponents {
-
-  lazy val lagomServer = LagomServer.forServices(
-    bindService[HelloService].to(wire[HelloServiceImpl]),
-    metricsServiceBinding
-  )
-}</code></pre>
-<p>The service provides the following endpoints:</p>
-<ul>
-  <li><code>/_status/circuit-breaker/current</code> - Snapshot of current circuit breaker status</li>
-  <li><code>/_status/circuit-breaker/stream</code> - Stream of circuit breaker status</li>
-</ul>
+</code></pre>
 <p><a href="https://www.lightbend.com/products/monitoring">Lightbend Monitoring</a> will provide metrics for Lagom circuit breakers, including aggregated views of the information for all nodes in the cluster.</p>

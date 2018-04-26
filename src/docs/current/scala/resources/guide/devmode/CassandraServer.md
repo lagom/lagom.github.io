@@ -44,40 +44,29 @@ In sbt:
 
 @[cassandra-clean-on-start](code/build-cassandra-opts.sbt)
 
-## Keyspace _(deprecated)_
 
-A keyspace in Cassandra is a namespace that defines data replication on nodes. Each service should use a unique keyspace name so that the tables of different services do not conflict with each other. In the development environment, the keyspace is automatically set to be the project's name by default (after possibly having replaced a few characters that aren't allowed). If the generated keyspace doesn't suit you, you are free to provide a custom one.
+## Cassandra YAML configuration file
 
-In Maven, you can do this by modifying the service implementation's pom configuration:
+The Cassandra server can be configured with an alternative YAML file. By default, Lagom development environment uses [dev-embedded-cassandra.yaml](https://github.com/lagom/lagom/blob/master/dev/cassandra-server/src/main/resources/dev-embedded-cassandra.yaml). This is a good default to quickly get started, but if you find yourself needing to start Cassandra with a different configuration, you can easily do so by adding your own Cassandra YAML file to you to your build. 
+
+In the Maven root project pom:
 
 ```xml
 <plugin>
     <groupId>com.lightbend.lagom</groupId>
     <artifactId>lagom-maven-plugin</artifactId>
+    <version>${lagom.version}</version>
     <configuration>
-        <lagomService>true</lagomService>
-        <cassandraKeyspace>users</cassandraKeyspace>
+        <cassandraYamlFile>${basedir}/cassandra.yaml</cassandraYamlFile>
     </configuration>
 </plugin>
 ```
 
-In sbt, add the `lagomCassandraKeyspace` setting to the service implementation project:
+In sbt:
 
-@[cassandra-users-project-with-keyspace](code/build-cassandra-opts-lang.sbt)
+@[cassandra-yaml-config](code/build-cassandra-opts.sbt)
 
-It is worth pointing out that, despite the above, a Cassandra keyspace will still need to be provided when running your service in production. Hence, if you'd like to provide a Cassandra keyspace name that can be used both in development and production, it is recommended to do so via a configuration file.
-
-For instance, instead of setting the keyspace using the `lagomCassandraKeyspace` as we did before, we can obtain the same result by adding the following additional keys/values in the project's `application.conf` (note that if you do not have an `application.conf`, you should create one. For the above defined project, it would be typically placed under `usersImpl/src/main/resources/`):
-
-```
-cassandra-journal.keyspace=users
-cassandra-snapshot-store.keyspace=users
-lagom.persistence.read-side.cassandra.keyspace=users
-```
-
-Note that Cassandra uses keyspace values from the `application.conf` file instead of any you might define in the build. For that reason, overriding the keyspace in the build is deprecated, and will be removed in a future version of Lagom.
-
-See [[Cassandra persistent entity configuration|PersistentEntityCassandra#Configuration]] for more information about configuring keyspaces.
+Please note that the [Cassandra YAML file](https://github.com/lagom/lagom/blob/master/dev/cassandra-server/src/main/resources/dev-embedded-cassandra.yaml) used by Lagom has a few variables that are filled by some Lagom managed properties, namely: `$PORT` (defined by `lagomCassandraPort` in sbt or `cassandraPort` in mvn), `$STORAGE_PORT` (randomly defined) and `$DIR` (location for all Cassandra Server related files, defaults to: `target/embedded-cassandra`). It's not necessary to use these placeholders on your alternative YAML file, but it's recommended. Specially, the `$PORT` variable. If your YAML file has it hardcoded, you must make sure that Lagom will be using the same port (see [[Default port section|CassandraServer#Default-port]]).
 
 ## JVM options
 
@@ -95,7 +84,6 @@ In the Maven root project pom:
              <opt>-Xms256m</opt>
              <opt>-Xmx1024m</opt>
              <opt>-Dcassandra.jmx.local.port=4099</opt>
-             <opt>-DCassandraLauncher.configResource=dev-embedded-cassandra.yaml</opt>
          </cassandraJvmOptions>
     </configuration>
 </plugin>
@@ -105,15 +93,9 @@ In sbt:
 
 @[cassandra-jvm-options](code/build-cassandra-opts.sbt)
 
-## Yaml configuration
-
-As shown above, the YAML configuration file can be configured by modifying the Cassandra JVM options to include a `-DCassandraLauncher.configResource` system property that points to a resource in your `src/main/resources` directory.
-
 ## Logging
 
-Logging is configured such that it goes to the standard output, and the log level for `org.apache.cassandra` is set to `ERROR`. Here is the used `logback.xml` file:
-
-@[](../../../../../dev/cassandra-server/src/main/resources/logback.xml)
+Logging is configured such that it goes to the standard output, and the log level for `org.apache.cassandra` is set to `ERROR`. 
 
 There is no mechanism in place to edit the used `logback.xml`. If you need to tune the logging configuration, you should install Cassandra, and [[read the instructions|CassandraServer#Connecting-to-a-locally-running-Cassandra-instance]] to connect to a locally running Cassandra.
 
@@ -189,7 +171,7 @@ In the Maven root project pom:
 
 In sbt:
 
-@[local-instance](code/build-cassandra-opts3.sbt)
+@[local-instance](code/build-cassandra-opts.sbt)
 
 These two settings will only be used when running Lagom in DevMode. The purpose of these two settings is to disable the embedded Cassandra server and configure the Service Locator in DevMode to still be able to locate Cassandra when looking for `cas_native`. You may want to disable the Lagom-managed Cassandra server if you already have a Cassandra server running locally or in your company infrastructure and prefer using that. In that scenario it doesn't make sense for Lagom to start a Cassandra server and you will also gain few seconds of bootup time.
 

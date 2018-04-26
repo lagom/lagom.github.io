@@ -11,7 +11,7 @@ The Lagom team is proud to announce the release of Lagom 1.2!  This release intr
 
 If you've been following along with the RCs, there have only been minor changes since RC2, but if you're upgrading from 1.1.0 or earlier, please be sure to follow the [migration guide](/documentation/1.2.x/java/Migration12.html), as there are some changes you'll need to make to your project.
 
-Here's a recap of the major new features that were announced with the release candidates. You can see more details in the [change log](/changelog.html) or on [GitHub](https://github.com/lagom/lagom/issues?utf8=%E2%9C%93&q=milestone%3A1.2.0).
+Here's a recap of the major new features that were announced with the release candidates. You can see more details in the [change log](/changelog-archive.html) or on [GitHub](https://github.com/lagom/lagom/issues?utf8=%E2%9C%93&q=milestone%3A1.2.0).
 
 ---
 

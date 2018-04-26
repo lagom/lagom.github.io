@@ -175,7 +175,7 @@ extends <a href="../../../../../com/lightbend/lagom/javadsl/client/ServiceClient
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>default void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/lightbend/lagom/javadsl/server/ServiceGuiceSupport.html#bindServiceInfo-com.lightbend.lagom.javadsl.api.ServiceInfo-">bindServiceInfo</a></span>(<a href="../../../../../com/lightbend/lagom/javadsl/api/ServiceInfo.html" title="class in com.lightbend.lagom.javadsl.api">ServiceInfo</a>&nbsp;serviceInfo)</code>
-<div class="block">Provides the ServiceInfo to use Lagom service clients.</div>
+<div class="block">Creates a custom <a href="../../../../../com/lightbend/lagom/javadsl/api/ServiceInfo.html" title="class in com.lightbend.lagom.javadsl.api"><code>ServiceInfo</code></a> for this Lagom service.</div>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
@@ -230,11 +230,14 @@ extends <a href="../../../../../com/lightbend/lagom/javadsl/client/ServiceClient
 <li class="blockList">
 <h4>bindServiceInfo</h4>
 <pre>default&nbsp;void&nbsp;bindServiceInfo(<a href="../../../../../com/lightbend/lagom/javadsl/api/ServiceInfo.html" title="class in com.lightbend.lagom.javadsl.api">ServiceInfo</a>&nbsp;serviceInfo)</pre>
-<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="../../../../../com/lightbend/lagom/javadsl/client/ServiceClientGuiceSupport.html#bindServiceInfo-com.lightbend.lagom.javadsl.api.ServiceInfo-">ServiceClientGuiceSupport</a></code></span></div>
-<div class="block">Provides the ServiceInfo to use Lagom service clients.</div>
+<div class="block">Creates a custom <a href="../../../../../com/lightbend/lagom/javadsl/api/ServiceInfo.html" title="class in com.lightbend.lagom.javadsl.api"><code>ServiceInfo</code></a> for this Lagom service. This method overrides
+ <a href="../../../../../com/lightbend/lagom/javadsl/client/ServiceClientGuiceSupport.html#bindServiceInfo-com.lightbend.lagom.javadsl.api.ServiceInfo-"><code>ServiceClientGuiceSupport.bindServiceInfo(ServiceInfo)</code></a> with custom behavior for consume-only Lagom
+ services.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../../../../../com/lightbend/lagom/javadsl/client/ServiceClientGuiceSupport.html#bindServiceInfo-com.lightbend.lagom.javadsl.api.ServiceInfo-">bindServiceInfo</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../com/lightbend/lagom/javadsl/client/ServiceClientGuiceSupport.html" title="interface in com.lightbend.lagom.javadsl.client">ServiceClientGuiceSupport</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>serviceInfo</code> - the metadata identifying this Lagom Service.</dd>
 </dl>
 </li>
 </ul>

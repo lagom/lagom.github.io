@@ -34,7 +34,7 @@ Dynamic path parameters are extracted from the path by declaring dynamic parts i
 
 @[call-long-id](code/ServiceDescriptors.scala)
 
-Note that this time we're using an [eta-expanded](http://scala-lang.org/files/archive/spec/2.11/06-expressions.html#method-values) reference to the method. This is because the method takes a parameter.
+Note that this time we're using an [eta-expanded](http://scala-lang.org/files/archive/spec/2.12/06-expressions.html#method-values) reference to the method. This is because the method takes a parameter.
 
 Multiple parameters can of course be extracted out, these will be passed to your service call method in the order they are extracted from the URL:
 
@@ -64,7 +64,7 @@ So far, all of the service call examples we've seen have used strict messages, f
 
 ### Streamed messages
 
-A streamed message is a message of type [`Source`](http://doc.akka.io/api/akka/2.4.4/akka/stream/scaladsl/Source.html). `Source` is an [Akka streams](http://doc.akka.io/docs/akka/2.4/scala.html) API that allows asynchronous streaming and handling of messages.  Here's an example streamed service call:
+A streamed message is a message of type [`Source`](https://doc.akka.io/api/akka/2.5/akka/stream/scaladsl/Source.html). `Source` is an [Akka streams](https://doc.akka.io/docs/akka/2.5/stream/?language=scala) API that allows asynchronous streaming and handling of messages.  Here's an example streamed service call:
 
 @[call-stream](code/ServiceDescriptors.scala)
 
@@ -80,11 +80,11 @@ Lagom will choose an appropriate transport for the stream, typically, this will 
 
 ### Message serialization
 
-Message serializers for requests and responses are provided using type classes.  Each of the `call`, `namedCall`, `pathCall` and `restCall` methods take an implicit [`MessageSerializer`](api/com/lightbend/lagom/scaladsl/api/deser/MessageSerializer.html) for each of the request and response messages. Out of the box Lagom provides a serializer for `String` messages, as well as serializers that implicitly convert a Play JSON [`Format`](https://www.playframework.com/documentation/2.5.x/api/scala/play/api/libs/json/Format.html) type class to a message serializer.
+Message serializers for requests and responses are provided using type classes.  Each of the `call`, `namedCall`, `pathCall` and `restCall` methods take an implicit [`MessageSerializer`](api/com/lightbend/lagom/scaladsl/api/deser/MessageSerializer.html) for each of the request and response messages. Out of the box Lagom provides a serializer for `String` messages, as well as serializers that implicitly convert a Play JSON [`Format`](https://www.playframework.com/documentation/2.6.x/api/scala/play/api/libs/json/Format.html) type class to a message serializer.
 
 #### Using Play JSON
 
-Play JSON provides a functional type class based library for composing JSON formatters. For detailed documentation on how to use this library, see the [Play documentation](https://www.playframework.com/documentation/2.5.x/ScalaJsonCombinators). For now, we will just look at how to define JSON formats for case classes using Play's JSON format macro.
+Play JSON provides a functional type class based library for composing JSON formatters. For detailed documentation on how to use this library, see the [Play documentation](https://www.playframework.com/documentation/2.6.x/ScalaJsonCombinators). For now, we will just look at how to define JSON formats for case classes using Play's JSON format macro.
 
 Let's say you have a `User` case class that looks like this:
 

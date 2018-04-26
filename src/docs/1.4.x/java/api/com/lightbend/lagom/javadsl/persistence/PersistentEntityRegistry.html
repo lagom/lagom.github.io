@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":6,"i1":38,"i2":6,"i3":6,"i4":6};
+var methods = {"i0":6,"i1":38,"i2":38,"i3":6,"i4":6};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"],32:["t6","Deprecated Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -142,7 +142,10 @@ var activeTableTab = "activeTableTab";
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>java.util.concurrent.CompletionStage&lt;akka.Done&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntityRegistry.html#gracefulShutdown-scala.concurrent.duration.FiniteDuration-">gracefulShutdown</a></span>(scala.concurrent.duration.FiniteDuration&nbsp;timeout)</code>
-<div class="block">Gracefully stop the persistent entities and leave the cluster.</div>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
+<div class="block"><span class="deprecationComment">As of Lagom 1.4, this method has no effect and no longer needs to be called
+ <p></span></div>
+</div>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
@@ -249,14 +252,15 @@ var activeTableTab = "activeTableTab";
 <li class="blockList">
 <h4>gracefulShutdown</h4>
 <pre>java.util.concurrent.CompletionStage&lt;akka.Done&gt;&nbsp;gracefulShutdown(scala.concurrent.duration.FiniteDuration&nbsp;timeout)</pre>
-<div class="block">Gracefully stop the persistent entities and leave the cluster.
- The persistent entities will be started on another node when
- new messages are sent to them.
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">As of Lagom 1.4, this method has no effect and no longer needs to be called
+ <p></span></div>
+<div class="block">No-op method that exists only for backward-compatibility reasons.
+ Lagom now uses Akka's CoordinatedShutdown to gracefully shut down all sharded entities,
+ including Persistent Entities.
  <p></div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>the <code>CompletionStage</code> is completed when the node has been
-   removed from the cluster</dd>
+<dd>a completed <code>CompletionStage</code></dd>
 </dl>
 </li>
 </ul>

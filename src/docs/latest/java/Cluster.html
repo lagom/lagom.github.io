@@ -7,7 +7,7 @@
 <p>In Maven:</p>
 <pre class="prettyprint"><code class="language-xml">&lt;dependency&gt;
     &lt;groupId&gt;com.lightbend.lagom&lt;/groupId&gt;
-    &lt;artifactId&gt;lagom-javadsl-cluster_2.11&lt;/artifactId&gt;
+    &lt;artifactId&gt;lagom-javadsl-cluster_${scala.binary.version}&lt;/artifactId&gt;
     &lt;version&gt;${lagom.version}&lt;/version&gt;
 &lt;/dependency&gt;
 </code></pre>
@@ -33,5 +33,4 @@
 <p><strong>We strongly recommend against using the auto-down feature of Akka Cluster.</strong></p>
 <p>A pre-packaged solution for the downing problem is provided by <a href="https://tech-hub.lightbend.com/docs/akka-commercial-addons/current/split-brain-resolver.html">Split Brain Resolver</a>, which is part of the <a href="https://www.lightbend.com/platform/production">Lightbend Enterprise Suite</a>. The <code>keep-majority</code> strategy is configured to be enabled by default if you use Lagom with the Enterprise Suite.</p>
 <p>See <a href="https://tech-hub.lightbend.com/docs/akka-commercial-addons/current/split-brain-resolver.html">Split Brain Resolver documentation</a> and <a href="ReactivePlatform.html">Reactive Platform instructions</a> for how to enable it in the build of your project.</p>
-<p>Even if you don&rsquo;t use the commercial Enterprise Suite, you should still read &amp; understand the concepts behind <a href="https://tech-hub.lightbend.com/docs/akka-commercial-addons/current/split-brain-resolver.html">Split Brain Resolver</a> to ensure your solution handles the concerns described there.</p><h2 id="Leaving"><a class="section-marker" href="#Leaving">§</a>Leaving</h2>
-<p>When using <a href="PersistentEntity.html">Persistent Entities</a> you can use <a href="api/index.html?com/lightbend/lagom/javadsl/persistence/PersistentEntityRegistry.html#gracefulShutdown">PersistentEntityRegistry.gracefulShutdown</a> to stop the persistent entities and leave the cluster in a graceful way. This is not mandatory but it can be good when you are doing a controlled shutdown of a service node. It will reduce the number of lost in-flight messages during the failover to another node.</p>
+<p>Even if you don&rsquo;t use the commercial Enterprise Suite, you should still read &amp; understand the concepts behind <a href="https://tech-hub.lightbend.com/docs/akka-commercial-addons/current/split-brain-resolver.html">Split Brain Resolver</a> to ensure your solution handles the concerns described there.</p>

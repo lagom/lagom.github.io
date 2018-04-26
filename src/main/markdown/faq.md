@@ -2,8 +2,8 @@
 
 Have a question about Lagom? We've sorted out a sample of frequently asked questions and provided answers below. If your question is not covered here, try these resources:
 
+- [Discuss Lagom forum](https://discuss.lagomframework.com)
 - [Lagom Gitter channel](https://gitter.im/lagom/lagom)
-- [lagom-framework mailing list](https://groups.google.com/forum/#!forum/lagom-framework)
 - [Stack Overflow Lagom questions](https://stackoverflow.com/questions/tagged/lagom)
 
 ## Is Lagom open source or commercial?

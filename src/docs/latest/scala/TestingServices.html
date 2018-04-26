@@ -91,17 +91,24 @@ class HelloServiceSpec extends AsyncWordSpec with Matchers with BeforeAndAfterAl
 }</code></pre>
 <p>The server is by default running with <a href="PubSub.html">pubsub</a>, <a href="Cluster.html">cluster</a> and <a href="PersistentEntity.html">persistence</a> features disabled. You may want to enable clustering in the <code>Setup</code>:</p>
 <pre class="prettyprint"><code class="language-scala">lazy val server = ServiceTest.startServer(
-  ServiceTest.defaultSetup.withCluster(true)
+  ServiceTest.defaultSetup.withCluster()
 ) { ctx =&gt;
   new HelloApplication(ctx) with LocalServiceLocator
 }</code></pre>
-<p>If your service needs <a href="PersistentEntity.html">persistence</a> you will need to enable it explicitly. Cassandra Persistence requires clustering, so when you enable Cassandra, cluster will also be enabled automatically. Enable Cassandra Persistence:</p>
+<p>If your service needs <a href="PersistentEntity.html">persistence</a> you will need to enable it explicitly. This can be done by enabling Cassandra or JDBC, depending on which kind of persistence is used by your service. In any case, Lagom persistence requires clustering, so when when enabling one or another, cluster will also be enabled automatically.</p>
+<p>To enable Cassandra Persistence:</p>
 <pre class="prettyprint"><code class="language-scala">lazy val server = ServiceTest.startServer(
-  ServiceTest.defaultSetup.withCassandra(true)
+  ServiceTest.defaultSetup.withCassandra()
 ) { ctx =&gt;
   new HelloApplication(ctx) with LocalServiceLocator
 }</code></pre>
-<p>There&rsquo;s no way to explicitly enable or disable <a href="PubSub.html">pubsub</a>. When cluster is enabled (either explicitly or transitively via enabling Cassandra), pubsub will be available.</p><h2 id="How-to-test-several-services"><a class="section-marker" href="#How-to-test-several-services">§</a>How to test several services</h2>
+<p>To enable JDBC Persistence:</p>
+<pre class="prettyprint"><code class="language-scala">lazy val server = ServiceTest.startServer(
+  ServiceTest.defaultSetup.withJdbc()
+) { ctx =&gt;
+  new HelloApplication(ctx) with LocalServiceLocator
+}</code></pre>
+<p>There&rsquo;s no way to explicitly enable or disable <a href="PubSub.html">pubsub</a>. When cluster is enabled (either explicitly or transitively via enabling Cassandra or JDBC), pubsub will be available.</p><h2 id="How-to-test-several-services"><a class="section-marker" href="#How-to-test-several-services">§</a>How to test several services</h2>
 <p>Lagom will provide support for writing integration tests that involve several interacting services. This feature is <a href="https://github.com/lagom/lagom/issues/38">not yet implemented</a>.</p><h2 id="How-to-test-streamed-request/response"><a class="section-marker" href="#How-to-test-streamed-request/response">§</a>How to test streamed request/response</h2>
 <p>Let&rsquo;s say we have a service that has streaming request and/or response parameters. For example an <code>EchoService</code> like this:</p>
 <pre class="prettyprint"><code class="language-scala">trait EchoService extends Service {

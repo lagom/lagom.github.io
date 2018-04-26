@@ -36,7 +36,7 @@ override def descriptor = {
     pathCall(&quot;/order/:id&quot;, getOrder _)
   )
 }</code></pre>
-<p>Note that this time we&rsquo;re using an <a href="http://scala-lang.org/files/archive/spec/2.11/06-expressions.html#method-values">eta-expanded</a> reference to the method. This is because the method takes a parameter.</p>
+<p>Note that this time we&rsquo;re using an <a href="http://scala-lang.org/files/archive/spec/2.12/06-expressions.html#method-values">eta-expanded</a> reference to the method. This is because the method takes a parameter.</p>
 <p>Multiple parameters can of course be extracted out, these will be passed to your service call method in the order they are extracted from the URL:</p>
 <pre class="prettyprint"><code class="language-scala">def getItem(orderId: Long, itemId: String): ServiceCall[NotUsed, Item]
 

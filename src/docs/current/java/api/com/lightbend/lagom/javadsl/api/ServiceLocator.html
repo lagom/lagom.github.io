@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":6,"i1":18,"i2":6};
+var methods = {"i0":6,"i1":18,"i2":6,"i3":18,"i4":18};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"],16:["t5","Default Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -142,14 +142,27 @@ var activeTableTab = "activeTableTab";
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>default java.util.concurrent.CompletionStage&lt;java.util.Optional&lt;java.net.URI&gt;&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/lightbend/lagom/javadsl/api/ServiceLocator.html#locate-java.lang.String-">locate</a></span>(String&nbsp;name)</code>
-<div class="block">Locate a service with the given name.</div>
+<div class="block">Locate a service's URI for the given name.</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>java.util.concurrent.CompletionStage&lt;java.util.Optional&lt;java.net.URI&gt;&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/lightbend/lagom/javadsl/api/ServiceLocator.html#locate-java.lang.String-com.lightbend.lagom.javadsl.api.Descriptor.Call-">locate</a></span>(String&nbsp;name,
       <a href="../../../../../com/lightbend/lagom/javadsl/api/Descriptor.Call.html" title="class in com.lightbend.lagom.javadsl.api">Descriptor.Call</a>&lt;?,?&gt;&nbsp;serviceCall)</code>
-<div class="block">Locate a service with the given name.</div>
+<div class="block">Locate a service's URI for the given name.</div>
+</td>
+</tr>
+<tr id="i3" class="rowColor">
+<td class="colFirst"><code>default java.util.concurrent.CompletionStage&lt;java.util.List&lt;java.net.URI&gt;&gt;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/lightbend/lagom/javadsl/api/ServiceLocator.html#locateAll-java.lang.String-">locateAll</a></span>(String&nbsp;name)</code>
+<div class="block">Locate the service's URIs for the given name.</div>
+</td>
+</tr>
+<tr id="i4" class="altColor">
+<td class="colFirst"><code>default java.util.concurrent.CompletionStage&lt;java.util.List&lt;java.net.URI&gt;&gt;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/lightbend/lagom/javadsl/api/ServiceLocator.html#locateAll-java.lang.String-com.lightbend.lagom.javadsl.api.Descriptor.Call-">locateAll</a></span>(String&nbsp;name,
+         <a href="../../../../../com/lightbend/lagom/javadsl/api/Descriptor.Call.html" title="class in com.lightbend.lagom.javadsl.api">Descriptor.Call</a>&lt;?,?&gt;&nbsp;serviceCall)</code>
+<div class="block">Locate the service's URIs for the given name.</div>
 </td>
 </tr>
 </table>
@@ -174,12 +187,30 @@ var activeTableTab = "activeTableTab";
 <li class="blockList">
 <h4>locate</h4>
 <pre>default&nbsp;java.util.concurrent.CompletionStage&lt;java.util.Optional&lt;java.net.URI&gt;&gt;&nbsp;locate(String&nbsp;name)</pre>
-<div class="block">Locate a service with the given name.</div>
+<div class="block">Locate a service's URI for the given name.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>name</code> - The name of the service.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>The URI for that service, if it exists.</dd>
+</dl>
+</li>
+</ul>
+<a name="locateAll-java.lang.String-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>locateAll</h4>
+<pre>default&nbsp;java.util.concurrent.CompletionStage&lt;java.util.List&lt;java.net.URI&gt;&gt;&nbsp;locateAll(String&nbsp;name)</pre>
+<div class="block">Locate the service's URIs for the given name.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>name</code> - The name of the service.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>One or more URIs for that service, otherwise an empty List if none is found.</dd>
+<dt><span class="simpleTagLabel">Since:</span></dt>
+<dd>1.4</dd>
 </dl>
 </li>
 </ul>
@@ -191,13 +222,33 @@ var activeTableTab = "activeTableTab";
 <h4>locate</h4>
 <pre>java.util.concurrent.CompletionStage&lt;java.util.Optional&lt;java.net.URI&gt;&gt;&nbsp;locate(String&nbsp;name,
                                                                               <a href="../../../../../com/lightbend/lagom/javadsl/api/Descriptor.Call.html" title="class in com.lightbend.lagom.javadsl.api">Descriptor.Call</a>&lt;?,?&gt;&nbsp;serviceCall)</pre>
-<div class="block">Locate a service with the given name.</div>
+<div class="block">Locate a service's URI for the given name.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>name</code> - The name of the service.</dd>
 <dd><code>serviceCall</code> - The service call descriptor that this lookup is for.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>The URI for that service, if it exists.</dd>
+</dl>
+</li>
+</ul>
+<a name="locateAll-java.lang.String-com.lightbend.lagom.javadsl.api.Descriptor.Call-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>locateAll</h4>
+<pre>default&nbsp;java.util.concurrent.CompletionStage&lt;java.util.List&lt;java.net.URI&gt;&gt;&nbsp;locateAll(String&nbsp;name,
+                                                                                     <a href="../../../../../com/lightbend/lagom/javadsl/api/Descriptor.Call.html" title="class in com.lightbend.lagom.javadsl.api">Descriptor.Call</a>&lt;?,?&gt;&nbsp;serviceCall)</pre>
+<div class="block">Locate the service's URIs for the given name.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>name</code> - The name of the service.</dd>
+<dd><code>serviceCall</code> - The service call descriptor that this lookup is for.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>One or more URIs for that service, otherwise an empty List if none is found.</dd>
+<dt><span class="simpleTagLabel">Since:</span></dt>
+<dd>1.4</dd>
 </dl>
 </li>
 </ul>

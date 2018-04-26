@@ -29,7 +29,7 @@ public class SimpleTest {
 <p>To use this feature add the following in your project&rsquo;s build.</p>
 <pre class="prettyprint"><code class="language-xml">&lt;dependency&gt;
     &lt;groupId&gt;com.lightbend.lagom&lt;/groupId&gt;
-    &lt;artifactId&gt;lagom-javadsl-testkit_2.11&lt;/artifactId&gt;
+    &lt;artifactId&gt;lagom-javadsl-testkit_${scala.binary.version}&lt;/artifactId&gt;
     &lt;version&gt;${lagom.version}&lt;/version&gt;
     &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;
@@ -72,10 +72,13 @@ private final Setup setup = defaultSetup()
 </code></pre>
 <p>Note how the dependency is overridden when constructing the test <code>Setup</code> object, which then can be used as parameter to the <code>withServer</code> method instead of the <code>defaultSetup()</code> in the above <code>HelloServiceTest</code>.</p>
 <p>The server is by default running with <a href="PubSub.html">pubsub</a>, <a href="Cluster.html">cluster</a> and <a href="PersistentEntity.html">persistence</a> features disabled. You may want to enable cluster in the <code>Setup</code>:</p>
-<pre class="prettyprint"><code class="language-java">private final Setup setup2 = defaultSetup().withCluster(true);</code></pre>
-<p>If your service needs <a href="PersistentEntity.html">persistence</a> you will need to enable it explicitly. Cassandra Persistence requires clustering, so when you enable Cassandra, cluster will also be enabled automatically. Enable Cassandra Persistence:</p>
-<pre class="prettyprint"><code class="language-java">private final Setup setup1 = defaultSetup().withCassandra(true);</code></pre>
-<p>There&rsquo;s no way to explicitly enable or disable <a href="PubSub.html">pubsub</a>. When cluster is enabled (either explicitly or transitively via enabling Cassandra), pubsub will be available.</p>
+<pre class="prettyprint"><code class="language-java">private final Setup setup = defaultSetup().withCluster();</code></pre>
+<p>If your service needs <a href="PersistentEntity.html">persistence</a> you will need to enable it explicitly. This can be done by enabling Cassandra or JDBC, depending on which kind of persistence is used by your service. In any case, Lagom persistence requires clustering, so when when enabling one or another, cluster will also be enabled automatically.</p>
+<p>To enable Cassandra Persistence:</p>
+<pre class="prettyprint"><code class="language-java">private final Setup setup = defaultSetup().withCassandra();</code></pre>
+<p>To enable JDBC Persistence:</p>
+<pre class="prettyprint"><code class="language-java">private final Setup setup = defaultSetup().withJdbc();</code></pre>
+<p>There&rsquo;s no way to explicitly enable or disable <a href="PubSub.html">pubsub</a>. When cluster is enabled (either explicitly or transitively via enabling Cassandra or JDBC), pubsub will be available.</p>
 <p>There are two different styles that can be used when writing the tests. It is most convenient to use <code>withServer</code> as illustrated in the above <code>HelloServiceTest</code>. It automatically starts and stops the server before and after the given lambda.</p>
 <p>When your tests have several test methods, and especially when using persistence, it is faster to only start the server once in a static method annotated with <code>@BeforeClass</code> and stop it in a method annotated with <code>@AfterClass</code>.</p>
 <pre class="prettyprint"><code class="language-java">import static com.lightbend.lagom.javadsl.testkit.ServiceTest.*;
@@ -130,7 +133,7 @@ public class AdvancedHelloServiceTest {
     );
   }
 }</code></pre>
-<p>When writing tests for that the <a href="http://doc.akka.io/docs/akka/2.4/java/stream/stream-testkit.html#Streams_TestKit">Akka Streams TestKit</a> is very useful. We use the Streams TestKit together with the Lagom <code>ServiceTest</code> utilities:</p>
+<p>When writing tests for that the <a href="https://doc.akka.io/docs/akka/2.5/stream/stream-testkit.html?language=java#streams-testkit">Akka Streams TestKit</a> is very useful. We use the Streams TestKit together with the Lagom <code>ServiceTest</code> utilities:</p>
 <pre class="prettyprint"><code class="language-java">import static com.lightbend.lagom.javadsl.testkit.ServiceTest.*;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import java.util.Arrays;
@@ -165,7 +168,7 @@ public class EchoServiceTest {
   }
 
 }</code></pre>
-<p>Read more about it in the documentation of the <a href="http://doc.akka.io/docs/akka/2.4/java/stream/stream-testkit.html#Streams_TestKit">Akka Streams TestKit</a>.</p><h2 id="How-to-test-broker-publishing-and-consuming"><a class="section-marker" href="#How-to-test-broker-publishing-and-consuming">§</a>How to test broker publishing and consuming</h2>
+<p>Read more about it in the documentation of the <a href="https://doc.akka.io/docs/akka/2.5/stream/stream-testkit.html?language=java#streams-testkit">Akka Streams TestKit</a>.</p><h2 id="How-to-test-broker-publishing-and-consuming"><a class="section-marker" href="#How-to-test-broker-publishing-and-consuming">§</a>How to test broker publishing and consuming</h2>
 <p>The section on <a href="MessageBrokerTesting.html">Message Broker Testing</a> is related to Testing Services but is specific to testing the production and consumption via Brokers.</p><h2 id="How-to-test-PersistentEntity"><a class="section-marker" href="#How-to-test-PersistentEntity">§</a>How to test PersistentEntity</h2>
 <p><a href="PersistentEntity.html#Unit-Testing">Persistent Entities</a> can be used in the service tests described above. In addition to that you should write unit tests using the <a href="api/index.html?com/lightbend/lagom/javadsl/testkit/PersistentEntityTestDriver.html">PersistentEntityTestDriver</a>, which will run the <code>PersistentEntity</code> without using a database.</p>
 <p>This is described in the documentation of <a href="PersistentEntity.html#Unit-Testing">Persistent Entity</a></p>

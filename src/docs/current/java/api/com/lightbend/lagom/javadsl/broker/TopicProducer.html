@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":9,"i1":9};
+var methods = {"i0":9,"i1":9,"i2":9};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -156,6 +156,13 @@ extends Object</pre>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>static &lt;Message,Event extends <a href="../../../../../com/lightbend/lagom/javadsl/persistence/AggregateEvent.html" title="interface in com.lightbend.lagom.javadsl.persistence">AggregateEvent</a>&lt;Event&gt;&gt;<br><a href="../../../../../com/lightbend/lagom/javadsl/api/broker/Topic.html" title="interface in com.lightbend.lagom.javadsl.api.broker">Topic</a>&lt;Message&gt;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/lightbend/lagom/javadsl/broker/TopicProducer.html#taggedStreamWithOffset-com.lightbend.lagom.javadsl.persistence.AggregateEventShards-java.util.function.BiFunction-">taggedStreamWithOffset</a></span>(<a href="../../../../../com/lightbend/lagom/javadsl/persistence/AggregateEventShards.html" title="class in com.lightbend.lagom.javadsl.persistence">AggregateEventShards</a>&lt;Event&gt;&nbsp;shards,
+                      java.util.function.BiFunction&lt;<a href="../../../../../com/lightbend/lagom/javadsl/persistence/AggregateEventTag.html" title="class in com.lightbend.lagom.javadsl.persistence">AggregateEventTag</a>&lt;Event&gt;,<a href="../../../../../com/lightbend/lagom/javadsl/persistence/Offset.html" title="class in com.lightbend.lagom.javadsl.persistence">Offset</a>,akka.stream.javadsl.Source&lt;akka.japi.Pair&lt;Message,<a href="../../../../../com/lightbend/lagom/javadsl/persistence/Offset.html" title="class in com.lightbend.lagom.javadsl.persistence">Offset</a>&gt;,?&gt;&gt;&nbsp;eventStream)</code>
+<div class="block">Publish all tags of a stream that is sharded across many tags.</div>
+</td>
+</tr>
+<tr id="i2" class="altColor">
+<td class="colFirst"><code>static &lt;Message,Event extends <a href="../../../../../com/lightbend/lagom/javadsl/persistence/AggregateEvent.html" title="interface in com.lightbend.lagom.javadsl.persistence">AggregateEvent</a>&lt;Event&gt;&gt;<br><a href="../../../../../com/lightbend/lagom/javadsl/api/broker/Topic.html" title="interface in com.lightbend.lagom.javadsl.api.broker">Topic</a>&lt;Message&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/lightbend/lagom/javadsl/broker/TopicProducer.html#taggedStreamWithOffset-org.pcollections.PSequence-java.util.function.BiFunction-">taggedStreamWithOffset</a></span>(org.pcollections.PSequence&lt;<a href="../../../../../com/lightbend/lagom/javadsl/persistence/AggregateEventTag.html" title="class in com.lightbend.lagom.javadsl.persistence">AggregateEventTag</a>&lt;Event&gt;&gt;&nbsp;tags,
                       java.util.function.BiFunction&lt;<a href="../../../../../com/lightbend/lagom/javadsl/persistence/AggregateEventTag.html" title="class in com.lightbend.lagom.javadsl.persistence">AggregateEventTag</a>&lt;Event&gt;,<a href="../../../../../com/lightbend/lagom/javadsl/persistence/Offset.html" title="class in com.lightbend.lagom.javadsl.persistence">Offset</a>,akka.stream.javadsl.Source&lt;akka.japi.Pair&lt;Message,<a href="../../../../../com/lightbend/lagom/javadsl/persistence/Offset.html" title="class in com.lightbend.lagom.javadsl.persistence">Offset</a>&gt;,?&gt;&gt;&nbsp;eventStream)</code>
 <div class="block">Publish a stream that is sharded across many tags.</div>
@@ -222,7 +229,7 @@ extends Object</pre>
 <a name="taggedStreamWithOffset-org.pcollections.PSequence-java.util.function.BiFunction-">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>taggedStreamWithOffset</h4>
 <pre>public static&nbsp;&lt;Message,Event extends <a href="../../../../../com/lightbend/lagom/javadsl/persistence/AggregateEvent.html" title="interface in com.lightbend.lagom.javadsl.persistence">AggregateEvent</a>&lt;Event&gt;&gt;&nbsp;<a href="../../../../../com/lightbend/lagom/javadsl/api/broker/Topic.html" title="interface in com.lightbend.lagom.javadsl.api.broker">Topic</a>&lt;Message&gt;&nbsp;taggedStreamWithOffset(org.pcollections.PSequence&lt;<a href="../../../../../com/lightbend/lagom/javadsl/persistence/AggregateEventTag.html" title="class in com.lightbend.lagom.javadsl.persistence">AggregateEventTag</a>&lt;Event&gt;&gt;&nbsp;tags,
@@ -237,6 +244,30 @@ extends Object</pre>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>tags</code> - The tags to publish.</dd>
+<dd><code>eventStream</code> - A function event stream for a given shard given the last offset that was published.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>The topic producer.</dd>
+</dl>
+</li>
+</ul>
+<a name="taggedStreamWithOffset-com.lightbend.lagom.javadsl.persistence.AggregateEventShards-java.util.function.BiFunction-">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>taggedStreamWithOffset</h4>
+<pre>public static&nbsp;&lt;Message,Event extends <a href="../../../../../com/lightbend/lagom/javadsl/persistence/AggregateEvent.html" title="interface in com.lightbend.lagom.javadsl.persistence">AggregateEvent</a>&lt;Event&gt;&gt;&nbsp;<a href="../../../../../com/lightbend/lagom/javadsl/api/broker/Topic.html" title="interface in com.lightbend.lagom.javadsl.api.broker">Topic</a>&lt;Message&gt;&nbsp;taggedStreamWithOffset(<a href="../../../../../com/lightbend/lagom/javadsl/persistence/AggregateEventShards.html" title="class in com.lightbend.lagom.javadsl.persistence">AggregateEventShards</a>&lt;Event&gt;&nbsp;shards,
+                                                                                                  java.util.function.BiFunction&lt;<a href="../../../../../com/lightbend/lagom/javadsl/persistence/AggregateEventTag.html" title="class in com.lightbend.lagom.javadsl.persistence">AggregateEventTag</a>&lt;Event&gt;,<a href="../../../../../com/lightbend/lagom/javadsl/persistence/Offset.html" title="class in com.lightbend.lagom.javadsl.persistence">Offset</a>,akka.stream.javadsl.Source&lt;akka.japi.Pair&lt;Message,<a href="../../../../../com/lightbend/lagom/javadsl/persistence/Offset.html" title="class in com.lightbend.lagom.javadsl.persistence">Offset</a>&gt;,?&gt;&gt;&nbsp;eventStream)</pre>
+<div class="block">Publish all tags of a stream that is sharded across many tags.
+
+ The tags will be distributed around the cluster, ensuring that at most one event stream for each tag is
+ being published at a particular time.
+
+ This producer will ensure every element from each tags stream will be published at least once (usually only
+ once), using the message offsets to track where in the stream the producer is up to publishing.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>shards</code> - The tags to publish.</dd>
 <dd><code>eventStream</code> - A function event stream for a given shard given the last offset that was published.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>The topic producer.</dd>

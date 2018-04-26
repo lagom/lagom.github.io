@@ -141,6 +141,18 @@ extends Object</pre>
 </td>
 </tr>
 <tr class="rowColor">
+<td class="colFirst"><code>static <a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/MetadataKey.html" title="class in com.lightbend.lagom.javadsl.api.broker">MetadataKey</a>&lt;Long&gt;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/lightbend/lagom/javadsl/broker/kafka/KafkaMetadataKeys.html#TIMESTAMP">TIMESTAMP</a></span></code>
+<div class="block">The timestamp of the Kafka message.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/MetadataKey.html" title="class in com.lightbend.lagom.javadsl.api.broker">MetadataKey</a>&lt;org.apache.kafka.common.record.TimestampType&gt;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/lightbend/lagom/javadsl/broker/kafka/KafkaMetadataKeys.html#TIMESTAMP_TYPE">TIMESTAMP_TYPE</a></span></code>
+<div class="block">The timestamp type of the Kafka message.</div>
+</td>
+</tr>
+<tr class="rowColor">
 <td class="colFirst"><code>static <a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/MetadataKey.html" title="class in com.lightbend.lagom.javadsl.api.broker">MetadataKey</a>&lt;String&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/lightbend/lagom/javadsl/broker/kafka/KafkaMetadataKeys.html#TOPIC">TOPIC</a></span></code>
 <div class="block">The topic the message is published to.</div>
@@ -209,11 +221,31 @@ extends Object</pre>
 <a name="HEADERS">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>HEADERS</h4>
 <pre>public static final&nbsp;<a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/MetadataKey.html" title="class in com.lightbend.lagom.javadsl.api.broker">MetadataKey</a>&lt;org.apache.kafka.common.header.Headers&gt; HEADERS</pre>
 <div class="block">The Kafka message headers.</div>
+</li>
+</ul>
+<a name="TIMESTAMP">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>TIMESTAMP</h4>
+<pre>public static final&nbsp;<a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/MetadataKey.html" title="class in com.lightbend.lagom.javadsl.api.broker">MetadataKey</a>&lt;Long&gt; TIMESTAMP</pre>
+<div class="block">The timestamp of the Kafka message. This could have a different meaning depending on TimestampType.</div>
+</li>
+</ul>
+<a name="TIMESTAMP_TYPE">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>TIMESTAMP_TYPE</h4>
+<pre>public static final&nbsp;<a href="../../../../../../com/lightbend/lagom/javadsl/api/broker/MetadataKey.html" title="class in com.lightbend.lagom.javadsl.api.broker">MetadataKey</a>&lt;org.apache.kafka.common.record.TimestampType&gt; TIMESTAMP_TYPE</pre>
+<div class="block">The timestamp type of the Kafka message.</div>
 </li>
 </ul>
 </li>

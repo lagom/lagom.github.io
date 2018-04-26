@@ -4,7 +4,7 @@
 <p>To use the Lagom service interface, you will need to add a dependency of the Lagom integration client to your build. If using maven, this can be done by adding the following dependency in your pom:</p>
 <pre class="prettyprint"><code class="language-xml">    &lt;dependency&gt;
         &lt;groupId&gt;com.lightbend.lagom&lt;/groupId&gt;
-        &lt;artifactId&gt;lagom-javadsl-integration-client_2.11&lt;/artifactId&gt;
+        &lt;artifactId&gt;lagom-javadsl-integration-client_${scala.binary.version}&lt;/artifactId&gt;
         &lt;version&gt;${lagom.version}&lt;/version&gt;
     &lt;/dependency&gt;
 </code></pre>

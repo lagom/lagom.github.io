@@ -23,26 +23,28 @@ object DocumentationGenerator extends App {
    * CONFIGURATION
    */
   // Current documentation version
-  val currentDocsVersion = "1.3.x"
-  val currentLagomVersion = "1.3.10"
+  val currentDocsVersion = "1.4.x"
+  val currentLagomVersion = "1.4.4"
 
   // This impacts what gets displayed on the main documentation index.
   val stableVersions = Seq(
-    VersionSummary("1.3.x", s"Lagom $currentLagomVersion (current stable release)"),
-    VersionSummary("1.2.x", s"Lagom 1.2.3 (previous stable release)")
+    VersionSummary("1.4.x", s"Lagom $currentLagomVersion (current stable release)"),
+    VersionSummary("1.3.x", s"Lagom 1.3.11 (previous stable release)")
   )
 
-  val previewVersions = Seq(
-    VersionSummary("1.4.x", s"Lagom 1.4.0-M3 (preview)")
-  )
+  val previewVersions = Seq.empty[VersionSummary]
 
   val oldVersions = Seq(
+    VersionSummary("1.2.x", s"Lagom 1.2.3"),
     VersionSummary("1.1.x", s"Lagom 1.1.0"),
     VersionSummary("1.0.x", s"Lagom 1.0.0")
   )
 
   val communityContents = Seq(
   //    CommunityContent("title", "href", "hrefTitle"),
+    CommunityContent("Lagom tutorial: using Event Sourcing to create an online shopping cart",
+      "https://inviqa.com/blog/lagom-tutorial-using-event-sourcing-create-online-shopping-cart",
+      "Inviqa"),
     CommunityContent("Lagom Circuit Breaker: What, Why and How?",
       "https://blog.knoldus.com/2017/06/15/lagom-circuit-breaker-what-why-and-how/",
       "Knoldus"),
@@ -60,8 +62,10 @@ object DocumentationGenerator extends App {
       "JWORKS TECH BLOG"),
     CommunityContent("Run a Lagom service standalone with Zookeeper",
       "https://thecoderwriter.wordpress.com/2016/09/24/run-a-lagom-service-standalone-with-zookeeper/",
-      "Coder's IO")
-
+      "Coder's IO"),
+    CommunityContent("The Lagom Framework for Microservices and Domain-Driven Design",
+      "https://jaxenter.com/the-lagom-framework-tutorial-130264.html",
+      "jaxenter")
   )
 
   // Set this to Some("your-github-account-name") if you want to deploy the docs to the gh-pages of your own fork

@@ -46,7 +46,7 @@ val clientApplication = if (devMode) {
   }
 }</code></pre>
 <p>You&rsquo;ll also need to configure your application to tell it where the service locator is running, this can be done by passing a system property to your application when it starts up, for example:</p>
-<pre class="prettyprint"><code>-Dlagom.service-locator-url=http://localhost:8000
+<pre class="prettyprint"><code>-Dlagom.service-locator-url=http://localhost:9008
 </code></pre>
 <p>Alternatively, you can configure it programmatically by overriding the <code>devModeServiceLocatorUrl</code> value on the <code>LagomDevModeServiceLocatorComponents</code> trait:</p>
 <pre class="prettyprint"><code class="language-scala">new LagomClientApplication(&quot;my-client&quot;)

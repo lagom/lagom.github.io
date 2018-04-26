@@ -10,10 +10,6 @@
       <td><a href="api/com/lightbend/lagom/scaladsl/client/LagomServiceClientComponents.html">LagomServiceClientComponents</a> </td>
       <td>a main Component for any Lagom Service or application consuming Lagom Services. See <a href="DependencyInjection.html">Dependency Injection in Lagom</a> and <a href="ServiceClients.html#Binding-a-service-client">Binding a service client</a>.</td>
     </tr>
-    <tr>
-      <td><a href="api/com/lightbend/lagom/scaladsl/server/status/MetricsServiceComponents.html">MetricsServiceComponents</a> </td>
-      <td>adds a <code>MetricsService</code> to your service so you can remotely track the status of the CircuitBreakers on your service. Using this only makes sense when you Application is consuming other services (hence using remote calls protected with Circuit Breakers). See <a href="ServiceClients.html#Circuit-breaker-metrics">Circuit Breaker Metrics</a> </td>
-    </tr>
   </tbody>
 </table><h5 id="Persistence-and-Cluster-Components"><a class="section-marker" href="#Persistence-and-Cluster-Components">§</a>Persistence and Cluster Components</h5>
 <table>
@@ -82,9 +78,9 @@
 </table><h5 id="Third-party-Components"><a class="section-marker" href="#Third-party-Components">§</a>Third party Components</h5>
 <p>You can mix in <code>Components</code> from other frameworks or libraries, for example:</p>
 <ul>
-  <li><a href="https://github.com/typesafehub/conductr-lib/blob/master/lagom1-scala-conductr-bundle-lib/src/main/scala/com/typesafe/conductr/bundlelib/lagom/scaladsl/ConductRApplicationComponents.scala">ConductRApplicationComponents</a>: provides a Service Locator provided by ConductR, reads any ConductR provided configuration and makes the service register into ConductR&rsquo;s Service Registry. See <a href="ConductR.html">ConductR</a></li>
-  <li><a href="https://www.playframework.com/documentation/2.5.x/api/scala/index.html#play.api.libs.ws.ahc.AhcWSComponents">AhcWSComponents</a>: provides a <code>WSClient</code> based on an Async HTTP Client.</li>
-  <li><a href="https://www.playframework.com/documentation/2.5.x/api/scala/play/api/db/DBComponents.html">DBComponents</a></li>
-  <li><a href="https://www.playframework.com/documentation/2.5.x/api/scala/play/api/db/HikariCPComponents.html">HikariCPComponents</a></li>
+  <li><a href="https://github.com/typesafehub/conductr-lib/blob/master/lagom14-scala-conductr-bundle-lib/src/main/scala/com/typesafe/conductr/bundlelib/lagom/scaladsl/ConductRApplicationComponents.scala">ConductRApplicationComponents</a>: provides a Service Locator provided by ConductR, reads any ConductR provided configuration and makes the service register into ConductR&rsquo;s Service Registry. See <a href="ConductR.html">ConductR</a></li>
+  <li><a href="https://www.playframework.com/documentation/2.6.x/api/scala/index.html#play.api.libs.ws.ahc.AhcWSComponents">AhcWSComponents</a>: provides a <code>WSClient</code> based on an Async HTTP Client.</li>
+  <li><a href="https://www.playframework.com/documentation/2.6.x/api/scala/play/api/db/DBComponents.html">DBComponents</a></li>
+  <li><a href="https://www.playframework.com/documentation/2.6.x/api/scala/play/api/db/HikariCPComponents.html">HikariCPComponents</a></li>
 </ul>
-<p>Lagom inherits all Components provided by Play. You can find the complete list of inherited <code>Components</code> by searching for <em>components</em> in <a href="https://www.playframework.com/documentation/2.5.x/api/scala/index.html">Play docs</a>.</p>
+<p>Lagom inherits all Components provided by Play. You can find the complete list of inherited <code>Components</code> by searching for <em>components</em> in <a href="https://www.playframework.com/documentation/2.6.x/api/scala/index.html">Play docs</a>.</p>

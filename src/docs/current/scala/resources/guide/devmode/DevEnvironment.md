@@ -47,27 +47,43 @@ This may take a while if you have a lot of services or if dependencies are being
 Once the "Services started" message has appeared, if you make a change to your source code, you'll see output like this in the console:
 
 ```console
-[info] Compiling 1 Java source to /<project-path>/target/scala-2.11/classes...
+[info] Compiling 1 Java source to /<project-path>/target/scala-2.12/classes...
 
 --- (RELOAD) ---
 ```
+
+## Managing custom services
+
+By default, Lagom will, in addition to running your services, also start a service locator, a Cassandra server and a Kafka server. If using sbt, you can customise what Lagom starts, including adding other databases and infrastructure services.
+
+> **Note:** Managing custom services is not currently supported in Maven, due to Maven's inability to arbitrarily add behaviour, such as the logic necessary to start and stop an external process, to a build. This is typically not a big problem, it simply means developers have to manually install, start and stop these services themselves.
+
+To add a custom service, first you need to define a task to start the service in your `build.sbt`. The task should produce a result of `Closeable`, which can be used to stop the service. Here's an example for Elastic Search:
+
+@[start-elastic-search](code/dev-environment.sbt)
+
+Now we're able to start Elastic Search, we need to add this task to Lagom's list of infrastructure services, so that Lagom will start it when `runAll` is executed. This can be done by modifying the `lagomInfrastructureServices` setting:
+
+@[infrastructure-services](code/dev-environment.sbt)
 
 ## Behind the scenes
 
 <!-- copied this section to concepts, perhaps it can be removed later -->
 What's happening behind the scenes when you `runAll`?
 
-* an embedded Service Locator is started
-* a Cassandra server is started
-* a Kafka server is started
+* an embedded [[Service Locator|ServiceLocator]] is started
+* an embedded [[Service Gateway|ServiceLocator#Service-Gateway]] is started
+* a [[Cassandra server|CassandraServer]] is started
+* a [[Kafka server|KafkaServer]] is started
 * your services start
     * ...and register with the Service Locator
+    * ...and register the publicly accessible paths in the Service Gateway
 
 This all happens automatically without special code or additional configuration.
 
 <!--end copied section -->
 
-You can verify that your services are running by viewing `http://localhost:8000/services` in a web browser (or with a command line tool such as `curl`).  The Service Locator, running on port 8000, will return JSON such as:
+You can verify that your services are running by viewing `http://localhost:9008/services` in a web browser (or with a command line tool such as `curl`). The Service Locator, running on port `9008`, will return JSON such as:
 
 ```
 [{"name":"hello-stream","url":"http://0.0.0.0:26230"},

@@ -138,9 +138,16 @@ implements <a href="../../../../../com/lightbend/lagom/javadsl/api/ServiceLocato
 <th class="colOne" scope="col">Constructor and Description</th>
 </tr>
 <tr class="altColor">
-<td class="colOne"><code><span class="memberNameLink"><a href="../../../../../com/lightbend/lagom/javadsl/api/ConfigurationServiceLocator.html#ConfigurationServiceLocator-play.Configuration-">ConfigurationServiceLocator</a></span>(play.Configuration&nbsp;configuration)</code>
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../../../com/lightbend/lagom/javadsl/api/ConfigurationServiceLocator.html#ConfigurationServiceLocator-com.typesafe.config.Config-">ConfigurationServiceLocator</a></span>(com.typesafe.config.Config&nbsp;configuration)</code>
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;</div>
 &nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../../../com/lightbend/lagom/javadsl/api/ConfigurationServiceLocator.html#ConfigurationServiceLocator-play.Configuration-">ConfigurationServiceLocator</a></span>(play.Configuration&nbsp;configuration)</code>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
+<div class="block"><span class="deprecationComment">use <a href="../../../../../com/lightbend/lagom/javadsl/api/ConfigurationServiceLocator.html#ConfigurationServiceLocator-com.typesafe.config.Config-"><code>ConfigurationServiceLocator(Config)</code></a> instead.</span></div>
+</div>
+</td>
 </tr>
 </table>
 </li>
@@ -171,7 +178,7 @@ implements <a href="../../../../../com/lightbend/lagom/javadsl/api/ServiceLocato
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/lightbend/lagom/javadsl/api/ConfigurationServiceLocator.html#locate-java.lang.String-com.lightbend.lagom.javadsl.api.Descriptor.Call-">locate</a></span>(String&nbsp;name,
       <a href="../../../../../com/lightbend/lagom/javadsl/api/Descriptor.Call.html" title="class in com.lightbend.lagom.javadsl.api">Descriptor.Call</a>&lt;?,?&gt;&nbsp;serviceCall)</code>
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;</div>
-<div class="block">Locate a service with the given name.</div>
+<div class="block">Locate a service's URI for the given name.</div>
 </td>
 </tr>
 </table>
@@ -187,7 +194,7 @@ implements <a href="../../../../../com/lightbend/lagom/javadsl/api/ServiceLocato
 <!--   -->
 </a>
 <h3>Methods inherited from interface&nbsp;com.lightbend.lagom.javadsl.api.<a href="../../../../../com/lightbend/lagom/javadsl/api/ServiceLocator.html" title="interface in com.lightbend.lagom.javadsl.api">ServiceLocator</a></h3>
-<code><a href="../../../../../com/lightbend/lagom/javadsl/api/ServiceLocator.html#locate-java.lang.String-">locate</a></code></li>
+<code><a href="../../../../../com/lightbend/lagom/javadsl/api/ServiceLocator.html#locate-java.lang.String-">locate</a>, <a href="../../../../../com/lightbend/lagom/javadsl/api/ServiceLocator.html#locateAll-java.lang.String-">locateAll</a>, <a href="../../../../../com/lightbend/lagom/javadsl/api/ServiceLocator.html#locateAll-java.lang.String-com.lightbend.lagom.javadsl.api.Descriptor.Call-">locateAll</a></code></li>
 </ul>
 </li>
 </ul>
@@ -203,15 +210,26 @@ implements <a href="../../../../../com/lightbend/lagom/javadsl/api/ServiceLocato
 <!--   -->
 </a>
 <h3>Constructor Detail</h3>
+<a name="ConfigurationServiceLocator-com.typesafe.config.Config-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>ConfigurationServiceLocator</h4>
+<pre>@Inject
+public&nbsp;ConfigurationServiceLocator(com.typesafe.config.Config&nbsp;configuration)</pre>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;</div>
+</li>
+</ul>
 <a name="ConfigurationServiceLocator-play.Configuration-">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>ConfigurationServiceLocator</h4>
-<pre>@Inject
+<pre>@Deprecated
 public&nbsp;ConfigurationServiceLocator(play.Configuration&nbsp;configuration)</pre>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;</div>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">use <a href="../../../../../com/lightbend/lagom/javadsl/api/ConfigurationServiceLocator.html#ConfigurationServiceLocator-com.typesafe.config.Config-"><code>ConfigurationServiceLocator(Config)</code></a> instead.</span></div>
 </li>
 </ul>
 </li>
@@ -232,7 +250,7 @@ public&nbsp;ConfigurationServiceLocator(play.Configuration&nbsp;configuration)</
                                                                                      <a href="../../../../../com/lightbend/lagom/javadsl/api/Descriptor.Call.html" title="class in com.lightbend.lagom.javadsl.api">Descriptor.Call</a>&lt;?,?&gt;&nbsp;serviceCall)</pre>
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;</div>
 <div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="../../../../../com/lightbend/lagom/javadsl/api/ServiceLocator.html#locate-java.lang.String-com.lightbend.lagom.javadsl.api.Descriptor.Call-">ServiceLocator</a></code></span></div>
-<div class="block">Locate a service with the given name.</div>
+<div class="block">Locate a service's URI for the given name.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../../../../../com/lightbend/lagom/javadsl/api/ServiceLocator.html#locate-java.lang.String-com.lightbend.lagom.javadsl.api.Descriptor.Call-">locate</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../com/lightbend/lagom/javadsl/api/ServiceLocator.html" title="interface in com.lightbend.lagom.javadsl.api">ServiceLocator</a></code></dd>

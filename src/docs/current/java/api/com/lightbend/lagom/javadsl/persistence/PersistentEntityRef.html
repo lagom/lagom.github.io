@@ -115,7 +115,8 @@ var activeTableTab = "activeTableTab";
 extends Object
 implements akka.actor.NoSerializationVerificationNeeded</pre>
 <div class="block">Commands are sent to a <a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntity.html" title="class in com.lightbend.lagom.javadsl.persistence"><code>PersistentEntity</code></a> using a
- <code>PersistentEntityRef</code>. It is retrieved with <a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntityRegistry.html#refFor-java.lang.Class-java.lang.String-"><code>PersistentEntityRegistry.refFor(java.lang.Class&lt;? extends com.lightbend.lagom.javadsl.persistence.PersistentEntity&lt;C, ?, ?&gt;&gt;, java.lang.String)</code></a>.</div>
+ <code>PersistentEntityRef</code>. It is retrieved with
+ <a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntityRegistry.html#refFor-java.lang.Class-java.lang.String-"><code>PersistentEntityRegistry.refFor(Class, String)</code></a>.</div>
 </li>
 </ul>
 </div>
@@ -137,6 +138,15 @@ implements akka.actor.NoSerializationVerificationNeeded</pre>
 <td class="colOne"><code><span class="memberNameLink"><a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntityRef.html#PersistentEntityRef-java.lang.String-akka.actor.ActorRef-akka.actor.ActorSystem-scala.concurrent.duration.FiniteDuration-">PersistentEntityRef</a></span>(String&nbsp;entityId,
                    akka.actor.ActorRef&nbsp;region,
                    akka.actor.ActorSystem&nbsp;system,
+                   scala.concurrent.duration.FiniteDuration&nbsp;askTimeout)</code>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
+<div class="block"><span class="deprecationComment">Use the other constructor.</span></div>
+</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntityRef.html#PersistentEntityRef-java.lang.String-akka.actor.ActorRef-scala.concurrent.duration.FiniteDuration-">PersistentEntityRef</a></span>(String&nbsp;entityId,
+                   akka.actor.ActorRef&nbsp;region,
                    scala.concurrent.duration.FiniteDuration&nbsp;askTimeout)</code>&nbsp;</td>
 </tr>
 </table>
@@ -155,7 +165,7 @@ implements akka.actor.NoSerializationVerificationNeeded</pre>
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>&lt;Reply,Cmd extends <a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntityRef.html" title="type parameter in PersistentEntityRef">Command</a>&gt;<br>java.util.concurrent.CompletionStage&lt;Reply&gt;</code></td>
+<td class="colFirst"><code>&lt;Reply,Cmd extends Object &amp; <a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntity.ReplyType.html" title="interface in com.lightbend.lagom.javadsl.persistence">PersistentEntity.ReplyType</a>&lt;Reply&gt;&gt;<br>java.util.concurrent.CompletionStage&lt;Reply&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntityRef.html#ask-Cmd-">ask</a></span>(Cmd&nbsp;command)</code>
 <div class="block">Send the <code>command</code> to the <a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntity.html" title="class in com.lightbend.lagom.javadsl.persistence"><code>PersistentEntity</code></a>.</div>
 </td>
@@ -171,7 +181,7 @@ implements akka.actor.NoSerializationVerificationNeeded</pre>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntityRef.html" title="class in com.lightbend.lagom.javadsl.persistence">PersistentEntityRef</a>&lt;<a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntityRef.html" title="type parameter in PersistentEntityRef">Command</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntityRef.html#withAskTimeout-scala.concurrent.duration.FiniteDuration-">withAskTimeout</a></span>(scala.concurrent.duration.FiniteDuration&nbsp;timeout)</code>
-<div class="block">The timeout for <a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntityRef.html#ask-Cmd-"><code>ask(Cmd)</code></a>.</div>
+<div class="block">The timeout for <a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntityRef.html#ask-Cmd-"><code>ask(Object)</code></a>.</div>
 </td>
 </tr>
 </table>
@@ -196,16 +206,29 @@ implements akka.actor.NoSerializationVerificationNeeded</pre>
 <!--   -->
 </a>
 <h3>Constructor Detail</h3>
+<a name="PersistentEntityRef-java.lang.String-akka.actor.ActorRef-scala.concurrent.duration.FiniteDuration-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>PersistentEntityRef</h4>
+<pre>public&nbsp;PersistentEntityRef(String&nbsp;entityId,
+                           akka.actor.ActorRef&nbsp;region,
+                           scala.concurrent.duration.FiniteDuration&nbsp;askTimeout)</pre>
+</li>
+</ul>
 <a name="PersistentEntityRef-java.lang.String-akka.actor.ActorRef-akka.actor.ActorSystem-scala.concurrent.duration.FiniteDuration-">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>PersistentEntityRef</h4>
-<pre>public&nbsp;PersistentEntityRef(String&nbsp;entityId,
-                           akka.actor.ActorRef&nbsp;region,
-                           akka.actor.ActorSystem&nbsp;system,
-                           scala.concurrent.duration.FiniteDuration&nbsp;askTimeout)</pre>
+<pre>@Deprecated
+public&nbsp;PersistentEntityRef(String&nbsp;entityId,
+                                       akka.actor.ActorRef&nbsp;region,
+                                       akka.actor.ActorSystem&nbsp;system,
+                                       scala.concurrent.duration.FiniteDuration&nbsp;askTimeout)</pre>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Use the other constructor.</span></div>
 </li>
 </ul>
 </li>
@@ -233,14 +256,14 @@ implements akka.actor.NoSerializationVerificationNeeded</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>ask</h4>
-<pre>public&nbsp;&lt;Reply,Cmd extends <a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntityRef.html" title="type parameter in PersistentEntityRef">Command</a>&gt;&nbsp;java.util.concurrent.CompletionStage&lt;Reply&gt;&nbsp;ask(Cmd&nbsp;command)</pre>
+<pre>public&nbsp;&lt;Reply,Cmd extends Object &amp; <a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntity.ReplyType.html" title="interface in com.lightbend.lagom.javadsl.persistence">PersistentEntity.ReplyType</a>&lt;Reply&gt;&gt;&nbsp;java.util.concurrent.CompletionStage&lt;Reply&gt;&nbsp;ask(Cmd&nbsp;command)</pre>
 <div class="block">Send the <code>command</code> to the <a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntity.html" title="class in com.lightbend.lagom.javadsl.persistence"><code>PersistentEntity</code></a>. The returned
  <code>CompletionStage</code> will be completed with the reply from the <code>PersistentEntity</code>.
  The type of the reply is defined by the command (see <a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntity.ReplyType.html" title="interface in com.lightbend.lagom.javadsl.persistence"><code>PersistentEntity.ReplyType</code></a>).
  <p>
  The <code>CompletionStage</code> may also be completed with failure, sent by the <code>PersistentEntity</code>
  or a <code>akka.pattern.AskTimeoutException</code> if there is no reply within a timeout.
- The timeout can defined in configuration or overridden using <a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntityRef.html#withAskTimeout-scala.concurrent.duration.FiniteDuration-"><code>withAskTimeout(scala.concurrent.duration.FiniteDuration)</code></a>.</div>
+ The timeout can defined in configuration or overridden using <a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntityRef.html#withAskTimeout-scala.concurrent.duration.FiniteDuration-"><code>withAskTimeout(FiniteDuration)</code></a>.</div>
 </li>
 </ul>
 <a name="withAskTimeout-scala.concurrent.duration.FiniteDuration-">
@@ -250,7 +273,7 @@ implements akka.actor.NoSerializationVerificationNeeded</pre>
 <li class="blockList">
 <h4>withAskTimeout</h4>
 <pre>public&nbsp;<a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntityRef.html" title="class in com.lightbend.lagom.javadsl.persistence">PersistentEntityRef</a>&lt;<a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntityRef.html" title="type parameter in PersistentEntityRef">Command</a>&gt;&nbsp;withAskTimeout(scala.concurrent.duration.FiniteDuration&nbsp;timeout)</pre>
-<div class="block">The timeout for <a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntityRef.html#ask-Cmd-"><code>ask(Cmd)</code></a>. The timeout is by default defined in configuration
+<div class="block">The timeout for <a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntityRef.html#ask-Cmd-"><code>ask(Object)</code></a>. The timeout is by default defined in configuration
  but it can be adjusted for a specific <code>PersistentEntityRef</code> using this method.
  Note that this returns a new <code>PersistentEntityRef</code> instance with the given timeout
  (<code>PersistentEntityRef</code> is immutable).</div>

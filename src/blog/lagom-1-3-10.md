@@ -7,7 +7,7 @@ summary: >
     The Lagom team has released Lagom 1.3.10
 ---
 
-The Lagom team has released Lagom 1.3.10. For a list of the specific changes in Lagom 1.3.10, see the [change log](/changelog.html).
+The Lagom team has released Lagom 1.3.10. For a list of the specific changes in Lagom 1.3.10, see the [change log](/changelog-1.3.x.html).
 
 This release provides a few bug fixes, minor improvements and dependency updates. As an overview, this release contains the following:
 

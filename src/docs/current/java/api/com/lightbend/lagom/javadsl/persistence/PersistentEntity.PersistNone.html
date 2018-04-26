@@ -17,8 +17,8 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":6};
-var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"]};
+var methods = {"i0":10};
+var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
 var tableTab = "tableTab";
@@ -48,7 +48,7 @@ var activeTableTab = "activeTableTab";
 <div class="subNav">
 <ul class="navList">
 <li><a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntity.PersistException$.html" title="class in com.lightbend.lagom.javadsl.persistence"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
-<li><a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntity.PersistOne.html" title="class in com.lightbend.lagom.javadsl.persistence"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
+<li><a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntity.PersistNone$.html" title="class in com.lightbend.lagom.javadsl.persistence"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../../../index.html?com/lightbend/lagom/javadsl/persistence/PersistentEntity.PersistNone.html" target="_top">Frames</a></li>
@@ -74,13 +74,13 @@ var activeTableTab = "activeTableTab";
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
-<li>Constr&nbsp;|&nbsp;</li>
+<li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
-<li>Constr&nbsp;|&nbsp;</li>
+<li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>
 </div>
@@ -91,26 +91,66 @@ var activeTableTab = "activeTableTab";
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
 <div class="subTitle">com.lightbend.lagom.javadsl.persistence</div>
-<h2 title="Interface PersistentEntity.PersistNone" class="title">Interface PersistentEntity.PersistNone&lt;B extends Event&gt;</h2>
+<h2 title="Class PersistentEntity.PersistNone" class="title">Class PersistentEntity.PersistNone&lt;B extends Event&gt;</h2>
 </div>
 <div class="contentContainer">
+<ul class="inheritance">
+<li>Object</li>
+<li>
+<ul class="inheritance">
+<li><a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntity.Persist.html" title="class in com.lightbend.lagom.javadsl.persistence">com.lightbend.lagom.javadsl.persistence.PersistentEntity.Persist</a>&lt;B&gt;</li>
+<li>
+<ul class="inheritance">
+<li>com.lightbend.lagom.javadsl.persistence.PersistentEntity.PersistNone&lt;B&gt;</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 <div class="description">
 <ul class="blockList">
 <li class="blockList">
+<dl>
+<dt>All Implemented Interfaces:</dt>
+<dd>java.io.Serializable, scala.Equals, scala.Product</dd>
+</dl>
 <dl>
 <dt>Enclosing class:</dt>
 <dd><a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntity.html" title="class in com.lightbend.lagom.javadsl.persistence">PersistentEntity</a>&lt;<a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntity.html" title="type parameter in PersistentEntity">Command</a>,<a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntity.html" title="type parameter in PersistentEntity">Event</a>,<a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntity.html" title="type parameter in PersistentEntity">State</a>&gt;</dd>
 </dl>
 <hr>
 <br>
-<pre>public static interface <span class="typeNameLabel">PersistentEntity.PersistNone&lt;B extends Event&gt;</span></pre>
+<pre>public class <span class="typeNameLabel">PersistentEntity.PersistNone&lt;B extends Event&gt;</span>
+extends <a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntity.Persist.html" title="class in com.lightbend.lagom.javadsl.persistence">PersistentEntity.Persist</a>&lt;B&gt;
+implements scala.Product, scala.Serializable</pre>
 <div class="block">INTERNAL API</div>
+<dl>
+<dt><span class="seeLabel">See Also:</span></dt>
+<dd><a href="../../../../../serialized-form.html#com.lightbend.lagom.javadsl.persistence.PersistentEntity.PersistNone">Serialized Form</a></dd>
+</dl>
 </li>
 </ul>
 </div>
 <div class="summary">
 <ul class="blockList">
 <li class="blockList">
+<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+<ul class="blockList">
+<li class="blockList"><a name="constructor.summary">
+<!--   -->
+</a>
+<h3>Constructor Summary</h3>
+<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Constructor Summary table, listing constructors, and an explanation">
+<caption><span>Constructors</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colOne" scope="col">Constructor and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntity.PersistNone.html#PersistNone--">PersistNone</a></span>()</code>&nbsp;</td>
+</tr>
+</table>
+</li>
+</ul>
 <!-- ========== METHOD SUMMARY =========== -->
 <ul class="blockList">
 <li class="blockList"><a name="method.summary">
@@ -118,7 +158,7 @@ var activeTableTab = "activeTableTab";
 </a>
 <h3>Method Summary</h3>
 <table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Method Summary table, listing methods, and an explanation">
-<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t3" class="tableTab"><span><a href="javascript:show(4);">Abstract Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
+<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
 <tr>
 <th class="colFirst" scope="col">Modifier and Type</th>
 <th class="colLast" scope="col">Method and Description</th>
@@ -128,6 +168,27 @@ var activeTableTab = "activeTableTab";
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntity.PersistNone.html#toString--">toString</a></span>()</code>&nbsp;</td>
 </tr>
 </table>
+<ul class="blockList">
+<li class="blockList"><a name="methods.inherited.from.class.Object">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;Object</h3>
+<code>equals, getClass, hashCode, notify, notifyAll, wait, wait, wait</code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a name="methods.inherited.from.class.scala.Product">
+<!--   -->
+</a>
+<h3>Methods inherited from interface&nbsp;scala.Product</h3>
+<code>$init$, productArity, productElement, productIterator, productPrefix</code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a name="methods.inherited.from.class.scala.Equals">
+<!--   -->
+</a>
+<h3>Methods inherited from interface&nbsp;scala.Equals</h3>
+<code>canEqual, equals</code></li>
+</ul>
 </li>
 </ul>
 </li>
@@ -136,6 +197,23 @@ var activeTableTab = "activeTableTab";
 <div class="details">
 <ul class="blockList">
 <li class="blockList">
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+<ul class="blockList">
+<li class="blockList"><a name="constructor.detail">
+<!--   -->
+</a>
+<h3>Constructor Detail</h3>
+<a name="PersistNone--">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>PersistNone</h4>
+<pre>public&nbsp;PersistNone()</pre>
+</li>
+</ul>
+</li>
+</ul>
 <!-- ============ METHOD DETAIL ========== -->
 <ul class="blockList">
 <li class="blockList"><a name="method.detail">
@@ -148,7 +226,7 @@ var activeTableTab = "activeTableTab";
 <ul class="blockListLast">
 <li class="blockList">
 <h4>toString</h4>
-<pre>String&nbsp;toString()</pre>
+<pre>public&nbsp;String&nbsp;toString()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
 <dd><code>toString</code>&nbsp;in class&nbsp;<code>Object</code></dd>
@@ -188,7 +266,7 @@ var activeTableTab = "activeTableTab";
 <div class="subNav">
 <ul class="navList">
 <li><a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntity.PersistException$.html" title="class in com.lightbend.lagom.javadsl.persistence"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
-<li><a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntity.PersistOne.html" title="class in com.lightbend.lagom.javadsl.persistence"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
+<li><a href="../../../../../com/lightbend/lagom/javadsl/persistence/PersistentEntity.PersistNone$.html" title="class in com.lightbend.lagom.javadsl.persistence"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../../../index.html?com/lightbend/lagom/javadsl/persistence/PersistentEntity.PersistNone.html" target="_top">Frames</a></li>
@@ -214,13 +292,13 @@ var activeTableTab = "activeTableTab";
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
-<li>Constr&nbsp;|&nbsp;</li>
+<li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
-<li>Constr&nbsp;|&nbsp;</li>
+<li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>
 </div>

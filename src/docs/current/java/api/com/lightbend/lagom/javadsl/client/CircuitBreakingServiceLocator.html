@@ -47,7 +47,7 @@ var activeTableTab = "activeTableTab";
 </div>
 <div class="subNav">
 <ul class="navList">
-<li>Prev&nbsp;Class</li>
+<li><a href="../../../../../com/lightbend/lagom/javadsl/client/CircuitBreakersPanel.html" title="interface in com.lightbend.lagom.javadsl.client"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
 <li><a href="../../../../../com/lightbend/lagom/javadsl/client/ConfigurationServiceLocator.html" title="class in com.lightbend.lagom.javadsl.client"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
@@ -141,7 +141,14 @@ implements <a href="../../../../../com/lightbend/lagom/javadsl/api/ServiceLocato
 <th class="colOne" scope="col">Constructor and Description</th>
 </tr>
 <tr class="altColor">
-<td class="colOne"><code><span class="memberNameLink"><a href="../../../../../com/lightbend/lagom/javadsl/client/CircuitBreakingServiceLocator.html#CircuitBreakingServiceLocator-com.lightbend.lagom.internal.client.CircuitBreakers-">CircuitBreakingServiceLocator</a></span>(com.lightbend.lagom.internal.client.CircuitBreakers&nbsp;circuitBreakers)</code>&nbsp;</td>
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../../../com/lightbend/lagom/javadsl/client/CircuitBreakingServiceLocator.html#CircuitBreakingServiceLocator-com.lightbend.lagom.internal.client.CircuitBreakers-">CircuitBreakingServiceLocator</a></span>(com.lightbend.lagom.internal.client.CircuitBreakers&nbsp;circuitBreakers)</code>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
+<div class="block"><span class="deprecationComment">Use constructor accepting <a href="../../../../../com/lightbend/lagom/javadsl/client/CircuitBreakersPanel.html" title="interface in com.lightbend.lagom.javadsl.client"><code>CircuitBreakersPanel</code></a> instead</span></div>
+</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../../../com/lightbend/lagom/javadsl/client/CircuitBreakingServiceLocator.html#CircuitBreakingServiceLocator-com.lightbend.lagom.javadsl.client.CircuitBreakersPanel-">CircuitBreakingServiceLocator</a></span>(<a href="../../../../../com/lightbend/lagom/javadsl/client/CircuitBreakersPanel.html" title="interface in com.lightbend.lagom.javadsl.client">CircuitBreakersPanel</a>&nbsp;circuitBreakersPanel)</code>&nbsp;</td>
 </tr>
 </table>
 </li>
@@ -179,7 +186,7 @@ implements <a href="../../../../../com/lightbend/lagom/javadsl/api/ServiceLocato
 <!--   -->
 </a>
 <h3>Methods inherited from interface&nbsp;com.lightbend.lagom.javadsl.api.<a href="../../../../../com/lightbend/lagom/javadsl/api/ServiceLocator.html" title="interface in com.lightbend.lagom.javadsl.api">ServiceLocator</a></h3>
-<code><a href="../../../../../com/lightbend/lagom/javadsl/api/ServiceLocator.html#locate-java.lang.String-">locate</a>, <a href="../../../../../com/lightbend/lagom/javadsl/api/ServiceLocator.html#locate-java.lang.String-com.lightbend.lagom.javadsl.api.Descriptor.Call-">locate</a></code></li>
+<code><a href="../../../../../com/lightbend/lagom/javadsl/api/ServiceLocator.html#locate-java.lang.String-">locate</a>, <a href="../../../../../com/lightbend/lagom/javadsl/api/ServiceLocator.html#locate-java.lang.String-com.lightbend.lagom.javadsl.api.Descriptor.Call-">locate</a>, <a href="../../../../../com/lightbend/lagom/javadsl/api/ServiceLocator.html#locateAll-java.lang.String-">locateAll</a>, <a href="../../../../../com/lightbend/lagom/javadsl/api/ServiceLocator.html#locateAll-java.lang.String-com.lightbend.lagom.javadsl.api.Descriptor.Call-">locateAll</a></code></li>
 </ul>
 </li>
 </ul>
@@ -195,13 +202,28 @@ implements <a href="../../../../../com/lightbend/lagom/javadsl/api/ServiceLocato
 <!--   -->
 </a>
 <h3>Constructor Detail</h3>
+<a name="CircuitBreakingServiceLocator-com.lightbend.lagom.javadsl.client.CircuitBreakersPanel-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>CircuitBreakingServiceLocator</h4>
+<pre>public&nbsp;CircuitBreakingServiceLocator(<a href="../../../../../com/lightbend/lagom/javadsl/client/CircuitBreakersPanel.html" title="interface in com.lightbend.lagom.javadsl.client">CircuitBreakersPanel</a>&nbsp;circuitBreakersPanel)</pre>
+</li>
+</ul>
 <a name="CircuitBreakingServiceLocator-com.lightbend.lagom.internal.client.CircuitBreakers-">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>CircuitBreakingServiceLocator</h4>
-<pre>public&nbsp;CircuitBreakingServiceLocator(com.lightbend.lagom.internal.client.CircuitBreakers&nbsp;circuitBreakers)</pre>
+<pre>@Deprecated
+public&nbsp;CircuitBreakingServiceLocator(com.lightbend.lagom.internal.client.CircuitBreakers&nbsp;circuitBreakers)</pre>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Use constructor accepting <a href="../../../../../com/lightbend/lagom/javadsl/client/CircuitBreakersPanel.html" title="interface in com.lightbend.lagom.javadsl.client"><code>CircuitBreakersPanel</code></a> instead</span></div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>circuitBreakers</code> - </dd>
+</dl>
 </li>
 </ul>
 </li>
@@ -274,7 +296,7 @@ implements <a href="../../../../../com/lightbend/lagom/javadsl/api/ServiceLocato
 </div>
 <div class="subNav">
 <ul class="navList">
-<li>Prev&nbsp;Class</li>
+<li><a href="../../../../../com/lightbend/lagom/javadsl/client/CircuitBreakersPanel.html" title="interface in com.lightbend.lagom.javadsl.client"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
 <li><a href="../../../../../com/lightbend/lagom/javadsl/client/ConfigurationServiceLocator.html" title="class in com.lightbend.lagom.javadsl.client"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">

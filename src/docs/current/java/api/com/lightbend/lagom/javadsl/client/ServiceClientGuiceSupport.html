@@ -104,6 +104,8 @@ var activeTableTab = "activeTableTab";
 <hr>
 <br>
 <pre>public interface <span class="typeNameLabel">ServiceClientGuiceSupport</span></pre>
+<div class="block">Applications that already use Guice as their DI framework may implement this interface to bind clients for Lagom
+ services.</div>
 </li>
 </ul>
 </div>
@@ -124,12 +126,15 @@ var activeTableTab = "activeTableTab";
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>default &lt;T&gt;&nbsp;void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/lightbend/lagom/javadsl/client/ServiceClientGuiceSupport.html#bindClient-java.lang.Class-">bindClient</a></span>(Class&lt;T&gt;&nbsp;clientInterface)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/lightbend/lagom/javadsl/client/ServiceClientGuiceSupport.html#bindClient-java.lang.Class-">bindClient</a></span>(Class&lt;T&gt;&nbsp;clientInterface)</code>
+<div class="block">Binds a client for <code>clientInterface</code> which Guice's Injector makes available
+ so client classes may declare the dependency on their <code>@Inject</code> annotated constructor.</div>
+</td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>default void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/lightbend/lagom/javadsl/client/ServiceClientGuiceSupport.html#bindServiceInfo-com.lightbend.lagom.javadsl.api.ServiceInfo-">bindServiceInfo</a></span>(<a href="../../../../../com/lightbend/lagom/javadsl/api/ServiceInfo.html" title="class in com.lightbend.lagom.javadsl.api">ServiceInfo</a>&nbsp;serviceInfo)</code>
-<div class="block">Provides the ServiceInfo to use Lagom service clients.</div>
+<div class="block">Registers a <a href="../../../../../com/lightbend/lagom/javadsl/api/ServiceInfo.html" title="class in com.lightbend.lagom.javadsl.api"><code>ServiceInfo</code></a> for this application.</div>
 </td>
 </tr>
 </table>
@@ -154,6 +159,12 @@ var activeTableTab = "activeTableTab";
 <li class="blockList">
 <h4>bindClient</h4>
 <pre>default&nbsp;&lt;T&gt;&nbsp;void&nbsp;bindClient(Class&lt;T&gt;&nbsp;clientInterface)</pre>
+<div class="block">Binds a client for <code>clientInterface</code> which Guice's Injector makes available
+ so client classes may declare the dependency on their <code>@Inject</code> annotated constructor.
+ <p>
+ Applications that want to consume Lagom services must provide a <a href="../../../../../com/lightbend/lagom/javadsl/api/ServiceInfo.html" title="class in com.lightbend.lagom.javadsl.api"><code>ServiceInfo</code></a>. Using
+ <a href="../../../../../com/lightbend/lagom/javadsl/client/ServiceClientGuiceSupport.html#bindClient-java.lang.Class-"><code>bindClient(Class)</code></a> requires providing a <a href="../../../../../com/lightbend/lagom/javadsl/api/ServiceInfo.html" title="class in com.lightbend.lagom.javadsl.api"><code>ServiceInfo</code></a> via
+ <a href="../../../../../com/lightbend/lagom/javadsl/client/ServiceClientGuiceSupport.html#bindServiceInfo-com.lightbend.lagom.javadsl.api.ServiceInfo-"><code>bindServiceInfo(ServiceInfo)</code></a>.</div>
 </li>
 </ul>
 <a name="bindServiceInfo-com.lightbend.lagom.javadsl.api.ServiceInfo-">
@@ -163,7 +174,13 @@ var activeTableTab = "activeTableTab";
 <li class="blockList">
 <h4>bindServiceInfo</h4>
 <pre>default&nbsp;void&nbsp;bindServiceInfo(<a href="../../../../../com/lightbend/lagom/javadsl/api/ServiceInfo.html" title="class in com.lightbend.lagom.javadsl.api">ServiceInfo</a>&nbsp;serviceInfo)</pre>
-<div class="block">Provides the ServiceInfo to use Lagom service clients.</div>
+<div class="block">Registers a <a href="../../../../../com/lightbend/lagom/javadsl/api/ServiceInfo.html" title="class in com.lightbend.lagom.javadsl.api"><code>ServiceInfo</code></a> for this application. This step is required to interact with Lagom services.
+ <p>
+ This method must be invoked exactly once.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>serviceInfo</code> - the metadata identifying this Lagom Service.</dd>
+</dl>
 </li>
 </ul>
 </li>

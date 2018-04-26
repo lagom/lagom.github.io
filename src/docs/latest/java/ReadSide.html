@@ -144,15 +144,18 @@ public BlogServiceImpl(
 <p>The default configuration should be good starting point, and the following settings may later be amended to customize the behavior if needed.</p>
 <pre class="prettyprint"><code class="language-conf">lagom.persistence.read-side {
 
+  # how long should we wait when retrieving the last known offset
+  offset-timeout = 5s
+
   # Exponential backoff for failures in ReadSideProcessor
   failure-exponential-backoff {
     # minimum (initial) duration until processor is started again
     # after failure
     min = 3s
-    
+
     # the exponential back-off is capped to this duration
     max = 30s
-    
+
     # additional random delay is based on this factor
     random-factor = 0.2
   }

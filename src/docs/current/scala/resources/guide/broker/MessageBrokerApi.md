@@ -16,7 +16,7 @@ Data flowing through a topic is serialized to JSON by default. Of course, it is 
 
 Kafka will distribute messages for a particular topic across many partitions, so that the topic can scale. Messages sent to different partitions may be processed out of order, so if the ordering of the messages you are publishing matters, you need to ensure that the messages are partitioned in such a way that order is preserved.  Typically, this means ensuring each message for a particular entity goes to the same partition.
 
-Lagom allows this by allowing you to configure a partition key strategy, which extracts the partition key out of a message. Kafka will then use this key to help decide what partition to send each message to. The partition can be selected using the [`partitionKeyStrategy`](api/com/lightbend/lagom/scaladsl/api/broker/kafka/KafkaProperties$.html#partitionKeyStrategy[Message]:com.lightbend.lagom.scaladsl.api.Descriptor.Property[Message,com.lightbend.lagom.scaladsl.api.broker.kafka.PartitionKeyStrategy[Message]]) property, by passing a [`PartitionKeyStrategy`](api/com/lightbend/lagom/scaladsl/api/broker/kafka/PartitionKeyStrategy.html) to it: 
+Lagom allows this by allowing you to configure a partition key strategy, which extracts the partition key out of a message. Kafka will then use this key to help decide what partition to send each message to. The partition can be selected using the [`partitionKeyStrategy`](api/com/lightbend/lagom/scaladsl/api/broker/kafka/KafkaProperties$.html#partitionKeyStrategy[Message]:com.lightbend.lagom.scaladsl.api.Descriptor.Property[Message,com.lightbend.lagom.scaladsl.api.broker.kafka.PartitionKeyStrategy[Message]]) property, by passing a [`PartitionKeyStrategy`](api/com/lightbend/lagom/scaladsl/api/broker/kafka/PartitionKeyStrategy.html) to it:
 
 @[withTopics](code/docs/scaladsl/mb/BlogPostService.scala)
 
@@ -36,7 +36,7 @@ Note that the read-side event stream you passed to the topic producer is "activa
 
 ### Offset storage
 
-Lagom will use your configured persistence API provider to store the offsets for your event streams. To read more about offset storage, see the [[Cassandra offset documentation|ReadSideCassandra#Building-the-read-side-handler]] and [[Relational database offset documentation|ReadSideRDBMS#Building-the-read-side-handler]].
+Lagom will use your configured persistence API provider to store the offsets for your event streams. To read more about offset storage, see the [[Cassandra offset documentation|ReadSideCassandra#Building-the-read-side-handler]], [[JDBC database offset documentation|ReadSideJDBC#Building-the-read-side-handler]] and [[Slick database offset documentation|ReadSideSlick#Building-the-read-side-handler]].
 
 ## Subscribe to a topic
 
@@ -47,6 +47,14 @@ To subscribe to a topic, a service just needs to call [`Topic.subscribe`](api/co
 When calling [`Topic.subscribe`](api/com/lightbend/lagom/scaladsl/api/broker/Topic.html#subscribe:com.lightbend.lagom.scaladsl.api.broker.Subscriber[Message]) you will get back a [`Subscriber`](api/com/lightbend/lagom/scaladsl/api/broker/Subscriber.html) instance. In the above code snippet we have subscribed to the `greetings` topic using at-least-once delivery semantics. That means each message published to the `greetings` topic is received at least once, but possibly more. The subscriber also offers a [`atMostOnceSource`](api/com/lightbend/lagom/scaladsl/api/broker/Subscriber.html#atMostOnceSource:akka.stream.scaladsl.Source[Message,_]) that gives you at-most-once delivery semantics. If in doubt, prefer using at-least-once delivery semantics.
 
 Finally, subscribers are grouped together via [`Subscriber.withGroupId`](api/com/lightbend/lagom/scaladsl/api/broker/Subscriber.html#withGroupId\(groupId:String\):com.lightbend.lagom.scaladsl.api.broker.Subscriber[Message]). A subscriber group allows many nodes in your cluster to consume a message stream while ensuring that each message is only handled once by each node in your cluster.  Without subscriber groups, all of your nodes for a particular service would get every message in the stream, leading to their processing being duplicated.  By default, Lagom will use a group id that has the same name as the service consuming the topic.
+
+### Consuming message metadata
+
+Your broker implementation may provide additional metadata with messages which you can consume. This can be accessed by invoking the [`Subscriber.withMetadata`](api/com/lightbend/lagom/scaladsl/api/broker/Subscriber.html#withMetadata:com.lightbend.lagom.scaladsl.api.broker.Subscriber[com.lightbend.lagom.scaladsl.api.broker.Message[Payload]]) method, which returns a subscriber that wraps the messages in a [`Message`](api/com/lightbend/lagom/scaladsl/api/broker/Message.html).
+
+@[subscribe-to-topic-with-metadata](code/docs/scaladsl/mb/AnotherServiceImpl.scala)
+
+The [`messageKeyAsString`](api/com/lightbend/lagom/scaladsl/api/broker/Message.html#messageKeyAsString:String) method is provided as a convenience for accessing the message key. Other properties can be accessed using the [`get`](api/com/lightbend/lagom/scaladsl/api/broker/Message.html#get\(com.lightbend.lagom.scaladsl.api.broker.MetadataKey[Metadata]\):Metadata) method. A full list of the metadata keys available for Kafka can be found [here](api/com/lightbend/lagom/scaladsl/broker/kafka/KafkaMetadataKeys$.html).
 
 ## Polymorphic event streams
 
@@ -79,7 +87,7 @@ While the JSON for the `BlogPostPublished` event will look like this:
 }
 ```
 
-You can do that using [Play JSON transformers](https://www.playframework.com/documentation/2.5.x/ScalaJsonTransformers#Case-5:-Put-a-given-value-in-a-new-branch): 
+You can do that using [Play JSON transformers](https://www.playframework.com/documentation/2.6.x/ScalaJsonTransformers#Case-5:-Put-a-given-value-in-a-new-branch):
 
 @[polymorphic-play-json](code/docs/scaladsl/mb/BlogPostService.scala)
 

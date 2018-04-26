@@ -1,13 +1,13 @@
 <h1 id="Production"><a class="section-marker" href="#Production">§</a>Production</h1>
-<p>Lagom doesn&rsquo;t prescribe any particular production environment. If you are interested in deploying on <a href="https://kubernetes.io/">Kubernetes</a>, see our guide that demonstrates <a href="https://developer.lightbend.com/guides/k8s-microservices/">how to deploy the Chirper example application</a>.</p><h2 id="Deployment-considerations"><a class="section-marker" href="#Deployment-considerations">§</a>Deployment considerations</h2>
-<p>The deployment platform determines the type of archive you will need to use for packaging your microservices as well as the way you set up service location. For packaging: </p>
+<p>Lagom doesn&rsquo;t prescribe any particular production environment. If you are interested in deploying on <a href="https://kubernetes.io/">Kubernetes</a>, see our guide that demonstrates <a href="https://developer.lightbend.com/guides/lagom-kubernetes-k8s-deploy-microservices/">how to deploy the Chirper example application</a>.</p><h2 id="Deployment-considerations"><a class="section-marker" href="#Deployment-considerations">§</a>Deployment considerations</h2>
+<p>The deployment platform determines the type of archive you will need to use for packaging your microservices as well as the way you set up service location. For packaging:</p>
 <ul>
   <li>
   <p>Lagom sbt support leverages the <a href="http://www.scala-sbt.org/sbt-native-packager/">sbt-native-packager</a> to produce archives of various types. By default zip archives can be produced, but you can also produce tar.gz, MSI, debian, RPM, Docker and more.</p></li>
   <li>
   <p>Maven has a variety of plugins to produce artifacts for various platforms.</p></li>
 </ul>
-<p>At runtime, services need to locate each other. This requires you to provide an implementation of a <a href="api/index.html?com/lightbend/lagom/javadsl/api/ServiceLocator.html">ServiceLocator</a>. And, the deployment platform you choose might impose its own requirements on configuration. </p>
+<p>At runtime, services need to locate each other. This requires you to provide an implementation of a <a href="api/index.html?com/lightbend/lagom/javadsl/api/ServiceLocator.html">ServiceLocator</a>. And, the deployment platform you choose might impose its own requirements on configuration.</p>
 <p>The Cassandra module provided by <code>akka-persistence-cassandra</code> uses static lookup by default. Lagom overrides that behavior by implementing a Session provider based on service location. That allows all services to continue to operate without the need to redeploy if/when the Cassandra <code>contact-points</code> are updated or fail. Using this approach provides higher resiliency. However, it is possible to hardcode the list of <code>contact-points</code> where Cassandra may be located even when the server is stared with a dynamic service locator as described in the section below.</p><h3 id="Using-static-Cassandra-contact-points"><a class="section-marker" href="#Using-static-Cassandra-contact-points">§</a>Using static Cassandra contact points</h3>
 <p>If you want to use dynamic service location for your services but need to statically locate Cassandra, you can set up <code>contact-points</code> in the <code>application.conf</code> file for your service. This disables Lagom&rsquo;s <code>ConfigSessionProvider</code> and falls back to that provided in <code>akka-persistence-cassandra</code> which uses the list of endpoints listed in <code>contact-points</code>. The <code>application.conf</code> configuration applies in all environments (development and production) unless overridden. See developer mode settings on <a href="CassandraServer.html#Connecting-to-a-locally-running-Cassandra-instance">overriding Cassandra setup in Dev Mode</a> for more information on settings up Cassandra in dev mode.</p>
 <p>The following example shows how to set <code>contact-points</code> in the <code>application.conf</code> file:</p>
@@ -49,17 +49,17 @@ lagom.persistence.read-side.cassandra {
 <pre class="prettyprint"><code class="language-java">import com.google.inject.AbstractModule;
 import com.lightbend.lagom.javadsl.api.ServiceLocator;
 import com.lightbend.lagom.javadsl.client.ConfigurationServiceLocator;
-import play.Configuration;
 import play.Environment;
+import com.typesafe.config.Config;
 
 public class ConfigurationServiceLocatorModule extends AbstractModule {
 
     private final Environment environment;
-    private final Configuration configuration;
+    private final Config config;
 
-    public ConfigurationServiceLocatorModule(Environment environment, Configuration configuration) {
+    public ConfigurationServiceLocatorModule(Environment environment, Config config) {
         this.environment = environment;
-        this.configuration = configuration;
+        this.config = config;
     }
 
     @Override

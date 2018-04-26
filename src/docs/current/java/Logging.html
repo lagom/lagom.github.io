@@ -16,7 +16,7 @@ public class LoggingExample {
 <p>If you&rsquo;re using maven, you&rsquo;ll need to add the Lagom logback dependency to your classpath to get Logback support:</p>
 <pre class="prettyprint"><code class="language-xml">&lt;dependency&gt;
     &lt;groupId&gt;com.lightbend.lagom&lt;/groupId&gt;
-    &lt;artifactId&gt;lagom-logback_2.11&lt;/artifactId&gt;
+    &lt;artifactId&gt;lagom-logback_${scala.binary.version}&lt;/artifactId&gt;
     &lt;version&gt;${lagom.version}&lt;/version&gt;
 &lt;/dependency&gt;
 </code></pre>
@@ -47,7 +47,7 @@ public class Log4j2Example {
 <p>If you&rsquo;re using maven, you&rsquo;ll need to add the Lagom log4j2 dependency to your classpath to get Log4j 2 support:</p>
 <pre class="prettyprint"><code class="language-xml">&lt;dependency&gt;
     &lt;groupId&gt;com.lightbend.lagom&lt;/groupId&gt;
-    &lt;artifactId&gt;lagom-log4j2_2.11&lt;/artifactId&gt;
+    &lt;artifactId&gt;lagom-log4j2_${scala.binary.version}&lt;/artifactId&gt;
     &lt;version&gt;${lagom.version}&lt;/version&gt;
 &lt;/dependency&gt;
 </code></pre>

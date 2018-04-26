@@ -150,7 +150,7 @@
 <p>An sbt build is defined in one or more <code>*.sbt</code> files in the build&rsquo;s root directory. It&rsquo;s conventional to have a single file named <code>build.sbt</code>; you can split it into multiple files later if it becomes unwieldy.</p>
 <p>sbt build files are defined using a Scala-based DSL. Simple builds use only a small subset of the DSL, so there&rsquo;s no need to spend any time learning Scala. If you use an sbt Giter8 to get started, you&rsquo;ll have a working build from the start. From there, you&rsquo;ll probably only need to make small edits, or copy-and-paste existing code.</p><h3 id="Setting-the-Scala-version"><a class="section-marker" href="#Setting-the-Scala-version">§</a>Setting the Scala version</h3>
 <p>Even though you&rsquo;ll write your services in Java, Lagom itself uses Scala, so every Lagom build must specify a Scala version, like this:</p>
-<pre class="prettyprint"><code class="language-sbt">scalaVersion in ThisBuild := &quot;2.11.7&quot;</code></pre><h3 id="Defining-a-service1"><a class="section-marker" href="#Defining-a-service1">§</a>Defining a service</h3>
+<pre class="prettyprint"><code class="language-sbt">scalaVersion in ThisBuild := &quot;2.11.12&quot;</code></pre><h3 id="Defining-a-service1"><a class="section-marker" href="#Defining-a-service1">§</a>Defining a service</h3>
 <p>Next we need to define the projects. Recall that each service has at least two projects, API and implementation. First we&rsquo;ll define the <code>hello-api</code> project.</p>
 <p>A Lagom API project is an ordinary sbt project. Our first project looks like this:</p>
 <pre class="prettyprint"><code class="language-sbt">lazy val `hello-api` = (project in file(&quot;hello-api&quot;))

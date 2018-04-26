@@ -102,12 +102,12 @@ public interface AbstractUser {
 </ul><h3 id="Adding-Immutables-to-a-Maven-project"><a class="section-marker" href="#Adding-Immutables-to-a-Maven-project">§</a>Adding Immutables to a Maven project</h3>
 <pre class="prettyprint"><code class="language-xml">&lt;dependency&gt;
     &lt;groupId&gt;com.lightbend.lagom&lt;/groupId&gt;
-    &lt;artifactId&gt;lagom-javadsl-immutables_2.11&lt;/artifactId&gt;
+    &lt;artifactId&gt;lagom-javadsl-immutables_${scala.binary.version}&lt;/artifactId&gt;
     &lt;version&gt;${lagom.version}&lt;/version&gt;
 &lt;/dependency&gt;
 </code></pre><h3 id="Adding-Immutables-to-an-sbt-project"><a class="section-marker" href="#Adding-Immutables-to-an-sbt-project">§</a>Adding Immutables to an sbt project</h3>
 <pre class="prettyprint"><code class="language-sbt">libraryDependencies += lagomJavadslImmutables</code></pre><h3 id="Integrating-Immmutables-with-an-IDE"><a class="section-marker" href="#Integrating-Immmutables-with-an-IDE">§</a>Integrating Immmutables with an IDE</h3>
-<p>Immutables integrates with popular IDEs. Follow the instructions for <a href="ImmutablesInIDEs.html#Eclipse">Eclipse</a> or <a href="ImmutablesInIDEs.html#IntelliJ-IDEA">IntelliJ IDEA</a> to add the Immutables annotation processor to your IDE. </p><h2 id="Collections"><a class="section-marker" href="#Collections">§</a>Collections</h2>
+<p>Immutables integrates with popular IDEs. Follow the instructions for <a href="ImmutablesInIDEs.html#Eclipse">Eclipse</a> or <a href="ImmutablesInIDEs.html#IntelliJ-IDEA">IntelliJ IDEA</a> to add the Immutables annotation processor to your IDE.</p><h2 id="Collections"><a class="section-marker" href="#Collections">§</a>Collections</h2>
 <p>If an immutable object contains a collection, that collection must be immutable too.</p>
 <p>Here is an example of an object with a mutable collection in it:</p>
 <pre class="prettyprint"><code class="language-java">public class MutableUser2 {

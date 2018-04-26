@@ -9,9 +9,13 @@ lagomCassandraCleanOnStart in ThisBuild := false
 
 //#cassandra-jvm-options
 lagomCassandraJvmOptions in ThisBuild :=
-  Seq("-Xms256m", "-Xmx1024m", "-Dcassandra.jmx.local.port=4099",
-    "-DCassandraLauncher.configResource=dev-embedded-cassandra.yaml") // these are actually the default jvm options
+  Seq("-Xms256m", "-Xmx1024m", "-Dcassandra.jmx.local.port=4099") // these are actually the default jvm options
 //#cassandra-jvm-options
+
+//#cassandra-yaml-config
+lagomCassandraYamlFile in ThisBuild :=
+  Some((baseDirectory in ThisBuild).value / "project" / "cassandra.yaml")
+//#cassandra-yaml-config
 
 //#cassandra-boot-waiting-time
 import scala.concurrent.duration._ // Mind that the import is needed.
@@ -21,3 +25,8 @@ lagomCassandraMaxBootWaitingTime in ThisBuild := 0.seconds
 //#cassandra-enabled
 lagomCassandraEnabled in ThisBuild := false
 //#cassandra-enabled
+
+//#local-instance
+lagomCassandraEnabled in ThisBuild := false
+lagomUnmanagedServices in ThisBuild := Map("cas_native" -> "http://localhost:9042")
+//#local-instance

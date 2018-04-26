@@ -71,12 +71,33 @@
 <h1 title="Deprecated API" class="title">Deprecated API</h1>
 <h2 title="Contents">Contents</h2>
 <ul>
+<li><a href="#interface">Deprecated Interfaces</a></li>
 <li><a href="#class">Deprecated Classes</a></li>
 <li><a href="#method">Deprecated Methods</a></li>
 <li><a href="#constructor">Deprecated Constructors</a></li>
 </ul>
 </div>
-<div class="contentContainer"><a name="class">
+<div class="contentContainer"><a name="interface">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<table class="deprecatedSummary" border="0" cellpadding="3" cellspacing="0" summary="Deprecated Interfaces table, listing deprecated interfaces, and an explanation">
+<caption><span>Deprecated Interfaces</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colOne" scope="col">Interface and Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colOne"><a href="com/lightbend/lagom/javadsl/persistence/cassandra/CassandraConfig.html" title="interface in com.lightbend.lagom.javadsl.persistence.cassandra">com.lightbend.lagom.javadsl.persistence.cassandra.CassandraConfig</a>
+<div class="block"><span class="deprecationComment">This class became obsolete and will be removed on next release. Since 1.4.0.</span></div>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<a name="class">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -88,23 +109,18 @@
 </tr>
 <tbody>
 <tr class="altColor">
+<td class="colOne"><a href="com/lightbend/lagom/javadsl/persistence/cassandra/CassandraContactPoint.html" title="class in com.lightbend.lagom.javadsl.persistence.cassandra">com.lightbend.lagom.javadsl.persistence.cassandra.CassandraContactPoint</a>
+<div class="block"><span class="deprecationComment">since 1.4.0 - This class became obsolete and will be removed on next release.</span></div>
+</td>
+</tr>
+<tr class="rowColor">
 <td class="colOne"><a href="com/lightbend/lagom/javadsl/persistence/cassandra/CassandraReadSideProcessor.html" title="class in com.lightbend.lagom.javadsl.persistence.cassandra">com.lightbend.lagom.javadsl.persistence.cassandra.CassandraReadSideProcessor</a>
 <div class="block"><span class="deprecationComment">Use ReadSideProcessor instead with CassandraReadSide builder. Since 1.2.0.</span></div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colOne"><a href="com/lightbend/lagom/javadsl/api/ConfigurationServiceLocator.html" title="class in com.lightbend.lagom.javadsl.api">com.lightbend.lagom.javadsl.api.ConfigurationServiceLocator</a>
 <div class="block"><span class="deprecationComment">use <a href="com/lightbend/lagom/javadsl/client/ConfigurationServiceLocator.html" title="class in com.lightbend.lagom.javadsl.client"><code>ConfigurationServiceLocator</code></a> instead.</span></div>
-</td>
-</tr>
-<tr class="altColor">
-<td class="colOne"><a href="com/lightbend/lagom/javadsl/persistence/testkit/TestUtil.html" title="class in com.lightbend.lagom.javadsl.persistence.testkit">com.lightbend.lagom.javadsl.persistence.testkit.TestUtil</a>
-<div class="block"><span class="deprecationComment">Use com.lightbend.lagom.javadsl.persistence.cassandra.testkit.TestUtil instead. Since 1.2.0.</span></div>
-</td>
-</tr>
-<tr class="rowColor">
-<td class="colOne"><a href="com/lightbend/lagom/javadsl/persistence/testkit/TestUtil$.html" title="class in com.lightbend.lagom.javadsl.persistence.testkit">com.lightbend.lagom.javadsl.persistence.testkit.TestUtil$</a>
-<div class="block"><span class="deprecationComment">Use com.lightbend.lagom.javadsl.persistence.cassandra.testkit.TestUtil instead. Since 1.2.0.</span></div>
 </td>
 </tr>
 </tbody>
@@ -139,21 +155,27 @@
 </td>
 </tr>
 <tr class="rowColor">
+<td class="colOne"><a href="com/lightbend/lagom/javadsl/persistence/PersistentEntityRegistry.html#gracefulShutdown-scala.concurrent.duration.FiniteDuration-">com.lightbend.lagom.javadsl.persistence.PersistentEntityRegistry.gracefulShutdown(FiniteDuration)</a>
+<div class="block"><span class="deprecationComment">As of Lagom 1.4, this method has no effect and no longer needs to be called
+ <p></span></div>
+</td>
+</tr>
+<tr class="altColor">
 <td class="colOne"><a href="com/lightbend/lagom/javadsl/api/Descriptor.html#publishing-com.lightbend.lagom.javadsl.api.Descriptor.TopicCall...-">com.lightbend.lagom.javadsl.api.Descriptor.publishing(Descriptor.TopicCall&lt;?&gt;...)</a>
 <div class="block"><span class="deprecationComment">use <a href="com/lightbend/lagom/javadsl/api/Descriptor.html#withTopics-com.lightbend.lagom.javadsl.api.Descriptor.TopicCall...-"><code>Descriptor.withTopics(TopicCall[])</code></a> instead.</span></div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colOne"><a href="com/lightbend/lagom/javadsl/persistence/cassandra/CassandraReadSide.html#register-java.lang.Class-">com.lightbend.lagom.javadsl.persistence.cassandra.CassandraReadSide.register(Class&lt;? extends CassandraReadSideProcessor&lt;Event&gt;&gt;)</a>
 <div class="block"><span class="deprecationComment">Use the builder method to create and register a Cassandra read side processor.</span></div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colOne"><a href="com/lightbend/lagom/javadsl/testkit/ServiceTest.Setup.html#withConfigureBuilder-java.util.function.Function-">com.lightbend.lagom.javadsl.testkit.ServiceTest.Setup.withConfigureBuilder(Function&lt;GuiceApplicationBuilder, GuiceApplicationBuilder&gt;)</a>
 <div class="block"><span class="deprecationComment">Use configureBuilder instead. Since 1.2.0.</span></div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colOne"><a href="com/lightbend/lagom/javadsl/testkit/ServiceTest.Setup.html#withPersistence-boolean-">com.lightbend.lagom.javadsl.testkit.ServiceTest.Setup.withPersistence(boolean)</a>
 <div class="block"><span class="deprecationComment">Use withCassandra instead. Since 1.2.0.</span></div>
 </td>
@@ -173,6 +195,26 @@
 <th class="colOne" scope="col">Constructor and Description</th>
 </tr>
 <tbody>
+<tr class="altColor">
+<td class="colOne"><a href="com/lightbend/lagom/javadsl/client/CircuitBreakingServiceLocator.html#CircuitBreakingServiceLocator-com.lightbend.lagom.internal.client.CircuitBreakers-">com.lightbend.lagom.javadsl.client.CircuitBreakingServiceLocator(CircuitBreakers)</a>
+<div class="block"><span class="deprecationComment">Use constructor accepting <a href="com/lightbend/lagom/javadsl/client/CircuitBreakersPanel.html" title="interface in com.lightbend.lagom.javadsl.client"><code>CircuitBreakersPanel</code></a> instead</span></div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="com/lightbend/lagom/javadsl/api/ConfigurationServiceLocator.html#ConfigurationServiceLocator-play.Configuration-">com.lightbend.lagom.javadsl.api.ConfigurationServiceLocator(Configuration)</a>
+<div class="block"><span class="deprecationComment">use <a href="com/lightbend/lagom/javadsl/api/ConfigurationServiceLocator.html#ConfigurationServiceLocator-com.typesafe.config.Config-"><code>ConfigurationServiceLocator.ConfigurationServiceLocator(Config)</code></a> instead.</span></div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="com/lightbend/lagom/javadsl/client/ConfigurationServiceLocator.html#ConfigurationServiceLocator-play.Configuration-com.lightbend.lagom.internal.client.CircuitBreakers-">com.lightbend.lagom.javadsl.client.ConfigurationServiceLocator(Configuration, CircuitBreakers)</a>
+<div class="block"><span class="deprecationComment">Use constructor accepting <a href="com/lightbend/lagom/javadsl/client/CircuitBreakersPanel.html" title="interface in com.lightbend.lagom.javadsl.client"><code>CircuitBreakersPanel</code></a> instead</span></div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="com/lightbend/lagom/javadsl/persistence/PersistentEntityRef.html#PersistentEntityRef-java.lang.String-akka.actor.ActorRef-akka.actor.ActorSystem-scala.concurrent.duration.FiniteDuration-">com.lightbend.lagom.javadsl.persistence.PersistentEntityRef(String, ActorRef, ActorSystem, FiniteDuration)</a>
+<div class="block"><span class="deprecationComment">Use the other constructor.</span></div>
+</td>
+</tr>
 <tr class="altColor">
 <td class="colOne"><a href="com/lightbend/lagom/javadsl/api/ServiceInfo.html#ServiceInfo-java.lang.String-">com.lightbend.lagom.javadsl.api.ServiceInfo(String)</a>
 <div class="block"><span class="deprecationComment">use <a href="com/lightbend/lagom/javadsl/api/ServiceInfo.html#ServiceInfo-java.lang.String-org.pcollections.PMap-"><code>ServiceInfo.ServiceInfo(String, PMap)</code></a> instead.</span></div>

@@ -141,9 +141,4 @@ lagom.circuit-breaker {
   default.call-timeout = 5s
 }
 </code></pre>
-<p>Information about the status of the circuit breakers and some metrics for throughput and latency are provided by the built in <code>MetricsService</code> that is available at the following paths of each service:</p>
-<ul>
-  <li><code>/_status/circuit-breaker/current</code> - Snapshot of current circuit breaker status</li>
-  <li><code>/_status/circuit-breaker/stream</code> - Stream of circuit breaker status</li>
-</ul>
 <p><a href="https://www.lightbend.com/products/monitoring">Lightbend Monitoring</a> will provide metrics for Lagom circuit breakers, including aggregated views of the information for all nodes in the cluster.</p>
