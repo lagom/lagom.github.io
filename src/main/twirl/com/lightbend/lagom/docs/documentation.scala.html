@@ -91,10 +91,12 @@
             var useScalaFacetFilter = window.location.href.split('/').includes("scala");
             if (useScalaFacetFilter) {
                 lagomFacetFilters.push('language:scala');
-                akkaFacetFilters.push('language:scala');
+                // The Akka faceting for language is not active. Instead, the paradox grouping is used.
+                // akkaFacetFilters.push('language:scala');
             } else {
                 lagomFacetFilters.push('language:java');
-                akkaFacetFilters.push('language:java');
+                // The Akka faceting for language is not active. Instead, the paradox grouping is used.
+                // akkaFacetFilters.push('language:java');
             }
 
 
