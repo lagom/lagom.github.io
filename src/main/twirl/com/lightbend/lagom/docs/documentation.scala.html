@@ -9,7 +9,8 @@
 
 @main(Some(context.title), canonical) { @* Header *@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css" />
-    @for(css <- context.resources.stylesheets) {<link rel="stylesheet" type="text/css" href="@css"/>
+    @for(css <- context.resources.stylesheets) {
+        <link rel="stylesheet" type="text/css" href="@css"/>
     }
 } { @* Footer *@
     <script type="text/javascript" src="//cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
@@ -17,11 +18,11 @@
         <!-- Cross-site search. This is using Algolia's autocomplete.js  -->
     <script>
             var clientLagom = algoliasearch('BH4D9OD16A', '77ef1e29e6bddfca861f7a42cc51725e');
-            var clientAkka  = algoliasearch('BH4D9OD16A', '543bad5ad786495d9ccd445ed34ed082');
-            var clientPlay  = algoliasearch('BH4D9OD16A', 'a0b34e68c804cf96e76adcb02d47159b');
+            var clientAkka = algoliasearch('BH4D9OD16A', '543bad5ad786495d9ccd445ed34ed082');
+            var clientPlay = algoliasearch('BH4D9OD16A', 'a0b34e68c804cf96e76adcb02d47159b');
             var lagomIndex = clientLagom.initIndex('lagomframework');
-            var akkaIndex  = clientAkka.initIndex('akka_io');
-            var playIndex  = clientPlay.initIndex('playframework');
+            var akkaIndex = clientAkka.initIndex('akka_io');
+            var playIndex = clientPlay.initIndex('playframework');
 
             var displayValue = function (suggestion, level) {
                 if (level === 0)
@@ -33,77 +34,89 @@
                 }
             };
             var displaySnippet = function (suggestion) {
-              if(typeof suggestion._snippetResult !== 'undefined'){
-                return '<div class="algolia-docsearch-suggestion--text">' + suggestion._snippetResult.content.value + '</div>'
-              } else {
-                return ''
-              }
+                if (typeof suggestion._snippetResult !== 'undefined') {
+                    return '<div class="algolia-docsearch-suggestion--text">' + suggestion._snippetResult.content.value + '</div>'
+                } else {
+                    return ''
+                }
             }
 
-            var wrap = function(content, wrapper){
-              if(typeof wrapper !== 'undefined'){
-                return '<span class='+wrapper+'>' + content + '</span>';
-              } else {
-                return content;
-              }
+            var wrap = function (content, wrapper) {
+                if (typeof wrapper !== 'undefined') {
+                    return '<span class=' + wrapper + '>' + content + '</span>';
+                } else {
+                    return content;
+                }
             }
 
-            var buildIndexSettings = function(_indexObj, _hitsPerPage, _faceFilters, title, useFooter, wrapper) {
-              var _header = wrap('<span class="algolia-docsearch-suggestion algolia-docsearch-suggestion__main algolia-docsearch-suggestion__secondary algolia-docsearch-suggestion--category-header ">'+title+'</span>', wrapper);
-              var _templates =  {
-                                    header: _header,
-                                    suggestion: function(suggestion) {
-                                        var suggestionHtml = '<div class="algolia-docsearch-suggestion algolia-docsearch-suggestion__secondary" style="white-space: normal;">' +
-                                         '<div class="algolia-docsearch-suggestion--wrapper">' +
-                                            '<div class="algolia-docsearch-suggestion--subcategory-column ">' +
-                                                '<span class="algolia-docsearch-suggestion--subcategory-column-text">' + displayValue(suggestion, 0) + '</span>' +
-                                            '</div>' +
-                                            '<div class="algolia-docsearch-suggestion--content">' +
-                                                '<div class="algolia-docsearch-suggestion--subcategory-inline ">' + displayValue(suggestion, 1) + '</div>' +
-                                                '<div class="algolia-docsearch-suggestion--title algolia-docsearch-suggestion--duplicate-content">' + displayValue(suggestion, 2)  +'</div>' +
-                                                displaySnippet(suggestion) +
-                                            '</div>' +
-                                        '</div>'+
-                                      '</div>';
-                                      return wrap(suggestionHtml, wrapper)
-                                    }
-                                };
-              if(useFooter){
-                _templates['footer'] = '<div class="algolia-docsearch-footer"><a class="algolia-docsearch-footer--logo" href="https://www.algolia.com/docsearch">Algolia</a></div>';
-              }
+            var buildIndexSettings = function (_indexObj, _hitsPerPage, _faceFilters, title, useFooter, wrapper) {
+                var _header = wrap('<span class="algolia-docsearch-suggestion algolia-docsearch-suggestion__main algolia-docsearch-suggestion__secondary algolia-docsearch-suggestion--category-header ">' + title + '</span>', wrapper);
+                var _templates = {
+                    header: _header,
+                    suggestion: function (suggestion) {
+                        var suggestionHtml = '<div class="algolia-docsearch-suggestion algolia-docsearch-suggestion__secondary" style="white-space: normal;">' +
+                                '<div class="algolia-docsearch-suggestion--wrapper">' +
+                                '<div class="algolia-docsearch-suggestion--subcategory-column ">' +
+                                '<span class="algolia-docsearch-suggestion--subcategory-column-text">' + displayValue(suggestion, 0) + '</span>' +
+                                '</div>' +
+                                '<div class="algolia-docsearch-suggestion--content">' +
+                                '<div class="algolia-docsearch-suggestion--subcategory-inline ">' + displayValue(suggestion, 1) + '</div>' +
+                                '<div class="algolia-docsearch-suggestion--title algolia-docsearch-suggestion--duplicate-content">' + displayValue(suggestion, 2) + '</div>' +
+                                displaySnippet(suggestion) +
+                                '</div>' +
+                                '</div>' +
+                                '</div>';
+                        return wrap(suggestionHtml, wrapper)
+                    }
+                };
+                if (useFooter) {
+                    _templates['footer'] = '<div class="algolia-docsearch-footer"><a class="algolia-docsearch-footer--logo" href="https://www.algolia.com/docsearch">Algolia</a></div>';
+                }
 
-              return {
-                  source: autocomplete.sources.hits(
-                    _indexObj,
-                    {hitsPerPage: _hitsPerPage, facetFilters: _faceFilters }
-                  )
-                  ,
-                  templates: _templates
-              };
+                return {
+                    source: autocomplete.sources.hits(
+                            _indexObj,
+                            {hitsPerPage: _hitsPerPage, facetFilters: _faceFilters}
+                    )
+                    ,
+                    templates: _templates
+                };
 
+            };
+
+            var lagomFacetFilters = ['version:current'];
+            var akkaFacetFilters = [];
+            var playFacetFilters = ['version:2.6.x', 'tags:en'];
+
+            var useScalaFacetFilter = window.location.href.split('/').includes("scala");
+            if (useScalaFacetFilter) {
+                lagomFacetFilters.push('language:scala');
+                akkaFacetFilters.push('language:scala');
+            } else {
+                lagomFacetFilters.push('language:java');
+                akkaFacetFilters.push('language:java');
             }
+
 
             autocomplete('#cross-docs-search',
-                    { hint: false },
+                    {hint: false},
                     [
-                      // TODO: parameterize language depending on current page
-                      buildIndexSettings(lagomIndex, 5, [ 'language:scala', 'version:current' ], "Lagom Documentation", false)
-                      ,
-                      // TODO: parameterize language depending on current page
-                      buildIndexSettings(akkaIndex, 2, [ 'language:scala' ], "Akka Documentation", false, "akka")
-                      ,
-                      buildIndexSettings(playIndex, 2, ['version:2.6.x', 'tags:en'], "Play Documentation", true, "play")
+                        buildIndexSettings(lagomIndex, 5, lagomFacetFilters, "Lagom Documentation", false)
+                        ,
+                        buildIndexSettings(akkaIndex, 2, akkaFacetFilters, "Akka Documentation", false, "akka")
+                        ,
+                        buildIndexSettings(playIndex, 2, playFacetFilters, "Play Documentation", true, "play")
                     ]
-                    ).on('autocomplete:selected', function(event, suggestion, dataset) {
-                              location.href = suggestion.url;
-                    });
+            ).on('autocomplete:selected', function (event, suggestion, dataset) {
+                location.href = suggestion.url;
+            });
     </script>
 
 
-
-    @for(script <- context.resources.scripts) {<script type="text/javascript" src="@script"></script>
+    @for(script <- context.resources.scripts) {
+        <script type="text/javascript" src="@script"></script>
     }
-} {  @* Body *@
+} { @* Body *@
     <header class="fw-wrapper lgm-purple page-title">
         <div class="row">
             <div class="small-12 columns">
@@ -119,7 +132,8 @@
                     <nav class="breadcrumbs">
                         <a href="@nav.head.url">@nav.head.title</a>
                         @for(section <- nav.drop(1)) {
-                            &raquo; <a href="@section.url">@section.title</a>
+                                    &raquo;
+                            <a href="@section.url">@section.title</a>
                         }
                     </nav>
                 }
@@ -134,14 +148,20 @@
                             <strong>Next:</strong>
                             <ul>
                             @for(link <- nextLinks) {
-                                <li><a href="@{link.url}">@link.title</a></li>
+                                <li><a href="@{
+                                    link.url
+                                }">@link.title</a>
+                                </li>
                             }
                             </ul>
                         </nav>
                     } else {
                         @for(link <- nextLinks) {
                             <nav class="next-link">
-                                <a href="@{link.url}"><strong>Next: </strong> @link.title</a>
+                                <a href="@{
+                                    link.url
+                                }"><strong>Next: </strong>
+                                    @link.title</a>
                             </nav>
                         }
                     }
@@ -149,7 +169,7 @@
 
                 @for(sourceUrl <- context.sourceUrl) {
                     <p class="edit-source">Found an error in this documentation? The source code for this page can be found
-                        <a href="@sourceUrl">here</a>. Please feel free to edit and contribute a pull request.</p>
+                        <a href="@sourceUrl">here</a>. Please feel free to edit and contribute a pull request. </p>
                 }
             </div>
             <aside class="small-12 large-4 columns">
@@ -160,11 +180,13 @@
                     <label for="docs-version">Version:</label>
                     <select id="docs-version">
                     @for(v <- versions) {
-                        <option value="@ctx.path/documentation/@v.name/@language@if(v.exists){/@path}else{/Home.html}"@if(v.name == version){ selected="selected"}>@v.name</option>
+                        <option value="@ctx.path/documentation/@v.name/@language @if(v.exists) {/@path} else {/Home.html}" @if(v.name == version) {
+                            selected="selected"}>@v.name</option>
                     }
                     </select>
 
-                    <a href="@ctx.path/documentation/@version/@language/api/index.html" class="api-docs">API Documentation</a>
+                    <a href="@ctx.path/documentation/@version/@language/api/index.html" class="api-docs">
+                        API Documentation</a>
 
                     @for(section <- nav.reverse) {
                         <h3>@section.title</h3>
@@ -181,5 +203,5 @@
                 </nav>
             </aside>
         </div>
-   </div>
+    </div>
 }
