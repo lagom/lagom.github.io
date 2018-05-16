@@ -22,7 +22,7 @@ object BlogMetaDataParser {
     def nextOption = if (i.hasNext) Option(i.next()) else None
   }
 
-  private implicit val codec = Codec(Charset.forName("US-ASCII"))
+  private implicit val codec = Codec(Charset.forName("UTF-8"))
 
   private val gitHubCache = TrieMap.empty[String, GitHubUser]
 
@@ -88,7 +88,7 @@ object BlogMetaDataParser {
           Json.parse(stream).as[GitHubUser]
         } finally {
           stream.close()
-        }        
+        }
       } catch {
         case e: java.io.IOException if DocumentationGenerator.devMode => {
           // GitHub might be rate-limiting us. If we're in development mode, just ignore this.
