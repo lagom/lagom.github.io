@@ -12,7 +12,7 @@
     @for(version <- versions.find(_.name == summary.name)) {
         <ul>
         @for(lang <- version.languages) {
-            <li>@toTitleCase(lang.language): <a href="@ctx.path/documentation/@version.name/@lang.language/Home.html">Reference manual</a> and <a href="@ctx.path/documentation/@version.name/@lang.language/api/index.html">API docs</a>.</li>
+            <li>@toTitleCase(lang.language): <a href="@lang.referenceManualPath">Reference manual</a> and <a href="@lang.apiDocPath">API docs</a>.</li>
             }
         </ul>
     }

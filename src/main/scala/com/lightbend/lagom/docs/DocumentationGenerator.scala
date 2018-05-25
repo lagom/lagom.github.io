@@ -282,7 +282,7 @@ object DocumentationGenerator extends App {
 
             val nextLinks = getNext(context)
 
-            val rendered = html.documentation(path, fileContent, context, version.language, version.name, versionPages, nav, canonical, nextLinks)
+            val rendered = html.documentation(path, fileContent, context, version, versionPages, nav, canonical, nextLinks)
 
             Files.write(targetFile.toPath, rendered.body.getBytes("utf-8"))
             OutputFile(targetFile, docsPath + "/" + path, includeInSitemap = true, "0.9")
@@ -374,6 +374,16 @@ case class Version(name: String, languages: Seq[LanguageVersion]) {
   */
 case class LanguageVersion(name: String, language: String, file: File, toc: TOC) {
   def pageFor(path: String) = VersionPage(name, toc.mappings.get(path).isDefined)
+
+  private val apiRoot = (name, language) match {
+    case (_, "java") => "api/index.html"
+    // Note that this version check will break and need to be updated if we ever have a 1.10+
+    case (version, "scala") if version >= "1.4" => "api/com/lightbend/lagom/scaladsl/index.html"
+    case (version, "scala") if version < "1.4" => "api/index.html#com.lightbend.lagom.scaladsl.package"
+  }
+
+  def referenceManualPath(implicit ctx: LagomContext) = s"${ctx.path}/documentation/$name/$language/Home.html"
+  def apiDocPath(implicit ctx: LagomContext) = s"${ctx.path}/documentation/$name/$language/$apiRoot"
 }
 
 /**

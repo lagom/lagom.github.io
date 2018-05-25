@@ -2,9 +2,10 @@
 @import com.lightbend.lagom.docs.VersionPage
 @import com.lightbend.lagom.docs.Section
 @import com.lightbend.lagom.docs.LagomContext
+@import com.lightbend.lagom.docs.LanguageVersion
 @import com.lightbend.lagom.docs.NavLink
 
-@(path: String, content: Html, context: Context, language: String, version: String, versions: Seq[VersionPage], nav: List[Section],
+@(path: String, content: Html, context: Context, lang: LanguageVersion, versions: Seq[VersionPage], nav: List[Section],
         canonical: Option[String], nextLinks: Seq[NavLink])(implicit ctx: LagomContext)
 
 @main(Some(context.title), canonical) { @* Header *@
@@ -182,12 +183,12 @@
                     <label for="docs-version">Version:</label>
                     <select id="docs-version">
                     @for(v <- versions) {
-                        <option value="@ctx.path/documentation/@v.name/@language @if(v.exists) {/@path} else {/Home.html}" @if(v.name == version) {
+                        <option value="@ctx.path/documentation/@v.name/@lang.language @if(v.exists) {/@path} else {/Home.html}" @if(v.name == lang.name) {
                             selected="selected"}>@v.name</option>
                     }
                     </select>
 
-                    <a href="@ctx.path/documentation/@version/@language/api/index.html" class="api-docs">
+                    <a href="@lang.apiDocPath" class="api-docs">
                         API Documentation</a>
 
                     @for(section <- nav.reverse) {
