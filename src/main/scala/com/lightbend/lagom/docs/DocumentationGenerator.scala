@@ -75,6 +75,18 @@ object DocumentationGenerator extends App {
       "jaxenter")
   )
 
+  val videos = Seq(
+//    VideoLink(description, href),
+    VideoLink("Begin Event Sourcing with Lagom", "https://youtube.com/watch?v=Sx8ctqLxDf0"),
+    VideoLink("EventSourcing and CQRS with Lagom Microservice Framework", "https://youtube.com/watch?v=BuyXxw79fKk"),
+    VideoLink("CQRS and Event Sourcing with Lagom by Miel Donkers", "https://youtube.com/watch?v=1VOfcuWOuy8"),
+    VideoLink("Event Sourcing and CQRS by Lutz Huehnken", "https://youtube.com/watch?v=Z6_Nd7lu2PI"),
+    VideoLink("Events-First Microservices with Lagom by Gideon de Kok", "https://youtube.com/watch?v=f1YSSaI_J-c"),
+    VideoLink("Lagom in Practice by Yannick De Turck", "https://youtube.com/watch?v=JOGlZzY6ycI")
+  )
+
+
+
   // Set this to Some("your-github-account-name") if you want to deploy the docs to the gh-pages of your own fork
   // of the repo
   val gitHubAccount: Option[String] = None
@@ -305,7 +317,7 @@ object DocumentationGenerator extends App {
   }
 
   val generated = templatePages.map((generatePage _).tupled) ++
-    Seq(savePage("documentation/index.html", html.documentationIndex(stableVersions, previewVersions, oldVersions, versions, communityContents))) ++
+    Seq(savePage("documentation/index.html", html.documentationIndex(stableVersions, previewVersions, oldVersions, versions, communityContents, videos))) ++
     versions.map { version =>
       savePage(s"documentation/${version.name}/index.html", html.documentationVersionIndex(version), includeInSitemap = false)
     } ++
@@ -359,6 +371,8 @@ case class LagomContext(baseUrl: String, path: String, currentLagomVersion: Stri
 case class VersionSummary(name: String, title: String)
 
 case class CommunityContent(description:String, href:String, hrefTitle:String)
+
+case class VideoLink(description:String, href:String)
 
 case class Version(name: String, languages: Seq[LanguageVersion]) {
   def versionFor(language: String): Option[LanguageVersion] = languages.find(_.language == language)

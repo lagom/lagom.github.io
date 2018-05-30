@@ -1,9 +1,10 @@
 @import com.lightbend.lagom.docs.VersionSummary
 @import com.lightbend.lagom.docs.CommunityContent
+@import com.lightbend.lagom.docs.VideoLink
 @import com.lightbend.lagom.docs.Version
 @import com.lightbend.lagom.docs.LagomContext
 
-@(stableVersions: Seq[VersionSummary], previewVersions: Seq[VersionSummary], oldVersions: Seq[VersionSummary], versions: Seq[Version], communityContents: Seq[CommunityContent])(implicit ctx: LagomContext)
+@(stableVersions: Seq[VersionSummary], previewVersions: Seq[VersionSummary], oldVersions: Seq[VersionSummary], versions: Seq[Version], communityContents: Seq[CommunityContent], videos: Seq[VideoLink])(implicit ctx: LagomContext)
 
 @toTitleCase(s: String) = {@s.head.toUpper@s.tail}
 
@@ -18,10 +19,18 @@
     }
 }
 
-@renderContent(communityContents: Seq[CommunityContent]) = {
+@renderContent(ccs: Seq[CommunityContent]) = {
     <ul>
-    @for(cc <- communityContents) {
+    @for(cc <- ccs) {
         <li>@{cc.description} (<a href="@cc.href">@cc.hrefTitle</a>)</li>
+    }
+    </ul>
+}
+
+@renderVideo(vds: Seq[VideoLink]) = {
+    <ul>
+    @for(video <- vds) {
+        <li><a href="@video.href">@{video.description}</a></li>
     }
     </ul>
 }
@@ -69,7 +78,13 @@
             Blog posts, webinars, tutorials and other content provided by the community.
         </p>
 
+        <h3>Blog posts</h3>
+
         @renderContent(communityContents)
+
+        <h3>Videos</h3>
+
+        @renderVideo(videos)
 
     }
 
