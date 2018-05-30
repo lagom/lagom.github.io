@@ -43,6 +43,7 @@ Special thanks to the following contributors who helped with this release:
       3      82      52 Ignasi Marimon-Clos
       1      22      14 Patrik Nordwall
       1     100      10 James Roper
+      1      21       6 Renato Cavalcanti
       1       2       2 Wade Waldron
       1       2       2 Markus Hennerbichler
 </pre>
