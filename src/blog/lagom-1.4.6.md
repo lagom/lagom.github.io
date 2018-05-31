@@ -18,7 +18,7 @@ This release provides several bug fixes and updates.
 - Fix in testkit to [allow tests using Play's DBAPI](https://github.com/lagom/lagom/pull/1355)
 - Small fixes improving the error reporting for developers. E.g. improved error message in [some issues in the Service.Descriptor](https://github.com/lagom/lagom/issues/1362) and improved error message when there's [no connection settings for userland read-side DB](https://github.com/lagom/lagom/pull/1372)
 
-See GitHub for the [full list of commits](https://github.com/lagom/lagom/compare/1.4.5...1.4.6) and the issues and pull requests assigned to the [1.4.5 milestone](https://github.com/lagom/lagom/milestone/31?closed=1).
+See GitHub for the [full list of commits](https://github.com/lagom/lagom/compare/1.4.5...1.4.6) and the issues and pull requests assigned to the [1.4.6 milestone](https://github.com/lagom/lagom/milestone/31?closed=1).
 
 
 ## Updating a Lagom project to version 1.4.6
