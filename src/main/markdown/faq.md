@@ -41,9 +41,3 @@ See more in the Lagom documentation on [Managing data persistence](/documentatio
 Yes, Lagom supports extensible serialization, both for messages transmitted between different services and for internal messages and persistent data used within a service. JSON is supported by default, as it is simple and well understood. Services that require higher performance or more compact data can use alternatives such as [Protocol Buffers](https://developers.google.com/protocol-buffers/), [Apache Avro](http://avro.apache.org/), [Kryo](https://github.com/EsotericSoftware/kryo), or any other serializer that you choose.
 
 See more in the Lagom documentation on Message Serializers ([Java](/documentation/current/java/MessageSerializers.html)/[Scala](/documentation/current/scala/MessageSerializers.html)) and Persistent Entity Serialization ([Java](/documentation/current/java/Serialization.html)/[Scala](/documentation/current/scala/Serialization.html)).
-
-## Do I have to use ConductR to deploy Lagom services? Can I deploy with Kubernetes?
-
-Lagom doesn't prescribe any particular production environment, however out of the box support for Lagom is provided by [Lightbend ConductR](https://www.lightbend.com/products/conductr). If you are interested in deploying on [Kubernetes](https://kubernetes.io/), see our guide that demonstrates [how to deploy the Chirper example application](https://developer.lightbend.com/guides/k8s-microservices/).
-
-For more information on running Lagom services in production, see the [Java documentation](/documentation/current/java/ProductionOverview.html) or the [Scala documentation](/documentation/current/scala/ProductionOverview.html)
