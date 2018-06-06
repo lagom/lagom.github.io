@@ -9,7 +9,7 @@ summary: >
 ---
 
 <div class="callout warning">
-    Using Kubernetes or DC/OS? Try <a href="https://developer.lightbend.com/docs/lightbend-orchestration/latest/">Lightbend Orchestration</a> for easy deployment of your Reactive Platform services.
+    See how <a href="https://developer.lightbend.com/docs/lightbend-orchestration/latest/">Lightbend Orchestration</a> simplifies deployment of Lagom microservices (or Reactive Platform Services) with Kubernetes or DC/OS. This suite of tools includes a plugin for creating Docker images, a command line for generating Kubernetes and DC/OS resource and configuration files, and more.
 </div>
 
 ## Microservices sound great
