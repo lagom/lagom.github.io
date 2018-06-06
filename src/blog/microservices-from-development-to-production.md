@@ -8,6 +8,10 @@ summary: >
 
 ---
 
+<div class="callout warning">
+    Using Kubernetes or DC/OS? Try <a href="https://developer.lightbend.com/docs/lightbend-orchestration/latest/">Lightbend Orchestration</a> for easy deployment of your Reactive Platform services.
+</div>
+
 ## Microservices sound great
 Let's face it, microservices sound great, but they're sure hard to set up and get going. There are service gateways to consider, setting up service discovery, consolidated logging, rolling updates, resiliency concerns... the list is almost endless. Distributed systems benefit the business, not so much the developer.
 
@@ -24,7 +28,7 @@ sbt> install
 
 This "install" command will introspect your project and its sub-projects, generate configuration, package everything up, load it into a local [ConductR](http://conductr.lightbend.com/docs/1.1.x/Home) cluster and then run it all.
 *Just. One. Command.*
-Try doing that with your >insert favourite build tool here<!
+Try doing that with your >insert favourite build tool here<\!
 
 Lower level commands also remain available so that you can package, load and run individual services on a local ConductR cluster in support of getting everything right before pushing to production.
 
