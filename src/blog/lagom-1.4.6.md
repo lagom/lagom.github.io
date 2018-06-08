@@ -13,8 +13,8 @@ This release provides several bug fixes and updates.
 
 ## Highlights:
 
-- Updates Akka to [2.5.13](https://akka.io/blog/news/INVALID_URL)
-- Updates Akka Persistence JDBC to [3.4.0](https://github.com/lagom/lagom/issues/1374)
+- Updates Akka to [2.5.13](https://akka.io/blog/news/2018/06/08/akka-2.5.13-released)
+- Updates Akka Persistence JDBC to [3.4.0](https://github.com/dnvriend/akka-persistence-jdbc/releases/tag/v3.4.0)
 - Fix in testkit to [allow tests using Play's DBAPI](https://github.com/lagom/lagom/pull/1355)
 - Small fixes improving the error reporting for developers. E.g. improved error message in [some issues in the Service.Descriptor](https://github.com/lagom/lagom/issues/1362) and improved error message when there's [no connection settings for userland read-side DB](https://github.com/lagom/lagom/pull/1372)
 
