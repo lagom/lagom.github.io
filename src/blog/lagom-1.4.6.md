@@ -20,15 +20,6 @@ This release provides several bug fixes and updates.
 
 See GitHub for the [full list of commits](https://github.com/lagom/lagom/compare/1.4.5...1.4.6) and the issues and pull requests assigned to the [1.4.6 milestone](https://github.com/lagom/lagom/milestone/31?closed=1).
 
-## Building GDPR capable systems with Lagom
-
-Lightbend has investigated the various considerations that you may need to take into account while attempting to make your systems GDPR-compliant. To help our customers with this daunting task we can now offer the new module Akka GDPR that will assist you in building a compliant system.
-
-Lagom Persistence is based on Event Sourcing, which means storing the entire event sequence leading to the total state of some entity. This also means, that deleting or modifying state in order to be compliant with GDPR means that all those events, which carry personal information, will have to be modified rather than just one single state. It can be difficult to modify all such events and also other places where the information may be stored, such as denormalized projections, snapshots and backups. Data shredding (aka crypto shredding) can be used to forget information instead of deleting or modifying it. This is achieved by encrypting the data with a key for a given data subject id (person) and deleting the key when that data subject is to be forgotten.
-
-Learn more about Akka GDPR in the [documentation](https://developer.lightbend.com/docs/akka-commercial-addons/current/gdpr/index.html) and contact [Lightbend](https://www.lightbend.com/contact) for further discussion about how to use this module in your systems.
-
-
 ## Updating a Lagom project to version 1.4.6
 
 To update an sbt project, change the version of `lagom-sbt-plugin` in your `project/plugins.sbt` file.
