@@ -183,7 +183,7 @@
                     <label for="docs-version">Version:</label>
                     <select id="docs-version">
                     @for(v <- versions) {
-                        <option value="@ctx.path/documentation/@v.name/@lang.language @if(v.exists) {/@path} else {/Home.html}" @if(v.name == lang.name) {
+                        <option value="@ctx.path/documentation/@v.name/@lang.language@if(v.exists) {/@path} else {/Home.html}" @if(v.name == lang.name) {
                             selected="selected"}>@v.name</option>
                     }
                     </select>
