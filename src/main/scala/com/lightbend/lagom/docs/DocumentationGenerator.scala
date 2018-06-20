@@ -289,7 +289,7 @@ object DocumentationGenerator extends App {
             val versionPages = languageVersions.map(_.pageFor(path))
             val nav = getNav(context)
             val canonical = currentLanguageVersion.map(_.pageFor(path)).collect {
-              case VersionPage(name, true) => s"$baseUrl/documentation/$name/${version.language}/$path"
+              case VersionPage(name, true, _) => s"$baseUrl/documentation/$name/${version.language}/$path"
             }
 
             val nextLinks = getNext(context)
@@ -387,7 +387,7 @@ case class Version(name: String, languages: Seq[LanguageVersion]) {
   * @param toc The table of contents for the version.
   */
 case class LanguageVersion(name: String, language: String, file: File, toc: TOC) {
-  def pageFor(path: String) = VersionPage(name, toc.mappings.get(path).isDefined)
+  def pageFor(path: String) = VersionPage(name, toc.mappings.get(path).isDefined, path)
 
   private val apiRoot = (name, language) match {
     case (_, "java") => "api/index.html"
@@ -405,9 +405,14 @@ case class LanguageVersion(name: String, language: String, file: File, toc: TOC)
   * exists in the other version we render a link to the page, otherwise, we render a link to the index.
   *
   * @param name The name of the version.
-  * @param exists Whether the specific page exists in that version.
+  * @param exists Whether the specific page exists in this version.
+  * @param path The path to the specific page, which may or may not exist in this version.
   */
-case class VersionPage(name: String, exists: Boolean)
+case class VersionPage(name: String, exists: Boolean, path: String) {
+    def existingPath: Option[String] = if (exists) Some(path) else None
+
+    def existingPathOrDefault: String = existingPath.getOrElse("Home.html")
+}
 
 /**
   * A link to a page
