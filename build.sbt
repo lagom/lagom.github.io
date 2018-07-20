@@ -121,3 +121,6 @@ watchSources ++= {
   ((sourceDirectory in Compile).value / "markdown").***.get ++
     (sourceDirectory.value / "blog").***.get
 }
+
+// Include src/main/public/.well-known in the output
+excludeFilter in Assets := HiddenFileFilter -- ".well-known"
