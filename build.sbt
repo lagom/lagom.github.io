@@ -122,5 +122,5 @@ watchSources ++= {
     (sourceDirectory.value / "blog").***.get
 }
 
-// Include src/main/public/.well-known in the output
-excludeFilter in Assets := HiddenFileFilter -- ".well-known"
+// Include hidden files in the output (e.g., src/main/public/.well-known)
+excludeFilter in Assets := NothingFilter
