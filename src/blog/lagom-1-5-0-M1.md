@@ -11,7 +11,7 @@ We are happy to announce the availability of Lagom 1.5.0-M2 (unfortunately Lagom
 
 The motivation behind moving Lagom closer to Play and Akka is twofold: Play and Akka users will be able to adopt Lagom more easily by reusing existing code or APIs they are already familiar with, and framework maintainers will reduce the amount of code to maintain and converge in conventions speeding up the development process.
 
-Note that this should not be used in production, that Lightbend Orchestration (sbt-reactive-app) does not yet support Lagom 1.5.0-M1, and that ConductR will not be supported for Lagom 1.5.0. also note that this is a `Milestone` version and we don't guarantee API stability or binary compatibility between milestones.
+Note that this should not be used in production, that Lightbend Orchestration (sbt-reactive-app) does not yet support Lagom 1.5.0-M1, and that ConductR will not be supported for Lagom 1.5.0. Also note that this is a `Milestone` version and we don't guarantee API stability or binary compatibility between milestones.
 
 ## Highlights
 
@@ -19,15 +19,15 @@ Note that this should not be used in production, that Lightbend Orchestration (s
 
 Lagom 1.5.0-M2 bumps the Play version to [2.7.0-M2](https://blog.playframework.com/play-2-7-0-m2-released/) (see also [2.7.0-M1](https://blog.playframework.com/play-2-7-0-milestone-1-released/)). Play now exposes the [Akka Coordinated Shutdown](https://doc.akka.io/docs/akka/current/actors.html#coordinated-shutdown) instance as a first class citizen so you can register your shutdown code using it instead of using Play's `ApplicationLifecycle`.
 
-The version of Akka HTTP powering the default HTTP Backend for both Play and Lagom was bumped to `10.1`.
+The version of Akka HTTP powering the default HTTP Backend for both Play and Lagom was bumped to [`10.1`](https://akka.io/blog/news/2018/03/08/akka-http-10.1.0-released).
 
-Upgrading to Play 2.7 may cause some errors on your code as some deprecated APIs was removed (please review the [Play 2.7 Migration Guide](https://github.com/playframework/playframework/blob/master/documentation/manual/releases/release27/migration27/Migration27.md) or the release announcements linked above). Play also updated the Jackson library (for java JSON serialization) to `2.9.6` which includes reviewed defaults so you may need to check your serializer settings. The changes in Jackson default settings may not cause compilation errors so we recommend you exercise your serializers in tests to detect any potential issue.
+Upgrading to Play 2.7 may cause some errors on your code as some deprecated APIs were removed (please review the [Play 2.7 Migration Guide](https://github.com/playframework/playframework/blob/master/documentation/manual/releases/release27/migration27/Migration27.md) or the release announcements linked above). Play also updated the Jackson library (for java JSON serialization) to `2.9.6` which includes reviewed defaults so you may need to check your serializer settings. The changes in Jackson default settings may not cause compilation errors so we recommend you exercise your serializers in tests to detect any potential issue.
 
 ### Akka, Play, Lagom cross-product collaboration
 
-The promotion of `Akka Coordinated Shutdown` mentioned above is not exceptional. We are laying ground work for integration with [Akka gRPC](https://github.com/akka/akka-grpc) so it becomes an alternate transport allowing easier communication between Play, Lagom, Akka and 3rd party applications using gRPC.
+The promotion of `Akka Coordinated Shutdown` mentioned above is not exceptional. We are laying groundwork for integration with [Akka gRPC](https://github.com/akka/akka-grpc) to add it as a transport alternative, allowing seamless communication between applications written using Akka, Play, Lagom and others using gRCP.
 
-This cross-product collaboration is the first of many more to come. The motivation behind developing gRPC support as a cross-product feature is twofold: Lagom, Play and Akka users will be able to move between them more easily.
+This cross-product collaboration is the first of many more to come. The motivation is to allow users developers to more naturally move between Akka, Play and Lagom.
 
 [Akka's Service Discovery](https://developer.lightbend.com/docs/akka-management/current/discovery.html) will become a building block of Lagom's `ServiceLocator` and help standardize service discovery scenarios. This will simplify production settings to tune cluster bootstrap and other service discovery strategies and combine them. Lagom `1.5.0-M2` started the refactor process to move to an implementation that's based 100% on Akka's Service Discovery. This new library provides an extensible API for looking up service addresses by name from within Akka-based services, including integration with Kubernetes, Marathon, Consul, and others. It is similar to Lagom's ServiceLocator API, but can be used in any Akka or Play application, as well as in Lagom. It is a foundational building block for many of the upcoming cross-product features, including gRPC support, and with this release it works seamlessly in Lagom's runAll development mode without additional configuration. We are planning to integrate this more fully with Lagom in future 1.5.0 milestones and beyond.
 
