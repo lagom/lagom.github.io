@@ -7,7 +7,7 @@ summary: >
     The Lagom team has released Lagom 1.5.0-M3
 ---
 
-We are happy to announce the availability of Lagom 1.5.0-M3 (we skipped Lagom 1.5.0-M1 due to an issue with the release process). This new milestone towards the releasing of Lagom 1.5.0 introduces important improvements to support gRPC in Lagom. This release includes Play 2.7.0-M3 and Akka 2.5.16.
+We are happy to announce the availability of Lagom 1.5.0-M3. This new milestone towards the releasing of Lagom 1.5.0 introduces important improvements to support gRPC in Lagom. This release includes Play 2.7.0-M3 and Akka 2.5.16.
 
 Note that this should not be used in production, that Lightbend Orchestration (sbt-reactive-app) does not yet support Lagom 1.5.0-M3, and that ConductR will not be supported for Lagom 1.5.0. Also note that this is an unsupported, pre-release milestone and we don't guarantee API stability or binary compatibility between milestones.
 
@@ -15,13 +15,13 @@ Note that this should not be used in production, that Lightbend Orchestration (s
 
 ### Updates Play and Akka
 
-- Bump dependencies: Play was bumped to [2.7.0-M3](https://blog.playframework.com/play-2-7-0-m3-released/) and, since Lagom 1.5.0-M2 we've bumped Akka to [2.5.16](https://akka.io/blog/news/2018/08/29/akka-2.5.16-security-fix-released) which also includes [2.5.15](https://akka.io/blog/news/2018/08/24/akka-2.5.15-released). These include work to reduce code duplication between Play and Lagom helping both projects move faster.
+- Bump dependencies: Play was bumped to 2.7.0-M3 ([release notes](https://blog.playframework.com/play-2-7-0-m3-released/)) and, since Lagom 1.5.0-M2, we've bumped Akka to 2.5.16 ([release notes](https://akka.io/blog/news/2018/08/29/akka-2.5.16-security-fix-released)). See also the [release notes](https://akka.io/blog/news/2018/08/24/akka-2.5.15-released) for Akka 2.5.15.
 
 ## gRPC
 
 Lagom 1.5.0-M2 started laying groundwork for integration with [Akka gRPC](https://github.com/akka/akka-grpc) to add it as a transport alternative, allowing seamless communication between applications written using Akka, Play, Lagom and other stacks using gRPC.
 
-In this release the following are introduced as part of the effort to support gRPC:
+In this release,the following are introduced as part of the effort to support gRPC:
 
 - It is now possible to add additional Play `Router`s to a Lagom Service (next to the Lagom Router built from the `Service.Descriptor`). This allows wiring a [Play router that handles gRPC](https://developer.lightbend.com/docs/akka-grpc/current/play-framework.html) traffic next to the Lagom router provided out of the box.
 - Lagom's Dev Mode now binds an SSL port for each service next to HTTP port already bound. This changes the default behavior in Dev Mode and there’s [ongoing effort](https://github.com/lagom/lagom/issues/1537) to restore the default which only binds HTTP and make the use of SSL an opt-in.
