@@ -33,7 +33,7 @@ object DocumentationGenerator extends App {
   )
 
   val previewVersions = Seq(
-    VersionSummary("master", s"Lagom 1.5.0-M3 (preview)")
+    VersionSummary("current", s"Lagom 1.5.0-M3 (preview)")
   )
 
   val oldVersions = Seq(
@@ -370,6 +370,9 @@ case class OutputFile(file: File, sitemapUrl: String, includeInSitemap: Boolean,
 case class LagomContext(baseUrl: String, path: String, currentLagomVersion: String, currentDocsVersion: String,
                         blogSummary: BlogSummary, assetFingerPrint: String)
 
+/**
+  * @param name the folder name under `/src/docs` to point to (e.g. "1.4.x", "current", "latest",...).
+  */
 case class VersionSummary(name: String, title: String)
 
 case class CommunityContent(description:String, href:String, hrefTitle:String)
