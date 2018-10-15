@@ -26,6 +26,13 @@ In this release,the following are introduced as part of the effort to support gR
 - It is now possible to run the `TestServer` with SSL enabled and build a gRPC client to interact with the gRPC endpoints offered.
 - Lagom 1.5.0-M3 enabled SSL by default in Lagom's Dev Mode. In Lagom 1.5.0-M4 we've restored the previous behavior where only HTTP is used in Dev Mode and made SSL an Opt-In feature in Dev Mode. Use `lagomServiceEnableSsl in ThisBuild := true` to start your service with both HTTP and HTTPS ports bound.
 
+## Miscellaneous improvements
+
+This release includes a few other small improvements:
+
+* [1475](https://github.com/lagom/lagom/issues/1475) handle no body as a valid input contributed by Ido Shamun
+* [1572](https://github.com/lagom/lagom/issues/1572) which improves Dev Mode's Service Gateway to stack Host header into X-Forwarded-Host so the target service running behind service Gateway still sees the data sent on the original request.
+
 
 See GitHub for the [full list of commits](https://github.com/lagom/lagom/compare/1.5.0-M3...1.5.0-M4) and the issues and pull requests assigned to the [1.5.0-M3 milestone](https://github.com/lagom/lagom/milestone/38?closed=1).
 
