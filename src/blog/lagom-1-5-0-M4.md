@@ -34,7 +34,7 @@ This release includes a few other small improvements:
 * [1572](https://github.com/lagom/lagom/issues/1572) which improves Dev Mode's Service Gateway to stack Host header into X-Forwarded-Host so the target service running behind service Gateway still sees the data sent on the original request.
 
 
-See GitHub for the [full list of commits](https://github.com/lagom/lagom/compare/1.5.0-M3...1.5.0-M4) and the issues and pull requests assigned to the [1.5.0-M3 milestone](https://github.com/lagom/lagom/milestone/38?closed=1).
+See GitHub for the [full list of commits](https://github.com/lagom/lagom/compare/1.5.0-M3...1.5.0-M4) and the issues and pull requests assigned to the [1.5.0-M4 milestone](https://github.com/lagom/lagom/milestone/38?closed=1).
 
 ## Updating a Lagom project to version 1.5.0-M4
 
