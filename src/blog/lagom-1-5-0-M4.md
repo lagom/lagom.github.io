@@ -19,9 +19,9 @@ Note that ConductR will not be supported for Lagom 1.5.0. Also note that this is
 
 ## gRPC
 
-Previous milestones of Lagom 1.5.0 started laying groundwork for integration with [Akka gRPC](https://github.com/akka/akka-grpc) to add it as a transport alternative. In Lagom 1.5.0-M4 we've improved the Lagom testkit so you can also test the gRPC of your Lagom application.
+Previous milestones of Lagom 1.5.0 started laying the groundwork for integration with [Akka gRPC](https://github.com/akka/akka-grpc) to add it as a transport alternative. In Lagom 1.5.0-M4 we've improved the Lagom testkit so you can also test the gRPC of your Lagom application.
 
-In this release,the following are introduced as part of the effort to support gRPC:
+In this release, the following are introduced as part of the effort to support gRPC:
 
 - It is now possible to run the `TestServer` with SSL enabled and build a gRPC client to interact with the gRPC endpoints offered.
 - Lagom 1.5.0-M3 enabled SSL by default in Lagom's Dev Mode. In Lagom 1.5.0-M4 we've restored the previous behavior where only HTTP is used in Dev Mode and made SSL an Opt-In feature in Dev Mode. Use `lagomServiceEnableSsl in ThisBuild := true` to start your service with both HTTP and HTTPS ports bound.
