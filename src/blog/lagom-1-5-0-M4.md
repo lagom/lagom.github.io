@@ -9,7 +9,7 @@ summary: >
 
 We are happy to announce the availability of Lagom 1.5.0-M4. This new milestone towards the releasing of Lagom 1.5.0 continues to improve support for gRPC in Lagom. This release includes Play 2.7.0-M4, Akka 2.5.17 and Akka-HTTP 10.1.5.
 
-Note that this should not be used in production, that Lightbend Orchestration (sbt-reactive-app) does not yet support Lagom 1.5.0-M4, and that ConductR will not be supported for Lagom 1.5.0. Also note that this is an unsupported, pre-release milestone and we don't guarantee API stability or binary compatibility between milestones.
+Note that ConductR will not be supported for Lagom 1.5.0. Also note that this is an unsupported, pre-release milestone and we don't guarantee API stability or binary compatibility between milestones.
 
 ## Highlights
 
