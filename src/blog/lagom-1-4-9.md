@@ -13,7 +13,7 @@ This release provides a few bug fixes and an improvements.
 
 ## Highlights
 
-- Updates Akka to [2.5.18](https://akka.io/blog/news/2018/10/07/akka-2.5.18-released). This Akka release introduces few improvements on the DNS implementation. It also imroves the cluster membership handling so if you are using Akka's [Split Brain Resolver](https://developer.lightbend.com/docs/akka-commercial-addons/current/split-brain-resolver.html) you may want to upgrade.
+- Updates Akka to [2.5.18](https://akka.io/blog/news/2018/10/07/akka-2.5.18-released). This Akka release introduces few improvements on the DNS implementation. It also improves the cluster membership handling so if you are using Akka's [Split Brain Resolver](https://developer.lightbend.com/docs/akka-commercial-addons/current/split-brain-resolver.html) you may want to upgrade.
 - Updates Akka HTTP to [10.0.14](https://akka.io/blog/news/2018/09/06/akka-http-10.1.5-10.0.14-security-fix-released) with an important security fix. It's is unlikely that as a Lagom user you were exposed to the vulnerability, though.
 - Updates Play to [2.6.20](https://blog.playframework.com/play-2-6-20-released/) with some minor improvements.
 - Fixes [a regression](https://github.com/lagom/lagom/issues/1557) on `LagomClientFactory` introduced on the `1.4.x` family causing a `LagomClientFactory` running inside a Lagom service to interfere with the service in some scenarios causing failures at boot time.
