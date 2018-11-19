@@ -24,6 +24,8 @@ See GitHub for the [full list of commits](https://github.com/lagom/lagom/compare
 
 ## Updating a Lagom project to version 1.5.0-RC1
 
+First, make sure you read the Lagom 1.5 Migration Guide for [Scala](https://www.lagomframework.com/documentation/latest/scala/Migration15.html) or [Java](https://www.lagomframework.com/documentation/latest/java/Migration15.html).
+
 To update an sbt project, change the version of `lagom-sbt-plugin` in your `project/plugins.sbt` file.
 
 To update a Maven project, change the `lagom.version` property in your top-level `pom.xml`.
