@@ -40,8 +40,10 @@ Thanks to [Lightbend](https://www.lightbend.com/) for their continued sponsorshi
 
 Special thanks to the following contributors who helped with this release:
 
+```
 commits  added  removed  author    
       3    103      126  Dale Wijnand
       1     30        8  Ignasi Marimon-Clos
       1      4        4  danielklein45
       1     21       19  Martynas Mickevičius
+```
