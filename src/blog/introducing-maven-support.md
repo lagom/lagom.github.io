@@ -9,6 +9,8 @@ summary: >
 
 ---
 
+**Update:** For the latest instructions on starting a Lagom project with Maven, see [Using Lagom with Java and Maven](/get-started-java-maven.html).
+
 The Lagom team are proud to announce the introduction of Maven support for Lagom!  We've published Lagom 1.1.0-RC1 with this support, and are keen to get feedback from users to see if it works.
 
 ## Why Maven?
