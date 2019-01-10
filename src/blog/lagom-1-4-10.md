@@ -13,7 +13,6 @@ This release upgrades Play (and transitively upgrades Akka and Akka HTTP) and Sc
 
 ## Highlights
 
-
 - Updates Play to [2.6.21](https://blog.playframework.com/play-2-6-21-released//) with some minor improvements. This upgrade transitively upgrades Akka and Akka HTTP. Make sure you review Play's announcement for details.
 
 See GitHub for the [full list of commits](https://github.com/lagom/lagom/compare/1.4.9...1.4.10) and the issues and pull requests assigned to the [1.4.10 milestone](https://github.com/lagom/lagom/milestone/41?closed=1).
