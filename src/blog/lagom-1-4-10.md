@@ -15,6 +15,8 @@ This release upgrades Play (and transitively upgrades Akka and Akka HTTP) and Sc
 
 - Updates Play to [2.6.21](https://blog.playframework.com/play-2-6-21-released//) with some minor improvements. This upgrade transitively upgrades Akka and Akka HTTP. Make sure you review Play's announcement for details.
 
+If you are a user of [Lightbend Orchestration](https://developer.lightbend.com/docs/lightbend-orchestration/current/setup/project-setup.html) you will have to upgrade your dependency of the `sbt-reactive-app` plugin to `1.6.1`.
+
 See GitHub for the [full list of commits](https://github.com/lagom/lagom/compare/1.4.9...1.4.10) and the issues and pull requests assigned to the [1.4.10 milestone](https://github.com/lagom/lagom/milestone/41?closed=1).
 
 ## Updating a Lagom project to version 1.4.9
