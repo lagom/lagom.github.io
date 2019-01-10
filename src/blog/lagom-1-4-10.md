@@ -19,7 +19,7 @@ If you are a user of [Lightbend Orchestration](https://developer.lightbend.com/d
 
 See GitHub for the [full list of commits](https://github.com/lagom/lagom/compare/1.4.9...1.4.10) and the issues and pull requests assigned to the [1.4.10 milestone](https://github.com/lagom/lagom/milestone/41?closed=1).
 
-## Updating a Lagom project to version 1.4.9
+## Updating a Lagom project to version 1.4.10
 
 To update an sbt project, change the version of `lagom-sbt-plugin` in your `project/plugins.sbt` file.
 
