@@ -9,7 +9,7 @@ summary: >
 
 The Lagom team has released Lagom 1.4.10.
 
-This release upgrades Play (and transitively upgrades Akka and Akka HTTP) and Scala..
+This release upgrades Play (and transitively upgrades Akka and Akka HTTP) and Scala.
 
 ## Highlights
 
