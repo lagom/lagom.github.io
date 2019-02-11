@@ -36,8 +36,8 @@ Thanks to [Lightbend](https://www.lightbend.com/) for their continued sponsorshi
 Special thanks to the following contributors who helped with this release:
 
     commits  added  removed  author
-    1       4       2        Renato Cavalcanti
-    1      23      10        Ignasi Marimon-Clos
-    1       1       1        Marcos Pereira
-    1       3       3        Tim Moore
-    1      26       7        Dale Wijnand
+    1            4        2  Renato Cavalcanti
+    1           23       10  Ignasi Marimon-Clos
+    1            1        1  Marcos Pereira
+    1            3        3  Tim Moore
+    1           26        7  Dale Wijnand
