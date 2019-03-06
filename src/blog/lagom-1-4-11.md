@@ -9,7 +9,7 @@ summary: >
 
 The Lagom team has released Lagom 1.4.11.
 
-This release upgrades Akka to resolve a compatibility problem with Lightbend Orchestration 1.7.0.
+This release upgrades Akka to resolve a compatibility problem with Lightbend Orchestration 1.7.3.
 
 ## Highlights
 
