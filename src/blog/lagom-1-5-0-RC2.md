@@ -13,6 +13,12 @@ Because of that, and as with milestones, the primary goal is to get feedback, so
 
 ## Highlights
 
+### Deployment
+
+Since version `1.5.0-RC2 ` Lagom no longer supports [Lightbend Orchestration](https://developer.lightbend.com/docs/lightbend-orchestration/current/). If you depend on Lightbend Orchestration to produce your `Dockerfile` and deployment specs (Kubernetes or DC/OS) refer to the [Lagom 1.5 Migration Guide](https://www.lagomframework.com/documentation/latest/scala/Migration15.html).
+
+If your deployment target is OpenShift you can also refer to the [Deploying Lightbend applications to OpenShift](https://developer.lightbend.com/guides/openshift-deployment/) guide.
+
 ### Upgrades for major dependencies
 
 - Play upgraded to 2.7.0 ([release notes](https://blog.playframework.com/play-2-7-0-is-here/))
