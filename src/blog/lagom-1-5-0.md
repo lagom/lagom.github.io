@@ -8,7 +8,7 @@ summary: >
 
 ---
 
-We are happy to announce the availability of Lagom 1.5.0. This is the GA release of Lagom 1.5.0. We consider Lagom 1.5.0 to be production ready and invite all our users to upgrade.
+We are happy to announce the availability of Lagom 1.5.0. This is the GA release of Lagom 1.5.0 and is production ready. We invite all our users to upgrade.
 
 This release introduces very few changes over [Lagom 1.5.0-RC2](https://www.lagomframework.com/blog/lagom-1-5-0-RC2.html), mostly documentation and a few version bumps of dependencies. Most remarkable is the final landing of [Alpakka-Kafka 1.0](https://akka.io/blog/news/2019/03/07/alpakka-kafka-1.0.1-released) into Lagom.
 
