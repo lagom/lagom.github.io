@@ -34,7 +34,7 @@ Lagom supports gRPC for cross-service communication. The original HTTP/JSON-base
 
 This feature drove some smaller improvements which non-gRPC users will also welcome.
 
-Lagom already supported HTTP/2 since it is built on top of Play. In Lagom 1.5 we’ve reviewed all the necessary pieces so HTTP/2 can also be used on dev mode. In the same spirit, it is now also possible to use encrypted (TLS) communication on dev mode. 
+Lagom already supported HTTP/2 since it is built on top of Play. In Lagom 1.5 we’ve reviewed all the necessary pieces so HTTP/2 can also be used on dev mode. In the same spirit, it is now also possible to use encrypted (TLS) communication on dev mode.
 
 As a final improvement driven by the adoption of gRPC, it is now possible to embed any vanilla Play Router into a Lagom service. We call the support for Additional Routers. You are now able to easily reuse the Play and Akka building blocks whenever the Lagom API is not enough to complete the task at hand. Using Additional Routers it is trivial to reuse Play code you already had or extend Lagom with low-level features supported in Play but not exposed in Lagom directly (such as uploading files).
 
@@ -57,11 +57,28 @@ Thanks to [Lightbend](https://www.lightbend.com/) for their continued sponsorshi
 Special thanks to the following contributors who helped with this release:
 
 ```
-commits  added  removed  author    
-     11     276     107  Ignasi Marimon-Clos
-      1     364       0  Renato Cavalcanti
-      1       8       2  Sergey Morgunov
-      1       4       4  Martynas Mickevičius
-      1       5       5  	Dale Wijnand
+commits author    
+     46 Ignasi Marimon-Clos
+     32 Renato Cavalcanti
+     16 Tim Moore
+     15 Elijah Rippeth
+     12 Dale Wijnand
+     10 Marcos Pereira
+      4 Martynas Mickevičius
+      3 Ayush Prashar
+      1 sullis
+      1 danielklein45
+      1 Zhonglai Zhang
+      1 Sergey Morgunov
+      1 Riccardo Sirigu
+      1 Renato Cavalcanti
+      1 Prashant Sharma
+      1 Piyush Goyal
+      1 Kunal sethi
+      1 João Guitana
+      1 Ido Shamun
+      1 Fran Bermejo
+      1 Enno
+      1 Brent Eritou  
+      1 0xflotus
 ```
-
