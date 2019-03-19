@@ -10,7 +10,33 @@ summary: >
 
 We are happy to announce the availability of Lagom 1.5.0. This is the GA release of Lagom 1.5.0 and is production ready. We invite all our users to upgrade.
 
-This release introduces very few changes over [Lagom 1.5.0-RC2](https://www.lagomframework.com/blog/lagom-1-5-0-RC2.html), mostly documentation and a few version bumps of dependencies. Most remarkable is the final landing of [Alpakka-Kafka 1.0](https://akka.io/blog/news/2019/03/07/alpakka-kafka-1.0.1-released) into Lagom.
+This version builds on top of the [2.7.x series of Play](https://blog.playframework.com/play-2-7-0-is-here/), [Alpakka Kafka 1.0](https://akka.io/blog/news/2019/02/28/alpakka-kafka-1.0-released), and the latest improvements on Akka and Akka Management. Here’s a list of improvements.
+
+
+
+# Akka Management
+
+Akka Management is a suite of tools for operating Akka powered applications. Akka Management uses a dedicated HTTP port to expose a few routes allowing remote inspection of the state of the Akka Actor System. For example, if the process is a member of an Akka Cluster, these endpoints will report if the node already joined the cluster.
+
+Lagom exposes the Akka Management HTTP port out of the box. Lagom will add Health Check routes by default. You can reuse library provided health checks or plugin your own. For example, Lagom uses cluster status to determine when the node is healthy. This is called Cluster Membership Check and is provided by the Akka Cluster HTTP Management library.
+
+Another improvement Lagom 1.5 introduces, thanks to the adoption of Akka Management, is the simpler, more robust cluster formation via Akka Cluster Bootstrap. Instead of using a static list of seed nodes or relying on convoluted custom scripts to build the list of seed nodes dynamically, Cluster Bootstrap discovers the existing nodes via plugins adapting Akka Cluster Bootstrap to your orchestration environment (e.g. Kubernetes, Marathon). A static list of seed nodes is still supported but we recommend migrating to Cluster Bootstrap.
+
+# Deployment
+
+Lagom 1.5.0 will no longer support Lightbend Orchestration (which was Incubating). Despite accelerating the first deployment, using Lightbend Orchestration was producing friction and reducing flexibility to tune the deployment. Moving forward, there will be no automated handling of the deployment and the suggested way is to manually maintain the production settings, the deployment descriptors and related scripts.
+
+If you are targeting OpenShift or Kubernetes environments the new a [Guide to Deploy Lightbend Applications](https://developer.lightbend.com/guides/openshift-deployment/) covers all the steps and details (including a sample application) to setup and tune your system.
+
+# gRPC ([Incubating](https://developer.lightbend.com/docs/reactive-platform/2.0/support-terminology/index.html#incubating))
+
+Lagom supports gRPC for cross-service communication. The original HTTP/JSON-based transport is not disappearing but, instead, Lagom introduces gRPC so users can choose to expose alternative transports increasing the adoption of their services.
+
+This feature drove some smaller improvements which non-gRPC users will also welcome.
+
+Lagom already supported HTTP/2 since it is built on top of Play. In Lagom 1.5 we’ve reviewed all the necessary pieces so HTTP/2 can also be used on dev mode. In the same spirit, it is now also possible to use encrypted (TLS) communication on dev mode. 
+
+As a final improvement driven by the adoption of gRPC, it is now possible to embed any vanilla Play Router into a Lagom service. We call the support for Additional Routers. You are now able to easily reuse the Play and Akka building blocks whenever the Lagom API is not enough to complete the task at hand. Using Additional Routers it is trivial to reuse Play code you already had or extend Lagom with low-level features supported in Play but not exposed in Lagom directly (such as uploading files).
 
 ## Updating a Lagom project to version 1.5.0
 
