@@ -33,7 +33,7 @@ If you are targeting OpenShift or Kubernetes environments the new a [Guide to De
 
 Lagom supports gRPC for cross-service communication. The original HTTP/JSON-based transport is not disappearing but, instead, Lagom introduces gRPC so users can choose to expose alternative transports increasing the adoption of their services.
 
-This feature drove some smaller improvements which non-gRPC users will also welcome.
+This feature drove some improvements which non-gRPC users will also welcome.
 
 Lagom already supported HTTP/2 since it is built on top of Play. In Lagom 1.5 we’ve reviewed all the necessary pieces so HTTP/2 can also be used on dev mode. In the same spirit, it is now also possible to use encrypted (TLS) communication on dev mode.
 
