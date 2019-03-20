@@ -60,7 +60,7 @@ Special thanks to the following contributors who helped with this release:
 ```
 commits author    
      46 Ignasi Marimon-Clos
-     32 Renato Cavalcanti
+     33 Renato Cavalcanti
      16 Tim Moore
      15 Elijah Rippeth
      12 Dale Wijnand
@@ -72,7 +72,6 @@ commits author
       1 Zhonglai Zhang
       1 Sergey Morgunov
       1 Riccardo Sirigu
-      1 Renato Cavalcanti
       1 Prashant Sharma
       1 Piyush Goyal
       1 Kunal sethi
