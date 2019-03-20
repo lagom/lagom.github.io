@@ -25,7 +25,7 @@ Another improvement Lagom 1.5 introduces, thanks to the adoption of Akka Managem
 
 # Deployment
 
-Lagom 1.5.0 will no longer support Lightbend Orchestration (which was Incubating). Despite accelerating the first deployment, using Lightbend Orchestration was producing friction and reducing flexibility to tune the deployment. Moving forward, there will be no automated handling of the deployment and the suggested way is to manually maintain the production settings, the deployment descriptors and related scripts.
+Lagom 1.5.0 will no longer support Lightbend Orchestration (which was [Incubating](https://developer.lightbend.com/docs/reactive-platform/2.0/support-terminology/index.html#incubating)). Despite accelerating the first deployment, using Lightbend Orchestration was producing friction and reducing flexibility to tune the deployment. Moving forward, there will be no automated handling of the deployment and the suggested way is to manually maintain the production settings, the deployment descriptors and related scripts.
 
 If you are targeting OpenShift or Kubernetes environments the new a [Guide to Deploy Lightbend Applications](https://developer.lightbend.com/guides/openshift-deployment/) covers all the steps and details (including a sample application) to setup and tune your system.
 
