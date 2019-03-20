@@ -5,6 +5,7 @@
 
 @main(Some(blogPost.title)){ @* head *@
     <link href="@context.path/blog/atom.xml" type="application/atom+xml" rel="home" title="ATOM Feed" />
+    @blogPost.canonicalRel.map{href => <link href="@href" rel="canonical"/>}
 } { @* footer *@
     <script type="text/plain" class="optanon-category-4" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-57a0eb1ac33f75f8"></script>
     <script type="text/plain" class="optanon-category-4">

@@ -3,6 +3,7 @@ title: Lagom 1.5.0 released!
 date: 2019-03-20
 author_github: ignasi35
 tags: news
+canonical_rel: http://developer.lightbend.com/
 summary: >
     The Lagom team has released Lagom 1.5.0
 

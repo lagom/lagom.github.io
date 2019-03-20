@@ -59,9 +59,11 @@ object BlogMetaDataParser {
       sys.error(s"No author_avatar or author_github in front matter of blog post $id")
     }
 
+    val canonicalRel = yaml.getString("canonical_rel")
+
     val tags = yaml.getString("tags").toSeq.flatMap(_.split(" +").map(_.replace('+', ' ')))
 
-    BlogPost(id, date, markdown, title, summary, BlogAuthor(authorName, authorUrl, authorAvatar), tags.toSet)
+    BlogPost(id, date, markdown, title, summary, canonicalRel, BlogAuthor(authorName, authorUrl, authorAvatar), tags.toSet)
   }
 
   private def extractFrontMatter(stream: InputStream): (Yaml, String) = {

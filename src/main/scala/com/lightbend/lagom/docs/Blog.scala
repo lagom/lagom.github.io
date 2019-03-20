@@ -28,8 +28,14 @@ object Blog {
 
 }
 
-final case class BlogPost(id: String, date: DateTime, markdown: String, title: String,
-                          summary: String, author: BlogAuthor, tags: Set[String])
+final case class BlogPost(id: String,
+                          date: DateTime,
+                          markdown: String,
+                          title: String,
+                          summary: String,
+                          canonicalRel: Option[String],
+                          author: BlogAuthor,
+                          tags: Set[String])
 
 final case class BlogAuthor(name: String, url: String, avatar: String)
 
