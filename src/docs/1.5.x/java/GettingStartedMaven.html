@@ -1,0 +1,81 @@
+<h1 id="Creating-and-running-Hello-World-with-Maven"><a class="section-marker" href="#Creating-and-running-Hello-World-with-Maven">§</a>Creating and running Hello World with Maven</h1>
+<p>The easiest way to get started with Lagom and Maven is to use the Maven archetype plugin and a Lagom archetype to create a new project. A Maven project includes sub-projects organized in sub-directories. The top-level and sub-project directories each include a <a href="https://maven.apache.org/pom.html">Project Object Model (POM)</a> that contains build configuration. When you run the <code>generate</code> command, Maven prompts you for POM element values. The Lagom archetype creates a project that includes two Lagom services, <code>hello</code> and <code>stream</code>. </p>
+<p>Follow these instructions to create and run your first project:</p>
+<ol>
+  <li><a href="#Generate-a-project-with-the-Lagom-archetype">Generate a project with the Lagom archetype</a></li>
+  <li><a href="#Browse-the-project-structure">Browse the project structure</a></li>
+  <li><a href="#Run-Hello-World">Run Hello World</a></li>
+</ol><h2 id="Generate-a-project-with-the-Lagom-archetype"><a class="section-marker" href="#Generate-a-project-with-the-Lagom-archetype">§</a>Generate a project with the Lagom archetype</h2>
+<p>Choose a location on your file system for your Lagom projects. Maven will prompt you for a project name and will create a directory with that name that contains the build structure and Lagom example services. Note that it can take from a few seconds to a few minutes for Maven to download dependencies.</p>
+<p>To create your project, follow these steps:</p>
+<ol>
+  <li>Open a console and change into the directory you selected for your project.</li>
+  <li>
+  <p>Invoke <code>mvn archetype:generate</code> from the command line:</p>
+  <pre class="prettyprint"><code>mvn archetype:generate -Dfilter=com.lightbend.lagom:maven-archetype-lagom-java
+</code></pre>
+  <p>Maven starts in interactive mode and prompts you to choose an archetype:</p>
+  <pre class="prettyprint"><code>Choose archetype:
+1: remote -&gt; com.lightbend.lagom:maven-archetype-lagom-java (maven-archetype-lagom-java)
+Choose a number or apply filter (format: [groupId:]artifactId, case sensitive contains): :
+</code></pre></li>
+  <li>
+  <p>Enter the number that corresponds with <code>com.lightbend.lagom:maven-archetype-lagom-java</code> (at time of writing, the number <code>1</code>, and the only one available).<br/>Maven prompts you for the version.</p></li>
+  <li>Enter the number corresponding with the version of Lagom you want to use. We recommend using the <a href="https://www.lagomframework.com/documentation/">current stable release</a>).<br/>The template prompts you for POM values.</li>
+  <li>Specify values for:
+    <ul>
+      <li><code>groupId</code> - Usually a reversed domain name, such as <code>com.example.hello</code>.</li>
+      <li><code>artifactId</code> - Maven also uses this value as the name for the top-level project folder. You might want to use a value such as <code>my-first-system</code></li>
+      <li><code>version</code> - Press <code>Enter</code> to accept the default or enter a version number for your project.</li>
+      <li><code>package</code> - Press <code>Enter</code> to accept the default, which is the same as the <code>groupId</code>.<br/>Maven prompts you to confirm POM values.</li>
+    </ul>
+  </li>
+  <li>Enter <code>Y</code> to accept the values.<br/> When finished, Maven creates the project, and completes with a message similar to the following:</li>
+</ol>
+<pre class="prettyprint"><code>   [INFO] ------------------------------------------------------------------------
+   [INFO] BUILD SUCCESS
+   [INFO] ------------------------------------------------------------------------
+   [INFO] Total time: 10:42 min
+   [INFO] Finished at: 2017-02-24T11:58:08-06:00
+   [INFO] Final Memory: 17M/252M
+   [INFO] ------------------------------------------------------------------------
+
+</code></pre><h2 id="Browse-the-project-structure"><a class="section-marker" href="#Browse-the-project-structure">§</a>Browse the project structure</h2>
+<p>The structure for a project created with the Maven archetype generate command will look similar to the following (assuming <code>my-first-system</code> as an <code>artifactId</code>):</p>
+<pre class="prettyprint"><code>my-first-system
+ └ hello-api/             → hello world api project dir
+ └ hello-impl/            → hello world implementation dir
+ └ integration-tests/
+ └ stream-api/            → stream api project dir
+ └ stream-impl/           → stream implementation project dir
+ └ pom.xml                → Project group build file
+</code></pre>
+<p>Note that the <code>hello</code> and <code>stream</code> services each have:</p>
+<ul>
+  <li>An <code>api</code> project that contains a service interface through which consumers can interact with the service.</li>
+  <li>An <code>impl</code> project that contains the service implementation.</li>
+</ul><h2 id="Run-Hello-World"><a class="section-marker" href="#Run-Hello-World">§</a>Run Hello World</h2>
+<p>Lagom provides a <code>runAll</code> command to start the Lagom <code>hello</code> and <code>stream</code> services and runtime components, which include: Cassandra, Akka, and Kafka. From the top-level group directory, such as <code>my-first-system</code>, execute <code>lagom:runAll</code>.</p>
+<p>For example:</p>
+<pre class="prettyprint"><code class="language-console">cd my-first-system
+mvn lagom:runAll
+</code></pre>
+<p>It will take a bit of time for the services to start. The <code>Services started</code> message indicates the system is running:</p>
+<pre class="prettyprint"><code>...
+[info] Starting embedded Cassandra server
+..........
+[info] Cassandra server running at 127.0.0.1:4000
+[info] Service locator is running at http://localhost:9008
+[info] Service gateway is running at http://localhost:9000
+...
+[INFO] Service hello-impl listening for HTTP on 127.0.0.1:65499
+[INFO] Service hello-impl listening for HTTPS on 127.0.0.1:50695
+[INFO] Service stream-impl listening for HTTP on 127.0.0.1:60212
+[INFO] Service stream-impl listening for HTTPS on 127.0.0.1:58440
+[INFO] (Services started, press enter to stop and go back to the console...)
+</code></pre>
+<p>Verify that the services are indeed up and running by invoking the <code>hello</code> service endpoint from any HTTP client, such as a browser:</p>
+<pre class="prettyprint"><code>http://localhost:9000/api/hello/World
+</code></pre>
+<p>The request returns the message <code>Hello, World!</code>.</p>
+<p>Congratulations! You&rsquo;ve created and run your first Lagom system.</p>

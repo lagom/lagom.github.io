@@ -1,0 +1,44 @@
+<h1 id="Lagom-1.2-Migration-Guide"><a class="section-marker" href="#Lagom-1.2-Migration-Guide">§</a>Lagom 1.2 Migration Guide</h1>
+<p>This guide explains how to migrate from a Lagom 1.1 application to Lagom 1.2.</p><h2 id="Build-changes"><a class="section-marker" href="#Build-changes">§</a>Build changes</h2><h3 id="Maven"><a class="section-marker" href="#Maven">§</a>Maven</h3>
+<p>If you&rsquo;re using a <code>lagom.version</code> property in the <code>properties</code> section of your root <code>pom.xml</code>, then simply update that to <code>1.2.0</code>. Otherwise, you&rsquo;ll need to go through every place that a Lagom dependency, including plugins, is used, and set the version there.</p>
+<p>If you were using Lagom persistence, the Cassandra support has been split out into its own module. You&rsquo;ll need to update your dependencies to point to <code>lagom-javadsl-persistence-cassandra</code>, instead of <code>lagom-javadsl-persistence</code>.</p><h3 id="sbt"><a class="section-marker" href="#sbt">§</a>sbt</h3>
+<p>The version of Lagom can be updated by editing the <code>project/plugins.sbt</code> file, and updating the version of the Lagom sbt plugin. For example:</p>
+<pre class="prettyprint"><code class="language-scala">addSbtPlugin(&quot;com.lightbend.lagom&quot; % &quot;lagom-sbt-plugin&quot; % &quot;1.2.0&quot;)
+</code></pre>
+<p>If you were using Lagom persistence, the Cassandra support has been split out into its own module. You&rsquo;ll need to update your dependencies to point to <code>lagomJavadslPersistenceCassandra</code>, instead of <code>lagomJavadslPersistence</code>.</p><h2 id="Migrate-read-sides-to-the-new-API"><a class="section-marker" href="#Migrate-read-sides-to-the-new-API">§</a>Migrate read-sides to the new API</h2>
+<p>Lagom now provides a new API for writing read-sides. The features this API provides includes:</p>
+<ul>
+  <li>Automatic offset handling - it is no longer necessary to manually manage your offset table yourself.</li>
+  <li>Sharded read-sides</li>
+</ul>
+<p>The old <code>CassandraReadSideProcessor</code> API is still available, but is deprecated. There is no immediate need to switch to the new API when you migrate to Lagom 1.2, however, it is advisable to make the switch as the old API may be removed in a future version of Lagom.</p>
+<p>Before migrating, we recommend that you read the documentation. You should read both <a href="ReadSide.html">Persistent Read-Side</a>, as well as <a href="ReadSideCassandra.html">Cassandra Read-Side support</a>. Once you have done that, the following tasks need to be done to the processor class itself:</p>
+<ul>
+  <li>Modify your read side processor to implement <a href="api/index.html?com/lightbend/lagom/javadsl/persistence/ReadSideProcessor.html"><code>ReadSideProcessor</code></a> instead of <a href="api/index.html?com/lightbend/lagom/javadsl/persistence/cassandra/CassandraReadSideProcessor.html"><code>CassandraReadSideProcessor</code></a>.</li>
+  <li>Ensure your read side processor has both <a href="api/index.html?com/lightbend/lagom/javadsl/persistence/cassandra/CassandraReadSide.html"><code>CassandraReadSide</code></a> and <a href="api/index.html?com/lightbend/lagom/javadsl/persistence/cassandra/CassandraSession.html"><code>CassandraSession</code></a> injected into its constructor.</li>
+  <li>Replace the <code>aggregateTag</code> method with the new <code>aggregateTags</code> method, and instead of returning your single tag, wrap it in a singleton list using <code>TreePVector.singleton()</code>.</li>
+  <li>Implement the <code>buildHandler</code> method by invoking the <code>CassandraReadSide.builder</code> method, passing an ID for this read-side.</li>
+  <li>Remove all code that handles offsets.</li>
+  <li>Split the <code>prepare</code> method into parts that should be done once globally across all nodes (such as creating tables), and parts that should be done once per processor (such as preparing statements), and pass these to the <code>setGlobalPrepare</code> and <code>setPrepare</code> callbacks on the read side builder in <code>buildHandler</code>.</li>
+  <li>Replace the defineEventHandlers method with defining event handlers in the <code>buildHandler</code> method.</li>
+</ul>
+<p>When you register the read-side, instead of invoking <code>CassandraReadSide.register</code>, you should invoke <code>ReadSide.register</code>. This will typically mean having <a href="api/index.html?com/lightbend/lagom/javadsl/persistence/ReadSide.html"><code>ReadSide</code></a> instead of <a href="api/index.html?com/lightbend/lagom/javadsl/persistence/cassandra/CassandraReadSide.html"><code>CassandraReadSide</code></a> injected into the component that registers the read-side processor.</p>
+<p>Finally, you&rsquo;ll need to bootstrap the new Cassandra offset table with the old offset before you deploy, otherwise your read-side processor will re-process all the events for the entire history when you deploy your upgraded service. To do this, create the table:</p>
+<pre class="prettyprint"><code class="language-sql">CREATE TABLE IF NOT EXISTS offsetStore (
+    eventProcessorId text,
+    tag text,
+    timeUuidOffset timeuuid,
+    sequenceOffset bigint,
+    PRIMARY KEY (eventProcessorId, tag)
+)
+</code></pre>
+<p>Then, run the following statement to update it:</p>
+<pre class="prettyprint"><code class="language-sql">INSERT INTO offsetStore (eventProcessorId, tag, timeUuidOffset, sequencOffset)
+VALUES (&#39;&lt;your-event-processor-id&gt;&#39;, &#39;&lt;your-tag&gt;&#39;, &#39;&lt;uuid&gt;&#39;, null)
+</code></pre>
+<p>Where <code>&lt;your-event-processor-id&gt;</code> is the ID that you passed to <code>CassandraReadSide.builder()</code> in your read side processor, <code>&lt;your-tag&gt;</code> is the name of your aggregate tag (by default, if not explicitly specified, this is the fully qualify class name of your event interface), and <code>&lt;uuid&gt;</code> is the UUID in your manual offset store.</p>
+<p>If the updates on your read-side are idempotent, then this task can be done at any time before deployment - reprocessing a few events shouldn&rsquo;t be a problem. Otherwise, you will need to ensure that you do this while your service is not running, to prevent any events from being reprocessed. An alternative to this would be to drop your read-side tables before upgrading, and so start processing events from the start.</p><h2 id="Testkit-changes"><a class="section-marker" href="#Testkit-changes">§</a>Testkit changes</h2>
+<p>The testkit has been modified such that Cassandra and clustering are disabled by default, whereas previously they were enabled by default. This is to accommodate for the fact that Lagom now has multiple persistence backends, not just Cassandra.</p>
+<p>If you have tests that depend on Cassandra, you will need to update them to enable Cassandra, using:</p>
+<pre class="prettyprint"><code class="language-java">defaultSetup().withCassandra(true)
+</code></pre>

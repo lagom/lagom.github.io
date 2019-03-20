@@ -1,0 +1,29 @@
+<h1 id="Introduction"><a class="section-marker" href="#Introduction">§</a>Introduction</h1>
+<p>Lagom exposes two APIs, Java and Scala, and provides a framework and development environment as a set of libraries and build tool plugins. While the libraries can be consumed from any build tool, you can only take advantage of Lagom&rsquo;s high productivity development environment by using one of the supported build tools, Maven or sbt. You can use Maven with Java or sbt with Java or Scala.</p><h2 id="Choose-your-tool"><a class="section-marker" href="#Choose-your-tool">§</a>Choose your tool</h2>
+<p>Maven and sbt both provide dependency management to download the Lagom libraries and plugins for you. Once you create a project, Lagom tool plugins will run your services and the associated Lagom infrastructure with a single command and hot reload when the tool detects code changes.</p>
+<p>The Lagom team is committed to providing full support for both sbt and Maven. Choose the tool that will work best for you:</p>
+<ul>
+  <li>
+  <p>If you are a Java developer with existing knowledge of <a href="https://maven.apache.org/">Maven</a>, this familiarity can help you get started faster with Lagom. If your organization has existing infrastructure, plugins and best practices built around Maven, that might also make Maven the more practical choice.</p></li>
+  <li>
+  <p><a href="https://www.scala-sbt.org/">sbt</a> is a very powerful build tool that allows Lagom&rsquo;s features to be very easily supported and implemented - there are many aspects of the Lagom development environment that work a little smoother and faster in sbt than Maven due to sbt&rsquo;s power and flexibility. For this reason, sbt is the build tool of choice for the maintainers of Lagom.</p></li>
+</ul><h2 id="Start-with-a-template"><a class="section-marker" href="#Start-with-a-template">§</a>Start with a template</h2>
+<p>A Lagom system typically includes one or more groups of services. To (<a href="https://twitter.com/jboner/status/699536472442011648">quote</a> Jonas Bonér):</p>
+<blockquote>
+  <p>One microservice is no microservice - they come in systems. </p>
+</blockquote>
+<p>Factoring or re-factoring functionality into right-sized services will be critical to the success of your project. And, Lagom&rsquo;s opinionated framework will steer you in the right direction. But, it is a good idea to start small.</p>
+<p>To simplify your development experience, Lagom provides a Maven archetype and an sbt Giter8 template. Both create a build structure with a simple Hello World service and all of the components necessary to run it. The Lagom template illustrates intra-service communication, providing an example to learn from and a quick way to verify that your project and build tool are set up correctly. </p>
+<p>Later, you can download more complex <a href="LagomExamples.html">Lagom examples</a> that demonstrate Lagom functionality. Both Maven and sbt integrate with IDEs, but we suggest that you start from the command line with your choice of tool. Once you have a Maven project group or an sbt build, you can integrate these structures into any Java IDE. We have some tips to help you with Eclipse or IntelliJ, two popular IDEs.</p>
+<blockquote>
+  <p><strong>Note:</strong> Shell terminology and appearance differs between Windows, Linux, and Mac operating systems. Our Getting Started instructions for a command line assume familiarity with a shell and that your account has the appropriate permissions. For example, if you are using a DOS shell, you&rsquo;ll want to run it as administrator. </p>
+</blockquote>
+<p>To set up your environment and use a template to create your first project from the command line, follow the appropriate steps:</p>
+<ul>
+  <li>
+  <p><a href="JavaPrereqs.html">Verify Java prerequisites</a></p></li>
+  <li>
+  <p><a href="GettingStartedMaven.html">Create and run Hello World with  Maven</a></p></li>
+  <li>
+  <p><a href="GettingStartedSbt.html">Create and run Hello World with sbt</a></p></li>
+</ul>

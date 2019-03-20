@@ -1,0 +1,139 @@
+<h1 id="Implementing-services"><a class="section-marker" href="#Implementing-services">§</a>Implementing services</h1>
+<p>Services are implemented by providing an implementation of the service descriptor interface, implementing each call specified by that descriptor.</p>
+<p>For example, here&rsquo;s an implementation of the <code>HelloService</code> descriptor:</p>
+<pre class="prettyprint"><code class="language-java">import com.lightbend.lagom.javadsl.api.*;
+import akka.NotUsed;
+import static java.util.concurrent.CompletableFuture.completedFuture;
+
+public class HelloServiceImpl implements HelloService {
+
+    public ServiceCall&lt;String, String&gt; sayHello() {
+        return name -&gt; completedFuture(&quot;Hello &quot; + name);
+    }
+}</code></pre>
+<p>As you can see, the <code>sayHello()</code> method is implemented using a lambda. An important thing to realise here is that the invocation of <code>sayHello()</code> itself does not execute the call, it only returns the call to be executed. The advantage here is that when it comes to composing the call with other cross cutting concerns, such as authentication, this can easily be done using ordinary function based composition.</p>
+<p>If you&rsquo;ve used a Java based web framework before, you may be familiar with using annotations for composition of cross cutting concerns. Annotations have their limits - they don&rsquo;t compose, that is, if you have two different annotations that you want to apply to many different methods, it&rsquo;s not straight forward to simply create a new annotation that combines them. In contrast, functions are just methods, if you want to compose two methods together, you create a new method that invokes both of them. Additionally, you&rsquo;re in complete control over how they get composed, you know exactly what order they are composed in, as opposed to annotations where it&rsquo;s up to the framework to magically read them via reflection and somehow gain meaning from that.</p>
+<p>Now let&rsquo;s have a look at our <a href="api/index.html?com/lightbend/lagom/javadsl/api/ServiceCall.html">ServiceCall</a> interface again:</p>
+<pre class="prettyprint"><code class="language-java">interface ServiceCall&lt;Request, Response&gt; {
+  CompletionStage&lt;Response&gt; invoke(Request request);
+}
+</code></pre>
+<p>It will take the request, and return the response as a <a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CompletionStage.html"><code>CompletionStage</code></a>. If you&rsquo;ve never seen <code>CompletionStage</code> before, it is a promise. When an API returns a promise, that value might not yet be computed, but the API promises that at some point in future, it will be. Since the value isn&rsquo;t computed yet, you can&rsquo;t interact with it immediately. What you can do though is attach callbacks that transform the promise to a promise of a new value, using the <code>thenApply</code> and <code>thenCompose</code> methods. <code>CompletionStage</code> with its <code>thenApply</code> and <code>thenCompose</code> methods are fundamental building blocks for building reactive applications in Java, they allow your code to be asynchronous, not waiting for things to happen, but attaching callback that react to computations being completed.</p>
+<p>Of course, a simple hello world computation is not asynchronous, all it needs is to do is concatenate two Strings, and that returns immediately. In this case, we need to wrap the result of that in a <code>CompletionStage</code>. This can be done by calling <code>CompletableFuture.completedFuture()</code>, which returns a subclass of <code>CompletionStage</code> wrapping an immediately available value.</p>
+<p>Having provided an implementation of the service, we can now register that with the Lagom framework. Lagom is built on top of Play Framework, and so uses Play&rsquo;s Guice based <a href="https://playframework.com/documentation/2.6.x/JavaDependencyInjection">dependency injection support</a> to register components. To register a service, you&rsquo;ll need to implement a Guice module. This can be done by creating a class called <code>Module</code> in the root package:</p>
+<pre class="prettyprint"><code class="language-java">import com.google.inject.AbstractModule;
+import com.lightbend.lagom.javadsl.server.ServiceGuiceSupport;
+
+public class Module extends AbstractModule implements ServiceGuiceSupport {
+
+    protected void configure() {
+        bindService(HelloService.class, HelloServiceImpl.class);
+    }
+}</code></pre>
+<p>As you can see, the module extends Guice&rsquo;s <code>AbstractModule</code>, as well as Lagom&rsquo;s <code>ServiceGuiceSupport</code>. In this module, you can provide any Guice bindings you like. In this case, we&rsquo;re just providing a binding for the <code>HelloService</code>. <code>bindService()</code> may only be invoked once, as this will bind a router for Play to use to route Lagom service calls, which if bound multiple times, will cause a Guice configuration error. The name in the Descriptor bound will be used to name your Service. This name will be used by Lagom as the default value to identify your microservice when interacting with other microservices.</p>
+<p>By convention, Play will automatically load a module called <code>Module</code> in the root package if it can find one, however if you&rsquo;d prefer to call your module another name, or not put it in the root package, then you can manually add your module to Play&rsquo;s list of enabled modules by adding the following to <code>application.conf</code>:</p>
+<pre class="prettyprint"><code>play.modules.enabled += com.example.MyModule
+</code></pre><h2 id="Working-with-streams"><a class="section-marker" href="#Working-with-streams">§</a>Working with streams</h2>
+<p>When the request and response bodies are strict, working with them is straightforward. If they are streamed, however, you&rsquo;ll need to use Akka streams to work with them. Let&rsquo;s take a look at how some of the streamed service calls in the <a href="ServiceDescriptors.html#Streamed-messages">service descriptors</a> examples might be implemented.</p>
+<p>The <code>tick</code> service call is going to return a <code>Source</code> that sends messages at the specified interval. Akka streams has a helpful constructor for such a stream:</p>
+<pre class="prettyprint"><code class="language-java">public ServerServiceCall&lt;String, Source&lt;String, ?&gt;&gt; tick(int intervalMs) {
+  return tickMessage -&gt; {
+    Duration interval = Duration.ofMillis(intervalMs);
+    return completedFuture(Source.tick(interval, interval, tickMessage));
+  };
+}</code></pre>
+<p>The first two arguments are the delay before messages should be sent, and the interval at which they should be sent. The third argument is the message that should be sent on each tick. Calling this service call with an interval of <code>1000</code> and a request message of <code>tick</code> will result in a stream being returned that sent a <code>tick</code> message every second.</p>
+<p>The <code>sayHello</code> service call can be implemented by mapping the incoming <code>Source</code> of the names to say hello to:</p>
+<pre class="prettyprint"><code class="language-java">public ServerServiceCall&lt;Source&lt;String, ?&gt;, Source&lt;String, ?&gt;&gt; sayHello() {
+  return names -&gt; completedFuture(names.map(name -&gt; &quot;Hello &quot; + name));
+}</code></pre>
+<p>When you <code>map</code> a <code>Source</code>, you get back a new <code>Source</code> that applies the map transformation to each message that the incoming <code>Source</code> produces.</p>
+<p>These examples of working with streams are obviously quite trivial. The sections on <a href="PubSub.html">Publish-Subscribe</a> and <a href="ReadSide.html">Persistent Read-Side</a> show real examples of using streams in Lagom.</p><h2 id="Handling-headers"><a class="section-marker" href="#Handling-headers">§</a>Handling headers</h2>
+<p>Sometimes you may need to handle the request header, or add information to the response header. <code>ServiceCall</code> provides <code>handleRequestHeader</code> and <code>handleResponseHeader</code> methods to allow you to do this, however it is not recommended that you implement this directly, rather, you should use <code>ServerServiceCall</code>.</p>
+<p><code>ServerServiceCall</code> is an interface that extends <code>ServiceCall</code>, and provides an additional method, <code>invokeWithHeaders</code>. This is different from the regular <code>invoke</code> method because in addition to the <code>Request</code> parameter, it also accepts a <code>RequestHeader</code> parameter. And rather than returning a <code>CompletionStage&lt;Response&gt;</code>, it returns a <code>CompletionStage&lt;Pair&lt;ResponseHeader, Response&gt;&gt;</code>. Hence it allows you to handle the request header, and send a custom response header. <code>ServerServiceCall</code> implements the <code>handleRequestHeader</code> and <code>handleResponseHeader</code> methods, so that when Lagom calls the <code>invoke</code> method, it is delegated to the <code>invokeWithHeaders</code> method.</p>
+<p><code>ServerServiceCall</code> is a functional interface, leaving the original <code>invoke</code> method abstract, so when an interface requires you to pass or return a <code>ServerServiceCall</code>, if you implement it with a lambda, you aren&rsquo;t forced to handle the headers. An additional functional interface is provided, <code>HeaderServiceCall</code>, this extends <code>ServerServiceCall</code> and makes <code>invokeWithHeaders</code> the abstract method. This can be used to handle headers with a lambda implemented service call, in two ways.</p>
+<p>If you&rsquo;re implementing the service call directly, you can simply change the return type to be <code>HeaderServiceCall</code>, like so:</p>
+<pre class="prettyprint"><code class="language-java">public HeaderServiceCall&lt;String, String&gt; sayHello() {
+  return (requestHeader, name) -&gt; {
+
+    String user = requestHeader.principal()
+        .map(Principal::getName).orElse(&quot;No one&quot;);
+    String response = user + &quot; wants to say hello to &quot; + name;
+
+    ResponseHeader responseHeader = ResponseHeader.OK
+        .withHeader(&quot;Server&quot;, &quot;Hello service&quot;);
+
+    return completedFuture(Pair.create(responseHeader, response));
+  };
+}</code></pre>
+<p>If you&rsquo;re required to pass or return a <code>ServerServiceCall</code>, you can use the <code>HeaderServiceCall.of</code> method, like so:</p>
+<pre class="prettyprint"><code class="language-java">public ServerServiceCall&lt;String, String&gt; sayHello() {
+  return HeaderServiceCall.of((requestHeader, name) -&gt; {
+
+    String user = requestHeader.principal()
+        .map(Principal::getName).orElse(&quot;No one&quot;);
+    String response = user + &quot; wants to say hello to &quot; + name;
+
+    ResponseHeader responseHeader = ResponseHeader.OK
+        .withHeader(&quot;Server&quot;, &quot;Hello service&quot;);
+
+    return completedFuture(Pair.create(responseHeader, response));
+  });
+}</code></pre><h2 id="Service-call-composition"><a class="section-marker" href="#Service-call-composition">§</a>Service call composition</h2>
+<p>You may have situations where you want to compose service calls with cross cutting concerns such as security or logging. In Lagom, this is done by composing service calls explicitly. The following shows a simple logging service call:</p>
+<pre class="prettyprint"><code class="language-java">public &lt;Request, Response&gt; ServerServiceCall&lt;Request, Response&gt; logged(
+    ServerServiceCall&lt;Request, Response&gt; serviceCall) {
+  return HeaderServiceCall.compose(requestHeader -&gt; {
+    System.out.println(&quot;Received &quot; + requestHeader.method() + &quot; &quot; + requestHeader.uri());
+    return serviceCall;
+  });
+}</code></pre>
+<p>This uses the <code>compose</code> method from <code>HeaderServiceCall</code>, which takes a callback that takes the request header, and returns a service call.</p>
+<p>If we were to implement the <code>HelloService</code> to be logged, we would use it like this:</p>
+<pre class="prettyprint"><code class="language-java">public ServerServiceCall&lt;String, String&gt; sayHello() {
+  return logged(
+      name -&gt; completedFuture(&quot;Hello &quot; + name)
+  );
+}</code></pre>
+<p>Another common cross cutting concern is authentication. Imagine you have a user storage interface:</p>
+<pre class="prettyprint"><code class="language-java">interface UserStorage {
+  CompletionStage&lt;Optional&lt;User&gt;&gt; lookupUser(String username);
+}</code></pre>
+<p>You could use it like this to implement an authenticated service call:</p>
+<pre class="prettyprint"><code class="language-java">public &lt;Request, Response&gt; ServerServiceCall&lt;Request, Response&gt; authenticated(
+    Function&lt;User, ServerServiceCall&lt;Request, Response&gt;&gt; serviceCall) {
+  return HeaderServiceCall.composeAsync(requestHeader -&gt; {
+
+    // First lookup user
+    CompletionStage&lt;Optional&lt;User&gt;&gt; userLookup = requestHeader.principal()
+        .map(principal -&gt; userStorage.lookupUser(principal.getName()))
+        .orElse(completedFuture(Optional.empty()));
+
+    // Then, if it exists, apply it to the service call
+    return userLookup.thenApply(maybeUser -&gt; {
+      if (maybeUser.isPresent()) {
+        return serviceCall.apply(maybeUser.get());
+      } else {
+        throw new Forbidden(&quot;User must be authenticated to access this service call&quot;);
+      }
+    });
+  });
+}</code></pre>
+<p>This time, since the lookup of the user is asynchronous, we&rsquo;re using <code>composeAsync</code>, which allows us to asynchronously return the service call to handle the service. Also, instead of simply accepting a service call, we accept a function of a user to a service call. This means the service call can access the user:</p>
+<pre class="prettyprint"><code class="language-java">public ServerServiceCall&lt;String, String&gt; sayHello() {
+  return authenticated( user -&gt;
+      name -&gt; completedFuture(&quot;Hello &quot; + user)
+  );
+}</code></pre>
+<p>Notice here, in contrast to other frameworks where a user object may be passed using thread locals or in an untyped map by filters, the user object is explicitly passed. If your code requires access to the user object, it&rsquo;s impossible to have a configuration error where you forgot to put the filter in place, the code simply will not compile.</p>
+<p>Often you will want to compose multiple service calls together. This is where the power of function based composition really shines, in contrast to annotations. Since service calls are just regular methods, you can simply define a new method that combines them, like so:</p>
+<pre class="prettyprint"><code class="language-java">public &lt;Request, Response&gt; ServerServiceCall&lt;Request, Response&gt; filter(
+    Function&lt;User, ServerServiceCall&lt;Request, Response&gt;&gt; serviceCall) {
+  return logged(authenticated(serviceCall));
+}</code></pre>
+<p>Using this in the hello service:</p>
+<pre class="prettyprint"><code class="language-java">public ServerServiceCall&lt;String, String&gt; sayHello() {
+  return filter( user -&gt;
+      name -&gt; completedFuture(&quot;Hello &quot; + user)
+  );
+}</code></pre>

@@ -1,0 +1,36 @@
+<h1 id="Lagom-1.3-migration-guide"><a class="section-marker" href="#Lagom-1.3-migration-guide">§</a>Lagom 1.3 migration guide</h1>
+<p>This guide gives a brief description of the steps required to migrate a Lagom 1.2 Java system to a Lagom 1.3 Scala system.</p><h2 id="Build-changes"><a class="section-marker" href="#Build-changes">§</a>Build changes</h2>
+<ol>
+  <li>Upgrade the Lagom plugin version in <code>project/plugins.sbt</code> to <code>1.3.2</code>.</li>
+  <li>If using ConductR with sbt, you should upgrade the ConductR sbt plugin to at least <code>2.3.4</code>.</li>
+  <li>Replace <code>LagomJava</code> with <code>LagomScala</code>, and any references to <code>javadsl</code> components to their <code>scaladsl</code> equivalents.</li>
+</ol><h2 id="General-code-changes"><a class="section-marker" href="#General-code-changes">§</a>General code changes</h2>
+<p>Generally, across your codebase, you will need to do the following:</p>
+<ol>
+  <li>Replace any imports on Lagom <code>javadsl</code> APIs with imports on the equivalent <code>scaladsl</code> APIs. In most cases, these are named the same thing.</li>
+  <li>Replace any uses of Akka <code>javadsl</code> streams with <code>scaladsl</code> streams.</li>
+  <li>Replace any uses of <code>java.util.concurrent.CompletionStage</code> with <code>scala.concurrent.Future</code>. Remember that <code>scala.concurrent.Future</code> needs an implicit execution context in scope.</li>
+</ol><h2 id="Lagom-Service-API-changes"><a class="section-marker" href="#Lagom-Service-API-changes">§</a>Lagom Service API changes</h2>
+<p>The primary change necessary for the Lagom Service API is to declare Play JSON formats for all of your request and response messages. These formats should replace any Jackson annotations on your message classes. These formats are typically best declared as an implicit parameter on your message classes&rsquo; companion objects, using the Play JSON macros as a convenience, for example:</p>
+<pre class="prettyprint"><code class="language-scala">import play.api.libs.json._
+
+case class Post(title: String, content: String)
+
+object Post {
+  implicit val format: Format[Post] = Json.format
+}
+</code></pre>
+<p>For more details, see <a href="ServiceDescriptors.html#Message-serialization">the message serializer documentation</a>.</p>
+<p>If using custom path parameter serializers, these will need to be passed via implicit parameters, rather than being registered with the service descriptor explicitly.</p><h2 id="Service-implementation-changes"><a class="section-marker" href="#Service-implementation-changes">§</a>Service implementation changes</h2>
+<p>In the Lagom Java API, service calls get implemented using lambdas. In the Scala API, service calls get implemented by passing lambdas to the <code>ServiceCall</code> and <code>ServerServiceCall</code> constructors, for example:</p>
+<pre class="prettyprint"><code class="language-scala">import com.lightbend.lagom.scaladsl.api.ServiceCall
+import scala.concurrent.Future
+
+def sayHello = ServiceCall { name =&gt;
+  Future.successful(s&quot;Hello $name!&quot;)
+}
+</code></pre>
+<p>Furthermore, there is no need for <code>HeaderServiceCall</code> in Lagom, since the Scala type system is easily able to distinguish between a function that takes a single message argument, and a function that takes a request header and a message argument, so <code>ServerServiceCall</code> is used both for service calls that ignore the headers, and service calls that interact with the headers.</p><h2 id="Persistence-changes"><a class="section-marker" href="#Persistence-changes">§</a>Persistence changes</h2>
+<p>Persistent entities in Lagom express their command, event and state types using abstract types, rather than type parameters on the <code>PersistentEntity</code> class. Lagom&rsquo;s persistent entity Scala behavior builders also make use of partial functions and other Scala features. The full documentation on Scala&rsquo;s persistent entities is <a href="PersistentEntity.html">here</a>.</p>
+<p>Like the message serializers for services, serializers for messages sent over Akka remoting, and for the persistent entity events and state, need to be defined explicitly, by default this can be done using Play JSON. Since serializers are supplied explicitly, there is no need for a <code>Jsonable</code> interface in the Scala API. For more details, see the <a href="Serialization.html">serialization documentation</a>.</p><h2 id="Application-wiring-changes"><a class="section-marker" href="#Application-wiring-changes">§</a>Application wiring changes</h2>
+<p>The Lagom Scala API is designed to be used with compile time dependency injection, not Guice. In general, this means removing all JSR-330 annotations from components, such as <code>@Inject</code> and <code>@Singleton</code>, and creating an application cake to replace the Guice <code>Module</code> that the Java API needs defined. For documentation about how to wire together a Lagom Scala application, see <a href="DependencyInjection.html#Wiring-together-a-Lagom-application">Wiring together a Lagom application</a>.</p>

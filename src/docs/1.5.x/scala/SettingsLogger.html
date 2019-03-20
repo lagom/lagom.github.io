@@ -1,0 +1,205 @@
+<h1 id="Configuring-Logging"><a class="section-marker" href="#Configuring-Logging">§</a>Configuring Logging</h1>
+<p>Lagom uses SLF4J for logging, backed by <a href="https://logback.qos.ch/">Logback</a> as its default logging engine. See the <a href="https://logback.qos.ch/manual/configuration.html">Logback documentation</a> for details on configuration.</p><h2 id="Default-configuration"><a class="section-marker" href="#Default-configuration">§</a>Default configuration</h2>
+<p>If you don&rsquo;t provide your own Logback configuration, Lagom uses the following default configuration in development:</p>
+<pre class="prettyprint"><code class="language-xml">&lt;!--
+  ~ Copyright (C) 2016-2019 Lightbend Inc. &lt;https://www.lightbend.com&gt;
+  --&gt;
+&lt;!-- The default logback configuration that Lagom uses in dev mode if no other configuration is provided --&gt;
+&lt;configuration&gt;
+
+  &lt;conversionRule conversionWord=&quot;coloredLevel&quot; converterClass=&quot;com.lightbend.lagom.internal.logback.ColoredLevel&quot; /&gt;
+
+  &lt;appender name=&quot;STDOUT&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&gt;
+    &lt;encoder&gt;
+      &lt;pattern&gt;%date{&quot;HH:mm:ss.SSS&quot;} %coloredLevel %logger [%mdc] - %msg%n&lt;/pattern&gt;
+    &lt;/encoder&gt;
+  &lt;/appender&gt;
+
+  &lt;!-- Set logging for all Play library classes to INFO --&gt;
+  &lt;logger name=&quot;play&quot; level=&quot;INFO&quot; /&gt;
+  &lt;!-- Set logging for all Akka library classes to INFO --&gt;
+  &lt;logger name=&quot;akka&quot; level=&quot;INFO&quot; /&gt;
+  &lt;!-- Set logging for all Lagom library classes to INFO --&gt;
+  &lt;logger name=&quot;com.lightbend.lagom&quot; level=&quot;INFO&quot; /&gt;
+
+  &lt;!-- Cassandra and the datasta driver are used by the Lagom event sourcing modules --&gt;
+  &lt;logger name=&quot;org.apache.cassandra&quot; level=&quot;ERROR&quot; /&gt;
+  &lt;logger name=&quot;com.datastax.driver&quot; level=&quot;ERROR&quot; /&gt;
+  &lt;!-- Turning off connection error logging to avoid noise when services are forcibly stopped --&gt;
+  &lt;logger name=&quot;com.datastax.driver.core.ControlConnection&quot; level=&quot;OFF&quot; /&gt;
+  &lt;!-- Turn down Kafka noise --&gt;
+  &lt;logger name=&quot;org.apache.kafka&quot; level=&quot;WARN&quot; /&gt;
+
+  &lt;root level=&quot;INFO&quot;&gt;
+    &lt;appender-ref ref=&quot;STDOUT&quot; /&gt;
+  &lt;/root&gt;
+
+&lt;/configuration&gt;</code></pre>
+<p>While it uses the following one in production:</p>
+<pre class="prettyprint"><code class="language-xml">&lt;!--
+  ~ Copyright (C) 2016-2019 Lightbend Inc. &lt;https://www.lightbend.com&gt;
+  --&gt;
+&lt;!-- The default logback configuration that Lagom uses if no other configuration is provided --&gt;
+&lt;configuration&gt;
+
+  &lt;conversionRule conversionWord=&quot;coloredLevel&quot; converterClass=&quot;com.lightbend.lagom.internal.logback.ColoredLevel&quot; /&gt;
+
+  &lt;appender name=&quot;STDOUT&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&gt;
+    &lt;encoder&gt;
+      &lt;pattern&gt;%date{&quot;yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSS&#39;Z&#39;&quot;,UTC} %coloredLevel %logger [%mdc] - %msg%n&lt;/pattern&gt;
+    &lt;/encoder&gt;
+  &lt;/appender&gt;
+
+  &lt;appender name=&quot;ASYNCSTDOUT&quot; class=&quot;ch.qos.logback.classic.AsyncAppender&quot;&gt;
+    &lt;appender-ref ref=&quot;STDOUT&quot; /&gt;
+  &lt;/appender&gt;
+
+  &lt;!-- Set logging for all Play library classes to INFO --&gt;
+  &lt;logger name=&quot;play&quot; level=&quot;INFO&quot; /&gt;
+  &lt;!-- Set logging for all Akka library classes to INFO --&gt;
+  &lt;logger name=&quot;akka&quot; level=&quot;INFO&quot; /&gt;
+  &lt;!-- Set logging for all Lagom library classes to INFO --&gt;
+  &lt;logger name=&quot;com.lightbend.lagom&quot; level=&quot;INFO&quot; /&gt;
+
+  &lt;!-- Cassandra and the datasta driver are used by the Lagom event sourcing modules --&gt;
+  &lt;logger name=&quot;org.apache.cassandra&quot; level=&quot;ERROR&quot; /&gt;
+  &lt;logger name=&quot;com.datastax.driver&quot; level=&quot;ERROR&quot; /&gt;
+  &lt;!-- Turn down Kafka noise --&gt;
+  &lt;logger name=&quot;org.apache.kafka&quot; level=&quot;WARN&quot; /&gt;
+
+  &lt;root level=&quot;INFO&quot;&gt;
+    &lt;appender-ref ref=&quot;ASYNCSTDOUT&quot; /&gt;
+  &lt;/root&gt;
+
+&lt;/configuration&gt;</code></pre>
+<p>A few things to note:</p>
+<ul>
+  <li>The logger logs full exception stack traces and full-qualified logger names.</li>
+  <li>Lagom uses ANSI color codes by default in level messages.</li>
+  <li>In production, Lagom puts the logger behind the logback <a href="https://logback.qos.ch/manual/appenders.html#AsyncAppender">AsyncAppender</a>. For details on the performance implications on this, see this <a href="https://blog.takipi.com/how-to-instantly-improve-your-java-logging-with-7-logback-tweaks/">blog post</a>.</li>
+</ul><h2 id="Custom-configuration"><a class="section-marker" href="#Custom-configuration">§</a>Custom configuration</h2>
+<p>For any custom configuration, you need to provide your own Logback configuration file.</p><h3 id="Using-a-configuration-file-from-project-source"><a class="section-marker" href="#Using-a-configuration-file-from-project-source">§</a>Using a configuration file from project source</h3>
+<p>You can provide a default logging configuration by creating a <code>logback.xml</code> file in the project&rsquo;s resource folder. Furthermore, for testing purposes, you can also create a <code>logback-test.xml</code> and place it in the <code>src/test/resources</code> directory of your project. When both <code>logback.xml</code> and <code>logback-test.xml</code> are in the classpath, the latter has higher precedence.</p><h3 id="Using-an-external-configuration-file"><a class="section-marker" href="#Using-an-external-configuration-file">§</a>Using an external configuration file</h3>
+<p>You can also specify a configuration file via a System property. This is particularly useful for production environments where the configuration file may be managed outside of your application source.</p>
+<blockquote>
+  <p>Note: The logging system gives top preference to configuration files specified by system properties, secondly to files in the resource directory, and lastly to the default. This allows you to customize your application&rsquo;s logging configuration and still override it for specific environments or developer setups.</p>
+</blockquote><h4 id="Using--Dlogger.resource"><a class="section-marker" href="#Using--Dlogger.resource">§</a>Using <code>-Dlogger.resource</code></h4>
+<p>To specify a configuration file to be loaded from the classpath use the system property <code>-Dlogger.resource</code>, e.g., <code>-Dlogger.resource=prod-logger.xml</code>.</p><h4 id="Using--Dlogger.file"><a class="section-marker" href="#Using--Dlogger.file">§</a>Using <code>-Dlogger.file</code></h4>
+<p>To specify a configuration file to be loaded from the file system use the system property <code>-Dlogger.file</code>, e.g., <code>-Dlogger.file=/opt/prod/logger.xml</code>.</p><h2 id="Play-Lagom-applications"><a class="section-marker" href="#Play-Lagom-applications">§</a>Play Lagom applications</h2>
+<p>When integrating a Play application in Lagom via the <code>LagomPlay</code> sbt plugin, the default Play logging module is used. The main difference, with respect to the Lagom logging module, is that the Play logging module provides different default logback configurations. Read the Play framework <a href="https://www.playframework.com/documentation/2.6.x/SettingsLogger">Configuring Logging</a> documentation for details.</p><h2 id="Internal-framework-logging"><a class="section-marker" href="#Internal-framework-logging">§</a>Internal framework logging</h2>
+<p>It can be useful at times to gain more visibility on what&rsquo;s happening inside Lagom.</p><h3 id="Lagom-logging-configuration"><a class="section-marker" href="#Lagom-logging-configuration">§</a>Lagom logging configuration</h3>
+<p>Lagom system logging can be done by changing the <code>com.lightbend.lagom</code> logger to DEBUG.</p>
+<pre class="prettyprint"><code class="language-xml">&lt;!-- Set logging for all Lagom library classes to DEBUG --&gt;
+&lt;logger name=&quot;com.lightbend.lagom&quot; level=&quot;DEBUG&quot; /&gt;
+</code></pre><h3 id="Akka-logging-configuration"><a class="section-marker" href="#Akka-logging-configuration">§</a>Akka logging configuration</h3>
+<p>Akka system logging can be done by changing the <code>akka</code> logger to DEBUG.</p>
+<pre class="prettyprint"><code class="language-xml">&lt;!-- Set logging for all Akka library classes to DEBUG --&gt;
+&lt;logger name=&quot;akka&quot; level=&quot;DEBUG&quot; /&gt;
+&lt;!-- Set a specific actor to DEBUG --&gt;
+&lt;logger name=&quot;actors.MyActor&quot; level=&quot;DEBUG&quot; /&gt;
+</code></pre>
+<p>And, you will also need to add the following in your project&rsquo;s <code>application.conf</code>:</p>
+<pre class="prettyprint"><code class="language-conf">akka.loglevel=DEBUG
+</code></pre>
+<p>Furthermore, you may also wish to configure an appender for the Akka loggers that includes useful properties such as thread and actor address. For more information about configuring Akka&rsquo;s logging, including details on Logback and Slf4j integration, see the <a href="https://doc.akka.io/docs/akka/2.5/logging.html">Akka documentation</a>.</p><h3 id="Play-logging-configuration"><a class="section-marker" href="#Play-logging-configuration">§</a>Play logging configuration</h3>
+<p>Play system logging can be done by changing the <code>play</code> logger to DEBUG.</p>
+<pre class="prettyprint"><code class="language-xml">&lt;!-- Set logging for all Play library classes to DEBUG --&gt;
+&lt;logger name=&quot;play&quot; level=&quot;DEBUG&quot; /&gt;
+</code></pre><h2 id="Default-Log4j2-configuration"><a class="section-marker" href="#Default-Log4j2-configuration">§</a>Default Log4j2 configuration</h2>
+<p>Similarly to the default logback configuration, when using the Log4j2 Lagom module, a default configuration is provided. In development, the following is used by default:</p>
+<pre class="prettyprint"><code class="language-xml">&lt;!--
+  ~ Copyright (C) 2016-2019 Lightbend Inc. &lt;https://www.lightbend.com&gt;
+  --&gt;
+&lt;!-- The default log4j2 configuration that Lagom uses in dev mode if no other configuration is provided --&gt;
+&lt;Configuration name=&quot;DevelopmentLagomConfig&quot;&gt;
+  &lt;Appenders&gt;
+    &lt;Console name=&quot;STDOUT&quot;&gt;
+      &lt;PatternLayout&gt;
+        &lt;Pattern&gt;%d{HH:mm:ss.SSS} %highlight{%level} %logger [%mdc] - %msg%n&lt;/Pattern&gt;
+      &lt;/PatternLayout&gt;
+    &lt;/Console&gt;
+  &lt;/Appenders&gt;
+
+  &lt;Loggers&gt;
+    &lt;!-- Set logging for all Play library classes to INFO --&gt;
+    &lt;Logger name=&quot;play&quot; level=&quot;INFO&quot;/&gt;
+    &lt;!-- Set logging for all Akka library classes to INFO --&gt;
+    &lt;Logger name=&quot;akka&quot; level=&quot;INFO&quot;/&gt;
+    &lt;!-- Set logging for all Lagom library classes to INFO --&gt;
+    &lt;Logger name=&quot;com.lightbend.lagom&quot; level=&quot;INFO&quot;/&gt;
+
+    &lt;!-- Cassandra and the datastax driver are used by the Lagom event sourcing modules --&gt;
+    &lt;Logger name=&quot;org.apache.cassandra&quot; level=&quot;ERROR&quot;/&gt;
+    &lt;Logger name=&quot;com.datastax.driver&quot; level=&quot;ERROR&quot;/&gt;
+    &lt;!-- Turning off connection error logging to avoid noise when services are forcibly stopped --&gt;
+    &lt;Logger name=&quot;com.datastax.driver.core.ControlConnection&quot; level=&quot;OFF&quot;/&gt;
+    &lt;!-- Turn down Kafka noise --&gt;
+    &lt;Logger name=&quot;org.apache.kafka&quot; level=&quot;WARN&quot;/&gt;
+
+    &lt;AsyncRoot level=&quot;INFO&quot;&gt;
+      &lt;AppenderRef ref=&quot;STDOUT&quot;/&gt;
+    &lt;/AsyncRoot&gt;
+  &lt;/Loggers&gt;
+
+&lt;/Configuration&gt;</code></pre>
+<p>And in production, the following is the default configuration:</p>
+<pre class="prettyprint"><code class="language-xml">&lt;!--
+  ~ Copyright (C) 2016-2019 Lightbend Inc. &lt;https://www.lightbend.com&gt;
+  --&gt;
+&lt;!-- The default log4j2 configuration that Lagom uses if no other configuration is provided --&gt;
+&lt;Configuration name=&quot;DefaultLagomConfig&quot;&gt;
+  &lt;Appenders&gt;
+    &lt;Console name=&quot;STDOUT&quot;&gt;
+      &lt;PatternLayout&gt;
+        &lt;Pattern&gt;%d{yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSS&#39;Z&#39;}{GMT+0} %highlight{%level} %logger [%mdc] - %msg%n&lt;/Pattern&gt;
+      &lt;/PatternLayout&gt;
+    &lt;/Console&gt;
+  &lt;/Appenders&gt;
+
+  &lt;Loggers&gt;
+    &lt;!-- Set logging for all Play library classes to INFO --&gt;
+    &lt;Logger name=&quot;play&quot; level=&quot;INFO&quot;/&gt;
+    &lt;!-- Set logging for all Akka library classes to INFO --&gt;
+    &lt;Logger name=&quot;akka&quot; level=&quot;INFO&quot;/&gt;
+    &lt;!-- Set logging for all Lagom library classes to INFO --&gt;
+    &lt;Logger name=&quot;com.lightbend.lagom&quot; level=&quot;INFO&quot;/&gt;
+
+    &lt;!-- Cassandra and the datastax driver are used by the Lagom event sourcing modules --&gt;
+    &lt;Logger name=&quot;org.apache.cassandra&quot; level=&quot;ERROR&quot;/&gt;
+    &lt;Logger name=&quot;com.datastax.driver&quot; level=&quot;ERROR&quot;/&gt;
+    &lt;!-- Turn down Kafka noise --&gt;
+    &lt;Logger name=&quot;org.apache.kafka&quot; level=&quot;WARN&quot;/&gt;
+
+    &lt;AsyncRoot level=&quot;INFO&quot;&gt;
+      &lt;AppenderRef ref=&quot;STDOUT&quot;/&gt;
+    &lt;/AsyncRoot&gt;
+  &lt;/Loggers&gt;
+&lt;/Configuration&gt;</code></pre>
+<p>A few things to note:</p>
+<ul>
+  <li>A file appender that writes to <code>logs/application.log</code> is created.</li>
+  <li>The file appender logs full stack traces while the console logger limits it to 10 lines.</li>
+  <li>Console logging uses colored log levels by default.</li>
+  <li>In production, all loggers are configured to use <a href="https://logging.apache.org/log4j/2.x/manual/async.html">async loggers</a> by default using the LMAX Disruptor library.</li>
+</ul><h3 id="Custom-configuration1"><a class="section-marker" href="#Custom-configuration1">§</a>Custom configuration</h3>
+<p>Including a file named <code>log4j2.xml</code> in your project&rsquo;s root will override the defaults. All other system properties specified for the logback integration above are also supported here.</p><h2 id="Using-a-Custom-Logging-Framework"><a class="section-marker" href="#Using-a-Custom-Logging-Framework">§</a>Using a Custom Logging Framework</h2>
+<p>Lagom uses Logback by default, but it is possible to configure Lagom to use another logging framework, as long as there is an SLF4J adapter for it.</p>
+<p>If you&rsquo;re using Maven, you simply need to remove the logback dependency from your projects dependencies. If using sbt, you need to disable the <code>LagomLogback</code> plugin in your sbt project:</p>
+<pre class="prettyprint"><code class="language-sbt">lazy val portfolioImpl = (project in file(&quot;portfolioImpl&quot;))
+  .enablePlugins(LagomScala)
+  // This avoids adding the Lagom logging module to the classpath
+  .disablePlugins(LagomLogback)</code></pre>
+<p>From there, a custom logging framework can be used. Here, Log4J 2 is used as an example.</p>
+<pre class="prettyprint"><code class="language-sbt">lazy val orderImpl = (project in file(&quot;orderImpl&quot;))
+  .enablePlugins(LagomScala)
+  // This avoids adding the Lagom logging module to the classpath
+  .disablePlugins(LagomLogback)
+  .settings(
+    libraryDependencies ++= Seq(
+      &quot;org.apache.logging.log4j&quot; % &quot;log4j-slf4j-impl&quot; % &quot;2.8.2&quot;,
+      &quot;org.apache.logging.log4j&quot; % &quot;log4j-api&quot; % &quot;2.8.2&quot;,
+      &quot;org.apache.logging.log4j&quot; % &quot;log4j-core&quot; % &quot;2.8.2&quot;,
+      &quot;com.lmax&quot; % &quot;disruptor&quot; % &quot;3.3.6&quot;
+    )
+  )</code></pre>
+<p>Once the libraries and the SLF4J adapter are loaded, the <code>log4j.configurationFile</code> system property can be set on the command line as usual.</p>

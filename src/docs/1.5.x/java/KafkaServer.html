@@ -1,0 +1,94 @@
+<h1 id="Kafka-Server"><a class="section-marker" href="#Kafka-Server">§</a>Kafka Server</h1>
+<p>By default, Lagom services that need to share information between each others use Kafka as a message broker. In a microservice architecture, usage of a message broker ensures that the services are not strongly coupled with each other. Therefore, for convenience, we have embedded a Kafka server in the development environment, so that you don&rsquo;t have to worry about installing it. There are a number of settings and tasks available to tune the Kafka server to your liking, let&rsquo;s explore them:</p><h2 id="Default-port"><a class="section-marker" href="#Default-port">§</a>Default port</h2>
+<p>By default, the <a href="https://kafka.apache.org/">Kafka</a> server is started on port <code>9092</code>. Kafka uses <a href="https://zookeeper.apache.org/">ZooKeeper</a>, and hence a ZooKeeper server is also started on port <code>2181</code>. If the current default ports don&rsquo;t suit you, you can change either by adding the following in your build.</p>
+<p>In the Maven root project pom:</p>
+<pre class="prettyprint"><code class="language-xml">&lt;plugin&gt;
+    &lt;groupId&gt;com.lightbend.lagom&lt;/groupId&gt;
+    &lt;artifactId&gt;lagom-maven-plugin&lt;/artifactId&gt;
+    &lt;version&gt;${lagom.version}&lt;/version&gt;
+    &lt;configuration&gt;
+        &lt;kafkaPort&gt;10000&lt;/kafkaPort&gt;
+        &lt;zookeeperPort&gt;9999&lt;/zookeeperPort&gt;
+    &lt;/configuration&gt;
+&lt;/plugin&gt;
+</code></pre>
+<p>In sbt:</p>
+<pre class="prettyprint"><code class="language-sbt">lagomKafkaPort in ThisBuild := 10000
+lagomKafkaZookeeperPort in ThisBuild := 9999</code></pre><h2 id="Kafka-properties-file"><a class="section-marker" href="#Kafka-properties-file">§</a>Kafka properties file</h2>
+<p>The Kafka server can be configured with an alternative property file. By default, Lagom development environment uses a stock <a href="https://github.com/lagom/lagom/blob/master/dev/kafka-server/src/main/resources/kafka-server.properties">kafka-server.properties</a> file provided with Kafka, with only one change to allow auto creation of topics on the server. This is a good default to quickly get started, but if you find yourself needing to start Kafka with a different configuration, you can easily do so by adding your own Kafka <code>kafka-server.properties</code> file to you to your build.</p>
+<p>In the Maven root project pom:</p>
+<pre class="prettyprint"><code class="language-xml">&lt;plugin&gt;
+    &lt;groupId&gt;com.lightbend.lagom&lt;/groupId&gt;
+    &lt;artifactId&gt;lagom-maven-plugin&lt;/artifactId&gt;
+    &lt;version&gt;${lagom.version}&lt;/version&gt;
+    &lt;configuration&gt;
+        &lt;kafkaPropertiesFile&gt;${basedir}/kafka-server.properties&lt;/kafkaPropertiesFile&gt;
+    &lt;/configuration&gt;
+&lt;/plugin&gt;
+</code></pre>
+<p>In sbt:</p>
+<pre class="prettyprint"><code class="language-sbt">lagomKafkaPropertiesFile in ThisBuild :=
+  Some((baseDirectory in ThisBuild).value / &quot;project&quot; / &quot;kafka-server.properties&quot;)</code></pre><h2 id="JVM-options"><a class="section-marker" href="#JVM-options">§</a>JVM options</h2>
+<p>The Kafka server is run on a separate process, and a JVM is started with sensible memory defaults. However, if the default JVM options don&rsquo;t suit you, you can override them by adding the following in your build.</p>
+<p>In the Maven root project pom:</p>
+<pre class="prettyprint"><code class="language-xml">&lt;plugin&gt;
+    &lt;groupId&gt;com.lightbend.lagom&lt;/groupId&gt;
+    &lt;artifactId&gt;lagom-maven-plugin&lt;/artifactId&gt;
+    &lt;version&gt;${lagom.version}&lt;/version&gt;
+    &lt;configuration&gt;
+        &lt;kafkaJvmOptions&gt;
+             &lt;opt&gt;-Xms256m&lt;/opt&gt;
+             &lt;opt&gt;-Xmx1024m&lt;/opt&gt;
+         &lt;/kafkaJvmOptions&gt;
+    &lt;/configuration&gt;
+&lt;/plugin&gt;
+</code></pre>
+<p>In sbt:</p>
+<pre class="prettyprint"><code class="language-sbt">lagomKafkaJvmOptions in ThisBuild := Seq(&quot;-Xms256m&quot;, &quot;-Xmx1024m&quot;) // these are actually the default jvm options</code></pre><h2 id="Logging"><a class="section-marker" href="#Logging">§</a>Logging</h2>
+<p>Logging is configured such that it goes <em>only</em> to files. You can find the logs of Kafka in the folder <code>&lt;your-project-root&gt;/target/lagom-dynamic-projects/lagom-internal-meta-project-kafka/target/log4j_output</code>.</p><h2 id="Commit-Log"><a class="section-marker" href="#Commit-Log">§</a>Commit Log</h2>
+<p>Kafka is essentially a durable commit log. You can find all data persisted by Kafka in the folder <code>&lt;your-project-root&gt;/target/lagom-dynamic-projects/lagom-internal-meta-project-kafka/target/logs</code></p><h2 id="Start-and-stop"><a class="section-marker" href="#Start-and-stop">§</a>Start and stop</h2>
+<p>The Kafka server is automatically started when executing the <code>runAll</code> task. However, there are times when you might want to manually start only a few services, and hence you won&rsquo;t use the <code>runAll</code> task. In this case, you can manually start the Kafka server via the <code>lagom:startKafka</code> maven task or <code>lagomKafkaStart</code> sbt task, and stopping it with the <code>lagom:stopKafka</code> Maven task or <code>lagomKafkaStop</code> sbt task.</p><h2 id="Disable-it"><a class="section-marker" href="#Disable-it">§</a>Disable it</h2>
+<p>You can disable the embedded Kafka server by adding the following in your build.</p>
+<p>In the Maven root project pom:</p>
+<pre class="prettyprint"><code class="language-xml">&lt;plugin&gt;
+    &lt;groupId&gt;com.lightbend.lagom&lt;/groupId&gt;
+    &lt;artifactId&gt;lagom-maven-plugin&lt;/artifactId&gt;
+    &lt;version&gt;${lagom.version}&lt;/version&gt;
+    &lt;configuration&gt;
+        &lt;kafkaEnabled&gt;false&lt;/kafkaEnabled&gt;
+    &lt;/configuration&gt;
+&lt;/plugin&gt;
+</code></pre>
+<p>In sbt:</p>
+<pre class="prettyprint"><code class="language-sbt">lagomKafkaEnabled in ThisBuild := false</code></pre>
+<p>One good reason to disable the embedded Kafka server is if you need your services to connect to an external Kafka instance.</p><h2 id="Connecting-to-an-external-Kafka-server"><a class="section-marker" href="#Connecting-to-an-external-Kafka-server">§</a>Connecting to an external Kafka server</h2>
+<p>It&rsquo;s possible to connect to an external Kafka server in place of the embedded one. All you need to do is adding the following in your build.</p>
+<p>In the Maven root project pom:</p>
+<pre class="prettyprint"><code class="language-xml">&lt;plugin&gt;
+    &lt;groupId&gt;com.lightbend.lagom&lt;/groupId&gt;
+    &lt;artifactId&gt;lagom-maven-plugin&lt;/artifactId&gt;
+    &lt;version&gt;${lagom.version}&lt;/version&gt;
+    &lt;configuration&gt;
+        &lt;kafkaAddress&gt;localhost:10000&lt;/kafkaAddress&gt;
+        &lt;kafkaEnabled&gt;false&lt;/kafkaEnabled&gt;
+    &lt;/configuration&gt;
+&lt;/plugin&gt;
+</code></pre>
+<p>In sbt:</p>
+<pre class="prettyprint"><code class="language-sbt">lagomKafkaEnabled in ThisBuild := false
+lagomKafkaAddress in ThisBuild := &quot;localhost:10000&quot;</code></pre>
+<p>As you have probably noticed, the above configured Kafka server is actually running locally (mind the <em>localhost</em> in the provided address). In this case, it would have actually been enough to configure the port on which is running, without having to provide the full address.</p>
+<pre class="prettyprint"><code class="language-xml">&lt;plugin&gt;
+    &lt;groupId&gt;com.lightbend.lagom&lt;/groupId&gt;
+    &lt;artifactId&gt;lagom-maven-plugin&lt;/artifactId&gt;
+    &lt;version&gt;${lagom.version}&lt;/version&gt;
+    &lt;configuration&gt;
+        &lt;kafkaPort&gt;10000&lt;/kafkaPort&gt;
+        &lt;kafkaEnabled&gt;false&lt;/kafkaEnabled&gt;
+    &lt;/configuration&gt;
+&lt;/plugin&gt;
+</code></pre>
+<p>In sbt:</p>
+<pre class="prettyprint"><code class="language-sbt">lagomKafkaEnabled in ThisBuild := false
+lagomKafkaPort in ThisBuild := 10000</code></pre>
+<p>Assuming your local Kafka instance is running on port <code>10000</code>.</p>

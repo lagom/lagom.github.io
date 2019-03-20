@@ -1,0 +1,198 @@
+<h1 id="Using-immutable-objects"><a class="section-marker" href="#Using-immutable-objects">§</a>Using immutable objects</h1>
+<!--- The information on this page on how to implement immutables will move and/or change as a result of https://github.com/lagom/lagom/issues/592 -->
+<p>An immutable object cannot be modified after it was created. Immutable objects have two great advantages:</p>
+<ul>
+  <li>Code based on immutable objects is clearer and likelier to be correct. Bugs involving unexpected changes simply can&rsquo;t occur.</li>
+  <li>Multiple threads can safely access immutable objects concurrently.</li>
+</ul>
+<p>In Lagom, immutable objects are required in several places, such as:</p>
+<ul>
+  <li>Service request and response types</li>
+  <li>Persistent entity commands, events, and states</li>
+  <li>Publish and subscribe messages</li>
+</ul>
+<p>Lagom doesn&rsquo;t care how you define immutable objects. You can write out the constructor and getters by hand, but we recommend using third party tools to generate them instead. Using a third party tool, such as the <a href="https://immutables.github.io">Immutables</a> tool or <a href="https://projectlombok.org/index.html">Lombok</a>, is easier and less error-prone than coding by hand and the resulting code is shorter and easier to read.</p>
+<p>The following sections provide more information on immutables:</p>
+<ul>
+  <li><a href="#Mutable-and-immutable-examples">Mutable and immutable examples</a></li>
+  <li><a href="#Lombok-example">Lombok example</a></li>
+  <li><a href="#Immutables-tool-example">Immutables tool example</a></li>
+</ul><h2 id="Mutable-and-immutable-examples"><a class="section-marker" href="#Mutable-and-immutable-examples">§</a>Mutable and immutable examples</h2>
+<p>In the following example of a mutable object, the setter methods can be used to modify the object after construction:</p>
+<pre class="prettyprint"><code class="language-java">public class MutableUser {
+  private String name;
+  private String email;
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+}</code></pre>
+<p>In contrast, in the following example of an immutable object, all fields are final and assigned at construction time (it contains no setter methods).</p>
+<pre class="prettyprint"><code class="language-java">public class ImmutableUser {
+  private final String name;
+  private final String email;
+
+  public ImmutableUser(String name, String email) {
+    this.name = name;
+    this.email = email;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+}</code></pre><h2 id="Easier-immutability"><a class="section-marker" href="#Easier-immutability">§</a>Easier immutability</h2><h2 id="Lombok-example"><a class="section-marker" href="#Lombok-example">§</a>Lombok example</h2>
+<p>The following example shows the definition of a <code>User</code> implemented with Lombok. Lombok handles the following details for you. It:</p>
+<ul>
+  <li>modifies fields to be <code>private</code> and <code>final</code></li>
+  <li>creates getters for each field</li>
+  <li>creates correct <code>equals</code>, <code>hashCode</code> and a human-friendly <code>toString</code></li>
+  <li>creates a constructor requiring all fields.</li>
+</ul>
+<pre class="prettyprint"><code class="language-java">@Value
+public class LombokUser {
+
+  String name;
+
+  String email;
+}</code></pre>
+<p>The example does not demonstrate other useful Lombok feature like <code>@Builder</code> or <code>@Wither</code> which will help you create builder and copy methods. Be aware that Lombok is not an immutability library but a code generation library which means some setups might not create immutable objects. For example, Lombok&rsquo;s <code>@Data</code> is equivalent to Lombok&rsquo;s <code>@Value</code> but will also synthesize mutable methods. Don&rsquo;t use Lombok&rsquo;s <code>@Data</code> when creating immutable classes.</p><h3 id="Adding-Lombok-to-a-Maven-project"><a class="section-marker" href="#Adding-Lombok-to-a-Maven-project">§</a>Adding Lombok to a Maven project</h3>
+<p>To add Lombok to a Maven project, declare it as a simple dependency:</p>
+<pre class="prettyprint"><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+    &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+    &lt;version&gt;1.16.12&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre><h3 id="Adding-Lombok-to-an-sbt-projects"><a class="section-marker" href="#Adding-Lombok-to-an-sbt-projects">§</a>Adding Lombok to an sbt projects</h3>
+<p>For sbt, add the following line to ????</p>
+<pre class="prettyprint"><code class="language-sbt">val lombok = &quot;org.projectlombok&quot; % &quot;lombok&quot; % &quot;1.16.12&quot;
+libraryDependencies += lombok</code></pre><h3 id="Integrating-Lombok-with-an-IDE"><a class="section-marker" href="#Integrating-Lombok-with-an-IDE">§</a>Integrating Lombok with an IDE</h3>
+<p>Lombok integrates with popular IDEs:<br/>* To use Lombok in IntelliJ IDEA you&rsquo;ll need the <a href="https://plugins.jetbrains.com/idea/plugin/6317-lombok-plugin">Lombok Plugin for IntelliJ IDEA</a> and you&rsquo;ll also need to enable Annotation Processing (<code>Settings / Build,Execution,Deployment / Compiler / Annotation Processors</code> and tick <code>Enable annotation processing</code>)<br/>* To Use Lombok in Eclipse, run <code>java -jar lombok.jar</code> (see the video at <a href="https://projectlombok.org/">Project Lombok</a>).</p><h2 id="Immutables-tool-example"><a class="section-marker" href="#Immutables-tool-example">§</a>Immutables tool example</h2>
+<p>Here is the corresponding definition of a <code>User</code> (like the above <code>ImmutableUser</code>) using Immutables:</p>
+<pre class="prettyprint"><code class="language-java">@Value.Immutable
+@ImmutableStyle
+public interface AbstractUser {
+
+  String getName();
+
+  String getEmail();
+}</code></pre>
+<p>Immutables generates for you:</p>
+<ul>
+  <li>builders (very convenient when your class has many fields)</li>
+  <li>correct implementations of <code>equals</code>, <code>hashCode</code>, <code>toString</code></li>
+  <li>copy methods to make new instances based on old ones, e.g. <code>withEmail</code></li>
+</ul><h3 id="Adding-Immutables-to-a-Maven-project"><a class="section-marker" href="#Adding-Immutables-to-a-Maven-project">§</a>Adding Immutables to a Maven project</h3>
+<pre class="prettyprint"><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.lightbend.lagom&lt;/groupId&gt;
+    &lt;artifactId&gt;lagom-javadsl-immutables_${scala.binary.version}&lt;/artifactId&gt;
+    &lt;version&gt;${lagom.version}&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre><h3 id="Adding-Immutables-to-an-sbt-project"><a class="section-marker" href="#Adding-Immutables-to-an-sbt-project">§</a>Adding Immutables to an sbt project</h3>
+<pre class="prettyprint"><code class="language-sbt">libraryDependencies += lagomJavadslImmutables</code></pre><h3 id="Integrating-Immmutables-with-an-IDE"><a class="section-marker" href="#Integrating-Immmutables-with-an-IDE">§</a>Integrating Immmutables with an IDE</h3>
+<p>Immutables integrates with popular IDEs. Follow the instructions for <a href="ImmutablesInIDEs.html#Eclipse">Eclipse</a> or <a href="ImmutablesInIDEs.html#IntelliJ-IDEA">IntelliJ IDEA</a> to add the Immutables annotation processor to your IDE.</p><h2 id="Collections"><a class="section-marker" href="#Collections">§</a>Collections</h2>
+<p>If an immutable object contains a collection, that collection must be immutable too.</p>
+<p>Here is an example of an object with a mutable collection in it:</p>
+<pre class="prettyprint"><code class="language-java">public class MutableUser2 {
+  private final String name;
+  private final List&lt;String&gt; phoneNumbers;
+
+  public MutableUser2(String name, List&lt;String&gt; phoneNumbers) {
+    this.name = name;
+    this.phoneNumbers = phoneNumbers;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public List&lt;String&gt; getPhoneNumbers() {
+    return phoneNumbers;
+  }
+
+}</code></pre>
+<p>The object might look like immutable since it only has final fields and no setters, but the <code>List</code> of <code>phoneNumbers</code> is mutable, because it can be changed by code like <code>user.getPhoneNumbers().add(&quot;+468123456&quot;)</code>.</p>
+<p>One possible fix would be to make a defensive copy of the <code>List</code> in the constructor and use <code>Collections.unmodifiableList</code> in the getter, like this:</p>
+<pre class="prettyprint"><code class="language-java">public class ImmutableUser2 {
+  private final String name;
+  private final List&lt;String&gt; phoneNumbers;
+
+  public ImmutableUser2(String name, List&lt;String&gt; phoneNumbers) {
+    this.name = name;
+    this.phoneNumbers = new ArrayList&lt;&gt;(phoneNumbers);
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public List&lt;String&gt; getPhoneNumbers() {
+    return Collections.unmodifiableList(phoneNumbers);
+  }
+
+}</code></pre>
+<p>But it is easy to make mistakes when coding this way, so we again recommend letting Immutable handle it for you, as follows.</p>
+<p>Here is a new definition of a <code>User2</code>, like the above <code>ImmutableUser2</code>:</p>
+<pre class="prettyprint"><code class="language-java">@Value.Immutable
+@ImmutableStyle
+public interface AbstractUser2 {
+
+  String getName();
+
+  List&lt;String&gt; getPhoneNumbers();
+}</code></pre>
+<p>The <code>getPhoneNumbers</code> method will return an instance of <code>com.google.common.collect.ImmutableList</code>.</p><h3 id="Guava-and-PCollections"><a class="section-marker" href="#Guava-and-PCollections">§</a>Guava and PCollections</h3>
+<p>As seen above, Immutables uses <a href="https://github.com/google/guava/wiki/ImmutableCollectionsExplained">Guava immutable collections</a> by default.</p>
+<p>The Guava collections are certainly better for this purpose than plain <code>java.util</code> collections. However, the Guava collections are cumbersome and inefficient for some common operations (for example, making a slightly modified copy of an existing collection).</p>
+<p>Therefore, we recommend <a href="https://pcollections.org/">PCollections</a>, which is a collection library that is designed from the ground up for immutability and efficiency.</p>
+<p>This is how the above example looks like using a PCollection:</p>
+<pre class="prettyprint"><code class="language-java">import com.lightbend.lagom.javadsl.immutable.ImmutableStyle;
+import org.immutables.value.Value;
+import org.pcollections.PVector;
+
+@Value.Immutable
+@ImmutableStyle
+public interface AbstractUser3 {
+
+  String getName();
+
+  PVector&lt;String&gt; getPhoneNumbers();
+}</code></pre>
+<p>This is how to define an optional collection initialized with the empty collection:</p>
+<pre class="prettyprint"><code class="language-java">import com.lightbend.lagom.javadsl.immutable.ImmutableStyle;
+import org.immutables.value.Value;
+import org.pcollections.PVector;
+import org.pcollections.TreePVector;
+
+@Value.Immutable
+@ImmutableStyle
+public interface AbstractUser4 {
+
+  String getName();
+
+  @Value.Default
+  default PVector&lt;String&gt; getPhoneNumbers() {
+    return TreePVector.empty();
+  }
+}</code></pre><h3 id="Persistent-collections"><a class="section-marker" href="#Persistent-collections">§</a>&ldquo;Persistent&rdquo; collections</h3>
+<p>There are two different and potentially confusing usages of the word &ldquo;persistent&rdquo; with respect to data.</p>
+<p>You will see references, in the PCollections documentation and elsewhere, to <a href="https://en.wikipedia.org/wiki/Persistent_data_structure">&ldquo;persistent&rdquo; data structures</a>. There, the word &ldquo;persistent&rdquo; means that even when you construct a modified copy of a collection, the original &ldquo;persists&rdquo;.</p>
+<p>In the rest of this documentation, &ldquo;persistent&rdquo; refers instead to <a href="https://en.wikipedia.org/wiki/Persistence_%28computer_science%29">persistent storage</a>, as in <a href="PersistentEntity.html">Persistent Entities</a> and the examples below.</p><h3 id="Further-reading"><a class="section-marker" href="#Further-reading">§</a>Further reading</h3>
+<p>The Immutables documentation has more details on immutable collections <a href="https://immutables.github.io/immutable.html#array-collection-and-map-attributes">here</a>.</p>

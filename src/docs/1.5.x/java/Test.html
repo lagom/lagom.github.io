@@ -1,0 +1,203 @@
+<h1 id="Testing-Services"><a class="section-marker" href="#Testing-Services">§</a>Testing Services</h1><h2 id="Running-tests"><a class="section-marker" href="#Running-tests">§</a>Running tests</h2>
+<p>You can run tests from the sbt console.</p>
+<ul>
+  <li>To run all tests, run <code>test</code>.</li>
+  <li>To run only one test class, run <code>testOnly</code> followed by the name of the class i.e. <code>testOnly my.namespace.MyTest</code>.</li>
+  <li>To run only the tests that have failed, run <code>testQuick</code>.</li>
+  <li>To run tests continually, run a command with a tilde in front, i.e. <code>~testQuick</code>.</li>
+</ul><h2 id="JUnit"><a class="section-marker" href="#JUnit">§</a>JUnit</h2>
+<p>The recommended test framework for Lagom is <a href="https://junit.org/junit4/">JUnit 4</a></p>
+<pre class="prettyprint"><code class="language-java">import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class SimpleTest {
+
+  @Test
+  public void testSum() {
+    int a = 1 + 1;
+    assertEquals(2, a);
+  }
+
+  @Test
+  public void testString() {
+    String str = &quot;Hello world&quot;;
+    assertFalse(str.isEmpty());
+  }
+
+}</code></pre><h2 id="Dependency"><a class="section-marker" href="#Dependency">§</a>Dependency</h2>
+<p>To use this feature add the following in your project&rsquo;s build.</p>
+<pre class="prettyprint"><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.lightbend.lagom&lt;/groupId&gt;
+    &lt;artifactId&gt;lagom-javadsl-testkit_${scala.binary.version}&lt;/artifactId&gt;
+    &lt;version&gt;${lagom.version}&lt;/version&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>In sbt:</p>
+<pre class="prettyprint"><code class="language-sbt">libraryDependencies += lagomJavadslTestKit</code></pre>
+<p>When using Cassandra the tests must be forked, which is enabled by adding the following in your project&rsquo;s build:</p>
+<pre class="prettyprint"><code class="language-sbt">.settings(lagomForkedTestSettings: _*)</code></pre><h2 id="How-to-test-one-service"><a class="section-marker" href="#How-to-test-one-service">§</a>How to test one service</h2>
+<p>Lagom provides support for writing functional tests for one service in isolation. The service is running in a server and in the test you can interact with it using its service client, i.e. calls to the service API. These utilities are defined in <a href="api/index.html?com/lightbend/lagom/javadsl/testkit/ServiceTest.html">ServiceTest</a>.</p>
+<pre class="prettyprint"><code class="language-java">import static com.lightbend.lagom.javadsl.testkit.ServiceTest.*;
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+
+public class HelloServiceTest {
+
+  @Test
+  public void shouldSayHello() throws Exception {
+    withServer(defaultSetup(), server -&gt; {
+      HelloService service = server.client(HelloService.class);
+
+      String msg = service.sayHello().invoke(&quot;Alice&quot;).toCompletableFuture().get(5, SECONDS);
+      assertEquals(&quot;Hello Alice&quot;, msg);
+    });
+  }
+
+}</code></pre>
+<p>Dependencies to other services must be replaced by stub or mock implementations by overriding the bindings of the <code>GuiceApplicationBuilder</code> in the <code>Setup</code>. If we are writing a test for the <code>HelloService</code> and that has a dependency to a <code>GreetingService</code> we must create an implementation of the <code>GreetingService</code> that can be used for the test without running the real <code>GreetingService</code>. Something like this:</p>
+<pre class="prettyprint"><code class="language-java">static class GreetingStub implements GreetingService {
+  @Override
+  public ServiceCall&lt;String, String&gt; greeting() {
+    return req -&gt; CompletableFuture.completedFuture(&quot;Hello&quot;);
+  }
+}
+
+private final Setup setup = defaultSetup()
+    .configureBuilder(b -&gt; b.overrides(
+        bind(GreetingService.class).to(GreetingStub.class)));
+
+</code></pre>
+<p>Note how the dependency is overridden when constructing the test <code>Setup</code> object, which then can be used as parameter to the <code>withServer</code> method instead of the <code>defaultSetup()</code> in the above <code>HelloServiceTest</code>.</p>
+<p>The server is by default running with <a href="PubSub.html">pubsub</a>, <a href="Cluster.html">cluster</a> and <a href="PersistentEntity.html">persistence</a> features disabled. You may want to enable cluster in the <code>Setup</code>:</p>
+<pre class="prettyprint"><code class="language-java">private final Setup setup = defaultSetup().withCluster();</code></pre>
+<p>If your service needs <a href="PersistentEntity.html">persistence</a> you will need to enable it explicitly. This can be done by enabling Cassandra or JDBC, depending on which kind of persistence is used by your service. In any case, Lagom persistence requires clustering, so when when enabling one or another, cluster will also be enabled automatically.</p>
+<p>To enable Cassandra Persistence:</p>
+<pre class="prettyprint"><code class="language-java">private final Setup setup = defaultSetup().withCassandra();</code></pre>
+<p>To enable JDBC Persistence:</p>
+<pre class="prettyprint"><code class="language-java">private final Setup setup = defaultSetup().withJdbc();</code></pre>
+<p>There&rsquo;s no way to explicitly enable or disable <a href="PubSub.html">pubsub</a>. When cluster is enabled (either explicitly or transitively via enabling Cassandra or JDBC), pubsub will be available.</p>
+<p>There are two different styles that can be used when writing the tests. It is most convenient to use <code>withServer</code> as illustrated in the above <code>HelloServiceTest</code>. It automatically starts and stops the server before and after the given lambda.</p>
+<p>When your tests have several test methods, and especially when using persistence, it is faster to only start the server once in a static method annotated with <code>@BeforeClass</code> and stop it in a method annotated with <code>@AfterClass</code>.</p>
+<pre class="prettyprint"><code class="language-java">import static com.lightbend.lagom.javadsl.testkit.ServiceTest.*;
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.junit.Assert.assertEquals;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+public class AdvancedHelloServiceTest {
+
+  private static TestServer server;
+
+  @BeforeClass
+  public static void setUp() {
+    server = startServer(defaultSetup().withCluster(false));
+  }
+
+  @AfterClass
+  public static void tearDown() {
+    if (server != null) {
+      server.stop();
+      server = null;
+    }
+  }
+
+  @Test
+  public void shouldSayHello() throws Exception {
+    HelloService service = server.client(HelloService.class);
+    String msg = service.sayHello().invoke(&quot;Alice&quot;).toCompletableFuture().get(5, SECONDS);
+    assertEquals(&quot;Hello Alice&quot;, msg);
+  }
+
+  @Test
+  public void shouldSayHelloAgain() throws Exception {
+    HelloService service = server.client(HelloService.class);
+    String msg = service.sayHello().invoke(&quot;Bob&quot;).toCompletableFuture().get(5, SECONDS);
+    assertEquals(&quot;Hello Bob&quot;, msg);
+  }
+
+}</code></pre><h2 id="How-to-use-TLS-on-tests"><a class="section-marker" href="#How-to-use-TLS-on-tests">§</a>How to use TLS on tests</h2>
+<p>To open an SSL port on the <code>TestServer</code> used in your tests, you may enable SSL support using <code>withSsl</code>:</p>
+<pre class="prettyprint"><code class="language-java">Setup.defaultSetup.withSsl()
+</code></pre>
+<p>Enabling SSL will automatically open a new random port and provide an <code>javax.net.ssl.SSLContext</code> on the TestServer. Lagom doesn&rsquo;t provide any client factory that allows sending requests to the HTTPS port at the moment. You should create an HTTP client using Play-WS, Akka-HTTP or Akka-gRPC. Then, use the <code>httpsPort</code> and the <code>sslContext</code> provided by the <code>testServer</code> instance to send the request. Note that the <code>SSLContext</code> provided is built by Lagom&rsquo;s testkit to trust the <code>testServer</code> certificates. Finally, because the server certificate is issued for <code>CN=localhost</code> you will have to make sure that&rsquo;s the <code>authority</code> on the requests you generate, otherwise the server may decline and fail the request. At the moment it is not possible to setup the test server with different SSL Certificates. </p>
+<pre class="prettyprint"><code class="language-java">@Test
+public void testOverTlsWithCustomClient() {
+    ServiceTest.withServer(
+        ServiceTest.defaultSetup()
+            .withCluster(false)
+            .withSsl()
+            .configureBuilder(builder -&gt;
+                builder.bindings(new TestTlsServiceModule())), server -&gt; {
+
+            SSLContext sslContext = server.clientSslContext().get();
+            // Builds an instance of a WSClient with the provided SSLContext so
+            // the fake SSLContext prepared by Lagom&#39;s testkit is used.
+            WSClient wsClient = buildCustomWS(sslContext);
+            // use `localhost` as authority
+            String url = &quot;https://localhost:&quot; + server.portSsl().get() + &quot;/api/sample&quot;;
+            String response = wsClient
+                .url(url)
+                .get()
+                .thenApply(WSResponse::getBody)
+                .toCompletableFuture()
+                .get(5, TimeUnit.SECONDS);
+
+            assertEquals(&quot;sample response&quot;, response);
+        });
+}</code></pre><h2 id="How-to-test-several-services"><a class="section-marker" href="#How-to-test-several-services">§</a>How to test several services</h2>
+<p>Lagom will provide support for writing integration tests that involve several interacting services. This feature is <a href="https://github.com/lagom/lagom/issues/38">not yet implemented</a>.</p><h2 id="How-to-test-streamed-request/response"><a class="section-marker" href="#How-to-test-streamed-request/response">§</a>How to test streamed request/response</h2>
+<p>Let&rsquo;s say we have a service that have streaming request and/or response parameters. For example an <code>EchoService</code> like this:</p>
+<pre class="prettyprint"><code class="language-java">public interface EchoService extends Service {
+
+  ServiceCall&lt;Source&lt;String, NotUsed&gt;, Source&lt;String, NotUsed&gt;&gt; echo();
+
+  default Descriptor descriptor() {
+    return named(&quot;echo&quot;).withCalls(
+      namedCall(&quot;echo&quot;, this::echo)
+    );
+  }
+}</code></pre>
+<p>When writing tests for that the <a href="https://doc.akka.io/docs/akka/2.5/stream/stream-testkit.html?language=java#streams-testkit">Akka Streams TestKit</a> is very useful. We use the Streams TestKit together with the Lagom <code>ServiceTest</code> utilities:</p>
+<pre class="prettyprint"><code class="language-java">import static com.lightbend.lagom.javadsl.testkit.ServiceTest.*;
+import static java.util.concurrent.TimeUnit.SECONDS;
+import java.util.Arrays;
+import org.junit.Test;
+import akka.NotUsed;
+import akka.stream.javadsl.Source;
+import akka.stream.testkit.TestSubscriber.Probe;
+import akka.stream.testkit.javadsl.TestSink;
+
+public class EchoServiceTest {
+
+  @Test
+  public void shouldEchoStream() throws Exception {
+    withServer(defaultSetup().withCluster(false), server -&gt; {
+      EchoService service = server.client(EchoService.class);
+
+      // Use a source that never terminates (concat Source.maybe) so we
+      // don&#39;t close the upstream, which would close the downstream
+      Source&lt;String, NotUsed&gt; input =
+          Source.from(Arrays.asList(&quot;msg1&quot;, &quot;msg2&quot;, &quot;msg3&quot;))
+          .concat(Source.maybe());
+      Source&lt;String, NotUsed&gt; output = service.echo().invoke(input)
+          .toCompletableFuture().get(5, SECONDS);
+      Probe&lt;String&gt; probe = output.runWith(TestSink.probe(server.system()),
+          server.materializer());
+      probe.request(10);
+      probe.expectNext(&quot;msg1&quot;);
+      probe.expectNext(&quot;msg2&quot;);
+      probe.expectNext(&quot;msg3&quot;);
+      probe.cancel();
+    });
+  }
+
+}</code></pre>
+<p>Read more about it in the documentation of the <a href="https://doc.akka.io/docs/akka/2.5/stream/stream-testkit.html?language=java#streams-testkit">Akka Streams TestKit</a>.</p><h2 id="How-to-test-broker-publishing-and-consuming"><a class="section-marker" href="#How-to-test-broker-publishing-and-consuming">§</a>How to test broker publishing and consuming</h2>
+<p>The section on <a href="MessageBrokerTesting.html">Message Broker Testing</a> is related to Testing Services but is specific to testing the production and consumption via Brokers.</p><h2 id="How-to-test-PersistentEntity"><a class="section-marker" href="#How-to-test-PersistentEntity">§</a>How to test PersistentEntity</h2>
+<p><a href="PersistentEntity.html#Unit-Testing">Persistent Entities</a> can be used in the service tests described above. In addition to that you should write unit tests using the <a href="api/index.html?com/lightbend/lagom/javadsl/testkit/PersistentEntityTestDriver.html">PersistentEntityTestDriver</a>, which will run the <code>PersistentEntity</code> without using a database.</p>
+<p>This is described in the documentation of <a href="PersistentEntity.html#Unit-Testing">Persistent Entity</a></p>

@@ -1,0 +1,34 @@
+<h1 id="Importing-an-existing-Maven-project-into-Eclipse"><a class="section-marker" href="#Importing-an-existing-Maven-project-into-Eclipse">§</a>Importing an existing Maven project into Eclipse</h1>
+<p>If you have a Maven project created from an archetype (as described in <a href="GettingStartedMaven.html">Creating and running Hello World with Maven</a>) or one you created on your own, import it into Eclipse as follows:</p>
+<ul>
+  <li><a href="#Check-prerequisites">Check Prerequisites</a></li>
+  <li><a href="#Import-the-project">Import the project</a></li>
+</ul><h2 id="Check-prerequisites"><a class="section-marker" href="#Check-prerequisites">§</a>Check prerequisites</h2>
+<p>Before attempting to create a Lagom Maven project in Eclipse, ensure that Eclipse is configured with the following:</p>
+<ul>
+  <li>An <a href="https://www.eclipse.org/m2e/documentation/m2e-documentation.html">m2eclipse</a> plugin compatible with Maven 3.3 or higher.</li>
+  <li>A JDK 1.8</li>
+</ul><h1 id="Import-the-project"><a class="section-marker" href="#Import-the-project">§</a>Import the project</h1>
+<ol>
+  <li>From the <strong>File</strong> menu, select <strong>Import</strong>.<br/> The <strong>Select</strong> screen opens.</li>
+  <li>Expand <strong>Maven</strong> and select <strong>Existing Maven Projects</strong>.<br/><a href="resources/guide/build/EclSelectImportType.png"><img src="resources/guide/build/EclSelectImportType.png"/></a></li>
+  <li>Click <strong>Next</strong>.</li>
+  <li>For <strong>Root Directory</strong>, click <strong>Browse</strong> and select the top-level project folder.<br/><a href="resources/guide/build/EclBrowseMvnImp.png"><img src="resources/guide/build/EclBrowseMvnImp.png"/></a></li>
+  <li>Verify that the <strong>Projects</strong> list includes all subprojects and click <strong>Finish</strong>.</li>
+  <li>Run the project:
+    <ol>
+      <li>Right-click the parent project folder.<br/>Eclipse puts all of the Maven project folders at the same level, so be sure to select the correct one. For example, if you used <code>my-first-system</code> as the Maven artifact ID, right-click <code>my-first-system</code>.</li>
+      <li>Optionally, change the name.</li>
+      <li>Select <strong>Run as &hellip;</strong> &gt; <strong>Maven Build</strong>.</li>
+      <li>In the <strong>Goals</strong> field, enter <code>lagom:runAll</code>.</li>
+      <li>Select the <strong>JRE</strong> tab and make sure it is pointing at a JRE associated with a JDK.</li>
+      <li>Click <strong>Run</strong>.</li>
+    </ol>
+  </li>
+</ol>
+<p>The console should report that the services started. Verify that the services are indeed up and running by invoking the <code>hello</code> service endpoint from any HTTP client, such as a browser:</p>
+<pre class="prettyprint"><code>```
+http://localhost:9000/api/hello/World
+```
+</code></pre>
+<p>The request returns the message <code>Hello, World!</code>.</p>

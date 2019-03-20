@@ -1,0 +1,336 @@
+{
+  "title" : "Scala Home",
+  "children" : [ {
+    "title" : "Home",
+    "url" : "Home.html",
+    "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/Home.md"
+  }, {
+    "title" : "Welcome to Lagom",
+    "children" : [ {
+      "title" : "What is Lagom?",
+      "url" : "WhatIsLagom.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/welcome/WhatIsLagom.md"
+    }, {
+      "title" : "What’s in the name?",
+      "url" : "WhatDoesLagomMean.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/welcome/WhatDoesLagomMean.md"
+    }, {
+      "title" : "Where to begin",
+      "url" : "WhereToStart.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/welcome/WhereToStart.md"
+    } ]
+  }, {
+    "title" : "Getting started with Lagom",
+    "children" : [ {
+      "title" : "Introduction and prerequisites",
+      "url" : "Installation.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/gettingstarted/Installation.md"
+    }, {
+      "title" : "Creating and running Hello World",
+      "url" : "IntroGetStarted.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/gettingstarted/IntroGetStarted.md"
+    }, {
+      "title" : "Understanding Hello World",
+      "url" : "UnderstandHelloScala.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/gettingstarted/UnderstandHelloScala.md",
+      "nextUrls" : [ "EclipseScala.html", "IntellijSbt.html" ]
+    }, {
+      "title" : "Learning more from Lagom examples",
+      "url" : "LagomExamples.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/gettingstarted/LagomExamples.md"
+    } ]
+  }, {
+    "title" : "Lagom core concepts",
+    "children" : [ {
+      "title" : "Introduction to Lagom concepts",
+      "url" : "CoreConcepts.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/concepts/CoreConcepts.md"
+    }, {
+      "title" : "Lagom design philosophy",
+      "url" : "LagomDesignPhilosophy.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/concepts/LagomDesignPhilosophy.md"
+    }, {
+      "title" : "Polyglot systems with Lagom",
+      "url" : "PolyglotSystems.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/concepts/PolyglotSystems.md"
+    }, {
+      "title" : "Development environment overview",
+      "url" : "DevelopmentEnvironmentOverview.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/concepts/DevelopmentEnvironmentOverview.md"
+    }, {
+      "title" : "Lagom build philosophy",
+      "url" : "BuildConcepts.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/concepts/BuildConcepts.md"
+    }, {
+      "title" : "Component technologies",
+      "url" : "ComponentTechnologies.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/concepts/ComponentTechnologies.md"
+    }, {
+      "title" : "API Overview",
+      "url" : "APIOverview.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/concepts/APIOverview.md"
+    }, {
+      "title" : "Designing your microservices system",
+      "url" : "MicroserviceSystemDesign.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/concepts/MicroserviceSystemDesign.md"
+    }, {
+      "title" : "Sizing individual microservices",
+      "url" : "MicroserviceDesign.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/concepts/MicroserviceDesign.md"
+    }, {
+      "title" : "Internal and external communication",
+      "url" : "InternalAndExternalCommunication.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/concepts/InternalAndExternalCommunication.md"
+    }, {
+      "title" : " Registering and discovering services",
+      "url" : "ServiceDiscovery.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/concepts/ServiceDiscovery.md"
+    }, {
+      "title" : "Using Immutable Objects",
+      "url" : "Immutable.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/concepts/Immutable.md"
+    }, {
+      "title" : "Managing data persistence",
+      "url" : "ES_CQRS.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/concepts/ES_CQRS.md"
+    }, {
+      "title" : "Advantages of Event Sourcing",
+      "url" : "ESAdvantage.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/concepts/ESAdvantage.md"
+    }, {
+      "title" : "Separating reads from writes",
+      "url" : "ReadVsWrite.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/concepts/ReadVsWrite.md"
+    }, {
+      "title" : "Deploying scalable, resilient systems",
+      "url" : "ScalableDeployment.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/concepts/ScalableDeployment.md"
+    } ]
+  }, {
+    "title" : "Lagom reference guide",
+    "children" : [ {
+      "title" : "Reference Guide",
+      "url" : "ReferenceGuide.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/guide/ReferenceGuide.md"
+    }, {
+      "title" : "Configuring builds and the development environment",
+      "children" : [ {
+        "title" : "Defining a Lagom build",
+        "url" : "LagomBuild.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/guide/build/LagomBuild.md"
+      }, {
+        "title" : "Splitting a system into multiple builds",
+        "url" : "MultipleBuilds.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/guide/build/MultipleBuilds.md"
+      }, {
+        "title" : "Importing an sbt project into Intellij",
+        "url" : "IntellijSbt.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/guide/build/IntellijSbt.md",
+        "nextUrls" : [ "RunningServices.html", "TestingServices.html" ]
+      }, {
+        "title" : "Importing an sbt project into Eclipse",
+        "url" : "EclipseSbt.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/guide/build/EclipseSbt.md",
+        "nextUrls" : [ "RunningServices.html", "TestingServices.html" ]
+      }, {
+        "title" : "Increase Memory in sbt",
+        "url" : "JVMMemoryOnDev.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/guide/build/JVMMemoryOnDev.md"
+      } ]
+    }, {
+      "title" : "Running Lagom in development",
+      "children" : [ {
+        "title" : "Development Environment",
+        "url" : "DevEnvironment.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/guide/devmode/DevEnvironment.md"
+      }, {
+        "title" : "Running Services",
+        "url" : "RunningServices.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/guide/devmode/RunningServices.md"
+      }, {
+        "title" : "How are Lagom services configured in development?",
+        "url" : "ConfiguringServicesInDevelopment.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/guide/devmode/ConfiguringServicesInDevelopment.md"
+      }, {
+        "title" : "Service Locator and Service Gateway",
+        "url" : "ServiceLocator.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/guide/devmode/ServiceLocator.md"
+      }, {
+        "title" : "Cassandra Server",
+        "url" : "CassandraServer.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/guide/devmode/CassandraServer.md"
+      }, {
+        "title" : "Kafka Server",
+        "url" : "KafkaServer.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/guide/devmode/KafkaServer.md"
+      } ]
+    }, {
+      "title" : "Writing Lagom services",
+      "children" : [ {
+        "title" : "Service descriptors",
+        "url" : "ServiceDescriptors.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/guide/services/ServiceDescriptors.md"
+      }, {
+        "title" : "Implementing services",
+        "url" : "ServiceImplementation.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/guide/services/ServiceImplementation.md"
+      }, {
+        "title" : "Dependency Injection",
+        "url" : "DependencyInjection.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/guide/services/DependencyInjection.md",
+        "nextUrls" : [ "ServiceInfo.html" ]
+      }, {
+        "title" : "Scala Components",
+        "url" : "ScalaComponents.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/guide/services/ScalaComponents.md"
+      }, {
+        "title" : "Service Metadata",
+        "url" : "ServiceInfo.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/guide/services/ServiceInfo.md"
+      }, {
+        "title" : "Consuming services",
+        "url" : "ServiceClients.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/guide/services/ServiceClients.md"
+      }, {
+        "title" : "Testing Services",
+        "url" : "TestingServices.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/guide/services/TestingServices.md"
+      }, {
+        "title" : "Message serializers",
+        "url" : "MessageSerializers.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/guide/services/MessageSerializers.md"
+      }, {
+        "title" : "Header Filters",
+        "url" : "HeaderFilters.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/guide/services/HeaderFilters.md"
+      }, {
+        "title" : "Error handling",
+        "url" : "ServiceErrorHandling.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/guide/services/ServiceErrorHandling.md"
+      }, {
+        "title" : "Additional Routers",
+        "url" : "AdditionalRouters.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/guide/services/AdditionalRouters.md"
+      } ]
+    }, {
+      "title" : "Writing persistent and clustered services",
+      "children" : [ {
+        "title" : "Persistent Entity",
+        "url" : "PersistentEntity.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/guide/cluster/PersistentEntity.md"
+      }, {
+        "title" : "Cassandra Persistent Entities",
+        "url" : "PersistentEntityCassandra.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/guide/cluster/PersistentEntityCassandra.md"
+      }, {
+        "title" : "Relational Database Persistent Entities",
+        "url" : "PersistentEntityRDBMS.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/guide/cluster/PersistentEntityRDBMS.md"
+      }, {
+        "title" : "Persistent Read-Side",
+        "url" : "ReadSide.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/guide/cluster/ReadSide.md"
+      }, {
+        "title" : "Cassandra Read-Side Support",
+        "url" : "ReadSideCassandra.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/guide/cluster/ReadSideCassandra.md"
+      }, {
+        "title" : "Relational Database Read-Side Support",
+        "url" : "ReadSideRDBMS.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/guide/cluster/ReadSideRDBMS.md",
+        "nextUrls" : [ "ReadSideJDBC.html", "ReadSideSlick.html" ]
+      }, {
+        "title" : "JDBC Read-Side Support",
+        "url" : "ReadSideJDBC.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/guide/cluster/ReadSideJDBC.md"
+      }, {
+        "title" : "Slick Read-Side Support",
+        "url" : "ReadSideSlick.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/guide/cluster/ReadSideSlick.md"
+      }, {
+        "title" : "Publish-Subscribe",
+        "url" : "PubSub.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/guide/cluster/PubSub.md"
+      }, {
+        "title" : "Cluster",
+        "url" : "Cluster.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/guide/cluster/Cluster.md"
+      }, {
+        "title" : "Serialization",
+        "url" : "Serialization.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/guide/cluster/Serialization.md"
+      } ]
+    }, {
+      "title" : "Decouple services with a message broker",
+      "children" : [ {
+        "title" : "Message Broker Support",
+        "url" : "MessageBroker.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/guide/broker/MessageBroker.md"
+      }, {
+        "title" : "Message Broker API",
+        "url" : "MessageBrokerApi.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/guide/broker/MessageBrokerApi.md"
+      }, {
+        "title" : "Lagom Kafka Client",
+        "url" : "KafkaClient.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/guide/broker/KafkaClient.md"
+      }, {
+        "title" : "Message Broker Testing",
+        "url" : "MessageBrokerTesting.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/guide/broker/MessageBrokerTesting.md"
+      } ]
+    }, {
+      "title" : "Running Lagom in production",
+      "children" : [ {
+        "title" : "Production Overview",
+        "url" : "ProductionOverview.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/guide/production/ProductionOverview.md"
+      }, {
+        "title" : "Lightbend Enterprise Suite",
+        "url" : "EnterpriseSuite.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/guide/production/EnterpriseSuite.md"
+      } ]
+    }, {
+      "title" : "Logging",
+      "children" : [ {
+        "title" : "Logging",
+        "url" : "Logging.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/guide/logging/Logging.md"
+      }, {
+        "title" : "Configuring Logging",
+        "url" : "SettingsLogger.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/guide/logging/SettingsLogger.md"
+      } ]
+    }, {
+      "title" : "Advanced topics",
+      "children" : [ {
+        "title" : "Integrating with Akka",
+        "url" : "Akka.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/guide/advanced/Akka.md"
+      }, {
+        "title" : "Integrating with non Lagom services",
+        "url" : "IntegratingNonLagom.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/guide/advanced/IntegratingNonLagom.md"
+      } ]
+    } ]
+  }, {
+    "title" : "Lagom releases",
+    "children" : [ {
+      "title" : "What's new in Lagom 1.5",
+      "url" : "Highlights15.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/releases/Highlights15.md"
+    }, {
+      "title" : "Lagom 1.5 Migration Guide",
+      "url" : "Migration15.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/releases/Migration15.md"
+    }, {
+      "title" : "Lagom 1.4 Migration Guide",
+      "url" : "Migration14.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/releases/Migration14.md"
+    }, {
+      "title" : "Lagom 1.3 Migration Guide",
+      "url" : "Migration13.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/scala/releases/Migration13.md"
+    } ]
+  } ]
+}

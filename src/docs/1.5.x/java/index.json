@@ -1,0 +1,365 @@
+{
+  "title" : "Java Home",
+  "children" : [ {
+    "title" : "Home",
+    "url" : "Home.html",
+    "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/Home.md"
+  }, {
+    "title" : "Welcome to Lagom",
+    "children" : [ {
+      "title" : "What is Lagom?",
+      "url" : "WhatIsLagom.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/welcome/WhatIsLagom.md"
+    }, {
+      "title" : "What’s in the name?",
+      "url" : "WhatDoesLagomMean.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/welcome/WhatDoesLagomMean.md"
+    }, {
+      "title" : "Where to begin",
+      "url" : "WhereToStart.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/welcome/WhereToStart.md"
+    } ]
+  }, {
+    "title" : "Getting started with Lagom",
+    "children" : [ {
+      "title" : "Introduction",
+      "url" : "IntroGetStarted.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/gettingstarted/IntroGetStarted.md"
+    }, {
+      "title" : "Lagom Java prerequisites",
+      "url" : "JavaPrereqs.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/gettingstarted/JavaPrereqs.md",
+      "nextUrls" : [ "GettingStartedMaven.html", "GettingStartedSbt.html" ]
+    }, {
+      "title" : "Creating and running Hello World with Maven",
+      "url" : "GettingStartedMaven.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/gettingstarted/GettingStartedMaven.md",
+      "nextUrls" : [ "UnderstandHello.html" ]
+    }, {
+      "title" : "Creating and running Hello World with sbt",
+      "url" : "GettingStartedSbt.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/gettingstarted/GettingStartedSbt.md",
+      "nextUrls" : [ "UnderstandHello.html" ]
+    }, {
+      "title" : "Understanding Hello World",
+      "url" : "UnderstandHello.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/gettingstarted/UnderstandHello.md"
+    }, {
+      "title" : "Lagom examples",
+      "url" : "LagomExamples.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/gettingstarted/LagomExamples.md"
+    }, {
+      "title" : "What's Next?",
+      "url" : "WhatsNext.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/gettingstarted/WhatsNext.md"
+    } ]
+  }, {
+    "title" : "Lagom core concepts",
+    "children" : [ {
+      "title" : "Introduction to Lagom concepts",
+      "url" : "CoreConcepts.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/concepts/CoreConcepts.md"
+    }, {
+      "title" : "Lagom design philosophy",
+      "url" : "LagomDesignPhilosophy.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/concepts/LagomDesignPhilosophy.md"
+    }, {
+      "title" : "Polyglot systems with Lagom",
+      "url" : "PolyglotSystems.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/concepts/PolyglotSystems.md"
+    }, {
+      "title" : "Development environment overview",
+      "url" : "DevelopmentEnvironmentOverview.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/concepts/DevelopmentEnvironmentOverview.md"
+    }, {
+      "title" : "Lagom build philosophy",
+      "url" : "BuildConcepts.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/concepts/BuildConcepts.md"
+    }, {
+      "title" : "Component technologies",
+      "url" : "ComponentTechnologies.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/concepts/ComponentTechnologies.md"
+    }, {
+      "title" : "API Overview",
+      "url" : "APIOverview.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/concepts/APIOverview.md"
+    }, {
+      "title" : "Designing your microservices system",
+      "url" : "MicroserviceSystemDesign.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/concepts/MicroserviceSystemDesign.md"
+    }, {
+      "title" : "Sizing individual microservices",
+      "url" : "MicroserviceDesign.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/concepts/MicroserviceDesign.md"
+    }, {
+      "title" : "Internal and external communication",
+      "url" : "InternalAndExternalCommunication.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/concepts/InternalAndExternalCommunication.md"
+    }, {
+      "title" : " Registering and discovering services",
+      "url" : "ServiceDiscovery.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/concepts/ServiceDiscovery.md"
+    }, {
+      "title" : "Using Immutable Objects",
+      "url" : "Immutable.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/concepts/Immutable.md"
+    }, {
+      "title" : "Managing data persistence",
+      "url" : "ES_CQRS.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/concepts/ES_CQRS.md"
+    }, {
+      "title" : "Advantages of Event Sourcing",
+      "url" : "ESAdvantage.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/concepts/ESAdvantage.md"
+    }, {
+      "title" : "Separating reads from writes",
+      "url" : "ReadVsWrite.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/concepts/ReadVsWrite.md"
+    }, {
+      "title" : "Deploying scalable, resilient systems",
+      "url" : "ScalableDeployment.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/concepts/ScalableDeployment.md"
+    } ]
+  }, {
+    "title" : "Lagom reference guide",
+    "children" : [ {
+      "title" : "Reference Guide",
+      "url" : "ReferenceGuide.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/guide/ReferenceGuide.md"
+    }, {
+      "title" : "Configuring builds and the development environment",
+      "children" : [ {
+        "title" : "Defining a Lagom build",
+        "url" : "LagomBuild.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/guide/build/LagomBuild.md"
+      }, {
+        "title" : "Splitting a system into multiple builds",
+        "url" : "MultipleBuilds.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/guide/build/MultipleBuilds.md",
+        "nextUrls" : [ "EclipseMavenInt.html", "EclipseSbt.html", "IntellijMaven.html", "IntellijSbtJava.html" ]
+      }, {
+        "title" : "Importing an existing Maven project into Eclipse",
+        "url" : "EclipseMavenInt.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/guide/build/EclipseMavenInt.md",
+        "nextUrls" : [ "ImmutablesInIDEs.html", "JVMMemoryOnDev.html", "RunningServices.html" ]
+      }, {
+        "title" : "Creating a new Maven Eclipse project with the Lagom archetype",
+        "url" : "EclipseMavenNew.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/guide/build/EclipseMavenNew.md",
+        "nextUrls" : [ "ImmutablesInIDEs.html", "JVMMemoryOnDev.html", "RunningServices.html" ]
+      }, {
+        "title" : "Importing an sbt project into Eclipse",
+        "url" : "EclipseSbt.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/guide/build/EclipseSbt.md",
+        "nextUrls" : [ "ImmutablesInIDEs.html", "JVMMemoryOnDev.html", "RunningServices.html" ]
+      }, {
+        "title" : "Importing an existing Maven Project into Intellij",
+        "url" : "IntellijMaven.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/guide/build/IntellijMaven.md",
+        "nextUrls" : [ "ImmutablesInIDEs.html", "JVMMemoryOnDev.html", "RunningServices.html" ]
+      }, {
+        "title" : "Importing an sbt project into Intellij",
+        "url" : "IntellijSbtJava.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/guide/build/IntellijSbtJava.md",
+        "nextUrls" : [ "ImmutablesInIDEs.html", "JVMMemoryOnDev.html", "RunningServices.html" ]
+      }, {
+        "title" : "Set up Immutables in your IDE",
+        "url" : "ImmutablesInIDEs.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/guide/build/ImmutablesInIDEs.md"
+      }, {
+        "title" : "Increase memory for sbt and Maven",
+        "url" : "JVMMemoryOnDev.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/guide/build/JVMMemoryOnDev.md"
+      } ]
+    }, {
+      "title" : "Running Lagom in development",
+      "children" : [ {
+        "title" : "Development Environment",
+        "url" : "DevEnvironment.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/guide/devmode/DevEnvironment.md"
+      }, {
+        "title" : "Running Services",
+        "url" : "RunningServices.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/guide/devmode/RunningServices.md"
+      }, {
+        "title" : "How are Lagom services configured in development?",
+        "url" : "ConfiguringServicesInDevelopment.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/guide/devmode/ConfiguringServicesInDevelopment.md"
+      }, {
+        "title" : "Service Locator and Service Gateway",
+        "url" : "ServiceLocator.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/guide/devmode/ServiceLocator.md"
+      }, {
+        "title" : "Cassandra Server",
+        "url" : "CassandraServer.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/guide/devmode/CassandraServer.md"
+      }, {
+        "title" : "Kafka Server",
+        "url" : "KafkaServer.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/guide/devmode/KafkaServer.md"
+      } ]
+    }, {
+      "title" : "Writing Lagom services",
+      "children" : [ {
+        "title" : "Service descriptors",
+        "url" : "ServiceDescriptors.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/guide/services/ServiceDescriptors.md"
+      }, {
+        "title" : "Implementing services",
+        "url" : "ServiceImplementation.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/guide/services/ServiceImplementation.md"
+      }, {
+        "title" : "Service Metadata",
+        "url" : "ServiceInfo.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/guide/services/ServiceInfo.md"
+      }, {
+        "title" : "Consuming services",
+        "url" : "ServiceClients.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/guide/services/ServiceClients.md"
+      }, {
+        "title" : "Testing Services",
+        "url" : "Test.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/guide/services/Test.md"
+      }, {
+        "title" : "Message serializers",
+        "url" : "MessageSerializers.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/guide/services/MessageSerializers.md"
+      }, {
+        "title" : "Header Filters",
+        "url" : "HeaderFilters.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/guide/services/HeaderFilters.md"
+      }, {
+        "title" : "Error handling",
+        "url" : "ServiceErrorHandling.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/guide/services/ServiceErrorHandling.md"
+      }, {
+        "title" : "Additional Routers",
+        "url" : "AdditionalRouters.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/guide/services/AdditionalRouters.md"
+      } ]
+    }, {
+      "title" : "Writing persistent and clustered services",
+      "children" : [ {
+        "title" : "Persistent Entity",
+        "url" : "PersistentEntity.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/guide/cluster/PersistentEntity.md"
+      }, {
+        "title" : "Cassandra Persistent Entities",
+        "url" : "PersistentEntityCassandra.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/guide/cluster/PersistentEntityCassandra.md"
+      }, {
+        "title" : "Relational Database Persistent Entities",
+        "url" : "PersistentEntityRDBMS.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/guide/cluster/PersistentEntityRDBMS.md"
+      }, {
+        "title" : "Persistent Read-Side",
+        "url" : "ReadSide.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/guide/cluster/ReadSide.md"
+      }, {
+        "title" : "Cassandra Read-Side Support",
+        "url" : "ReadSideCassandra.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/guide/cluster/ReadSideCassandra.md"
+      }, {
+        "title" : "Relational Database Read-Side Support",
+        "url" : "ReadSideRDBMS.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/guide/cluster/ReadSideRDBMS.md",
+        "nextUrls" : [ "ReadSideJDBC.html", "ReadSideJPA.html" ]
+      }, {
+        "title" : "JDBC Read-Side Support",
+        "url" : "ReadSideJDBC.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/guide/cluster/ReadSideJDBC.md"
+      }, {
+        "title" : "JPA Read-Side Support",
+        "url" : "ReadSideJPA.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/guide/cluster/ReadSideJPA.md"
+      }, {
+        "title" : "Publish-Subscribe",
+        "url" : "PubSub.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/guide/cluster/PubSub.md"
+      }, {
+        "title" : "Serialization",
+        "url" : "Serialization.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/guide/cluster/Serialization.md"
+      }, {
+        "title" : "Cluster",
+        "url" : "Cluster.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/guide/cluster/Cluster.md"
+      } ]
+    }, {
+      "title" : "Decouple services with a message broker",
+      "children" : [ {
+        "title" : "Message Broker Support",
+        "url" : "MessageBroker.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/guide/broker/MessageBroker.md"
+      }, {
+        "title" : "Message Broker API",
+        "url" : "MessageBrokerApi.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/guide/broker/MessageBrokerApi.md"
+      }, {
+        "title" : "Lagom Kafka Client",
+        "url" : "KafkaClient.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/guide/broker/KafkaClient.md"
+      }, {
+        "title" : "Message Broker Testing",
+        "url" : "MessageBrokerTesting.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/guide/broker/MessageBrokerTesting.md"
+      } ]
+    }, {
+      "title" : "Running Lagom in production",
+      "children" : [ {
+        "title" : "Production Overview",
+        "url" : "ProductionOverview.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/guide/production/ProductionOverview.md"
+      }, {
+        "title" : "Lightbend Enterprise Suite",
+        "url" : "EnterpriseSuite.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/guide/production/EnterpriseSuite.md"
+      } ]
+    }, {
+      "title" : "Logging",
+      "children" : [ {
+        "title" : "Logging",
+        "url" : "Logging.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/guide/logging/Logging.md"
+      }, {
+        "title" : "Configuring Logging",
+        "url" : "SettingsLogger.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/common/guide/logging/SettingsLogger.md"
+      } ]
+    }, {
+      "title" : "Advanced topics",
+      "children" : [ {
+        "title" : "Integrating with Akka",
+        "url" : "Akka.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/guide/advanced/Akka.md"
+      }, {
+        "title" : "Integrating with non Lagom services",
+        "url" : "IntegratingNonLagom.html",
+        "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/guide/advanced/IntegratingNonLagom.md"
+      } ]
+    } ]
+  }, {
+    "title" : "Lagom releases",
+    "children" : [ {
+      "title" : "What's new in Lagom 1.5",
+      "url" : "Highlights15.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/releases/Highlights15.md"
+    }, {
+      "title" : "Lagom 1.5 Migration Guide",
+      "url" : "Migration15.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/releases/Migration15.md"
+    }, {
+      "title" : "Lagom 1.4 Migration Guide",
+      "url" : "Migration14.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/releases/Migration14.md"
+    }, {
+      "title" : "Lagom 1.3 Migration Guide",
+      "url" : "Migration13.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/releases/Migration13.md"
+    }, {
+      "title" : "Lagom 1.2 Migration Guide",
+      "url" : "Migration12.html",
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/1.5.x/docs/manual/java/releases/Migration12.md"
+    } ]
+  } ]
+}

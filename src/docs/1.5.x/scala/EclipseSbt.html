@@ -1,0 +1,53 @@
+<h1 id="Importing-an-sbt-project-into-Eclipse"><a class="section-marker" href="#Importing-an-sbt-project-into-Eclipse">§</a>Importing an sbt project into Eclipse</h1>
+<p>If you used the Giter8 template to create a build as described in <a href="IntroGetStarted.html">Creating and running Hello World with sbt</a>, you will have an sbt project. To make it possible to import the project into Eclipse, sbt provides an <a href="https://github.com/typesafehub/sbteclipse">sbt-eclipse</a> plugin that generates Eclipse project artifacts for each of the subprojects.</p>
+<p>Follow these steps to integrate your project with Eclipse:</p>
+<ol>
+  <li><a href="#Import-the-project">Import the project</a></li>
+  <li><a href="#Create-an-External-Tool-Configuration">Create an External Tool Configuration</a></li>
+</ol><h1 id="Import-the-project"><a class="section-marker" href="#Import-the-project">§</a>Import the project</h1>
+<ol>
+  <li>
+    <p>In a console, <code>cd</code> to the top-level folder of your existing sbt project, and enter <code>sbt eclipse</code> to generate the Eclipse project files for all projects in your build.<br/>The sbt plugin creates <code>.project</code> and <code>.classpath</code> files for the subprojects. The last few lines of output confirm success:</p>
+    <pre class="prettyprint"><code>...
+[info] Successfully created Eclipse project files for project(s):
+[info] hello-impl
+[info] hello-api
+[info] hello-stream-impl
+[info] hello-stream-api
+[info] lagom-internal-meta-project-service-locator
+[info] lagom-internal-meta-project-cassandra
+
+</code></pre>
+  </li>
+  <li>
+  <p>Start Eclipse and switch to the Workspace you want to use for your Lagom project.</p></li>
+  <li>
+  <p>From the <strong>File</strong> menu, select <strong>Import</strong>.<br/> The <strong>Select</strong> screen opens. </p></li>
+  <li>
+  <p>Expand <strong>General</strong>, select <strong>Existing Projects into Workspace</strong> and click <strong>Next</strong>.<br/> The <strong>Import Projects</strong> page opens.</p></li>
+  <li>
+  <p>Click <strong>Browse</strong>, select the top-level sbt project folder, and click <strong>OK</strong>.<br/>The sub-projects display in the dialog. For example:<br/><a href="resources/guide/build/EclBrowseSbtScala.png"><img src="resources/guide/build/EclBrowseSbtScala.png"/></a></p></li>
+  <li>Optionally, select <strong>Copy projects into workspace</strong>.</li>
+  <li>Click <strong>Finish</strong>.</li>
+</ol><h1 id="Create-an-External-Tool-Configuration"><a class="section-marker" href="#Create-an-External-Tool-Configuration">§</a>Create an External Tool Configuration</h1>
+<ol>
+  <li>From the Eclipse toolbar, click <strong>External Tools</strong> and select <strong>External Tools Configurations</strong>.<br/><a href="resources/guide/build/EclExternalConfig.png"><img src="resources/guide/build/EclExternalConfig.png"/></a></li>
+  <li>In the left pane, select <strong>Program</strong> and click <strong>New Launch Configuration</strong>.<br/><a href="resources/guide/build/EclNewLaunch.png"><img src="resources/guide/build/EclNewLaunch.png"/></a></li>
+  <li>Create your configuration as follows:
+    <ol>
+      <li>Enter a name.</li>
+      <li>On the <strong>Main</strong> tab in the <strong>Location</strong> field, enter the location of your sbt installation.<br/>For Windows, browse to the location where you installed sbt and select <code>sbt.bat</code>. On Linux, you can find the location of sbt by opening a terminal and entering <code>which sbt</code>.</li>
+      <li>For <strong>Working Directory</strong> browse to the top-level sbt project folder. (This is the folder containing the <code>build.sbt</code> file.)</li>
+      <li>In the <strong>Arguments</strong> field, enter <code>runAll</code>.</li>
+      <li>Click <strong>Apply</strong>. Your screen should look similar to the following:<br/><a href="resources/guide/build/EclExtConfigScala.png"><img src="resources/guide/build/EclExtConfigScala.png"/></a></li>
+    </ol>
+  </li>
+  <li>Click <strong>Run</strong>.<br/>On success, the console shows that the services are running.<br/><a href="resources/guide/build/EclSbtScalaSuccess.png"><img src="resources/guide/build/EclSbtScalaSuccess.png"/></a>
+    <p>Verify that the services are indeed up and running by invoking the <code>hello</code> service endpoint from any HTTP client, such as a browser: </p>
+    <pre class="prettyprint"><code>```
+http://localhost:9000/api/hello/World
+```
+</code></pre>
+    <p>The request returns the message <code>Hello, World!</code>.</p>
+  </li>
+</ol>

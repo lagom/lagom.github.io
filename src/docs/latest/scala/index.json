@@ -318,7 +318,7 @@
     "children" : [ {
       "title" : "What's new in Lagom 1.5",
       "url" : "Highlights15.html",
-      "sourceUrl" : "https://github.com/lagom/lagom/edit/master/docs/manual/common/releases/Highlights15.md"
+      "sourceUrl" : "https://github.com/lagom/lagom/edit/master/docs/manual/scala/releases/Highlights15.md"
     }, {
       "title" : "Lagom 1.5 Migration Guide",
       "url" : "Migration15.html",

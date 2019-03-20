@@ -1,0 +1,19 @@
+<h1 id="Increase-Memory-for-sbt-and-Maven"><a class="section-marker" href="#Increase-Memory-for-sbt-and-Maven">§</a>Increase Memory for sbt and Maven</h1>
+<p>Lagom in dev mode starts all your services plus some internal Lagom services in a single JVM. This can cause <code>OutOfMemoryError</code>s depending on your JVM setup. It is possible to start Maven and sbt with increased memory.</p>
+<p>We recommend you increase the Maximum Metaspace size and the Thread Stack size. These values can be set using <code>-Xss2M -XX:MaxMetaspaceSize=1024M</code>. The exact values may depend on your hardware and your code base.</p><h2 id="Maven"><a class="section-marker" href="#Maven">§</a>Maven</h2>
+<p>You can start Maven with extra memory using <code>MAVEN_OPTS</code> environment variable.</p>
+<pre class="prettyprint"><code class="language-bash">$ MAVEN_OPTS=&quot;-Xms512M -Xmx1024M -Xss2M -XX:MaxMetaspaceSize=1024M&quot; mvn lagom:runAll
+</code></pre>
+<p>In this example we&rsquo;re setting an initial JVM Heap of 512Mb, a maximum Heap of 1024M, a thread stack of 2M and maximum Metaspace size of 1024M.</p>
+<p>Stating the <code>MAVEN_OPTS</code> on every invocation is error prone and exporting it globally might not be possible if you need different settings for different projects. You may want to use <a href="https://direnv.net/">direnv</a> to setup the environment variables per project.</p><h2 id="sbt"><a class="section-marker" href="#sbt">§</a>sbt</h2>
+<p>You can start sbt with extra memory using <code>SBT_OPTS</code> environment variable.</p>
+<pre class="prettyprint"><code class="language-bash">$ SBT_OPTS=&quot;-Xms512M -Xmx1024M -Xss2M -XX:MaxMetaspaceSize=1024M&quot; sbt
+</code></pre>
+<p>sbt lets you list the JVM options you need to run your project on a file named <code>.jvmopts</code> in the root of your project.</p>
+<pre class="prettyprint"><code>$ cat .jvmopts
+-Xms512M
+-Xmx4096M
+-Xss2M
+-XX:MaxMetaspaceSize=1024M
+</code></pre>
+<p><code>sbt</code> also supports other means to tune the underlying JVM. See <code>sbt -h</code> for more details.</p>

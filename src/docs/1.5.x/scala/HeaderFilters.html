@@ -1,0 +1,78 @@
+<h1 id="Header-Filters"><a class="section-marker" href="#Header-Filters">§</a>Header Filters</h1>
+<p>In Lagom you may add <code>HeaderFilter</code>s to your service descriptor. In a <code>HeaderFilter</code> you will usually handle protocol negotiation or authentication. </p>
+<p>A single <code>HeaderFilter</code> implementation may transform a request leaving a client or entering a server and a response leaving a server and entering a client. Here&rsquo;s an example that uses the <code>User-Agent</code> header to read the service name:</p>
+<pre class="prettyprint"><code class="language-scala">object UserAgentHeaderFilter extends HeaderFilter {
+  override def transformClientRequest(request: RequestHeader): RequestHeader = {
+    request.principal match {
+      case Some(principal: ServicePrincipal) =&gt;
+        request.withHeader(HeaderNames.USER_AGENT, principal.serviceName)
+      case _ =&gt; request
+    }
+  }
+
+  override def transformServerRequest(request: RequestHeader): RequestHeader = {
+    request.getHeader(HeaderNames.USER_AGENT) match {
+      case Some(userAgent) =&gt;
+        request.withPrincipal(ServicePrincipal.forServiceNamed(userAgent))
+      case _ =&gt;
+        request
+    }
+  }
+
+  override def transformServerResponse(
+    response: ResponseHeader,
+    request:  RequestHeader
+  ): ResponseHeader = response
+
+  override def transformClientResponse(
+    response: ResponseHeader,
+    request:  RequestHeader
+  ): ResponseHeader = response
+}</code></pre>
+<p>This <a href="api/com/lightbend/lagom/scaladsl/api/transport/UserAgentHeaderFilter$.html"><code>UserAgentHeaderFilter</code></a> is the default <code>HeaderFilter</code> any Lagom service will use if none is specified. It uses a <code>ServicePrincipal</code> which identifies the client with the service name.</p>
+<p>In <code>UserAgentHeaderFilter</code> the code at <code>transformClientRequest</code> will be invoked when preparing a client invocation to add a <code>User-Agent</code> header if a <a href="api/com/lightbend/lagom/scaladsl/api/security/ServicePrincipal.html"><code>ServicePrincipal</code></a> was specified on the request. Note that by default, Lagom will automatically pass the current services name as the <code>ServicePrincipal</code> when it makes a request. On the server end <code>transformServerRequest</code> will be used to read the <code>User-Agent</code> header and set that value as the request&rsquo;s <a href="https://docs.oracle.com/javase/8/docs/api/java/security/Principal.html">Principal</a>.</p>
+<p>Keep in mind that a header filter should only be used to deal with cross cutting <em>protocol</em> concerns, and nothing more. For example, you may have a header filter that describes how the current authenticated user is communicated over the HTTP protocol (by adding a user header, for example). Cross cutting <em>domain</em> concerns, such as authentication and validation, should not be handled in a header filter, rather they should be handled using <a href=" ServiceImplementation.html#Service-call-composition">service call composition</a>.</p><h2 id="Header-Filter-Composition"><a class="section-marker" href="#Header-Filter-Composition">§</a>Header Filter Composition</h2>
+<p>Each service <code>Descriptor</code> can only have one <code>HeaderFilter</code>. In order to use several filters at once you may compose them using <code>HeaderFilter.composite</code> which will return a <code>HeaderFilter</code> that chains all the <code>HeaderFilter</code>s you composed. When composing, the order is important so when sending message headers the filters of the composite are used in the order they were provided, and when receiving message headers the filters will be used in reverse order. So if we had the following filter:</p>
+<pre class="prettyprint"><code class="language-scala">class VerboseFilter(name: String) extends HeaderFilter {
+  private val log = LoggerFactory.getLogger(getClass)
+
+  def transformClientRequest(request: RequestHeader) = {
+    log.debug(name + &quot; - transforming Client Request&quot;)
+    request
+  }
+
+  def transformServerRequest(request: RequestHeader) = {
+    log.debug(name + &quot; - transforming Server Request&quot;)
+    request
+  }
+
+  def transformServerResponse(response: ResponseHeader,
+    request: RequestHeader) = {
+
+    log.debug(name + &quot; - transforming Server Response&quot;)
+    response
+  }
+
+  def transformClientResponse(response: ResponseHeader,
+    request: RequestHeader) = {
+
+    log.debug(name + &quot; - transforming Client Response&quot;)
+    response
+  }
+}</code></pre>
+<p>And we registered two of them with the names <code>Foo</code> and <code>Bar</code>:</p>
+<pre class="prettyprint"><code class="language-scala">def descriptor = {
+  import Service._
+  named(&quot;hello&quot;).withCalls(
+    call(sayHello)
+  ).withHeaderFilter(HeaderFilter.composite(
+    new VerboseFilter(&quot;Foo&quot;),
+    new VerboseFilter(&quot;Bar&quot;)
+  ))
+}</code></pre>
+<p>and then called the service, then we would get the following on the server output logs:</p>
+<pre class="prettyprint"><code>[debug] Bar - transforming Server Request
+[debug] Foo - transforming Server Request
+[debug] Foo - transforming Server Response
+[debug] Bar - transforming Server Response
+</code></pre>

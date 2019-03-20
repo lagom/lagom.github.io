@@ -1,0 +1,122 @@
+<h1 id="Consuming-services"><a class="section-marker" href="#Consuming-services">§</a>Consuming services</h1>
+<p>We&rsquo;ve seen how to define service descriptors and how to implement them, now we need to consume them. The service descriptor contains everything Lagom needs to know about how to invoke a service, consequently, Lagom is able to implement service descriptor interfaces for you.</p><h2 id="Binding-a-service-client"><a class="section-marker" href="#Binding-a-service-client">§</a>Binding a service client</h2>
+<p>The first thing necessary to consume a service is to create an implementation of it. Lagom provides a macro to do this on the <a href="api/com/lightbend/lagom/scaladsl/client/ServiceClient.html"><code>ServiceClient</code></a> class, called <code>implement</code>. The <code>ServiceClient</code> is provided by the <a href="api/com/lightbend/lagom/scaladsl/client/LagomServiceClientComponents.html"><code>LagomServiceClientComponents</code></a>, which is already implemented by <code>LagomApplication</code>, so to create a service client from a Lagom application, you just have to do the following:</p>
+<pre class="prettyprint"><code class="language-scala">abstract class MyApplication(context: LagomApplicationContext)
+  extends LagomApplication(context)
+    with AhcWSComponents {
+
+  lazy val helloService = serviceClient.implement[HelloService]
+}</code></pre><h2 id="Using-a-service-client"><a class="section-marker" href="#Using-a-service-client">§</a>Using a service client</h2>
+<p>Having bound the client, you can now use it anywhere in your Lagom application. Typically this will be done by passing it to another component, such as a service implementation, via that components constructor, which will be done automatically for you if you&rsquo;re using Macwire. Here&rsquo;s an example of consuming one service from another service:</p>
+<pre class="prettyprint"><code class="language-scala">class MyServiceImpl(helloService: HelloService)
+  (implicit ec: ExecutionContext) extends MyService {
+
+  override def sayHelloLagom = ServiceCall { _ =&gt;
+    val result: Future[String] =
+      helloService.sayHello.invoke(&quot;Lagom&quot;)
+
+    result.map { response =&gt;
+      s&quot;Hello service said: $response&quot;
+    }
+  }
+}</code></pre><h2 id="Streaming-service-client-configuration"><a class="section-marker" href="#Streaming-service-client-configuration">§</a>Streaming service client configuration</h2>
+<p>When using a streaming service client, Lagom will use internally a WebSocket client which has a max frame length parameter. This parameter limits the allowed maximum size for the messages flowing through the WebSocket. This can be configured in <code>application.conf</code> on the client-side and the default configuration is:</p>
+<pre class="prettyprint"><code class="language-conf">#This configures the websocket clients used by this service.
+#This is a global configuration and it is currently not possible 
+#to provide different configurations if multiple websocket services 
+#are consumed.
+lagom.client.websocket {
+
+  #This parameter limits the allowed maximum size for the messages 
+  #flowing through the WebSocket. A similar limit exists on 
+  #the server side, see: 
+  #https://www.playframework.com/documentation/2.6.x/ScalaWebSockets#Configuring-WebSocket-Frame-Length
+  frame.maxLength = 65536
+}</code></pre>
+<p>This configuration will affect all streaming services that the service client consumes. It is not possible to provide different configurations when multiple streaming services are consumed.</p>
+<p>Note that the same parameter has to be configured on the server-side using <a href="https://www.playframework.com/documentation/2.6.x/ScalaWebSockets#Configuring-WebSocket-Frame-Length">Play server configuration</a></p><h2 id="Circuit-Breakers"><a class="section-marker" href="#Circuit-Breakers">§</a>Circuit Breakers</h2>
+<p>A <a href="https://martinfowler.com/bliki/CircuitBreaker.html">circuit breaker</a> is used to provide stability and prevent cascading failures in distributed systems. These should be used in conjunction with judicious timeouts at the interfaces between services to prevent the failure of a single service from bringing down other services.</p>
+<p>As an example, we have a web application interacting with a third-party web service. Let&rsquo;s say the third-party has oversold their capacity and their database melts down under load. Assume that the database fails in such a way that it takes a very long time to hand back an error to the third-party web service. This in turn makes calls fail after a long period of time. Back to our web application, the users have noticed that their form submissions take much longer seeming to hang. The users do what they know to do which is use the refresh button, adding more requests to their already running requests. This eventually causes the failure of the web application due to resource exhaustion.</p>
+<p>Introducing circuit breakers on the web service call would cause the requests to begin to fail-fast, letting the user know that something is wrong and that they need not refresh their request. This also confines the failure behavior to only those users that are using functionality dependent on the third-party, other users are no longer affected as there is no resource exhaustion. Circuit breakers can also allow savvy developers to mark portions of the site that use the functionality unavailable, or perhaps show some cached content as appropriate while the breaker is open.</p>
+<p>A circuit breaker has 3 states:</p>
+<p><a href="resources/guide/services/circuit-breaker-states.png"><img src="resources/guide/services/circuit-breaker-states.png"/></a></p>
+<p>During normal operation, a circuit breaker is in the <strong>Closed</strong> state:</p>
+<ul>
+  <li>Exceptions or calls exceeding the configured <code>call-timeout</code> increment a failure counter</li>
+  <li>Successes reset the failure count to zero</li>
+  <li>When the failure counter reaches a <code>max-failures</code> count, the breaker is tripped into Open state</li>
+</ul>
+<p>While in <strong>Open</strong> state:</p>
+<ul>
+  <li>All calls fail-fast with a <code>CircuitBreakerOpenException</code></li>
+  <li>After the configured <code>reset-timeout</code>, the circuit breaker enters a Half-Open state</li>
+</ul>
+<p>In <strong>Half-Open</strong> state:</p>
+<ul>
+  <li>The first call attempted is allowed through without failing fast</li>
+  <li>All other calls fail-fast with an exception just as in Open state</li>
+  <li>If the first call succeeds, the breaker is reset back to Closed state</li>
+  <li>If the first call fails, the breaker is tripped again into the Open state for another full resetTimeout</li>
+</ul>
+<p>All service calls with Lagom service clients are by default using circuit breakers. Circuit Breakers are used and configured on the client side, but the granularity and configuration identifiers are defined by the service provider. By default, one circuit breaker instance is used for all calls (methods) to another service. It is possible to set a unique circuit breaker identifier for each method to use a separate circuit breaker instance for each method. It is also possible to group related methods by using the same identifier on several methods.</p>
+<pre class="prettyprint"><code class="language-scala">import com.lightbend.lagom.scaladsl.api.CircuitBreaker
+
+def descriptor: Descriptor = {
+  import Service._
+
+  named(&quot;hello&quot;).withCalls(
+    namedCall(&quot;hi&quot;, this.sayHi),
+    namedCall(&quot;hiAgain&quot;, this.hiAgain)
+      .withCircuitBreaker(CircuitBreaker.identifiedBy(&quot;hello2&quot;))
+  )
+}</code></pre>
+<p>In the above example the default identifier is used for the <code>sayHi</code> method, since no specific identifier is given. The default identifier is the same as the service name, i.e. <code>&quot;hello&quot;</code> in this example. The <code>hiAgain</code> method will use another circuit breaker instance, since <code>&quot;hello2&quot;</code> is specified as circuit breaker identifier.</p><h3 id="Circuit-Breaker-Configuration"><a class="section-marker" href="#Circuit-Breaker-Configuration">§</a>Circuit Breaker Configuration</h3>
+<p>On the client side you can configure the circuit breakers. The default configuration is:</p>
+<pre class="prettyprint"><code class="language-conf"># Circuit breakers for calls to other services are configured
+# in this section. A child configuration section with the same
+# name as the circuit breaker identifier will be used, with fallback
+# to the `lagom.circuit-breaker.default` section.
+lagom.circuit-breaker {
+
+  # Default configuration that is used if a configuration section
+  # with the circuit breaker identifier is not defined.
+  default {
+    # Possibility to disable a given circuit breaker.
+    enabled = on
+
+    # Number of failures before opening the circuit.
+    max-failures = 10
+
+    # Duration of time after which to consider a call a failure.
+    call-timeout = 10s
+
+    # Duration of time in open state after which to attempt to close
+    # the circuit, by first entering the half-open state.
+    reset-timeout = 15s
+
+    # A whitelist of fqcn of Exceptions that the CircuitBreaker
+    # should not consider failures. By default all exceptions are
+    # considered failures.
+    exception-whitelist = []
+  }
+}</code></pre>
+<p>That configuration will be used if you don&rsquo;t define any configuration yourself. The settings to configure a circuit breaker include the general settings you&rsquo;d expect in a circuit breaker like the number of failures or the request timeout that should open the circuit as well as the timeout that must lapse to close the circuit again. In lagom there&rsquo;s an extra setting to control what is considered a failure.</p>
+<p>Lagom&rsquo;s client <a href="ServiceErrorHandling.html">maps all 4xx and 5xx responses to Exceptions</a> and Lagom&rsquo;s Circuit Breaker defaults to considering all Exceptions as failures. You can change the default behavior by whitelisting particular exceptions so they do not count as failures. Sometimes you want to configure the circuit breaker for a given endpoint so it ignores a certain exception. This is particularly useful when connecting to services where 4xx HTTP status codes are used to model business valid cases. For example, it may be a non-failure case to respond a 404 Not Found to a particular request. In that case you can add <code>&quot;com.lightbend.lagom.scaladsl.api.transport.NotFound&quot;</code> to the circuit breaker whitelist so that it is not considered a failure. Even if the <code>NotFound</code> exception is not counted as a failure, the client will still throw a <code>NotFound</code> exception as a result of invoking the service.</p>
+<p>With the above &ldquo;hello&rdquo; example we could adjust the configuration by defining properties in <code>application.conf</code> such as:</p>
+<pre class="prettyprint"><code>lagom.circuit-breaker {
+
+  # will be used by sayHi method
+  hello.max-failures = 5
+
+  # will be used by hiAgain method
+  hello2 {
+    max-failures = 7
+    reset-timeout = 30s
+  }
+
+  # Change the default call-timeout
+  # will be used for both sayHi and hiAgain methods
+  default.call-timeout = 5s
+}
+</code></pre>
+<p><a href="https://www.lightbend.com/products/monitoring">Lightbend Monitoring</a> will provide metrics for Lagom circuit breakers, including aggregated views of the information for all nodes in the cluster.</p>

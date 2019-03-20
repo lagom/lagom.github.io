@@ -1,0 +1,156 @@
+<h1 id="Publish-Subscribe"><a class="section-marker" href="#Publish-Subscribe">§</a>Publish-Subscribe</h1>
+<p><a href="https://www.enterpriseintegrationpatterns.com/patterns/messaging/PublishSubscribeChannel.html">Publish–subscribe</a> is a well known messaging pattern. Senders of messages, called publishers, do not target the messages directly to specific receivers, but instead publish messages to topics without knowledge of which receivers, called subscribers, if any, there may be. Similarly, a subscriber express interest in a topic and receive messages published to that topic, without knowledge of which publishers, if any, there are.</p><h2 id="Dependency"><a class="section-marker" href="#Dependency">§</a>Dependency</h2>
+<p>To use this feature add the following in your project&rsquo;s build:</p>
+<p>In Maven:</p>
+<pre class="prettyprint"><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.lightbend.lagom&lt;/groupId&gt;
+    &lt;artifactId&gt;lagom-javadsl-pubsub_${scala.binary.version}&lt;/artifactId&gt;
+    &lt;version&gt;${lagom.version}&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>In sbt:</p>
+<pre class="prettyprint"><code class="language-sbt">libraryDependencies += lagomJavadslPubSub</code></pre><h2 id="Usage-from-Service-Implementation"><a class="section-marker" href="#Usage-from-Service-Implementation">§</a>Usage from Service Implementation</h2>
+<p>Let&rsquo;s look at an example of a service that publishes temperature measurements of hardware devices. A device can submit its current temperature and interested parties can get a stream of the temperature samples.</p>
+<p>The service API is defined as:</p>
+<pre class="prettyprint"><code class="language-java">public interface SensorService extends Service {
+
+  ServiceCall&lt;Temperature, NotUsed&gt; registerTemperature(String id);
+
+  ServiceCall&lt;NotUsed, Source&lt;Temperature, ?&gt;&gt; temperatureStream(String id);
+
+  @Override
+  default Descriptor descriptor() {
+    return named(&quot;/sensorservice&quot;).withCalls(
+      pathCall(&quot;/device/:id/temperature&quot;, this::registerTemperature),
+      pathCall(&quot;/device/:id/temperature/stream&quot;, this::temperatureStream)
+    );
+  }
+}</code></pre>
+<p>The implementation of this interface looks like:</p>
+<pre class="prettyprint"><code class="language-java">import akka.NotUsed;
+import com.lightbend.lagom.javadsl.api.ServiceCall;
+import com.lightbend.lagom.javadsl.pubsub.PubSubRef;
+import com.lightbend.lagom.javadsl.pubsub.PubSubRegistry;
+import com.lightbend.lagom.javadsl.pubsub.TopicId;
+import java.util.concurrent.CompletableFuture;
+import javax.inject.Inject;
+import akka.stream.javadsl.Source;
+
+public class SensorServiceImpl implements SensorService {
+
+  private final PubSubRegistry pubSub;
+
+  @Inject
+  public SensorServiceImpl(PubSubRegistry pubSub) {
+    this.pubSub = pubSub;
+  }
+
+  @Override
+  public ServiceCall&lt;Temperature, NotUsed&gt; registerTemperature(String id) {
+    return temperature -&gt; {
+      final PubSubRef&lt;Temperature&gt; topic =
+          pubSub.refFor(TopicId.of(Temperature.class, id));
+      topic.publish(temperature);
+      return CompletableFuture.completedFuture(NotUsed.getInstance());
+    };
+  }
+
+  @Override
+  public ServiceCall&lt;NotUsed, Source&lt;Temperature, ?&gt;&gt; temperatureStream(String id) {
+    return request -&gt; {
+      final PubSubRef&lt;Temperature&gt; topic =
+          pubSub.refFor(TopicId.of(Temperature.class, id));
+      return CompletableFuture.completedFuture(topic.subscriber());
+    };
+  }
+}</code></pre>
+<p>When a device submits its current temperature it is published to a topic that is unique for that device. Note that the topic where the message is published to is defined by the message class, here <code>Temperature</code>, and an optional classifier, here the device id. The messages of this topic will be instances of the message class or subclasses thereof. The qualifier can be used to distinguish topics that are using the same message class. The empty string can be used as qualifier if the message class is enough to define the topic identity.</p>
+<p>Use the method <code>publish</code> of the <a href="api/index.html?com/lightbend/lagom/javadsl/pubsub/PubSubRef.html">PubSubRef</a> representing a given topic to publish a single message, see <code>registerTemperature</code> in the above code.</p>
+<p>Use the method <code>subscriber</code> of the <a href="api/index.html?com/lightbend/lagom/javadsl/pubsub/PubSubRef.html">PubSubRef</a> to acquire a stream <code>Source</code> of messages published to a given topic, see <code>temperatureStream</code> in the above code.</p>
+<p>It is also possible to publish a stream of messages to a topic as is illustrated by this variant of the <code>SensorService</code>:</p>
+<pre class="prettyprint"><code class="language-java">import akka.NotUsed;
+import com.lightbend.lagom.javadsl.api.ServiceCall;
+import com.lightbend.lagom.javadsl.pubsub.PubSubRef;
+import com.lightbend.lagom.javadsl.pubsub.PubSubRegistry;
+import com.lightbend.lagom.javadsl.pubsub.TopicId;
+import java.util.concurrent.CompletableFuture;
+import javax.inject.Inject;
+import akka.stream.Materializer;
+import akka.stream.javadsl.Source;
+
+public class SensorServiceImpl2 implements SensorService2 {
+
+  private final PubSubRegistry pubSub;
+  private final Materializer materializer;
+
+  @Inject
+  public SensorServiceImpl2(PubSubRegistry pubSub, Materializer mat) {
+    this.pubSub = pubSub;
+    this.materializer = mat;
+  }
+
+  @Override
+  public ServiceCall&lt;Source&lt;Temperature, ?&gt;, NotUsed&gt; registerTemperatures(String id) {
+    return request -&gt; {
+      final PubSubRef&lt;Temperature&gt; topic =
+          pubSub.refFor(TopicId.of(Temperature.class, id));
+      request.runWith(topic.publisher(), materializer);
+      return CompletableFuture.completedFuture(NotUsed.getInstance());
+    };
+  }
+
+  @Override
+  public ServiceCall&lt;NotUsed, Source&lt;Temperature, ?&gt;&gt; temperatureStream(String id) {
+    return request -&gt; {
+      final PubSubRef&lt;Temperature&gt; topic =
+          pubSub.refFor(TopicId.of(Temperature.class, id));
+      return CompletableFuture.completedFuture(topic.subscriber());
+    };
+  }
+}</code></pre>
+<p>Note how the incoming <code>Source</code> in <code>registerTemperature</code> is connected to the <code>publisher</code> <code>Sink</code> of the topic with the <code>runWith</code> method using the <code>Materializer</code> that is injected in the constructor. You can of course apply ordinary stream transformations of the incoming stream before connecting it to the <code>publisher</code>.</p><h2 id="Usage-from-Persistent-Entity"><a class="section-marker" href="#Usage-from-Persistent-Entity">§</a>Usage from Persistent Entity</h2>
+<p>You can publish messages from a <a href="PersistentEntity.html">Persistent Entity</a>. First you must inject the <a href="api/index.html?com/lightbend/lagom/javadsl/pubsub/PubSubRegistry.html">PubSubRegistry</a> to get hold of a <code>PubSubRef</code> for a given topic.</p>
+<pre class="prettyprint"><code class="language-java">private final PubSubRef&lt;PostPublished&gt; publishedTopic;
+
+@Inject
+public Post4(PubSubRegistry pubSub) {
+  publishedTopic = pubSub.refFor(TopicId.of(PostPublished.class, &quot;&quot;));
+}</code></pre>
+<p>A command handler that publishes messages, in this case the <code>PostPublished</code> event, may look like this:</p>
+<pre class="prettyprint"><code class="language-java">b.setCommandHandler(Publish.class,
+    (cmd, ctx) -&gt; ctx.thenPersist(new PostPublished(entityId()), evt -&gt; {
+        ctx.reply(Done.getInstance());
+        publishedTopic.publish(evt);
+      }));</code></pre>
+<p>To complete the picture, a service method that delivers these <code>PostPublished</code> events as a stream:</p>
+<pre class="prettyprint"><code class="language-java">import akka.NotUsed;
+import com.lightbend.lagom.javadsl.api.ServiceCall;
+import com.lightbend.lagom.javadsl.pubsub.PubSubRef;
+import com.lightbend.lagom.javadsl.pubsub.PubSubRegistry;
+import com.lightbend.lagom.javadsl.pubsub.TopicId;
+import java.util.concurrent.CompletableFuture;
+import javax.inject.Inject;
+
+import akka.stream.javadsl.Source;
+
+public class BlogServiceImpl4 implements BlogService4 {
+
+  private final PubSubRef&lt;BlogEvent.PostPublished&gt; publishedTopic;
+
+  @Inject
+  public BlogServiceImpl4(PubSubRegistry pubSub) {
+    publishedTopic = pubSub.refFor(TopicId.of(BlogEvent.PostPublished.class, &quot;&quot;));
+  }
+
+  @Override
+  public ServiceCall&lt;NotUsed, Source&lt;BlogEvent.PostPublished, ?&gt;&gt; getNewPosts() {
+    return request -&gt;
+      CompletableFuture.completedFuture(publishedTopic.subscriber());
+  }
+}</code></pre><h2 id="Limitations"><a class="section-marker" href="#Limitations">§</a>Limitations</h2>
+<p>This feature is specifically for providing publish and subscribe functionality within a single services cluster. To publish and subscribe between services, you should instead use Lagom&rsquo;s <a href="MessageBrokerApi.html">message broker support</a>.</p>
+<p>Published messages may be lost. For example in case of networks problems messages might not be delivered to all subscribers. Future version of Lagom may include intra-service pub-sub with at-least-once delivery, in the meantime you can achieve at-least-once delivery by using Lagom&rsquo;s <a href="MessageBrokerApi.html">message broker support</a>.</p>
+<p>Note that anytime you fallback to <a href="MessageBrokerApi.html">message broker support</a> you will expose your messages via a public topic making them part of your public API.</p>
+<p>The registry of subscribers is eventually consistent, i.e. new subscribers are not immediately visible at other nodes, but typically the information will be fully replicated to all other nodes after a few seconds.</p><h2 id="Serialization"><a class="section-marker" href="#Serialization">§</a>Serialization</h2>
+<p>The published messages must be serializable since they will be sent across the nodes in the cluster of the service. JSON is the recommended serialization format for these messages. The <a href="Serialization.html">Serialization</a> section describes how to add Jackson serialization support to such message classes.</p><h2 id="Underlying-Implementation"><a class="section-marker" href="#Underlying-Implementation">§</a>Underlying Implementation</h2>
+<p>It is implemented with <a href="https://doc.akka.io/docs/akka/2.5/distributed-pub-sub.html?language=java">Akka Distributed Publish Subscribe</a>.</p>

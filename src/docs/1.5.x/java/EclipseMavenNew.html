@@ -1,0 +1,53 @@
+<h1 id="Creating-a-new-Maven-Eclipse-project-with-the-Lagom-archetype"><a class="section-marker" href="#Creating-a-new-Maven-Eclipse-project-with-the-Lagom-archetype">§</a>Creating a new Maven Eclipse project with the Lagom archetype</h1>
+<p>The Lagom Maven archetype allows you to quickly create a project for development. Follow these steps to:</p>
+<ul>
+  <li><a href="#Check-prerequisites">Check Prerequisites</a></li>
+  <li><a href="#Create-an-Eclipse-project">Create your project</a></li>
+</ul><h2 id="Check-prerequisites"><a class="section-marker" href="#Check-prerequisites">§</a>Check prerequisites</h2>
+<p>Before attempting to create a Lagom Maven project in Eclipse, ensure that Eclipse is configured with the following:</p>
+<ul>
+  <li>An <a href="https://www.eclipse.org/m2e/documentation/m2e-documentation.html">m2eclipse</a> plugin compatible with Maven 3.3 or higher.</li>
+  <li>A JDK 1.8</li>
+</ul><h2 id="Create-an-Eclipse-project"><a class="section-marker" href="#Create-an-Eclipse-project">§</a>Create an Eclipse project</h2>
+<p>The screen shots on this page reflect Eclipse Neon (4.6.2) with M2E (Maven Integration for Eclipse) version 1.7.0. If you are using different versions, screens might differ, but the procedures should be the same.</p>
+<p>In Eclipse, follow these steps to create a project using the Lagom Maven archetype:</p>
+<ol>
+  <li>From the <strong>File</strong> menu, select <strong>New &gt; Project</strong>.<br/>The <strong>New Project</strong> screen opens.</li>
+  <li>Expand <strong>Maven</strong>, select <strong>Maven Project</strong>, and click <strong>Next</strong>.<br/>The <strong>New Maven project</strong> wizard opens. <a href="resources/guide/build/EclNewMavenProj.png"><img src="resources/guide/build/EclNewMavenProj.png"/></a></li>
+  <li>Leave the default, <strong>Use default Workspace location</strong> box selected and click <strong>Next</strong>.<br/>The <strong>Select an archetype</strong> page opens.<a href="resources/guide/build/EclSelectArch.png"><img src="resources/guide/build/EclSelectArch.png"/></a></li>
+  <li>If the Lagom archetype appears in the list, select it. If not, click <strong>Add Archetype</strong> and supply the following values:
+    <ul>
+      <li><strong>Archetype Group Id:</strong> com.lightbend.lagom</li>
+      <li><strong>Archetype Artifact Id:</strong> maven-archetype-lagom-java</li>
+      <li><strong>Version:</strong> The Lagom version number. Be sure to use the <a href="https://www.lagomframework.com/documentation/">current stable release</a>.</li>
+      <li><strong>Repository URL:</strong> Leave blank<br/><a href="resources/guide/build/EclAddArchetype.png"><img src="resources/guide/build/EclAddArchetype.png"/></a></li>
+    </ul>
+  </li>
+  <li>
+  <p>Click <strong>OK</strong>.<br/>The next page of the wizard opens, providing fields to identify the project and displaying the <code>hello</code> and <code>stream</code> properties from the archetype.</p></li>
+  <li>
+    <p>To identify your project, enter the following:</p>
+    <ul>
+      <li><strong>Group Id</strong> - Usually a reversed domain name, such as <code>com.example.hello</code>.</li>
+      <li><strong>Artifact Id</strong> - Maven also uses this value as the name for the top-level project folder. You might want to use a value such as <code>my-first-system</code>.</li>
+      <li><strong>Version</strong> - A version number for your project.</li>
+      <li><strong>Package</strong> - By default, the same as the <code>groupId</code>.</li>
+    </ul>
+  </li>
+  <li>
+  <p>Click <strong>Finish</strong> and the projects created by the archetype display in the <strong>Package Explorer</strong>.</p></li>
+  <li>
+    <p>Run the project:</p>
+    <ol>
+      <li>Right-click the parent project folder.<br/>Eclipse puts all of the Maven project folders at the same level, so be sure to select the correct one. For example, if you used <code>my-first-system</code> as the Maven artifact ID, right-click <code>my-first-system</code>.</li>
+      <li>Select <strong>Run as &hellip;</strong> &gt; <strong>Maven Build</strong>.</li>
+      <li>In the <strong>Goals</strong> field, enter <code>lagom:runAll</code>.</li>
+      <li>Select the <strong>JRE</strong> tab and make sure it is pointing at a JRE associated with a JDK.</li>
+      <li>Click <strong>Run</strong>.</li>
+    </ol>
+  </li>
+</ol>
+<p>The console should report that the services started. Verify that the services are indeed up and running by invoking the <code>hello</code> service endpoint from any HTTP client, such as a browser:</p>
+<pre class="prettyprint"><code>http://localhost:9000/api/hello/World
+</code></pre>
+<p>The request returns the message <code>Hello, World!</code>.</p>

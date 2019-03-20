@@ -1,0 +1,102 @@
+<h1 id="Implementing-services"><a class="section-marker" href="#Implementing-services">§</a>Implementing services</h1>
+<p>Services are implemented by providing an implementation of the service descriptor trait, implementing each call specified by that descriptor.</p>
+<p>For example, here&rsquo;s an implementation of the <code>HelloService</code> descriptor:</p>
+<pre class="prettyprint"><code class="language-scala">import com.lightbend.lagom.scaladsl.api.ServiceCall
+import scala.concurrent.Future
+
+class HelloServiceImpl extends HelloService {
+  override def sayHello = ServiceCall { name =&gt;
+    Future.successful(s&quot;Hello $name!&quot;)
+  }
+}</code></pre>
+<p>As you can see, the <code>sayHello</code> method is implemented using the <code>apply</code> factory method on <a href="api/com/lightbend/lagom/scaladsl/api/ServiceCall$.html"><code>ServiceCall</code></a>. This takes a function of <code>Request =&gt; Future[Response]</code> and returns a <a href="api/com/lightbend/lagom/scaladsl/api/ServiceCall.html"><code>ServiceCall</code></a> whose <code>invoke</code> method simply delegates to that function. An important thing to realize here is that the invocation of <code>sayHello</code> itself does not execute the call, it only returns the service call to be executed. The advantage here is that when it comes to composing the call with other cross cutting concerns, such as authentication, this can easily be done using ordinary function based composition.</p>
+<p>Let&rsquo;s have a look at our <a href="api/com/lightbend/lagom/scaladsl/api/ServiceCall.html"><code>ServiceCall</code></a> interface again:</p>
+<pre class="prettyprint"><code class="language-scala">trait ServiceCall[Request, Response] {
+  def invoke(request: Request): Future[Response]
+}</code></pre>
+<p>It will take the request, and return the response as a <a href="https://www.scala-lang.org/api/2.12.x/scala/concurrent/Future.html"><code>Future</code></a>. If you&rsquo;ve never seen <code>Future</code> before, it is a value that may not be available until later. When an API returns a future, that value might not yet be computed, but the API promises that at some point in future, it will be. Since the value isn&rsquo;t computed yet, you can&rsquo;t interact with it immediately. What you can do though is attach callbacks that transform the promise to a promise of a new value, using the <code>map</code> and <code>flatMap</code> methods. <code>Future</code> with its <code>map</code> and <code>flatMap</code> methods are fundamental building blocks for doing reactive programming in Scala, they allow your code to be asynchronous, not waiting for things to happen, but attaching callbacks that react to computations being completed.</p>
+<p>Of course, a simple hello world computation is not asynchronous, all it needs to do is build a String, and that returns immediately. In this case, we need to wrap the result of that in a <code>Future</code>. This can be done by calling <code>Future.successful()</code>, which returns a future that has an immediately available value.</p><h2 id="Working-with-streams"><a class="section-marker" href="#Working-with-streams">§</a>Working with streams</h2>
+<p>When the request and response bodies are strict, working with them is straightforward. If they are streamed, however, you&rsquo;ll need to use Akka streams to work with them. Let&rsquo;s take a look at how some of the streamed service calls in the <a href="ServiceDescriptors.html#Streamed-messages">service descriptors</a> examples might be implemented.</p>
+<p>The <code>tick</code> service call is going to return a <code>Source</code> that sends messages at the specified interval. Akka streams has a helpful constructor for such a stream:</p>
+<pre class="prettyprint"><code class="language-scala">import scala.concurrent.duration._
+import akka.stream.scaladsl.Source
+
+override def tick(intervalMs: Int) = ServiceCall { tickMessage =&gt;
+  Future.successful(Source.tick(
+    intervalMs.milliseconds, intervalMs.milliseconds, tickMessage
+  ).mapMaterializedValue(_ =&gt; NotUsed))
+}</code></pre>
+<p>The first two arguments are the delay before messages should be sent, and the interval at which they should be sent. The third argument is the message that should be sent on each tick. Calling this service call with an interval of <code>1000</code> and a request message of <code>tick</code> will result in a stream being returned that sent a <code>tick</code> message every second.</p>
+<p>A streamed <code>sayHello</code> service call can be implemented by mapping the incoming <code>Source</code> of the names to say hello:</p>
+<pre class="prettyprint"><code class="language-scala">override def sayHello = ServiceCall { names =&gt;
+  Future.successful(names.map(name =&gt; s&quot;Hello $name!&quot;))
+}</code></pre>
+<p>When you <code>map</code> a <code>Source</code>, you get back a new <code>Source</code> that applies the map transformation to each message that the incoming <code>Source</code> produces.</p>
+<p>These examples of working with streams are obviously quite trivial. The sections on <a href="PubSub.html">Publish-Subscribe</a> and <a href="ReadSide.html">Persistent Read-Side</a> show real examples of using streams in Lagom.</p><h2 id="Handling-headers"><a class="section-marker" href="#Handling-headers">§</a>Handling headers</h2>
+<p>Sometimes you may need to handle the request header, or add information to the response header. <code>ServiceCall</code> provides <code>handleRequestHeader</code> and <code>handleResponseHeader</code> methods to allow you to do this, however it is not recommended that you implement these directly, rather, you should use <a href="api/com/lightbend/lagom/scaladsl/server/ServerServiceCall.html"><code>ServerServiceCall</code></a>.</p>
+<p><code>ServerServiceCall</code> is an interface that extends <code>ServiceCall</code>, and provides an additional method, <code>invokeWithHeaders</code>. This is different from the regular <code>invoke</code> method because in addition to the <code>Request</code> parameter, it also accepts a <a href="api/com/lightbend/lagom/scaladsl/api/transport/RequestHeader.html"><code>RequestHeader</code></a> parameter. And rather than returning a <code>Future[Response]</code>, it returns a <code>Future[(ResponseHeader, Response)]</code>. Hence it allows you to handle the request header, and send a custom response header. <code>ServerServiceCall</code> implements the <code>handleRequestHeader</code> and <code>handleResponseHeader</code> methods, so that when Lagom calls the <code>invoke</code> method, it is delegated to the <code>invokeWithHeaders</code> method.</p>
+<p>The <a href="api/com/lightbend/lagom/scaladsl/server/ServerServiceCall$.html"><code>ServerServiceCall</code></a> companion object provides a factory method for creating <code>ServerServiceCall</code>&rsquo;s that work with both request and response headers. It may seem counter intuitive to be able to create a <code>ServerServiceCall</code> that doesn&rsquo;t work with headers, but the reason for doing this is to assist in service call composition, where a composing service call might want to compose both types of service call.</p>
+<p>Here&rsquo;s an example of working with the headers:</p>
+<pre class="prettyprint"><code class="language-scala">import com.lightbend.lagom.scaladsl.server.ServerServiceCall
+import com.lightbend.lagom.scaladsl.api.transport.ResponseHeader
+
+override def sayHello = ServerServiceCall { (requestHeader, name) =&gt;
+  val user = requestHeader.principal
+    .map(_.getName).getOrElse(&quot;No one&quot;)
+  val response = s&quot;$user wants to say hello to $name&quot;
+
+  val responseHeader = ResponseHeader.Ok
+    .withHeader(&quot;Server&quot;, &quot;Hello service&quot;)
+
+  Future.successful((responseHeader, response))
+}</code></pre><h2 id="Service-call-composition"><a class="section-marker" href="#Service-call-composition">§</a>Service call composition</h2>
+<p>You may have situations where you want to compose service calls with cross cutting concerns such as security or logging. In Lagom, this is done by composing service calls explicitly. The following shows a simple logging service call:</p>
+<pre class="prettyprint"><code class="language-scala">def logged[Request, Response](serviceCall: ServerServiceCall[Request, Response]) =
+  ServerServiceCall.compose { requestHeader =&gt;
+    println(s&quot;Received ${requestHeader.method} ${requestHeader.uri}&quot;)
+    serviceCall
+  }</code></pre>
+<p>This uses the <code>compose</code> method from <code>ServerServiceCall</code>, which takes a callback that takes the request header, and returns a service call.</p>
+<p>If we were to implement the <code>HelloService</code> to be logged, we would use it like this:</p>
+<pre class="prettyprint"><code class="language-scala">override def sayHello = logged(ServerServiceCall { name =&gt;
+  Future.successful(s&quot;Hello $name!&quot;)
+})</code></pre>
+<p>Another common cross cutting concern is authentication. Imagine you have a user storage interface:</p>
+<pre class="prettyprint"><code class="language-scala">trait UserStorage {
+  def lookupUser(username: String): Future[Option[User]]
+}</code></pre>
+<p>You could use it like this to implement an authenticated service call:</p>
+<pre class="prettyprint"><code class="language-scala">import com.lightbend.lagom.scaladsl.api.transport.Forbidden
+
+def authenticated[Request, Response](
+  serviceCall: User =&gt; ServerServiceCall[Request, Response]
+) = ServerServiceCall.composeAsync { requestHeader =&gt;
+
+  // First lookup user
+  val userLookup = requestHeader.principal
+    .map(principal =&gt; userStorage.lookupUser(principal.getName))
+    .getOrElse(Future.successful(None))
+
+  // Then, if it exists, apply it to the service call
+  userLookup.map {
+    case Some(user) =&gt; serviceCall(user)
+    case None =&gt; throw Forbidden(&quot;User must be authenticated to access this service call&quot;)
+  }
+}</code></pre>
+<p>This time, since the lookup of the user is asynchronous, we&rsquo;re using <code>composeAsync</code>, which allows us to asynchronously return the service call to handle the service. Also, instead of simply accepting a service call, we accept a function of a user to a service call. This means the service call can access the user:</p>
+<pre class="prettyprint"><code class="language-scala">override def sayHello = authenticated { user =&gt;
+  ServerServiceCall { name =&gt;
+    Future.successful(s&quot;$user is saying hello to $name&quot;)
+  }
+}</code></pre>
+<p>Notice here, in contrast to other frameworks where a user object may be passed using thread locals or in an untyped map by filters, the user object is explicitly passed. If your code requires access to the user object, it&rsquo;s impossible to have a configuration error where you forgot to put the filter in place, the code simply will not compile.</p>
+<p>Often you will want to compose multiple service calls together. This is where the power of function based composition really shines, in contrast to annotations. Since service calls are just regular methods, you can simply define a new method that combines them, like so:</p>
+<pre class="prettyprint"><code class="language-scala">def filter[Request, Response](
+  serviceCall: User =&gt; ServerServiceCall[Request, Response]
+) = logged(authenticated(serviceCall))</code></pre>
+<p>Using this in the hello service:</p>
+<pre class="prettyprint"><code class="language-scala">override def sayHello = filter { user =&gt;
+  ServerServiceCall { name =&gt;
+    Future.successful(s&quot;$user is saying hello to $name&quot;)
+  }
+}</code></pre>

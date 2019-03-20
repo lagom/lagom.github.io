@@ -1,0 +1,21 @@
+<h1 id="Development-environment-overview"><a class="section-marker" href="#Development-environment-overview">§</a>Development environment overview</h1>
+<p>Setting up a Lagom development environment takes only minutes using an sbt template or Maven archetype as described in <a href="IntroGetStarted.html">Getting Started with Lagom</a>. Without any coding, scripting or configuration on your part, the templates set up the following:</p>
+<ul>
+  <li>
+  <p>A hierarchical build structure with two example services. You can follow their pattern to begin creating your own services, right in the same project.</p></li>
+  <li>
+    <p>The infrastructure necessary to run and test your services locally:</p>
+    <ul>
+      <li>
+      <p>A <a href="KafkaServer.html">Kafka server</a> for handling messages.</p></li>
+      <li>
+      <p>A <a href="CassandraServer.html">Cassandra server</a> for handling persistence. </p></li>
+      <li>
+      <p>A <a href="ServiceLocator.html">Service Registry and Service Gateway</a> to support location transparency. </p></li>
+    </ul>
+  </li>
+  <li>
+  <p>The configuration necessary to build and run the services and infrastructure.</p></li>
+</ul>
+<p>After you have created a project using one of these templates, the <code>runAll</code> command starts all of the runtime components and you can test immediately. </p>
+<!---The following illustrates the runtime infrastructure that comes out-of-the-box with the Lagom development environment. (diagram see slides 1-3) --->

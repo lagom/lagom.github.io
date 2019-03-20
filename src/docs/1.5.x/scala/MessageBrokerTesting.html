@@ -1,0 +1,80 @@
+<h1 id="Message-Broker-Testing"><a class="section-marker" href="#Message-Broker-Testing">§</a>Message Broker Testing</h1>
+<p>When decoupling communication via a Broker you can test from both ends of the <code>Topic</code>. When your <code>Service</code> is publishing events into a <code>Topic</code> (as described in <a href="MessageBrokerApi.html#Declaring-a-topic">Declaring a Topic</a>) your tests should verify the proper data is being pushed into the Topic. At same time, when your service is subscribed to an upstream <code>Topic</code> you may want to test how your <code>Service</code> behaves when there are incoming events.</p>
+<p>A broker will not be started neither when writing publish nor consumption tests. Instead, Lagom provides in-memory implementations of the Broker API in order to make tests faster. Integration tests with a complete broker should be later implemented but that is out of scope of this documentation. The provided in-memory implementation of the Broker API runs locally and provides exactly-once delivery. If you want to test your code under scenarios where there&rsquo;s message loss (<code>at-most-once</code>) or message duplicates (<code>at-least-once</code>) you will be responsible for writing such behaviour by injecting duplicates or skipping messages.</p>
+<p>The Lagom in-memory broker implementation will also help testing your message serialization and deserialization. That is only available in the tools to <a href="MessageBrokerTesting.html#Testing-publish">test publishing</a> though since the publishing end is the one responsible to describe the messages being sent over the wire. When you test the consuming end of a topic, no de/serialization will be run under the covers.</p>
+<p>The following code samples use the <code>HelloService</code> and <code>AnotherService</code> already presented in previous sections. <code>HelloService</code> publishes <code>GreetingsMessage</code>s on the <code>&quot;greetings&quot;</code> topic and <code>AnotherService</code> subscribed to those messages using <code>atLeastOnce</code> semantics.</p><h2 id="Testing-publish"><a class="section-marker" href="#Testing-publish">§</a>Testing publish</h2>
+<p>When a Service publishes data into a <code>Topic</code> the descriptor lists a <code>TopicCall</code> on the public API. Testing the event publishing is very similar to testing <code>ServiceCall</code>&rsquo;s in your Service API (see <a href="TestingServices.html#How-to-test-one-service">Service testing</a>). </p>
+<pre class="prettyprint"><code class="language-scala">&quot;The PublishService&quot; should {
+  &quot;publish events on the topic&quot; in ServiceTest.withServer(ServiceTest.defaultSetup) { ctx =&gt;
+    new PublishApplication(ctx) with LocalServiceLocator
+      with TestTopicComponents
+  } { server =&gt;
+
+    implicit val system = server.actorSystem
+    implicit val mat = server.materializer
+
+    val client: PublishService = server.serviceClient.implement[PublishService]
+    val source = client.events().subscribe.atMostOnceSource
+    source.runWith(TestSink.probe[PubMessage])
+      .request(1)
+      .expectNext should ===(PubMessage(&quot;msg 1&quot;))
+
+  }
+}</code></pre>
+<p>In order to start the application with a stubbed broker you will have to mixin a <code>TestTopicComponents</code> into your test application.</p>
+<p>Use a <a href="api/com/lightbend/lagom/scaladsl/testkit/ServiceTest$.html"><code>ServiceTest</code></a> you to create a client to your Service and using that client you can <code>subscribe</code> to the published topics. Finally, after interacting with the Service to cause the emission of some events you can assert events were published on the <code>Topic</code>.</p>
+<p>The producer end is responsible to describe the public API and provide the serializable mappings for all messages exchanged (both in <code>ServiceCall</code>s and <code>TopicCall</code>s). The tests granting the proper behavior of the publishing operations should also test the serializability and deserializability of the messages.</p><h2 id="Testing-subscription"><a class="section-marker" href="#Testing-subscription">§</a>Testing subscription</h2>
+<p>Testing the consumption of messages requires starting the Service under test with a stub of the upstream Service producing data into the topic. The following snippet demonstrates how to achieve it. </p>
+<ol>
+  <li>An in-memory <code>Topic</code> is required and means to send messages into that in-mem Topic. Using the <code>ProducerStubFactory</code> it&rsquo;s possible to obtain a <code>ProducerStub</code> given a topic name.</li>
+  <li>With the <code>producerStub</code> instance a service stub can be build to replace the production ready upstream service. This will have to use the topic bound to the <code>ProducerStub</code> created in the previous step.</li>
+  <li>Use the <code>ProducerStub</code> on the tests to send messages into the topic and interact normally with the service under test to verify the Service code.</li>
+</ol>
+<pre class="prettyprint"><code class="language-scala">class AnotherServiceSpec extends WordSpec with Matchers with Eventually with ScalaFutures {
+  var producerStub: ProducerStub[GreetingMessage] = _
+
+  &quot;The AnotherService&quot; should {
+    &quot;publish updates on greetings message&quot; in
+      ServiceTest.withServer(ServiceTest.defaultSetup) { ctx =&gt;
+        new AnotherApplication(ctx) with LocalServiceLocator {
+
+          // (1) creates an in-memory topic and binds it to a producer stub
+          val stubFactory = new ProducerStubFactory(actorSystem, materializer)
+          producerStub =
+            stubFactory.producer[GreetingMessage](HelloService.TOPIC_NAME)
+
+          // (2) Override the default Hello service with our service stub
+          // which gets the producer stub injected
+          override lazy val helloService = new HelloServiceStub(producerStub)
+        }
+      } { server =&gt;
+
+        // (3) produce a message in the stubbed topic via it&#39;s producer
+        producerStub.send(GreetingMessage(&quot;Hi there!&quot;))
+
+        // create a service client to assert the message was consumed
+        eventually(timeout(Span(5, Seconds))) {
+          // cannot use async specs here because eventually only detects raised exceptions to retry.
+          // if a future fail at the first time, eventually won&#39;t retry though future will succeed later.
+          // see https://github.com/lagom/lagom/issues/876 for detail info.
+          val futureResp = server.serviceClient.implement[AnotherService].foo.invoke()
+          whenReady(futureResp) { resp =&gt;
+            resp should ===(&quot;Hi there!&quot;)
+          }
+        }
+      }
+  }
+}
+
+// (2) a Service stub that will use the in-memoru topic bound to
+// our producer stub
+class HelloServiceStub(stub: ProducerStub[GreetingMessage])
+  extends HelloService {
+  override def greetingsTopic(): Topic[GreetingMessage] = stub.topic
+
+  override def hello(id: String): ServiceCall[NotUsed, String] = ???
+
+  override def useGreeting(id: String): ServiceCall[GreetingMessage, Done] = ???
+}
+</code></pre>
+<p>When testing a subscription it is possible the code under test includes a Service that is a producer itself. In those situations, the <code>Application</code> used for the unit tests must differ from the <code>Application</code> used for production. The <code>Application</code> used in unit tests must not mix-in <code>LagomKafkaComponents</code> and just use <code>TestTopicComponents</code> instead.</p>

@@ -1,0 +1,177 @@
+<h1 id="Message-Broker-API"><a class="section-marker" href="#Message-Broker-API">§</a>Message Broker API</h1>
+<p>The Lagom Message Broker API provides a distributed publish-subscribe model that services can use to share data via topics. A topic is simply a channel that allows services to push and pull data. In Lagom, topics are strongly typed, hence both the subscriber and producer can know in advance what the expected data flowing through will be.</p><h2 id="Declaring-a-topic"><a class="section-marker" href="#Declaring-a-topic">§</a>Declaring a topic</h2>
+<p>To publish data to a topic a service needs to declare the topic in its <a href="ServiceDescriptors.html#Service-Descriptors">service descriptor</a>.</p>
+<pre class="prettyprint"><code class="language-java">import com.lightbend.lagom.javadsl.api.*;
+import com.lightbend.lagom.javadsl.api.broker.Topic;
+
+import static com.lightbend.lagom.javadsl.api.Service.*;
+
+public interface HelloService extends Service {
+  String GREETINGS_TOPIC = &quot;greetings&quot;;
+  @Override
+  default Descriptor descriptor() {
+    return named(&quot;helloservice&quot;).withCalls(
+        pathCall(&quot;/api/hello/:id&quot;,  this::hello),
+        pathCall(&quot;/api/hello/:id&quot;, this::useGreeting)
+      )
+      // here we declare the topic(s) this service will publish to
+      .withTopics(
+        topic(GREETINGS_TOPIC, this::greetingsTopic)
+      )
+      .withAutoAcl(true);
+  }
+  // The topic handle
+  Topic&lt;GreetingMessage&gt; greetingsTopic();
+
+  ServiceCall&lt;NotUsed, String&gt; hello(String id);
+  ServiceCall&lt;GreetingMessage, Done&gt; useGreeting(String id);
+}</code></pre>
+<p>The syntax for declaring a topic is similar to the one used already to define services&rsquo; endpoints. The <a href="api/index.html?com/lightbend/lagom/javadsl/api/Descriptor.html#withTopics-com.lightbend.lagom.javadsl.api.Descriptor.TopicCall...-"><code>Descriptor.withTopics</code></a> method accepts a sequence of topic calls, each topic call can be defined via the <a href="api/index.html?com/lightbend/lagom/javadsl/api/Service.html#topic-java.lang.String-java.lang.reflect.Method-"><code>Service.topic</code></a> static method. The latter takes a topic name (i.e., the topic identifier), and a reference to a method that returns a <a href="api/index.html?com/lightbend/lagom/javadsl/api/broker/Topic.html"><code>Topic</code></a> instance.</p>
+<p>Data flowing through a topic is serialized to JSON by default. Of course, it is possible to use a different serialization format, and you can do so by passing a different message serializer for each topic defined in a service descriptor. For instance, using the above service definition, here is how you could have passed a custom serializer: <code>topic(&quot;greetings&quot;, this::greetingsTopic).withMessageSerializer(&lt;your-custom-serializer&gt;)</code>.</p><h3 id="Partitioning-topics"><a class="section-marker" href="#Partitioning-topics">§</a>Partitioning topics</h3>
+<p>Kafka will distribute messages for a particular topic across many partitions, so that the topic can scale. Messages sent to different partitions may be processed out of order, so if the ordering of the messages you are publishing matters, you need to ensure that the messages are partitioned in such a way that order is preserved. Typically, this means ensuring each message for a particular entity goes to the same partition.</p>
+<p>Lagom allows this by allowing you to configure a partition key strategy, which extracts the partition key out of a message. Kafka will then use this key to help decide what partition to send each message to. The partition can be selected using the <a href="api/index.html?com/lightbend/lagom/javadsl/api/broker/kafka/KafkaProperties.html#partitionKeyStrategy--"><code>partitionKeyStrategy</code></a> property, by passing a <a href="api/index.html?com/lightbend/lagom/javadsl/api/broker/kafka/PartitionKeyStrategy.html"><code>PartitionKeyStrategy</code></a> to it:</p>
+<pre class="prettyprint"><code class="language-java">return named(&quot;blogpostservice&quot;)
+        .withTopics(
+                topic(&quot;blogposts&quot;, this::blogPostEvents)
+                    .withProperty(KafkaProperties.partitionKeyStrategy(),
+                            BlogPostEvent::getPostId)
+        );</code></pre><h2 id="Implementing-a-topic"><a class="section-marker" href="#Implementing-a-topic">§</a>Implementing a topic</h2>
+<p>The primary source of messages that Lagom is designed to produce is persistent entity events. Rather than publishing events in an ad-hoc fashion in response to particular things happening, it is better to take the stream of events from your persistent entities, and adapt that to a stream of messages sent to the message broker. In this way, you can ensure at least once processing of events by both publishers and consumers, which allows you to guarantee a very strong level of consistency throughout your system.</p>
+<p>Lagom&rsquo;s <a href="api/index.html?com/lightbend/lagom/javadsl/broker/TopicProducer.html"><code>TopicProducer</code></a> helper provides two methods for publishing a persistent entities event stream, <a href="api/index.html?com/lightbend/lagom/javadsl/broker/TopicProducer.html#singleStreamWithOffset-java.util.function.Function-"><code>singleStreamWithOffset</code></a> for use with non sharded read side event streams, and <a href="api/index.html?com/lightbend/lagom/javadsl/broker/TopicProducer.html#taggedStreamWithOffset-org.pcollections.PSequence-java.util.function.BiFunction-"><code>taggedStreamWithOffset</code></a> for use with sharded read side event streams. Both of these methods take a callback which takes the last offset that the topic producer published, and allows resumption of the event stream from that offset via the <a href="api/index.html?com/lightbend/lagom/javadsl/persistence/PersistentEntityRegistry.html#eventStream-com.lightbend.lagom.javadsl.persistence.AggregateEventTag-com.lightbend.lagom.javadsl.persistence.Offset-"><code>PersistentEntityRegistry.eventStream</code></a> method for obtaining a read-side stream. For more details on read-side streams, see <a href="ReadSide.html#Raw-Stream-of-Events">Persistent Read-Side's</a>.</p>
+<p>Lagom will, in the case of the <code>singleStreamWithOffset</code> method, ensure that your topic producer only runs on one node of your cluster, or with the <code>taggedStreamWithOffset</code> method will distribute the tags evenly across the cluster to distribute the publishing load.</p>
+<p>Here&rsquo;s an example of publishing a single, non sharded event stream:</p>
+<pre class="prettyprint"><code class="language-java">public Topic&lt;GreetingMessage&gt; greetingsTopic() {
+    return TopicProducer.singleStreamWithOffset(offset -&gt; {
+        return persistentEntityRegistry
+                .eventStream(HelloEventTag.INSTANCE, offset)
+                .map(this::convertEvent);
+    });
+}</code></pre>
+<p>Note that the read-side event stream you passed to the topic producer is &ldquo;activated&rdquo; as soon as the service is started. That means all events persisted by your services will eventually be published to the connected topic. Also, you will generally want to map your domain events into some other type, so that other service won&rsquo;t be tightly coupled to another service&rsquo;s domain model events. In other words, domain model events are an implementation detail of the service, and should not be leaked.</p><h3 id="Filtering-events"><a class="section-marker" href="#Filtering-events">§</a>Filtering events</h3>
+<p>You may not want all events persisted by your services to be published. If that is the case then you can filter the event stream:</p>
+<pre class="prettyprint"><code class="language-java">public Topic&lt;GreetingMessage&gt; greetingsTopic() {
+    return TopicProducer.singleStreamWithOffset(offset -&gt; {
+        return persistentEntityRegistry
+            .eventStream(HelloEventTag.INSTANCE, offset)
+            .mapConcat(this::filterHelloGreetings);
+    });
+}
+
+private List&lt;Pair&lt;GreetingMessage, Offset&gt;&gt; filterHelloGreetings(Pair&lt;HelloEvent, Offset&gt; pair) {
+    if (pair.first() instanceof AbstractGreetingMessageChanged) {
+        AbstractGreetingMessageChanged msg = (AbstractGreetingMessageChanged) pair.first();
+        // Only publish greetings where the message is &quot;Hello&quot;.
+        if (msg.getMessage().equals(&quot;Hello&quot;)) {
+            return Arrays.asList(convertEvent(pair));
+        }
+    }
+    return Collections.emptyList();
+}</code></pre>
+<p>When an event is filtered, the <code>TopicProducer</code> does not publish the event. It also does not advance the offset. If the <code>TopicProducer</code> restarts then it will resume from the last offset. If a large number of events are filtered then the last offset could be quite far behind, and so all those events will be reprocessed and filtered out again. You need to be aware that this may occur and keep the number of consecutively filtered elements relatively low and also minimize the time and resources required to perform the filtering.</p><h3 id="Offset-storage"><a class="section-marker" href="#Offset-storage">§</a>Offset storage</h3>
+<p>Lagom will use your configured persistence API provider to store the offsets for your event streams. To read more about offset storage, see the <a href="ReadSideCassandra.html#Building-the-read-side-handler">Cassandra offset documentation</a>, <a href="ReadSideJDBC.html#Building-the-read-side-handler">JDBC database offset documentation</a> and <a href="ReadSideJPA.html#Building-the-read-side-handler">JPA database offset documentation</a>.</p><h2 id="Subscribe-to-a-topic"><a class="section-marker" href="#Subscribe-to-a-topic">§</a>Subscribe to a topic</h2>
+<p>To subscribe to a topic, a service just needs to call <a href="api/index.html?com/lightbend/lagom/javadsl/api/broker/Topic.html#subscribe--"><code>Topic.subscribe()</code></a> on the topic of interest. For instance, imagine that a service wants to collect all greetings messages published by the <code>HelloService</code> (refer to the code snippet above). The first thing you should do is inject a <code>HelloService</code>.</p>
+<pre class="prettyprint"><code class="language-java">private final HelloService helloService;
+
+@Inject
+public AnotherServiceImpl(HelloService helloService) {
+    this.helloService = helloService;
+}</code></pre>
+<p>Then, subscribe to the greetings topic, and hook your logic to apply to each messages that published to the topic.</p>
+<pre class="prettyprint"><code class="language-java">helloService.greetingsTopic()
+    .subscribe() // &lt;-- you get back a Subscriber instance
+    .atLeastOnce(Flow.fromFunction((GreetingMessage message) -&gt; {
+        return doSomethingWithTheMessage(message);
+    }));</code></pre>
+<p>When calling <a href="api/index.html?com/lightbend/lagom/javadsl/api/broker/Topic.html#subscribe--"><code>Topic.subscribe()</code></a> you will get back a <a href="api/index.html?com/lightbend/lagom/javadsl/api/broker/Subscriber.html"><code>Subscriber</code></a> instance. In the above code snippet we have subscribed to the <code>greetings</code> topic using at-least-once delivery semantics. That means each message published to the <code>greetings</code> topic is received at least once, but possibly more. The subscriber also offers a <a href="api/index.html?com/lightbend/lagom/javadsl/api/broker/Subscriber.html#atMostOnceSource--"><code>atMostOnceSource</code></a> that gives you at-most-once delivery semantics. If in doubt, prefer using at-least-once delivery semantics.</p>
+<p>Finally, subscribers are grouped together via <a href="api/index.html?com/lightbend/lagom/javadsl/api/broker/Subscriber.html#withGroupId-java.lang.String-"><code>Subscriber.withGroupId</code></a>. A subscriber group allows many nodes in your cluster to consume a message stream while ensuring that each message is only handled once by each node in your cluster. Without subscriber groups, all of your nodes for a particular service would get every message in the stream, leading to their processing being duplicated. By default, Lagom will use a group id that has the same name as the service consuming the topic.</p><h3 id="Consuming-message-metadata"><a class="section-marker" href="#Consuming-message-metadata">§</a>Consuming message metadata</h3>
+<p>Your broker implementation may provide additional metadata with messages which you can consume. This can be accessed by invoking the <a href="api/index.html?com/lightbend/lagom/javadsl/api/broker/Subscriber.html#withMetadata--"><code>Subscriber.withMetadata()</code></a> method, which returns a subscriber that wraps the messages in a <a href="api/index.html?com/lightbend/lagom/javadsl/api/broker/Message.html"><code>Message</code></a>.</p>
+<pre class="prettyprint"><code class="language-java">helloService.greetingsTopic()
+    .subscribe().withMetadata()
+    .atLeastOnce(Flow.fromFunction((Message&lt;GreetingMessage&gt; msg) -&gt; {
+        GreetingMessage payload = msg.getPayload();
+        String messageKey = msg.messageKeyAsString();
+        Optional&lt;Headers&gt; kafkaHeaders = msg.get(KafkaMetadataKeys.HEADERS);
+        System.out.println(&quot;Message: &quot; + payload +
+            &quot; Key: &quot; + messageKey +
+            &quot; Headers: &quot; + kafkaHeaders);
+        return Done.getInstance();
+    }));</code></pre>
+<p>The <a href="api/index.html?com/lightbend/lagom/javadsl/api/broker/Message.html#messageKeyAsString--"><code>messageKeyAsString</code></a> method is provided as a convenience for accessing the message key. Other properties can be accessed using the <a href="api/index.html?com/lightbend/lagom/javadsl/api/broker/Message.html#get-com.lightbend.lagom.javadsl.api.broker.MetadataKey-"><code>get</code></a> method. A full list of the metadata keys available for Kafka can be found <a href="api/index.html?com/lightbend/lagom/javadsl/broker/kafka/KafkaMetadataKeys.html">here</a>.</p><h3 id="Skipping-messages"><a class="section-marker" href="#Skipping-messages">§</a>Skipping messages</h3>
+<p>You may only want to apply your logic to a subset of the messages that the topic publishes and skip the others. The <code>Flow</code> that is passed to <a href="api/com/lightbend/lagom/javadsl/api/broker/Subscriber.html#atLeastOnce-akka.stream.javadsl.Flow-"><code>Subscriber.atLeastOnce</code></a> must emit exactly one <code>Done</code> element for each element that it receives. It must also emit them in the same order that the elements were received. This means that you must not use methods such as <code>filter</code> or <code>collect</code> on the <code>Flow</code> which would drop elements.</p>
+<p>The easiest way to achieve this is to use a total function which returns <code>Done</code> for the elements that should be skipped. For example:</p>
+<pre class="prettyprint"><code class="language-java">helloService.greetingsTopic()
+    .subscribe()
+    .atLeastOnce(Flow.fromFunction((GreetingMessage message) -&gt; {
+        if (message.getMessage().equals(&quot;Kia ora&quot;)) {
+            return doSomethingWithTheMessage(message);
+        } else {
+            // Skip all messages where the message is not &quot;Kia ora&quot;.
+            return Done.getInstance();
+        }
+    }));</code></pre><h2 id="Polymorphic-event-streams"><a class="section-marker" href="#Polymorphic-event-streams">§</a>Polymorphic event streams</h2>
+<p>Typically you will want to publish more than one type of event to a particular topic. This can be done by creating an interface that each event implements. In order to successfully serialize these events to and from JSON, a few extra annotations are needed to instruct Jackson to describe and consume the type of the event in the produced JSON.</p>
+<p>For example, consider a situation where you have a blog post created event and a blog post published event. Here&rsquo;s what your event structure might look like:</p>
+<pre class="prettyprint"><code class="language-java">import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = &quot;type&quot;,
+        defaultImpl = Void.class)
+@JsonSubTypes({
+        @JsonSubTypes.Type(BlogPostEvent.BlogPostCreated.class),
+        @JsonSubTypes.Type(BlogPostEvent.BlogPostPublished.class)
+})
+public interface BlogPostEvent {
+
+    String getPostId();
+
+    @JsonTypeName(&quot;created&quot;)
+    final class BlogPostCreated implements BlogPostEvent {
+        private final String postId;
+        private final String title;
+
+        @JsonCreator
+        public BlogPostCreated(String postId, String title) {
+            this.postId = postId;
+            this.title = title;
+        }
+
+        public String getPostId() {
+            return postId;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+    }
+
+    @JsonTypeName(&quot;published&quot;)
+    final class BlogPostPublished implements BlogPostEvent {
+        private final String postId;
+
+        @JsonCreator
+        public BlogPostPublished(String postId) {
+            this.postId = postId;
+        }
+
+        public String getPostId() {
+            return postId;
+        }
+    }
+}</code></pre>
+<p>The <code>@JsonTypeInfo</code> annotation describes how the type of the event will be serialized. In this case, it&rsquo;s saying each event type will be identified by its name, and that name will go into a property called <code>type</code>. The <code>@JsonTypeName</code> on each event subclass says what the name of that event should be. And the <code>@JsonSubTypes</code> annotation is used to tell Jackson what the possible sub types of the event are, so that it knows where to look when deserializing.</p>
+<p>The resulting JSON for the <code>BlogPostCreated</code> event will look like this:</p>
+<pre class="prettyprint"><code class="language-json">{
+  &quot;type&quot;: &quot;created&quot;,
+  &quot;postId&quot;: &quot;1234&quot;,
+  &quot;title&quot;: &quot;Some title&quot;
+}
+</code></pre>
+<p>While the JSON for the <code>BlogPostPublished</code> event will look like this:</p>
+<pre class="prettyprint"><code class="language-json">{
+  &quot;type&quot;: &quot;published&quot;,
+  &quot;postId&quot;: &quot;1234&quot;,
+}
+</code></pre>
+<p>Finally, note the <code>defaultImpl = Void.class</code> in the <code>@JsonSubTypes</code> annotation. This tells Jackson that if it comes across an event type that it doesn&rsquo;t recognize the name for, to deserialize it as <code>null</code>. This is optional, but can be important for ensuring forwards compatibility in your services, if a service adds a new event subclass that it publishes, often you want your existing services that consume that event stream to just ignore it. Setting this will allow them to do that, otherwise, you&rsquo;ll have to upgrade all the services that consume that event stream to explicitly ignore it before you upgrade the producer that produces the events.</p>

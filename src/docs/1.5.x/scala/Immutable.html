@@ -1,0 +1,34 @@
+<h1 id="Using-immutable-objects"><a class="section-marker" href="#Using-immutable-objects">§</a>Using immutable objects</h1>
+<p>An immutable object is an object that cannot be modified after it was created.</p>
+<p>Immutable objects have two great advantages:</p>
+<ul>
+  <li>Code based on immutable objects is clearer and likelier to be correct. Bugs involving unexpected changes simply can&rsquo;t occur.</li>
+  <li>Multiple threads can safely access immutable objects concurrently.</li>
+</ul>
+<p>In Lagom, immutable objects are required in several places, such as:</p>
+<ul>
+  <li>Service request and response types</li>
+  <li>Persistent entity commands, events, and states</li>
+  <li>Publish and subscribe messages</li>
+</ul><h2 id="Mutable-vs.-immutable"><a class="section-marker" href="#Mutable-vs.-immutable">§</a>Mutable vs. immutable</h2>
+<p>Here is an example of a mutable object:</p>
+<pre class="prettyprint"><code class="language-scala">class MutableUser {
+  private var name: String = null
+  private var email: String = null
+
+  def getName: String = name
+
+  def setName(name: String): Unit =
+    this.name = name
+
+  def getEmail: String = email
+
+  def setEmail(email: String): Unit =
+    this.email = email
+}</code></pre>
+<p>The setter methods can be used to modify the object after construction.</p>
+<p>Here, by contrast, is an immutable object:</p>
+<pre class="prettyprint"><code class="language-scala">final case class ImmutableUser(name: String, email: String)</code></pre>
+<p>All fields are final and are assigned at construction time. There are no setter methods.</p>
+<p>As you can see, Scala&rsquo;s <code>case class</code> is very convenient for writing immutable classes.</p>
+<p>Note that contained members of an immutable class must also be immutable. Scala has nice immutable collections that you should use in your immutable classes. Be aware of that <code>scala.collection.Seq</code> is not guaranteed to be immutable. Instead you should use <code>scala.collection.immutable.Seq</code> or concrete immutable implementations such as <code>List</code> or <code>Vector</code>.</p>

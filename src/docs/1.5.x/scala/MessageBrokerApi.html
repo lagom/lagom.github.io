@@ -1,0 +1,158 @@
+<h1 id="Message-Broker-API"><a class="section-marker" href="#Message-Broker-API">§</a>Message Broker API</h1>
+<p>The Lagom Message Broker API provides a distributed publish-subscribe model that services can use to share data via topics. A topic is simply a channel that allows services to push and pull data. In Lagom, topics are strongly typed, hence both the subscriber and producer can know in advance what the expected data flowing through will be.</p><h2 id="Declaring-a-topic"><a class="section-marker" href="#Declaring-a-topic">§</a>Declaring a topic</h2>
+<p>To publish data to a topic a service needs to declare the topic in its <a href="ServiceDescriptors.html#Service-Descriptors">service descriptor</a>.</p>
+<pre class="prettyprint"><code class="language-scala">import com.lightbend.lagom.scaladsl.api.broker.Topic
+import com.lightbend.lagom.scaladsl.api.{Service, ServiceCall}
+import play.api.libs.json.{Format, Json}
+
+object HelloService  {
+  val TOPIC_NAME = &quot;greetings&quot;
+}
+trait HelloService extends Service {
+
+  override final def descriptor = {
+    import Service._
+    named(&quot;brokerdocs&quot;).withCalls(
+      pathCall(&quot;/api/hello/:id&quot;, hello _),
+      pathCall(&quot;/api/hello/:id&quot;, useGreeting _)
+    ).withTopics(
+      topic(HelloService.TOPIC_NAME, greetingsTopic)
+    ).withAutoAcl(true)
+  }
+
+  // The topic handle
+  def greetingsTopic() : Topic[GreetingMessage]
+
+  def hello(id: String): ServiceCall[NotUsed, String]
+  def useGreeting(id: String): ServiceCall[GreetingMessage, Done]
+}</code></pre>
+<p>The syntax for declaring a topic is similar to the one used already to define services&rsquo; endpoints. The <a href="api/com/lightbend/lagom/scaladsl/api/Descriptor.html"><code>Descriptor.withTopics</code></a> method accepts a sequence of topic calls, each topic call can be defined via the <a href="api/com/lightbend/lagom/scaladsl/api/Service$.html"><code>topic</code></a> method on the <code>Service</code> object. The latter takes a topic name (i.e., the topic identifier), and a method reference that returns a <a href="api/com/lightbend/lagom/scaladsl/api/broker/Topic.html"><code>Topic</code></a> instance.</p>
+<p>Data flowing through a topic is serialized to JSON by default. Of course, it is possible to use a different serialization format, and you can do so by providing an implicit message serializer for each topic defined in a service descriptor. This is the same approach described on <a href="ServiceDescriptors.html#Message-serialization">message serialization</a> when presenting <a href="ServiceDescriptors.html">Service Descriptors</a>. You may want to review the <a href="MessageSerializers.html">message serializers documentation</a> too.</p><h3 id="Partitioning-topics"><a class="section-marker" href="#Partitioning-topics">§</a>Partitioning topics</h3>
+<p>Kafka will distribute messages for a particular topic across many partitions, so that the topic can scale. Messages sent to different partitions may be processed out of order, so if the ordering of the messages you are publishing matters, you need to ensure that the messages are partitioned in such a way that order is preserved. Typically, this means ensuring each message for a particular entity goes to the same partition.</p>
+<p>Lagom allows this by allowing you to configure a partition key strategy, which extracts the partition key out of a message. Kafka will then use this key to help decide what partition to send each message to. The partition can be selected using the <a href="api/com/lightbend/lagom/scaladsl/api/broker/kafka/KafkaProperties$.html#partitionKeyStrategy[Message]:com.lightbend.lagom.scaladsl.api.Descriptor.Property[Message,com.lightbend.lagom.scaladsl.api.broker.kafka.PartitionKeyStrategy[Message]]"><code>partitionKeyStrategy</code></a> property, by passing a <a href="api/com/lightbend/lagom/scaladsl/api/broker/kafka/PartitionKeyStrategy.html"><code>PartitionKeyStrategy</code></a> to it:</p>
+<pre class="prettyprint"><code class="language-scala">named(&quot;blogpostservice&quot;)
+  .withTopics(
+    topic(&quot;blogposts&quot;, blogPostEvents)
+      .addProperty(
+        KafkaProperties.partitionKeyStrategy,
+        PartitionKeyStrategy[BlogPostEvent](_.postId)
+      )
+  )</code></pre><h2 id="Implementing-a-topic"><a class="section-marker" href="#Implementing-a-topic">§</a>Implementing a topic</h2>
+<p>The primary source of messages that Lagom is designed to produce is persistent entity events. Rather than publishing events in an ad-hoc fashion in response to particular things happening, it is better to take the stream of events from your persistent entities, and adapt that to a stream of messages sent to the message broker. In this way, you can ensure at least once processing of events by both publishers and consumers, which allows you to guarantee a very strong level of consistency throughout your system.</p>
+<p>Lagom&rsquo;s <a href="api/com/lightbend/lagom/scaladsl/broker/TopicProducer$.html"><code>TopicProducer</code></a> helper provides two methods for publishing a persistent entities event stream, <a href="api/com/lightbend/lagom/scaladsl/broker/TopicProducer$.html"><code>singleStreamWithOffset</code></a> for use with non sharded read side event streams, and <a href="api/com/lightbend/lagom/scaladsl/broker/TopicProducer$.html"><code>taggedStreamWithOffset</code></a> for use with sharded read side event streams. Both of these methods take a callback which takes the last offset that the topic producer published, and allows resumption of the event stream from that offset via the <a href="api/com/lightbend/lagom/scaladsl/persistence/PersistentEntityRegistry.html"><code>PersistentEntityRegistry.eventStream</code></a> method for obtaining a read-side stream. For more details on read-side streams, see <a href="ReadSide.html#Raw-Stream-of-Events">Persistent Read-Side's</a>.</p>
+<p>Lagom will, in the case of the <code>singleStreamWithOffset</code> method, ensure that your topic producer only runs on one node of your cluster, or with the <code>taggedStreamWithOffset</code> method will distribute the tags evenly across the cluster to distribute the publishing load.</p>
+<p>Here&rsquo;s an example of publishing a single, non sharded event stream:</p>
+<pre class="prettyprint"><code class="language-scala">override def greetingsTopic(): Topic[GreetingMessage] =
+  TopicProducer.singleStreamWithOffset {
+    fromOffset =&gt;
+      persistentEntityRegistry.eventStream(HelloEventTag.INSTANCE, fromOffset)
+        .map(ev =&gt; (convertEvent(ev), ev.offset))
+  }
+
+private def convertEvent(helloEvent: EventStreamElement[HelloEvent]): GreetingMessage = {
+  helloEvent.event match {
+    case GreetingMessageChanged(msg) =&gt; GreetingMessage(msg)
+  }
+}</code></pre>
+<p>Note that the read-side event stream you passed to the topic producer is &ldquo;activated&rdquo; as soon as the service is started. That means that in the previous example, all events persisted by your services will eventually be published to the connected topic. Also, you will generally want to map your domain events into some other type, so that other service won&rsquo;t be tightly coupled to another service&rsquo;s domain model events. In other words, domain model events are an implementation detail of the service, and should not be leaked.</p><h3 id="Filtering-events"><a class="section-marker" href="#Filtering-events">§</a>Filtering events</h3>
+<p>You may not want all events persisted by your services to be published. If that is the case then you can filter the event stream:</p>
+<pre class="prettyprint"><code class="language-scala">override def greetingsTopic(): Topic[GreetingMessage] =
+  TopicProducer.singleStreamWithOffset {
+    fromOffset =&gt;
+      persistentEntityRegistry.eventStream(HelloEventTag.INSTANCE, fromOffset)
+        .mapConcat(filterEvents)
+  }
+
+private def filterEvents(ev: EventStreamElement[HelloEvent]) = ev match {
+  // Only publish greetings where the message is &quot;Hello&quot;.
+  case ev@EventStreamElement(_, GreetingMessageChanged(&quot;Hello&quot;), offset) =&gt;
+    immutable.Seq((convertEvent(ev), offset))
+  case _ =&gt; Nil
+}</code></pre>
+<p>When an event is filtered, the <code>TopicProducer</code> does not publish the event. It also does not advance the offset. If the <code>TopicProducer</code> restarts then it will resume from the last offset. If a large number of events are filtered then the last offset could be quite far behind, and so all those events will be reprocessed and filtered out again. You need to be aware that this may occur and keep the number of consecutively filtered elements relatively low and also minimize the time and resources required to perform the filtering.</p><h3 id="Offset-storage"><a class="section-marker" href="#Offset-storage">§</a>Offset storage</h3>
+<p>Lagom will use your configured persistence API provider to store the offsets for your event streams. To read more about offset storage, see the <a href="ReadSideCassandra.html#Building-the-read-side-handler">Cassandra offset documentation</a>, <a href="ReadSideJDBC.html#Building-the-read-side-handler">JDBC database offset documentation</a> and <a href="ReadSideSlick.html#Building-the-read-side-handler">Slick database offset documentation</a>.</p><h2 id="Subscribe-to-a-topic"><a class="section-marker" href="#Subscribe-to-a-topic">§</a>Subscribe to a topic</h2>
+<p>To subscribe to a topic, a service just needs to call <a href="api/com/lightbend/lagom/scaladsl/api/broker/Topic.html"><code>Topic.subscribe</code></a> on the topic of interest. For instance, imagine that a service wants to collect all greetings messages published by the <code>HelloService</code>. The first thing you should do is inject a <code>HelloService</code> (See the section on <a href="ServiceClients.html#Using-a-service-client">using service clients</a> for a complete explanation on using a client to another service). Then, subscribe to the greetings topic, and hook your logic to apply to each messages that published to the topic.</p>
+<pre class="prettyprint"><code class="language-scala">helloService
+  .greetingsTopic()
+  .subscribe // &lt;-- you get back a Subscriber instance
+  .atLeastOnce(
+  Flow.fromFunction(doSomethingWithTheMessage)
+)</code></pre>
+<p>When calling <a href="api/com/lightbend/lagom/scaladsl/api/broker/Topic.html#subscribe:com.lightbend.lagom.scaladsl.api.broker.Subscriber[Message]"><code>Topic.subscribe</code></a> you will get back a <a href="api/com/lightbend/lagom/scaladsl/api/broker/Subscriber.html"><code>Subscriber</code></a> instance. In the above code snippet we have subscribed to the <code>greetings</code> topic using at-least-once delivery semantics. That means each message published to the <code>greetings</code> topic is received at least once, but possibly more. The subscriber also offers a <a href="api/com/lightbend/lagom/scaladsl/api/broker/Subscriber.html#atMostOnceSource:akka.stream.scaladsl.Source[Message,_]"><code>atMostOnceSource</code></a> that gives you at-most-once delivery semantics. If in doubt, prefer using at-least-once delivery semantics.</p>
+<p>Finally, subscribers are grouped together via <a href="api/com/lightbend/lagom/scaladsl/api/broker/Subscriber.html#withGroupId(groupId:String):com.lightbend.lagom.scaladsl.api.broker.Subscriber[Message]"><code>Subscriber.withGroupId</code></a>. A subscriber group allows many nodes in your cluster to consume a message stream while ensuring that each message is only handled once by each node in your cluster. Without subscriber groups, all of your nodes for a particular service would get every message in the stream, leading to their processing being duplicated. By default, Lagom will use a group id that has the same name as the service consuming the topic.</p><h3 id="Consuming-message-metadata"><a class="section-marker" href="#Consuming-message-metadata">§</a>Consuming message metadata</h3>
+<p>Your broker implementation may provide additional metadata with messages which you can consume. This can be accessed by invoking the <a href="api/com/lightbend/lagom/scaladsl/api/broker/Subscriber.html#withMetadata:com.lightbend.lagom.scaladsl.api.broker.Subscriber[com.lightbend.lagom.scaladsl.api.broker.Message[Payload]]"><code>Subscriber.withMetadata</code></a> method, which returns a subscriber that wraps the messages in a <a href="api/com/lightbend/lagom/scaladsl/api/broker/Message.html"><code>Message</code></a>.</p>
+<pre class="prettyprint"><code class="language-scala">import com.lightbend.lagom.scaladsl.api.broker.Message
+import com.lightbend.lagom.scaladsl.broker.kafka.KafkaMetadataKeys
+
+helloService.greetingsTopic()
+  .subscribe.withMetadata
+  .atLeastOnce(
+    Flow[Message[GreetingMessage]].map { msg =&gt;
+      val greetingMessage = msg.payload
+      val messageKey = msg.messageKeyAsString
+      val kafkaHeaders = msg.get(KafkaMetadataKeys.Headers)
+      println(s&quot;Message: $greetingMessage Key: $messageKey Headers: $kafkaHeaders&quot;)
+      Done
+    }
+  )</code></pre>
+<p>The <a href="api/com/lightbend/lagom/scaladsl/api/broker/Message.html#messageKeyAsString:String"><code>messageKeyAsString</code></a> method is provided as a convenience for accessing the message key. Other properties can be accessed using the <a href="api/com/lightbend/lagom/scaladsl/api/broker/Message.html#get(com.lightbend.lagom.scaladsl.api.broker.MetadataKey[Metadata]):Metadata"><code>get</code></a> method. A full list of the metadata keys available for Kafka can be found <a href="api/com/lightbend/lagom/scaladsl/broker/kafka/KafkaMetadataKeys$.html">here</a>.</p><h3 id="Skipping-messages"><a class="section-marker" href="#Skipping-messages">§</a>Skipping messages</h3>
+<p>You may only want to apply your logic to a subset of the messages that the topic publishes and skip the others. The <code>Flow</code> that is passed to <a href="api/com/lightbend/lagom/scaladsl/api/broker/Subscriber.html#atLeastOnce(flow:akka.stream.scaladsl.Flow[Payload,akka.Done,_]):scala.concurrent.Future[akka.Done]"><code>Subscriber.atLeastOnce</code></a> must emit exactly one <code>Done</code> element for each element that it receives. It must also emit them in the same order that the elements were received. This means that you must not use methods such as <code>filter</code> or <code>collect</code> on the <code>Flow</code> which would drop elements.</p>
+<p>The easiest way to achieve this is to use a total function which returns <code>Done</code> for the elements that should be skipped. For example:</p>
+<pre class="prettyprint"><code class="language-scala">helloService
+  .greetingsTopic()
+  .subscribe
+  .atLeastOnce(
+    Flow[GreetingMessage].map {
+      case msg@GreetingMessage(&quot;Kia ora&quot;) =&gt; doSomethingWithTheMessage(msg)
+      case _ =&gt; Done // Skip all messages where the message is not &quot;Kia ora&quot;.
+    }
+  )</code></pre><h2 id="Polymorphic-event-streams"><a class="section-marker" href="#Polymorphic-event-streams">§</a>Polymorphic event streams</h2>
+<p>Typically you will want to publish more than one type of event to a particular topic. This can be done by creating an interface that each event implements. In order to successfully serialize these events to and from JSON, you will have to include some extra information on your JSON representation of the data.</p>
+<p>For example, consider a situation where you have a blog post created event and a blog post published event. Here&rsquo;s what your event structure might look like:</p>
+<pre class="prettyprint"><code class="language-scala">sealed trait BlogPostEvent {
+  def postId: String
+}
+
+case class BlogPostCreated(postId: String, title: String) extends BlogPostEvent
+
+case class BlogPostPublished(postId: String) extends BlogPostEvent</code></pre>
+<p>And that&rsquo;s how your Play JSON formatters could look like:</p>
+<pre class="prettyprint"><code class="language-scala">case object BlogPostCreated {
+  implicit val blogPostCreatedFormat: Format[BlogPostCreated] = Json.format
+}
+
+case object BlogPostPublished {
+  implicit val blogPostPublishedFormat: Format[BlogPostPublished] = Json.format
+}</code></pre>
+<p>You will have to implement a custom Message Serializer that adds extra information on each JSON message so that you know what deserializer to use on the other end. The resulting JSON for the <code>BlogPostCreated</code> event will look like this:</p>
+<pre class="prettyprint"><code class="language-json">{
+ &quot;postId&quot;: &quot;23&quot;,
+ &quot;title&quot;: &quot;new post&quot;,
+ &quot;event_type&quot;: &quot;postCreated&quot;
+}
+</code></pre>
+<p>While the JSON for the <code>BlogPostPublished</code> event will look like this:</p>
+<pre class="prettyprint"><code class="language-json">{
+ &quot;postId&quot;: &quot;23&quot;,
+ &quot;event_type&quot;: &quot;postPublished&quot;
+}
+</code></pre>
+<p>You can do that using <a href="https://www.playframework.com/documentation/2.6.x/ScalaJsonTransformers#Case-5:-Put-a-given-value-in-a-new-branch">Play JSON transformers</a>:</p>
+<pre class="prettyprint"><code class="language-scala">object BlogPostEvent {
+  implicit val reads: Reads[BlogPostEvent] = {
+    (__ \ &quot;event_type&quot;).read[String].flatMap {
+      case &quot;postCreated&quot; =&gt; implicitly[Reads[BlogPostCreated]].map(identity)
+      case &quot;postPublished&quot; =&gt; implicitly[Reads[BlogPostPublished]].map(identity)
+      case other =&gt; Reads(_ =&gt; JsError(s&quot;Unknown event type $other&quot;))
+    }
+  }
+  implicit val writes: Writes[BlogPostEvent] = Writes { event =&gt;
+    val (jsValue, eventType) = event match {
+      case m: BlogPostCreated =&gt; (Json.toJson(m)(BlogPostCreated.blogPostCreatedFormat), &quot;postCreated&quot;)
+      case m: BlogPostPublished =&gt; (Json.toJson(m)(BlogPostPublished.blogPostPublishedFormat), &quot;postPublished&quot;)
+    }
+    jsValue.transform(__.json.update((__ \ &#39;event_type).json.put(JsString(eventType)))).get
+  }
+}
+</code></pre>
+<p>This approach has an added maintenance cost. Fortunately there are libraries that expand Play JSON features and provide support for algebraic data type serialization. For example: <a href="https://github.com/julienrf/play-json-derived-codecs">Play JSON Derived Codecs</a>.</p>

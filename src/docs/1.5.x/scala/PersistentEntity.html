@@ -1,0 +1,442 @@
+<h1 id="Persistent-Entity"><a class="section-marker" href="#Persistent-Entity">§</a>Persistent Entity</h1>
+<p><a href="ES_CQRS.html">Event Sourcing and CQRS</a> is a recommended introduction to this section.</p>
+<p>A <code>PersistentEntity</code> has a stable entity identifier, with which it can be accessed from the service implementation or other places. The state of an entity is persistent (durable) using <a href="https://msdn.microsoft.com/en-us/library/jj591559.aspx">Event Sourcing</a>. We represent all state changes as events and those immutable facts are appended to an event log. To recreate the current state of an entity when it is started we replay these events.</p>
+<p>A persistent entity corresponds to an <a href="https://martinfowler.com/bliki/DDD_Aggregate.html">Aggregate Root</a> in Domain-Driven Design terms. Each instance has a stable identifier and for a given id there will only be one instance of the entity. Lagom takes care of distributing those instances across the cluster of the service. If you know the identifier you can send messages, so called commands, to the entity.</p>
+<p>The persistent entity is also a transaction boundary. Invariants can be maintained within one entity but not across several entities.</p>
+<p>If you are familiar with <a href="https://en.wikipedia.org/wiki/Java_Persistence_API">JPA</a> it is worth noting that a <code>PersistentEntity</code> can be used for similar things as a JPA <code>@Entity</code> but several aspects are rather different. For example, a JPA <code>@Entity</code> is loaded from the database from wherever it is needed, i.e. there may be many Java object instances with the same entity identifier. In contrast, there is only one instance of <code>PersistentEntity</code> with a given identifier. With JPA you typically only store current state and the history of how the state was reached is not captured.</p>
+<p>You interact with a <code>PersistentEntity</code> by sending command messages to it. Commands are processed sequentially, one at a time, for a specific entity instance. A command may result in state changes that are persisted as events, representing the effect of the command. The current state is not stored for every change, since it can be derived from the events. These events are only ever appended to storage, nothing is ever mutated, which allows for very high transaction rates and efficient replication.</p>
+<p>The entities are automatically distributed across the nodes in the cluster of the service. Each entity runs only at one place, and messages can be sent to the entity without requiring the sender to know the location of the entity. If a node is stopped the entities running on that node will be started on another node when a message is sent to it next time. When new nodes are added to the cluster some existing entities are rebalanced to the new nodes to spread the load.</p>
+<p>An entity is kept alive, holding its current state in memory, as long as it is used. When it has not been used for a while it will automatically be passivated to free up resources.</p>
+<p>When an entity is started it replays the stored events to restore the current state. This can be either the full history of changes or starting from a snapshot which will reduce recovery times.</p><h2 id="Choosing-a-database"><a class="section-marker" href="#Choosing-a-database">§</a>Choosing a database</h2>
+<p>Lagom supports the following databases:</p>
+<ul>
+  <li><a href="https://cassandra.apache.org/">Cassandra</a></li>
+  <li><a href="https://www.postgresql.org/">PostgreSQL</a></li>
+  <li><a href="https://www.mysql.com/">MySQL</a></li>
+  <li><a href="https://www.oracle.com/database/index.html">Oracle</a></li>
+  <li><a href="https://www.h2database.com/">H2</a></li>
+</ul>
+<p>We recommend using Cassandra. Cassandra is a very scalable distributed database, and it is also flexible enough to support typical use cases of reactive services. In contrast to most relational databases, it natively supports sharding and replication, and is emerging as an industry standard open source NoSQL database.</p>
+<p>Lagom also provides out of the box support for running Cassandra in a development environment - developers do not need to install, configure or manage Cassandra at all themselves when using Lagom, which makes for great developer velocity, and it means gone are the days where developers spend days setting up their development environment before they can start to be productive on a project.</p>
+<p>For instructions on configuring your project to use Cassandra, see <a href="PersistentEntityCassandra.html">Using Cassandra for Persistent Entities</a>. If instead you want to use one of the relational databases listed above, see <a href="PersistentEntityRDBMS.html">Using a Relational Database for Persistent Entities</a> on how to configure your project.</p><h2 id="PersistentEntity-Stub"><a class="section-marker" href="#PersistentEntity-Stub">§</a>PersistentEntity Stub</h2>
+<p>This is how a <a href="api/index.html#com/lightbend/lagom/scaladsl/persistence/PersistentEntity">PersistentEntity</a> class looks like before filling in the implementation details:</p>
+<pre class="prettyprint"><code class="language-scala">import com.lightbend.lagom.scaladsl.persistence.PersistentEntity
+
+final class Post1 extends PersistentEntity {
+
+  override type Command = BlogCommand
+  override type Event = BlogEvent
+  override type State = BlogState
+
+  override def initialState: BlogState = BlogState.empty
+
+  override def behavior: Behavior = Actions()
+
+}</code></pre>
+<p>The three abstract type members that the concrete <code>PersistentEntity</code> subclass must define:</p>
+<ul>
+  <li><code>Command</code> - the super class/interface of the commands</li>
+  <li><code>Event</code> - the super class/interface of the events</li>
+  <li><code>State</code> - the class of the state</li>
+</ul>
+<p><code>initialState</code> is an abstract method that your concrete subclass must implement to define the <code>State</code> when the entity is first created.</p>
+<p><code>behavior</code> is an abstract method that your concrete subclass must implement. It returns the <code>Behavior</code> of the entity. <code>Behavior</code> is a function from current <code>State</code> to <code>Actions</code>, which defines command and event handlers.</p>
+<p>Use <code>Actions()</code> to create an immutable builder for defining the behavior. The behavior functions process incoming commands and persisted events as described in the following sections.</p><h2 id="Command-Handlers"><a class="section-marker" href="#Command-Handlers">§</a>Command Handlers</h2>
+<p>The functions that process incoming commands are registered using <code>onCommand</code> of the <code>Actions</code>.</p>
+<pre class="prettyprint"><code class="language-scala">// Command handlers are invoked for incoming messages (commands).
+// A command handler must &quot;return&quot; the events to be persisted (if any).
+Actions()
+  .onCommand[AddPost, AddPostDone] {
+    case (AddPost(content), ctx, state) =&gt;
+      ctx.thenPersist(PostAdded(entityId, content)) { evt =&gt;
+        // After persist is done additional side effects can be performed
+        ctx.reply(AddPostDone(entityId))
+      }
+  }</code></pre>
+<p>You should define one command handler for each command class that the entity can receive.</p>
+<p>A command handler is a partial function with 3 parameters (<code>Tuple3</code>) for the <code>Command</code>, the <code>CommandContext</code> and current <code>State</code>.</p>
+<p>A command handler returns a <a href="api/index.html#com/lightbend/lagom/scaladsl/persistence/PersistentEntity@Persist">Persist</a> directive that defines what event or events, if any, to persist. Use the <code>thenPersist</code>, <code>thenPersistAll</code> or <code>done</code> methods of the context that is passed to the command handler function to create the <code>Persist</code> directive.</p>
+<ul>
+  <li><code>thenPersist</code> will persist one single event</li>
+  <li><code>thenPersistAll</code> will persist several events atomically, i.e. all events<br/> are stored or none of them are stored if there is an error</li>
+  <li><code>done</code> no events are to be persisted</li>
+</ul>
+<p>External side effects can be performed after successful persist in the <code>afterPersist</code> function. In the above example a reply is sent with the <code>ctx.reply</code> method.</p>
+<p>The command can be validated before persisting state changes. Note that current state is passed as parameter to the command handler partial function. Use <code>ctx.invalidCommand</code> or <code>ctx.commandFailed</code> to reject an invalid command.</p>
+<pre class="prettyprint"><code class="language-scala">// Command handlers are invoked for incoming messages (commands).
+// A command handler must &quot;return&quot; the events to be persisted (if any).
+.onCommand[AddPost, AddPostDone] {
+  case (AddPost(content), ctx, state) =&gt;
+    if (content.title == null || content.title.equals(&quot;&quot;)) {
+      ctx.invalidCommand(&quot;Title must be defined&quot;)
+      ctx.done
+    }</code></pre>
+<p>A <code>PersistentEntity</code> may also process commands that do not change application state, such as query commands or commands that are not valid in the entity&rsquo;s current state (such as a bid placed after the auction closed). Such command handlers are registered using <code>onReadOnlyCommand</code> of the <code>Actions</code>. Replies are sent with the <code>reply</code> method of the context that is passed to the command handler function.</p>
+<p>The <code>onReadOnlyCommand</code> is simply a convenience function that avoids you having to return no events followed by a side effect.</p>
+<pre class="prettyprint"><code class="language-scala">.onReadOnlyCommand[GetPost.type, PostContent] {
+  case (GetPost, ctx, state) =&gt;
+    ctx.reply(state.content.get)
+}</code></pre>
+<p>The commands must be immutable to avoid concurrency issues that may occur from changing a command instance that has been sent.</p>
+<p>The section <a href="Immutable.html">Immutable Objects</a> describes how to define immutable command classes.</p><h2 id="Event-Handlers"><a class="section-marker" href="#Event-Handlers">§</a>Event Handlers</h2>
+<p>When an event has been persisted successfully the current state is updated by applying the event to the current state. The functions for updating the state are registered with the <code>onEvent</code> method of the <code>Actions</code>.</p>
+<pre class="prettyprint"><code class="language-scala">// Event handlers are used both when persisting new events and when replaying
+// events.
+.onEvent {
+  case (PostAdded(postId, content), state) =&gt;
+    BlogState(Some(content), published = false)
+}</code></pre>
+<p>You should define one event handler for each event class that the entity can persist.</p>
+<p>The event handler returns the new state. The state must be immutable, so you return a new instance of the state. Current state is passed as a parameter to the event handler function. The same event handlers are also used when the entity is started up to recover its state from the stored events.</p>
+<p>The events must be immutable to avoid concurrency issues that may occur from changing an event instance that is about to be persisted.</p>
+<p>The section <a href="Immutable.html">Immutable Objects</a> describes how to define immutable event classes.</p><h2 id="Replies"><a class="section-marker" href="#Replies">§</a>Replies</h2>
+<p>Each command must define what type of message to use as reply to the command by implementing the <a href="api/index.html#com/lightbend/lagom/scaladsl/persistence/PersistentEntity@ReplyType">PersistentEntity.ReplyType</a> interface.</p>
+<pre class="prettyprint"><code class="language-scala">final case class AddPost(content: PostContent) extends BlogCommand with ReplyType[AddPostDone]</code></pre>
+<p>You send the reply message using the <code>reply</code> method of the context that is passed to the command handler function. Note that the reply message type must match the <code>ReplyType</code> defined by the command, and by the second type parameter of <code>onCommand</code>.</p>
+<p>Typically the reply will be an acknowledgment that the entity processed the command successfully, i.e. you send it after persist.</p>
+<pre class="prettyprint"><code class="language-scala">.onCommand[ChangeBody, Done] {
+  case (ChangeBody(body), ctx, state) =&gt;
+    ctx.thenPersist(BodyChanged(entityId, body))(_ =&gt; ctx.reply(Done))
+}</code></pre>
+<p>For convenience you may use the <code>akka.Done</code> as acknowledgment message.</p>
+<p>It can also be a reply to a read-only query command.</p>
+<pre class="prettyprint"><code class="language-scala">.onReadOnlyCommand[GetPost.type, PostContent] {
+  case (GetPost, ctx, state) =&gt;
+    ctx.reply(state.content.get)
+}</code></pre>
+<p>You can use <code>ctx.invalidCommand</code> to reject an invalid command, which will fail the <code>Future</code> with <code>PersistentEntity.InvalidCommandException</code> on the sender side.</p>
+<p>You can send a negative acknowledgment with <code>ctx.commandFailed</code>, which will fail the <code>Future</code> on the sender side with the given exception.</p>
+<p>If persisting the events fails a negative acknowledgment is automatically sent, which will fail the <code>Future</code> on the sender side with <code>PersistentEntity.PersistException</code>.</p>
+<p>If the <code>PersistentEntity</code> receives a command for which there is no registered command handler a negative acknowledgment is automatically sent, which will fail the <code>Future</code> on the sender side with <code>PersistentEntity.UnhandledCommandException</code>.</p>
+<p>If you don&rsquo;t reply to a command the <code>Future</code> on the sender side will be completed with a <code>akka.pattern.AskTimeoutException</code> after a timeout.</p><h2 id="Changing-Behavior"><a class="section-marker" href="#Changing-Behavior">§</a>Changing Behavior</h2>
+<p>For simple entities you can use the same set of command and event handlers independent of what state the entity is in. The actions can then be defined like this:</p>
+<pre class="prettyprint"><code class="language-scala">override def behavior: Behavior =
+  Actions()
+    .onCommand[AddPost, AddPostDone] {
+      case (AddPost(content), ctx, state) if state.isEmpty =&gt;
+        ctx.thenPersist(PostAdded(entityId, content)) { evt =&gt;
+          ctx.reply(AddPostDone(entityId))
+        }
+    }
+    .onEvent {
+      case (PostAdded(postId, content), state) =&gt;
+        BlogState(Some(content), published = false)
+    }
+    .onReadOnlyCommand[GetPost.type, PostContent] {
+      case (GetPost, ctx, state) if !state.isEmpty =&gt;
+        ctx.reply(state.content.get)
+    }</code></pre>
+<p>When the state changes it can also change the behavior of the entity in the sense that new functions for processing commands and events may be defined. This is useful when implementing finite state machine (FSM) like entities. The <code>Actions</code>, the set of event handler and command handlers, can be selected based on current state. The return type of the <code>behavior</code> method is a function from current <code>State</code> to <code>Actions</code>. The reason <code>Actions</code> can be used as in the above example is because <code>Actions</code> itself is such a function returning itself for any State.</p>
+<p>This is how to define different behavior for different <code>State</code>:</p>
+<pre class="prettyprint"><code class="language-scala">override def behavior: Behavior = {
+  case state if state.isEmpty  =&gt; initial
+  case state if !state.isEmpty =&gt; postAdded
+}</code></pre>
+<pre class="prettyprint"><code class="language-scala">private val initial: Actions = {</code></pre>
+<pre class="prettyprint"><code class="language-scala">private val postAdded: Actions = {</code></pre>
+<p><code>Actions</code> is an immutable builder and therefore you have great flexibility when it comes to how to structure the various command and event handlers and combine them to the final behavior. Note that <code>Actions</code> has an <code>orElse</code> method that is useful for composing actions.</p><h2 id="Snapshots"><a class="section-marker" href="#Snapshots">§</a>Snapshots</h2>
+<p>When the entity is started the state is recovered by replaying stored events. To reduce this recovery time the entity may start the recovery from a snapshot of the state and then only replaying the events that were stored after the snapshot for that entity.</p>
+<p>Such snapshots are automatically saved after a configured number of persisted events. The snapshot if any is automatically used as the initial state before replaying the events.</p>
+<p>The state must be immutable to avoid concurrency issues that may occur from changing a state instance that is about to be saved as snapshot.</p>
+<p>The section <a href="Immutable.html">Immutable Objects</a> describes how to define immutable state classes.</p><h2 id="Usage-from-Service-Implementation"><a class="section-marker" href="#Usage-from-Service-Implementation">§</a>Usage from Service Implementation</h2>
+<p>To access an entity from a service implementation you first need to inject the <a href="api/index.html#com/lightbend/lagom/scaladsl/persistence/PersistentEntityRegistry">PersistentEntityRegistry</a> and at startup (in the constructor) register the class that implements the <code>PersistentEntity</code>.</p>
+<p>In the service method you retrieve a <code>PersistentEntityRef</code> for a given entity identifier from the registry. Then you can send the command to the entity using the <code>ask</code> method of the <code>PersistentEntityRef</code>. <code>ask</code> returns a <code>Future</code> with the reply message.</p>
+<pre class="prettyprint"><code class="language-scala">import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
+import com.lightbend.lagom.scaladsl.api.Service
+import com.lightbend.lagom.scaladsl.api.ServiceCall
+import com.lightbend.lagom.scaladsl.persistence.PersistentEntityRef
+import com.lightbend.lagom.scaladsl.persistence.PersistentEntityRegistry
+</code></pre>
+<pre class="prettyprint"><code class="language-scala">class BlogServiceImpl(
+  persistentEntities: PersistentEntityRegistry)(implicit ec: ExecutionContext)
+  extends BlogService {
+
+  persistentEntities.register(new Post)
+
+  override def addPost(id: String): ServiceCall[AddPost, String] =
+    ServiceCall { request: AddPost =&gt;
+      val ref: PersistentEntityRef[BlogCommand] =
+        persistentEntities.refFor[Post](id)
+      val reply: Future[AddPostDone] = ref.ask(request)
+      reply.map(ack =&gt; &quot;OK&quot;)
+    }
+}</code></pre>
+<p>The explicit type annotations in the above example are included for illustrative purposes. It can be written in a more compact way that is still has the same type safety:</p>
+<pre class="prettyprint"><code class="language-scala">override def addPost(id: String) = ServiceCall { request =&gt;
+  val ref = persistentEntities.refFor[Post](id)
+  ref.ask(request).map(ack =&gt; &quot;OK&quot;)
+}</code></pre>
+<p>In this example we are using the command <code>AddPost</code> also as the request parameter of the service method, but you can of course use another type for the external API of the service.</p>
+<p>The commands are sent as messages to the entity that may be running on a different node. If that node is not available due to network issues, JVM crash or similar the messages may be lost until the problem has been detected and the entities have been migrated to another node. In such situations the <code>ask</code> will time out and the <code>Future</code> will be completed with <code>akka.pattern.AskTimeoutException</code>.</p>
+<p>Note that the <code>AskTimeoutException</code> is not a guarantee that the command was not processed. For example, the command might have been processed but the reply message was lost.</p><h2 id="Serialization"><a class="section-marker" href="#Serialization">§</a>Serialization</h2>
+<p>JSON is the recommended format the persisted events and state. The <a href="Serialization.html">Serialization</a> section describes how to add Play-json serialization support to such classes and also how to evolve the classes, which is especially important for the persistent state and events, since you must be able to deserialize old objects that were stored.</p><h2 id="Unit-Testing"><a class="section-marker" href="#Unit-Testing">§</a>Unit Testing</h2>
+<p>For unit testing of the entity you can use the <a href="api/index.html#com/lightbend/lagom/scaladsl/testkit/PersistentEntityTestDriver">PersistentEntityTestDriver</a>, which will run the <code>PersistentEntity</code> without using a database. You can verify that it emits expected events and side-effects in response to incoming commands.</p>
+<pre class="prettyprint"><code class="language-scala">import scala.concurrent.Await
+import scala.concurrent.duration._
+import akka.Done
+import akka.actor.ActorSystem
+import com.lightbend.lagom.scaladsl.persistence.PersistentEntity.InvalidCommandException
+import com.lightbend.lagom.scaladsl.playjson.JsonSerializerRegistry
+import com.lightbend.lagom.scaladsl.testkit.PersistentEntityTestDriver
+import com.typesafe.config.ConfigFactory
+import org.scalactic.TypeCheckedTripleEquals
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.Matchers
+import org.scalatest.WordSpecLike
+
+class PostSpec extends WordSpecLike with Matchers with BeforeAndAfterAll
+  with TypeCheckedTripleEquals {
+
+  val system = ActorSystem(&quot;PostSpec&quot;, JsonSerializerRegistry.actorSystemSetupFor(BlogPostSerializerRegistry))
+
+  override def afterAll(): Unit = {
+    Await.ready(system.terminate, 10.seconds)
+  }
+
+  &quot;Blog Post entity&quot; must {
+    &quot;handle AddPost&quot; in {
+      val driver = new PersistentEntityTestDriver(system, new Post, &quot;post-1&quot;)
+      val content = PostContent(&quot;Title&quot;, &quot;Body&quot;)
+      val outcome = driver.run(AddPost(content))
+      outcome.events should ===(List(PostAdded(&quot;post-1&quot;, content)))
+      outcome.state.published should ===(false)
+      outcome.state.content should ===(Some(content))
+      outcome.replies should ===(List(AddPostDone(&quot;post-1&quot;)))
+      outcome.issues should be(Nil)
+    }
+
+    &quot;validate title&quot; in {
+      val driver = new PersistentEntityTestDriver(system, new Post, &quot;post-1&quot;)
+      val outcome = driver.run(AddPost(PostContent(&quot;&quot;, &quot;Body&quot;)))
+      outcome.replies.head.getClass should be(classOf[InvalidCommandException])
+      outcome.events.size should ===(0)
+      outcome.issues should be(Nil)
+    }
+
+    &quot;handle ChangeBody&quot; in {
+      val driver = new PersistentEntityTestDriver(system, new Post, &quot;post-1&quot;)
+      driver.run(AddPost(PostContent(&quot;Title&quot;, &quot;Body&quot;)))
+
+      val outcome = driver.run(ChangeBody(&quot;New body 1&quot;), ChangeBody(&quot;New body 2&quot;))
+      outcome.events should ===(List(
+        BodyChanged(&quot;post-1&quot;, &quot;New body 1&quot;),
+        BodyChanged(&quot;post-1&quot;, &quot;New body 2&quot;)))
+      outcome.state.published should ===(false)
+      outcome.state.content.get.body should ===(&quot;New body 2&quot;)
+      outcome.replies should ===(List(Done, Done))
+      outcome.issues should be(Nil)
+    }
+
+  }
+}</code></pre>
+<p><code>run</code> may be invoked multiple times to divide the sequence of commands into manageable steps. The <a href="api/index.html#com/lightbend/lagom/scaladsl/testkit/PersistentEntityTestDriver@Outcome">Outcome</a> contains the events and side-effects of the last <code>run</code>, but the state is not reset between different runs.</p>
+<p>Note that it also verifies that all commands, events, replies and state are <a href="Serialization.html">serializable</a>, and reports any such problems in the <code>issues</code> of the <code>Outcome</code>.</p>
+<p>To use this feature add the following in your project&rsquo;s build:</p>
+<pre class="prettyprint"><code class="language-sbt">libraryDependencies += lagomScaladslTestKit</code></pre><h2 id="Full-Example"><a class="section-marker" href="#Full-Example">§</a>Full Example</h2>
+<pre class="prettyprint"><code class="language-scala">import akka.Done
+import com.lightbend.lagom.scaladsl.persistence.PersistentEntity
+
+final class Post extends PersistentEntity {
+
+  override type Command = BlogCommand
+  override type Event = BlogEvent
+  override type State = BlogState
+
+  override def initialState: BlogState = BlogState.empty
+
+  override def behavior: Behavior = {
+    case state if state.isEmpty  =&gt; initial
+    case state if !state.isEmpty =&gt; postAdded
+  }
+
+  private val initial: Actions = {
+    Actions()
+      // Command handlers are invoked for incoming messages (commands).
+      // A command handler must &quot;return&quot; the events to be persisted (if any).
+      .onCommand[AddPost, AddPostDone] {
+        case (AddPost(content), ctx, state) =&gt;
+          if (content.title == null || content.title.equals(&quot;&quot;)) {
+            ctx.invalidCommand(&quot;Title must be defined&quot;)
+            ctx.done
+          } else {
+            ctx.thenPersist(PostAdded(entityId, content)) { _ =&gt;
+              // After persist is done additional side effects can be performed
+              ctx.reply(AddPostDone(entityId))
+            }
+          }
+      }
+      // Event handlers are used both when persisting new events and when replaying
+      // events.
+      .onEvent {
+        case (PostAdded(postId, content), state) =&gt;
+          BlogState(Some(content), published = false)
+      }
+  }
+
+  private val postAdded: Actions = {
+    Actions()
+      .onCommand[ChangeBody, Done] {
+        case (ChangeBody(body), ctx, state) =&gt;
+          ctx.thenPersist(BodyChanged(entityId, body))(_ =&gt; ctx.reply(Done))
+      }
+      .onEvent {
+        case (BodyChanged(_, body), state) =&gt;
+          state.withBody(body)
+      }
+      .onReadOnlyCommand[GetPost.type, PostContent] {
+        case (GetPost, ctx, state) =&gt;
+          ctx.reply(state.content.get)
+      }
+  }
+
+}</code></pre>
+<pre class="prettyprint"><code class="language-scala">import com.lightbend.lagom.scaladsl.persistence.PersistentEntity.ReplyType
+import akka.Done
+import com.lightbend.lagom.scaladsl.playjson.JsonSerializer
+
+sealed trait BlogCommand
+
+object BlogCommand {
+  import play.api.libs.json._
+  import JsonSerializer.emptySingletonFormat
+
+  implicit val postContentFormat = Json.format[PostContent]
+
+  val serializers = Vector(
+    JsonSerializer(Json.format[AddPost]),
+    JsonSerializer(Json.format[AddPostDone]),
+    JsonSerializer(emptySingletonFormat(GetPost)),
+    JsonSerializer(Json.format[ChangeBody]),
+    JsonSerializer(emptySingletonFormat(Publish)))
+}
+
+//#AddPost
+final case class AddPost(content: PostContent) extends BlogCommand with ReplyType[AddPostDone]
+//#AddPost
+
+final case class AddPostDone(postId: String)
+
+case object GetPost extends BlogCommand with ReplyType[PostContent]
+
+final case class ChangeBody(body: String) extends BlogCommand with ReplyType[Done]
+
+case object Publish extends BlogCommand with ReplyType[Done]</code></pre>
+<pre class="prettyprint"><code class="language-scala">import com.lightbend.lagom.scaladsl.persistence.AggregateEvent
+import com.lightbend.lagom.scaladsl.persistence.AggregateEventShards
+import com.lightbend.lagom.scaladsl.persistence.AggregateEventTag
+import com.lightbend.lagom.scaladsl.playjson.JsonSerializer
+
+object BlogEvent {
+  val NumShards = 20
+  // second param is optional, defaults to the class name
+  val Tag = AggregateEventTag.sharded[BlogEvent](NumShards)
+
+  import play.api.libs.json._
+  private implicit val postContentFormat = Json.format[PostContent]
+
+  val serializers = Vector(
+    JsonSerializer(Json.format[PostAdded]),
+    JsonSerializer(Json.format[BodyChanged]),
+    JsonSerializer(Json.format[PostPublished]))
+}
+
+sealed trait BlogEvent extends AggregateEvent[BlogEvent] {
+  override def aggregateTag: AggregateEventShards[BlogEvent] = BlogEvent.Tag
+}
+
+final case class PostAdded(postId: String, content: PostContent) extends BlogEvent
+
+final case class BodyChanged(postId: String, body: String) extends BlogEvent
+
+final case class PostPublished(postId: String) extends BlogEvent</code></pre>
+<pre class="prettyprint"><code class="language-scala">import play.api.libs.json._
+
+object BlogState {
+  val empty = BlogState(None, published = false)
+
+  implicit val postContentFormat = Json.format[PostContent]
+
+  implicit val format: Format[BlogState] = Json.format[BlogState]
+}
+
+final case class BlogState(content: Option[PostContent], published: Boolean) {
+  def withBody(body: String): BlogState = {
+    content match {
+      case Some(c) =&gt;
+        copy(content = Some(c.copy(body = body)))
+      case None =&gt;
+        throw new IllegalStateException(&quot;Can&#39;t set body without content&quot;)
+    }
+  }
+
+  def isEmpty: Boolean = content.isEmpty
+}
+
+final case class PostContent(title: String, body: String)</code></pre><h2 id="Refactoring-Consideration"><a class="section-marker" href="#Refactoring-Consideration">§</a>Refactoring Consideration</h2>
+<p>If you change the class name of a <code>PersistentEntity</code> you have to override <code>entityTypeName</code> and retain the original name because this name is part of the key of the store data (it is part of the <code>persistenceId</code> of the underlying <code>PersistentActor</code>). By default the <code>entityTypeName</code> is using the short class name of the concrete <code>PersistentEntity</code> class.</p><h2 id="Configuration"><a class="section-marker" href="#Configuration">§</a>Configuration</h2>
+<p>The default configuration should be good starting point, and the following settings may later be amended to customize the behavior if needed. The following is a listing of the non database specific settings for Lagom persistence:</p>
+<pre class="prettyprint"><code class="language-conf">lagom.persistence {
+
+  # As a rule of thumb, the number of shards should be a factor ten greater
+  # than the planned maximum number of cluster nodes. Less shards than number
+  # of nodes will result in that some nodes will not host any shards. Too many
+  # shards will result in less efficient management of the shards, e.g.
+  # rebalancing overhead, and increased latency because the coordinator is
+  # involved in the routing of the first message for each shard. The value
+  # must be the same on all nodes in a running cluster. It can be changed
+  # after stopping all nodes in the cluster.
+  max-number-of-shards = 100
+
+  # Persistent entities saves snapshots after this number of persistent
+  # events. Snapshots are used to reduce recovery times.
+  # It may be configured to &quot;off&quot; to disable snapshots.
+  snapshot-after = 100
+
+  # A persistent entity is passivated automatically if it does not receive
+  # any messages during this timeout. Passivation is performed to reduce
+  # memory consumption. Objects referenced by the entity can be garbage
+  # collected after passivation. Next message will activate the entity
+  # again, which will recover its state from persistent storage. Set to 0
+  # to disable passivation - this should only be done when the number of
+  # entities is bounded and their state, sharded across the cluster, will
+  # fit in memory.
+  passivate-after-idle-timeout = 120s
+
+  # Specifies that entities run on cluster nodes with a specific role.
+  # If the role is not specified (or empty) all nodes in the cluster are used.
+  # The entities can still be accessed from other nodes.
+  run-entities-on-role = &quot;&quot;
+
+  # Default timeout for PersistentEntityRef.ask replies.
+  ask-timeout = 5s
+
+  dispatcher {
+    type = Dispatcher
+    executor = &quot;thread-pool-executor&quot;
+    thread-pool-executor {
+      fixed-pool-size = 16
+    }
+    throughput = 1
+  }
+}</code></pre><h2 id="Underlying-Implementation"><a class="section-marker" href="#Underlying-Implementation">§</a>Underlying Implementation</h2>
+<p>Each <code>PersistentEntity</code> instance is executed by a <a href="https://doc.akka.io/docs/akka/2.5/persistence.html?language=scala">PersistentActor</a> that is managed by <a href="https://doc.akka.io/docs/akka/2.5/cluster-sharding.html?language=scala">Akka Cluster Sharding</a>.</p><h2 id="Execution-details-(advanced)"><a class="section-marker" href="#Execution-details-(advanced)">§</a>Execution details (advanced)</h2>
+<p>If you&rsquo;ve read all the sections above you are familiar with all the pieces conforming a Persistent Entity but there are few details worth explaining more extensively. As stated above:</p>
+<blockquote>
+  <p>Commands are processed sequentially, one at a time, for a specific entity instance.</p>
+</blockquote>
+<p>This needs a deeper explanation to understand the guarantees provided by Lagom. When a command is received, the following occurs:</p>
+<ol>
+  <li>a command handler is selected, if none is found an <code>UnhandledCommandException</code> is thrown</li>
+  <li>the command handler is invoked for the command, one or more events may be emitted (to process a command that emits no events, <code>setReadOnlyCommandHandler</code> must be used)</li>
+  <li>events are applied to the appropriate event Handler (this can cause <code>Behavior</code> changes so defining the command handler on a behavior doesn&rsquo;t require all event handlers to be supported on that behavior)</li>
+  <li>if applying the events didn&rsquo;t cause any exception, events are persisted atomically and in the same order they were emitted on the command handler</li>
+  <li>if there&rsquo;s an <code>afterPersist</code>, then it is invoked (only once)</li>
+  <li>if the snapshotting threshold is exceeded, a snapshot is generated and stored</li>
+  <li>finally, the command processing completes and a new command may be processed.</li>
+</ol>
+<p>If you are familiar with <a href="https://doc.akka.io/docs/akka/2.5/persistence.html">Akka Persistence</a> this process is slightly different in few places:</p>
+<ul>
+  <li>new commands are not processed until events are stored, the <code>Effect</code> completed and the snapshot updated (if necessary). Akka provides the same behavior and also <code>async</code> alternatives that cause new commands to be processed even before all event handlers have completed.</li>
+  <li>saving snapshots is an operation run under the covers <em>at least</em> every <code>lagom.persistence. snapshot-after</code> events (see <a href="#Configuration">Configuration</a> above) but &ldquo;storing events atomically&rdquo; takes precedence. Imagine we want a snapshot every 100 events and we already have 99 events, if the next command emits 3 events the snapshot will only be stored after event number 102 because events <code>[100, 101, 102]</code> will be stored atomically and only after it&rsquo;ll be possible to create a snapshot.</li>
+</ul>

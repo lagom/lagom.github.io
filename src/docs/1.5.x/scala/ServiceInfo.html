@@ -1,0 +1,37 @@
+<h1 id="Service-Metadata"><a class="section-marker" href="#Service-Metadata">§</a>Service Metadata</h1>
+<p>Service metadata, also referred to as <code>ServiceInfo</code>, includes a name and a collection of Service ACLs. Metadata is computed automatically in most scenarios and you won&rsquo;t need to review it or even provide it.</p>
+<p>There are several scenarios supported by Lagom:</p>
+<ol>
+  <li>When you create a Lagom Service and you <a href="DependencyInjection.html#Wiring-together-a-Lagom-application">wire together the application</a> Lagom will bundle the <code>name</code> and the ACLs into a <code>ServiceInfo</code>.</li>
+  <li>When you consume Lagom Services and mix-in <code>LagomServiceClientComponents</code> to <a href="ServiceClients.html#Binding-a-service-client">bind clients</a> Lagom is not wiring a ServiceInfo under the covers and you will have to provide one programmatically.</li>
+  <li>The final scenario is that where the client app is not using Guice and connect to Lagom via the <a href="IntegratingNonLagom.html">Lagom Client Factory</a>. In this scenario, Lagom will also create the metadata on your behalf.</li>
+</ol><h2 id="Service-Name-and-Service-ACLs"><a class="section-marker" href="#Service-Name-and-Service-ACLs">§</a>Service Name and Service ACLs</h2>
+<p>Services interact with each other. This interaction requires each service to identify itself when acting as a client to another service. When this identity is required, the <code>ServiceInfo</code>&rsquo;s name is used by default. Take for example <code>HelloService</code>:</p>
+<pre class="prettyprint"><code class="language-scala">import com.lightbend.lagom.scaladsl.api._
+
+trait HelloService extends Service {
+  def sayHello: ServiceCall[String, String]
+
+  override def descriptor = {
+    import Service._
+    named(&quot;hello&quot;).withCalls(
+      call(sayHello)
+    )
+  }
+}
+</code></pre>
+<p>If Greetings Service packaged <code>HelloService</code> and Greetings Service was invoking I18n Service (not in the snippet) those calls would include the identity <code>hello</code> since that is the <code>HelloService</code> name (see <code>named(&quot;hello&quot;)</code>).</p>
+<p>Services may publish ACLs in a Service Gateway to list what endpoints are provided by the service. These ACLs will allow you to develop <a href="ServiceDiscovery.html#Server-side-service-discovery">Server-Side Service Discovery</a> via a Service Gateway.</p>
+<pre class="prettyprint"><code class="language-scala">def login: ServiceCall[String, String]
+
+def descriptor = {
+  import Service._
+  import com.lightbend.lagom.scaladsl.api.transport.Method
+  named(&quot;user-authentication&quot;)
+    .withCalls(
+      restCall(Method.POST, &quot;/api/users/login&quot;, login)
+    )
+    .withAutoAcl(true)
+}
+</code></pre>
+<p>In this example, the developer of <code>UsersService</code> set <code>withAutoAcl</code> to <code>true</code>. That is instructing Lagom to generate Service ACLs from each call&rsquo;s <code>pathPattern</code>. In this example, an ACL for <code>/api/users/login</code> will be created. When deploying, your tools should honour these specifications and make sure your API Gateway is properly setup.</p>

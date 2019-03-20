@@ -1,0 +1,145 @@
+<h1 id="Storing-Persistent-Entities-in-a-Relational-Database"><a class="section-marker" href="#Storing-Persistent-Entities-in-a-Relational-Database">§</a>Storing Persistent Entities in a Relational Database</h1>
+<p>This page describes how to configure a relational database for use with Lagom&rsquo;s <a href="PersistentEntity.html">Persistent Entity</a> API.</p><h2 id="Project-dependencies"><a class="section-marker" href="#Project-dependencies">§</a>Project dependencies</h2>
+<p>To use a relational database add the following in your project&rsquo;s build:</p>
+<p>In Maven:</p>
+<pre class="prettyprint"><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.lightbend.lagom&lt;/groupId&gt;
+    &lt;artifactId&gt;lagom-scaladsl-persistence-jdbc_${scala.binary.version}&lt;/artifactId&gt;
+    &lt;version&gt;${lagom.version}&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>In sbt:</p>
+<pre class="prettyprint"><code class="language-sbt">libraryDependencies += lagomScaladslPersistenceJdbc</code></pre>
+<p>You will also need to add the jar for your JDBC database driver.</p>
+<p>To enable the RDBMS Persistence on your Application you will have to mix in | <a href="api/com/lightbend/lagom/scaladsl/persistence/jdbc/JdbcPersistenceComponents.html">JdbcPersistenceComponents</a> and <a href="https://www.playframework.com/documentation/2.6.x/api/scala/play/api/db/HikariCPComponents.html">HikariCPComponents</a> as described in <a href="DependencyInjection.html#Wiring-together-a-Lagom-application">Dependency Injection</a>.</p><h2 id="Configuration"><a class="section-marker" href="#Configuration">§</a>Configuration</h2>
+<p>Lagom uses the <a href="https://github.com/dnvriend/akka-persistence-jdbc"><code>akka-persistence-jdbc</code></a> plugin to persist entities to the database. This supports four different relational databases:</p>
+<ul>
+  <li><a href="https://www.postgresql.org/">PostgreSQL</a></li>
+  <li><a href="https://www.mysql.com/">MySQL</a></li>
+  <li><a href="https://www.oracle.com/database/index.html">Oracle</a></li>
+  <li><a href="https://www.h2database.com/">H2</a></li>
+</ul>
+<p>We advise against using H2 in production, however, it is suitable for use in development and testing.</p>
+<p>In Lagom&rsquo;s default configuration, Lagom will use Play&rsquo;s JDBC support to configure and create a connection pool. Details on how to configure it can be found <a href="https://www.playframework.com/documentation/2.6.x/ScalaDatabase">here</a>. Play should be configured to provide a JNDI binding for the datasource, by default Lagom binds it to <code>DefaultDS</code>.</p>
+<p>Lagom then configures a <a href="http://slick.lightbend.com/">Slick</a> Database to use that datasource in combination with a <a href="http://slick.lightbend.com/doc/3.2.1/api/index.html#slick.util.AsyncExecutor">AsyncExecutor</a> that manages the thread pool for asynchronous execution of Database I/O Actions. Lagom will also take care that the connection pool is configured correctly according to the AsyncExecutor settings. The Slick Database is then bound to the JNDI name <code>DefaultDB</code> and it&rsquo;s used to configure the <code>akka-persistence-jdbc</code> plugin.</p>
+<p>The <code>akka-persistence-jdbc</code> plugin uses Slick to map tables and manage asynchronous execution of JDBC calls. This means Lagom internally configures it to use the right Slick profile for your database.</p>
+<p>So for example, to configure a PostgreSQL database, you can add the following to your <code>application.conf</code>:</p>
+<pre class="prettyprint"><code>db.default {
+  driver = &quot;org.postgresql.Driver&quot;
+  url = &quot;jdbc:postgresql://database.example.com/lagom-db&quot;
+}
+
+jdbc-defaults.slick.profile = &quot;slick.jdbc.PostgresProfile$&quot;
+</code></pre><h2 id="Table-creation"><a class="section-marker" href="#Table-creation">§</a>Table creation</h2>
+<p>By default, Lagom will automatically create the tables it needs for you if they don&rsquo;t already exist. This is great for development and testing, but in some circumstances may not be appropriate for production. The table auto creation feature can be disabled by using the following configuration:</p>
+<pre class="prettyprint"><code>lagom.persistence.jdbc.create-tables.auto = false
+</code></pre>
+<p>The database schemas needed for the tables can be found <a href="https://github.com/dnvriend/akka-persistence-jdbc/tree/v2.6.8/src/test/resources/schema">here</a>.</p>
+<p>The full configuration options that Lagom provides for managing the creation of tables is here:</p>
+<pre class="prettyprint"><code class="language-conf"># Defaults to use for each Akka persistence plugin
+jdbc-defaults.slick {
+
+  # The Slick profile to use
+  # set to one of: slick.jdbc.PostgresProfile$, slick.jdbc.MySQLProfile$, slick.jdbc.OracleProfile$ or slick.jdbc.H2Profile$
+  # profile = &quot;slick.jdbc.PostgresProfile$&quot;
+
+  # The JNDI name for the Slick pre-configured DB
+  # By default, this value will be used by all akka-persistence-jdbc plugin components (journal, read-journal and snapshot).
+  # you may configure each plugin component to use different DB settings
+  jndiDbName=DefaultDB
+}
+
+
+db.default {
+
+  # The JNDI name for this DataSource
+  # Play, and therefore Lagom, will automatically register this DataSource as a JNDI resource using this name.
+  # This DataSource will be used to build a pre-configured Slick DB
+  jndiName=DefaultDS
+
+  # Lagom will configure a Slick Database, using the async-executor settings below
+  # and register it as a JNDI resource using this name.
+  # By default, all akka-persistence-jdbc plugin components will use this JDNI name
+  # to lookup for this pre-configured Slick DB
+  jndiDbName=DefaultDB
+
+  async-executor {
+    # number of objects that can be queued by the async executor
+    queueSize = 10000
+
+    # 5 * number of cores
+    numThreads = 20
+
+    # same as number of threads
+    minConnections = 20
+
+    # same as number of threads
+    maxConnections = 20
+
+    # if true, a Mbean for AsyncExecutor will be registered
+    registerMbeans = false
+  }
+
+  # Hikari is the default connection pool and it&#39;s fine-tuned to use the same
+  # values for minimum and maximum connections as defined for the async-executor above
+  hikaricp {
+    minimumIdle = ${db.default.async-executor.minConnections}
+    maximumPoolSize = ${db.default.async-executor.maxConnections}
+  }
+
+  # Alternatively, BoneCP can be used instead of Hikari.
+  # More information on how to switch to BoneCP can be found here:
+  # https://www.playframework.com/documentation/2.6.x/ScalaDatabase#Selecting-and-configuring-the-connection-pool
+  #
+  # The settings below configured it to use the same
+  # values for minimum and maximum connections as defined for the async-executor above
+  bonecp {
+    # the pool partition count
+    partitionCount = 1
+
+    # the value below is dependent on the partitionCount
+    # it must be equal or less than async-executor.minConnections / partitionCount
+    minConnectionsPerPartition = ${db.default.async-executor.minConnections}
+
+    # the value below is dependent on the partitionCount
+    # it must be equal or less than async-executor.maxConnections / partitionCount
+    maxConnectionsPerPartition = ${db.default.async-executor.maxConnections}
+  }
+}
+
+
+lagom.persistence.jdbc {
+
+  # Configuration for creating tables
+  create-tables {
+
+    # Whether tables should be created automatically as needed
+    auto = true
+
+    # How long to wait for tables to be created, before failing
+    timeout = 20s
+
+    # The cluster role to create tables from
+    run-on-role = &quot;&quot;
+
+    # Exponential backoff for failures configuration for creating tables
+    failure-exponential-backoff {
+
+      # minimum (initial) duration until processor is started again
+      # after failure
+      min = 3s
+
+      # the exponential back-off is capped to this duration
+      max = 30s
+
+      # additional random delay is based on this factor
+      random-factor = 0.2
+    }
+  }
+}</code></pre><h2 id="Application-Loader"><a class="section-marker" href="#Application-Loader">§</a>Application Loader</h2>
+<p>The Lagom Application Loader needs to load the correct persistence components based on whether you&rsquo;re working with Cassandra or JDBC. For an RDBMS not only the JDBC persistence components must be loaded but also a connection pool must be configured. By default the Hikari connection pool is available in Play and can be configured as follows:</p>
+<pre class="prettyprint"><code class="language-scala">abstract class BlogApplication(context: LagomApplicationContext)
+  extends LagomApplication(context)
+    with JdbcPersistenceComponents
+    with HikariCPComponents
+    with AhcWSComponents {</code></pre>

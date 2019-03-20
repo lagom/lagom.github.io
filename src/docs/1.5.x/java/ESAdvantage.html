@@ -1,0 +1,20 @@
+<h1 id="Advantages-of-Event-Sourcing"><a class="section-marker" href="#Advantages-of-Event-Sourcing">§</a>Advantages of Event Sourcing</h1>
+<p>For years, developers have implemented persistence using the traditional Create, Read, Update, Delete (CRUD) model. As previously introduced, the event sourcing model achieves persistence by storing state changes as historical events that capture business activity before writes occur to the data store. This decouples the events from the storage mechanism, allowing them to be aggregated, or placed in a group with logical boundaries. Event Sourcing is one of the patterns that enables concurrent, distributed systems to achieve high performance, scalability and resilience.</p>
+<p>In a distributed architecture, event sourcing provides the following advantages:</p>
+<ul>
+  <li>
+  <p>In a traditional CRUD model, entity instances are usually represented dually as a mutable object in memory and a mutable row in a relational database table. This leads to the infamous <a href="https://en.wikipedia.org/wiki/Object-relational_impedance_mismatch">object relational impedance mismatch</a>. Object-relational mappers were created to bridge this divide, but bring new complexities of their own. The event sourcing model treats the database as an append-only log of serialized events. It does not attempt to model the state of each entity or the relationships between them directly in the database schema. This greatly simplifies the code that writes to and reads from the database.</p></li>
+  <li>
+  <p>The history of how an entity reached its current state remains in the stored events. Consistency between transactional data and audit data is assured, because these are actually the same data.</p></li>
+  <li>
+  <p>You now have the ability to analyze the event stream and derive important business information from it &ndash; perhaps things that were not even thought about when the events were designed. You can add new views on our system&rsquo;s activity without making the write-side more complicated.</p></li>
+  <li>
+  <p>It improves write performance, since all types of events are simply appended to the data store. There are no updates and no deletes.</p></li>
+  <li>
+  <p>Event-sourced systems are easy to test and debug. Commands and events can be simulated for test purposes. The event log provides a good record for debugging. If an issue is detected in production, you can replay the event log in a controlled environment to understand how an entity reached the bad state.</p></li>
+</ul><h2 id="Further-reading"><a class="section-marker" href="#Further-reading">§</a>Further reading</h2>
+<p>A full discussion of Event Sourcing and CQRS is beyond the scope of this documentation. For more information, we recommend the following.</p>
+<ul>
+  <li>The <a href="https://msdn.microsoft.com/en-us/library/jj554200.aspx">CQRS Journey</a> &mdash; a great resource for learning more about CQRS and Event Sourcing.</li>
+  <li>A <a href="https://jazzy.id.au/2016/10/08/cqrs-increases-consistency.html">blog post by one of our own</a> &mdash; shows the important role CQRS plays in a microservices system.</li>
+</ul>

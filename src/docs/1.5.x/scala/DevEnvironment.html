@@ -1,0 +1,112 @@
+<h1 id="Development-Environment"><a class="section-marker" href="#Development-Environment">§</a>Development Environment</h1>
+<p>Lagom&rsquo;s sbt and Maven based development environments allow running any number of services together with a single command.</p>
+<p>The same command also reloads your services when the code changes, so that you don&rsquo;t have to manually restart them. You can stay focused on your work and let Lagom do the compiling and reloading.</p><h2 id="Running-all-services-in-Maven"><a class="section-marker" href="#Running-all-services-in-Maven">§</a>Running all services in Maven</h2>
+<p>To run all services in Maven, simply run the <code>lagom:runAll</code> command:</p>
+<pre class="prettyprint"><code class="language-console">$ cd &lt;path to your Lagom project&gt;
+$ mvn lagom:runAll
+INFO ...
+INFO Service hello-impl listening for HTTP on 127.0.0.1:24266
+INFO Service hello-impl listening for HTTPS on 127.0.0.1:50695
+INFO Service hello-stream-impl listening for HTTP on 127.0.0.1:26230
+INFO Service hello-stream-impl listening for HTTPS on 127.0.0.1:58440
+(Services started, press enter to stop and go back to the console...)
+</code></pre>
+<p>This may take a while if you have a lot of services or if dependencies are being retrieved for the first time.</p><h2 id="Starting-the-sbt-development-console"><a class="section-marker" href="#Starting-the-sbt-development-console">§</a>Starting the sbt development console</h2>
+<p>Assuming you have an sbt project, it&rsquo;s now time to fire up the console on your Lagom project directory:</p>
+<pre class="prettyprint"><code class="language-console">$ cd &lt;path to your Lagom project&gt;
+$ sbt
+[info] ...
+&gt;
+</code></pre>
+<p>To run all Lagom services together, with automatic reloading, just enter <code>runAll</code> in the sbt console:</p>
+<pre class="prettyprint"><code class="language-console">&gt; runAll
+[info] ...
+[info] Service hello-impl listening for HTTP on 127.0.0.1:24266
+[info] Service hello-impl listening for HTTPS on 127.0.0.1:50695
+[info] Service stream-impl listening for HTTP on 127.0.0.1:26230
+[info] Service stream-impl listening for HTTPS on 127.0.0.1:58440
+(Services started, press enter to stop and go back to the console...)
+</code></pre>
+<p>This may take a while if you have a lot of services or if dependencies are being retrieved for the first time.</p><h2 id="Hot-reloading"><a class="section-marker" href="#Hot-reloading">§</a>Hot reloading</h2>
+<p>Once the &ldquo;Services started&rdquo; message has appeared, if you make a change to your source code, you&rsquo;ll see output like this in the console:</p>
+<pre class="prettyprint"><code class="language-console">[info] Compiling 1 Java source to /&lt;project-path&gt;/target/scala-2.12/classes...
+
+--- (RELOAD) ---
+</code></pre><h2 id="Managing-custom-services"><a class="section-marker" href="#Managing-custom-services">§</a>Managing custom services</h2>
+<p>By default, Lagom will, in addition to running your services, also start a service locator, a Cassandra server and a Kafka server. If using sbt, you can customize what Lagom starts, including adding other databases and infrastructure services.</p>
+<blockquote>
+  <p><strong>Note:</strong> Managing custom services is not currently supported in Maven, due to Maven&rsquo;s inability to arbitrarily add behaviour, such as the logic necessary to start and stop an external process, to a build. This is typically not a big problem, it simply means developers have to manually install, start and stop these services themselves.</p>
+</blockquote>
+<p>To add a custom service, first you need to define a task to start the service in your <code>build.sbt</code>. The task should produce a result of <code>Closeable</code>, which can be used to stop the service. Here&rsquo;s an example for Elastic Search:</p>
+<pre class="prettyprint"><code class="language-sbt">import java.io.Closeable
+
+val startElasticSearch = taskKey[Closeable](&quot;Starts elastic search&quot;)
+
+startElasticSearch in ThisBuild := {
+  val esVersion = &quot;5.4.0&quot;
+  val log = streams.value.log
+  val elasticsearch = target.value / s&quot;elasticsearch-$esVersion&quot;
+
+  if (!elasticsearch.exists()) {
+    log.info(s&quot;Downloading Elastic Search $esVersion...&quot;)
+    IO.unzipURL(url(s&quot;https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-$esVersion.zip&quot;), target.value)
+    IO.append(elasticsearch / &quot;config&quot; / &quot;log4j2.properties&quot;, &quot;\nrootLogger.level = warn\n&quot;)
+  }
+
+  val binFile = if (sys.props(&quot;os.name&quot;) == &quot;Windows&quot;) {
+    elasticsearch / &quot;bin&quot; / &quot;elasticsearch.bat&quot;
+  } else {
+    elasticsearch / &quot;bin&quot; / &quot;elasticsearch&quot;
+  }
+
+  val process = Process(binFile.getAbsolutePath, elasticsearch).run(log)
+  log.info(&quot;Elastic search started on port 9200&quot;)
+
+  new Closeable {
+    override def close(): Unit = process.destroy()
+  }
+}</code></pre>
+<p>Now we&rsquo;re able to start Elastic Search, we need to add this task to Lagom&rsquo;s list of infrastructure services, so that Lagom will start it when <code>runAll</code> is executed. This can be done by modifying the <code>lagomInfrastructureServices</code> setting:</p>
+<pre class="prettyprint"><code class="language-sbt">lagomInfrastructureServices in ThisBuild += (startElasticSearch in ThisBuild).taskValue</code></pre><h2 id="Behind-the-scenes"><a class="section-marker" href="#Behind-the-scenes">§</a>Behind the scenes</h2>
+<!-- copied this section to concepts, perhaps it can be removed later -->
+<p>What&rsquo;s happening behind the scenes when you <code>runAll</code>?</p>
+<ul>
+  <li>an embedded <a href="ServiceLocator.html">Service Locator</a> is started</li>
+  <li>an embedded <a href="ServiceLocator.html#Service-Gateway">Service Gateway</a> is started</li>
+  <li>a <a href="CassandraServer.html">Cassandra server</a> is started</li>
+  <li>a <a href="KafkaServer.html">Kafka server</a> is started</li>
+  <li>your services start
+    <ul>
+      <li>&hellip;and register with the Service Locator</li>
+      <li>&hellip;and register the publicly accessible paths in the Service Gateway</li>
+    </ul>
+  </li>
+</ul>
+<p>This all happens automatically without special code or additional configuration.</p>
+<!--end copied section -->
+<p>You can verify that your services are running by viewing <code>http://localhost:9008/services</code> in a web browser (or with a command line tool such as <code>curl</code>). The Service Locator, running on port <code>9008</code>, will return JSON such as:</p>
+<pre class="prettyprint"><code>[
+  {
+    &quot;name&quot;:&quot;cas_native&quot;,
+    &quot;url&quot;:&quot;tcp://127.0.0.1:4000/cas_native&quot;,
+    &quot;portName&quot;:null
+  },
+  {
+    &quot;name&quot;:&quot;kafka_native&quot;,
+    &quot;url&quot;:&quot;tcp://localhost:9092/kafka_native&quot;,
+    &quot;portName&quot;:null
+  },
+  {
+    &quot;name&quot;:&quot;hello&quot;,
+    &quot;url&quot;:&quot;http://127.0.0.1:65499&quot;,
+    &quot;portName&quot;:null
+  },
+  {
+    &quot;name&quot;:&quot;hello&quot;,
+    &quot;url&quot;:&quot;http://127.0.0.1:65499&quot;,
+    &quot;portName&quot;:&quot;http&quot;
+    }
+]
+</code></pre>
+<p><code>cas_native</code> is the <a href="https://cassandra.apache.org/">Cassandra</a> server. As you will learn in the <a href="PersistentEntity.html">documentation for writing persistent and clustered services</a>, Cassandra is the default database in Lagom, and it&rsquo;s an integral part of the development environment.</p>
+<p>The Service Locator, Cassandra, and Kafka are covered in more detail in the sections that follow.</p>

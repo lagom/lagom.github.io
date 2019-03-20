@@ -1,0 +1,126 @@
+<h1 id="Service-Descriptors"><a class="section-marker" href="#Service-Descriptors">§</a>Service Descriptors</h1>
+<p>Lagom services are described by an interface, known as a service descriptor. This interface not only defines how the service is invoked and implemented, it also defines the metadata that describes how the interface is mapped down onto an underlying transport protocol. Generally, the service descriptor, its implementation and consumption should remain agnostic to what transport is being used, whether that&rsquo;s REST, websockets, or some other transport. Let&rsquo;s take a look at a simple descriptor:</p>
+<pre class="prettyprint"><code class="language-scala">import com.lightbend.lagom.scaladsl.api._
+
+trait HelloService extends Service {
+  def sayHello: ServiceCall[String, String]
+
+  override def descriptor = {
+    import Service._
+    named(&quot;hello&quot;).withCalls(
+      call(sayHello)
+    )
+  }
+}</code></pre>
+<p>This descriptor defines a service with one call, the <code>sayHello</code> call. <code>sayHello</code> is a method that returns something of type <a href="api/com/lightbend/lagom/scaladsl/api/ServiceCall.html"><code>ServiceCall</code></a>, this is a representation of the call that can be invoked when consuming the service, and implemented by the service itself. This is what the interface looks like:</p>
+<pre class="prettyprint"><code class="language-scala">trait ServiceCall[Request, Response] {
+  def invoke(request: Request): Future[Response]
+}</code></pre>
+<p>An important thing to note here is that invoking the <code>sayHello</code> method does not actually invoke the call, it simply gets a handle to the call, which can then be invoked using the <code>invoke</code> method.</p>
+<p><a href="api/com/lightbend/lagom/scaladsl/api/ServiceCall.html"><code>ServiceCall</code></a> takes two type parameters, <code>Request</code> and <code>Response</code>. The <code>Request</code> parameter is the type of the incoming request message, and the <code>Response</code> parameter is the type of the outgoing response message. In the example above, these are both <code>String</code>, so our service call just handles simple text messages.</p>
+<p>While the <code>sayHello</code> method describes how the call will be programmatically invoked or implemented, it does not describe how this call gets mapped down onto the transport. This is done by providing an implementation of the <a href="api/com/lightbend/lagom/scaladsl/api/Service.html#descriptor:Descriptor"><code>descriptor</code></a> call, whose interface is described by <a href="api/com/lightbend/lagom/scaladsl/api/Service.html"><code>Service</code></a>.</p>
+<p>You can see that we&rsquo;re returning a service named <code>hello</code>, and we&rsquo;re describing one call, the <code>sayHello</code> call. Because this service is so simple, in this case we don&rsquo;t need to do anything more than simply passing the Service call <code>sayHello</code> defined above in the example as a method reference to the <a href="api/com/lightbend/lagom/scaladsl/api/Service$.html#call[Request,Response](ScalaMethodServiceCall[Request,Response])(MessageSerializer[Request,_],MessageSerializer[Response,_]):Call[Request,Response]"><code>call</code></a> method.</p><h2 id="Call-identifiers"><a class="section-marker" href="#Call-identifiers">§</a>Call identifiers</h2>
+<p>Each service call needs to have an identifier. An identifier is used to provide routing information to the implementation of the client and the service, so that calls over the wire can be mapped to the appropriate call. Identifiers can be a static name or path, or they can have dynamic components, where dynamic path parameters are extracted from the path and passed to the service call methods.</p>
+<p>The simplest type of identifier is a name, and by default, that name is set to be the same name as the name of the method on the interface that implements it. In the example above, we&rsquo;ve used the <code>call</code> method to create a service call with a name of <code>sayHello</code>. A custom name can also be supplied, by using the <a href="api/com/lightbend/lagom/scaladsl/api/Service$.html#namedCall[Request,Response](String,ScalaMethodServiceCall[Request,Response])(MessageSerializer[Request,_],MessageSerializer[Response,_]):Call[Request,Response]"><code>namedCall</code></a> method:</p>
+<pre class="prettyprint"><code class="language-scala">named(&quot;hello&quot;).withCalls(
+  namedCall(&quot;hello&quot;, sayHello)
+)</code></pre>
+<p>In this case, we&rsquo;ve named it <code>hello</code>, instead of the default of <code>sayHello</code>. When implemented using REST, this will mean this call will have a path of <code>/hello</code>.</p><h3 id="Path-based-identifiers"><a class="section-marker" href="#Path-based-identifiers">§</a>Path based identifiers</h3>
+<p>The second type of identifier is a path based identifier. This uses a URI path and query string to route calls, and from it dynamic path parameters can optionally be extracted out. They can be configured using the <a href="api/com/lightbend/lagom/scaladsl/api/Service$.html#pathCall[Request,Response](String,ScalaMethodServiceCall[Request,Response])(MessageSerializer[Request,_],MessageSerializer[Response,_]):Call[Request,Response]"><code>pathCall</code></a> method.</p>
+<p>Dynamic path parameters are extracted from the path by declaring dynamic parts in the path. These are prefixed with a colon, for example, a path of <code>/order/:id</code> has a dynamic part called <code>id</code>. Lagom will extract this parameter from the path, and pass it to the service call method. In order to convert it to the type accepted by the method, Lagom will use an implicitly provided <a href="api/com/lightbend/lagom/scaladsl/api/deser/PathParamSerializer.html"><code>PathParamSerializer</code></a>. Lagom includes many <code>PathParamSerializer</code>&rsquo;s out of the box, such as for <code>String</code>, <code>Long</code>, <code>Int</code>, <code>Boolean</code> and <code>UUID</code>. Here&rsquo;s an example of extracting a <code>long</code> parameter from the path and passing it to a service call:</p>
+<pre class="prettyprint"><code class="language-scala">def getOrder(orderId: Long): ServiceCall[NotUsed, Order]
+
+override def descriptor = {
+  import Service._
+  named(&quot;orders&quot;).withCalls(
+    pathCall(&quot;/order/:id&quot;, getOrder _)
+  )
+}</code></pre>
+<p>Note that this time we&rsquo;re using an <a href="https://www.scala-lang.org/files/archive/spec/2.12/06-expressions.html#method-values">eta-expanded</a> reference to the method. This is because the method takes a parameter.</p>
+<p>Multiple parameters can of course be extracted out, these will be passed to your service call method in the order they are extracted from the URL:</p>
+<pre class="prettyprint"><code class="language-scala">def getItem(orderId: Long, itemId: String): ServiceCall[NotUsed, Item]
+
+override def descriptor = {
+  import Service._
+  named(&quot;orders&quot;).withCalls(
+    pathCall(&quot;/order/:orderId/item/:itemId&quot;, getItem _)
+  )
+}</code></pre>
+<p>Query string parameters can also be extracted from the path, using a <code>&amp;</code> separated list after a <code>?</code> at the end of the path. For example, the following service call uses query string parameters to implement paging:</p>
+<pre class="prettyprint"><code class="language-scala">def getItems(orderId: Long, pageNo: Int, pageSize: Int): ServiceCall[NotUsed, Seq[Item]]
+
+override def descriptor = {
+  import Service._
+  named(&quot;orders&quot;).withCalls(
+    pathCall(&quot;/order/:orderId/items?pageNo&amp;pageSize&quot;, getItems _)
+  )
+}</code></pre>
+<p>When you use <code>call</code>, <code>namedCall</code> or <code>pathCall</code>, if Lagom maps that down to REST, Lagom will make a best effort attempt to map it down to REST in a semantic fashion. So for example, if there is a request message it will use the <code>POST</code> method, whereas if there&rsquo;s none it will use <code>GET</code>.</p><h3 id="REST-identifiers"><a class="section-marker" href="#REST-identifiers">§</a>REST identifiers</h3>
+<p>The final type of identifier is a REST identifier. REST identifiers are designed to be used when creating semantic REST APIs. They use both a path, as with the path based identifier, and a request method, to identify them. They can be configured using the <a href="api/com/lightbend/lagom/scaladsl/api/Service$.html#restCall[Request,Response](Method,String,ScalaMethodServiceCall[Request,Response])(MessageSerializer[Request,_],MessageSerializer[Response,_]):Call[Request,Response]"><code>restCall</code></a> method:</p>
+<pre class="prettyprint"><code class="language-scala">def addItem(orderId: Long): ServiceCall[Item, NotUsed]
+def getItem(orderId: Long, itemId: String): ServiceCall[NotUsed, Item]
+def deleteItem(orderId: Long, itemId: String): ServiceCall[NotUsed, NotUsed]
+
+def descriptor = {
+  import Service._
+  import com.lightbend.lagom.scaladsl.api.transport.Method
+  named(&quot;orders&quot;).withCalls(
+    restCall(Method.POST,   &quot;/order/:orderId/item&quot;,         addItem _),
+    restCall(Method.GET,    &quot;/order/:orderId/item/:itemId&quot;, getItem _),
+    restCall(Method.DELETE, &quot;/order/:orderId/item/:itemId&quot;, deleteItem _)
+  )
+}</code></pre><h2 id="Messages"><a class="section-marker" href="#Messages">§</a>Messages</h2>
+<p>Every service call in Lagom has a request message type and a response message type. When the request or response message isn&rsquo;t used, the <code>akka.NotUsed</code> can be used in their place. Request and response message types fall into two categories, strict and streamed.</p><h3 id="Strict-messages"><a class="section-marker" href="#Strict-messages">§</a>Strict messages</h3>
+<p>A strict message is a single message that can be represented by a simple Scala object, typically a case class. The message will be buffered into memory, and then parsed, for example, as JSON. When both message types are strict, the call is said to be a synchronous call, that is, a request is sent and received, then a response is sent and received. The caller and callee have synchronized in their communication.</p>
+<p>So far, all of the service call examples we&rsquo;ve seen have used strict messages, for example, the order service descriptors above accept and return items and orders. The input value is passed directly to the service call, and returned directly from the service call, and these values are serialized to a JSON buffer in memory before being sent, and read entirely into memory before being deserialized back from JSON.</p><h3 id="Streamed-messages"><a class="section-marker" href="#Streamed-messages">§</a>Streamed messages</h3>
+<p>A streamed message is a message of type <a href="https://doc.akka.io/api/akka/2.5/akka/stream/scaladsl/Source.html"><code>Source</code></a>. <code>Source</code> is an <a href="https://doc.akka.io/docs/akka/2.5/stream/?language=scala">Akka streams</a> API that allows asynchronous streaming and handling of messages. Here&rsquo;s an example streamed service call:</p>
+<pre class="prettyprint"><code class="language-scala">import akka.NotUsed
+import akka.stream.scaladsl.Source
+
+def tick(interval: Int): ServiceCall[String, Source[String, NotUsed]]
+
+def descriptor = {
+  import Service._
+  named(&quot;clock&quot;).withCalls(
+    pathCall(&quot;/tick/:interval&quot;, tick _)
+  )
+}</code></pre>
+<p>This service call has a strict request type and a streamed response type. An implementation of this might return a <code>Source</code> that sends the input tick message <code>String</code> at the specified interval.</p>
+<p>A bidirectional streamed call might look like this:</p>
+<pre class="prettyprint"><code class="language-scala">import akka.NotUsed
+import akka.stream.scaladsl.Source
+
+def sayHello: ServiceCall[Source[String, NotUsed], Source[String, NotUsed]]
+
+def descriptor = {
+  import Service._
+  named(&quot;hello&quot;).withCalls(
+    call(this.sayHello)
+  )
+}</code></pre>
+<p>In this case, the server might return a <code>Source</code> that converts every message received in the request stream to messages prefixed with <code>Hello</code>.</p>
+<p>Lagom will choose an appropriate transport for the stream, typically, this will be WebSockets. The WebSocket protocol supports bidirectional streaming, so is a good general purpose option for streaming. When only one of the request or response message is streamed, Lagom will implement the sending and receiving of the strict message by sending or receiving a single message, and then leaving the WebSocket open until the other direction closes. Otherwise, Lagom will close the WebSocket when either direction closes.</p><h3 id="Message-serialization"><a class="section-marker" href="#Message-serialization">§</a>Message serialization</h3>
+<p>Message serializers for requests and responses are provided using type classes. Each of the <code>call</code>, <code>namedCall</code>, <code>pathCall</code> and <code>restCall</code> methods take an implicit <a href="api/com/lightbend/lagom/scaladsl/api/deser/MessageSerializer.html"><code>MessageSerializer</code></a> for each of the request and response messages. Out of the box Lagom provides a serializer for <code>String</code> messages, as well as serializers that implicitly convert a Play JSON <a href="https://www.playframework.com/documentation/2.6.x/api/scala/play/api/libs/json/Format.html"><code>Format</code></a> type class to a message serializer.</p><h4 id="Using-Play-JSON"><a class="section-marker" href="#Using-Play-JSON">§</a>Using Play JSON</h4>
+<p>Play JSON provides a functional type class based library for composing JSON formatters. For detailed documentation on how to use this library, see the <a href="https://www.playframework.com/documentation/2.6.x/ScalaJsonCombinators">Play documentation</a>. For now, we will just look at how to define JSON formats for case classes using Play&rsquo;s JSON format macro.</p>
+<p>Let&rsquo;s say you have a <code>User</code> case class that looks like this:</p>
+<pre class="prettyprint"><code class="language-scala">case class User(
+  id: Long,
+  name: String,
+  email: Option[String]
+)</code></pre>
+<p>A Play JSON format can be defined on the <code>User</code> companion object like so:</p>
+<pre class="prettyprint"><code class="language-scala">object User {
+  import play.api.libs.json._
+  implicit val format: Format[User] = Json.format[User]
+}</code></pre>
+<p>This format will generate and parse JSON in the following format:</p>
+<pre class="prettyprint"><code class="language-json">{
+  &quot;id&quot;: 12345,
+  &quot;name&quot;: &quot;John Smith&quot;,
+  &quot;email&quot;: &quot;john.smith@example.org&quot;
+}
+</code></pre>
+<p>Fields can be made optional by making them of type <code>Option</code>, this will mean the format will not fail to parse the JSON if the property is not present, and when it generates JSON, it will simply not generate that property.</p>
+<p>By defining the format on the <code>User</code> companion object, we can ensure that this format will be automatically used whenever it is required, due to Scala&rsquo;s implicit scoping rules. This means that aside from declaring the format, no further work needs to be done to ensure that this format will be used for the <code>MessageSerializer</code>.</p>
+<p>Note that if your case class references another, non primitive type, such as another case class, you&rsquo;ll need to also define a format for that case class.</p><h4 id="Writing-custom-message-serializers"><a class="section-marker" href="#Writing-custom-message-serializers">§</a>Writing custom message serializers</h4>
+<p>You can also write custom message serializers, for example, to use protocol buffers or other message format types. For more information, see the <a href="MessageSerializers.html">message serializers documentation</a>.</p>

@@ -1,0 +1,204 @@
+<h1 id="Defining-a-Lagom-build"><a class="section-marker" href="#Defining-a-Lagom-build">§</a>Defining a Lagom build</h1>
+<p>As already discussed in <a href="BuildConcepts.html">Lagom build philosophy</a>, with Lagom you are free to combine all your services in a single build, or build them individually.</p>
+<p>Below, we describe how to make a single build containing all your services. The <code>hello</code> sample follows this structure.</p>
+<p>Then, in the next section, we&rsquo;ll describe the alternative approach of one build per service.</p><h2 id="Understanding-your-project-structure"><a class="section-marker" href="#Understanding-your-project-structure">§</a>Understanding your project structure</h2>
+<p>Every service contains at least two parts: an API project and an implementation project. (These are subprojects within the same build.)</p>
+<p>The API project contains the service interface, also known as the descriptor, along with all the data models that the interface uses, e.g. request and response messages. The API project can be depended on and consumed by other services.</p>
+<p>The implementation project will naturally also depend on the API project, in order to implement it.</p>
+<p>Consider the sample system below:</p>
+<p><img src="resources/guide/build/lagom-project-structure.png" alt="Lagom project structure" /></p>
+<p>This system has two services, one called <code>hello</code>, and one called <code>hello-stream</code>. Each service has two sbt projects defined, an API project, <code>hello-api</code> and <code>hello-stream-api</code>, and an implementation project, <code>hello-impl</code> and <code>hello-stream-impl</code>. Additionally, <code>hello-stream-impl</code> depends on <code>hello-api</code>, and uses that to invoke calls on <code>hello</code>.</p>
+<ul>
+  <li><a href="#Defining-a-build-in-Maven">Defining a build in Maven</a></li>
+  <li><a href="#Defining-a-build-in-sbt">Defining a build in sbt</a></li>
+</ul><h2 id="Defining-a-build-in-Maven"><a class="section-marker" href="#Defining-a-build-in-Maven">§</a>Defining a build in Maven</h2><h3 id="Configuring-the-root-project"><a class="section-marker" href="#Configuring-the-root-project">§</a>Configuring the root project</h3>
+<p>We recommend the usage of maven properties to define the Lagom Version and Scala Binary Version to use. The properties should be configured in the root project under <code>&lt;project&gt;</code> tag:</p>
+<pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+    &lt;scala.binary.version&gt;2.12&lt;/scala.binary.version&gt;
+    &lt;lagom.version&gt;1.4.3&lt;/lagom.version&gt;
+&lt;/properties&gt;
+</code></pre>
+<p>In Lagom, it is typical to use a multi module build. The Lagom maven plugin will generally be configured in the root project, which can be done by adding it to the <code>&lt;plugins&gt;</code> section of your <code>pom.xml</code>:</p>
+<pre class="prettyprint"><code class="language-xml">&lt;plugin&gt;
+    &lt;groupId&gt;com.lightbend.lagom&lt;/groupId&gt;
+    &lt;artifactId&gt;lagom-maven-plugin&lt;/artifactId&gt;
+    &lt;version&gt;${lagom.version}&lt;/version&gt;
+&lt;/plugin&gt;
+</code></pre>
+<p>Doing this will allow you to use tasks like <code>lagom:runAll</code> to run every service in the system, and to define system wide configuration. Maven plugins inherit their configuration from parent poms, so whatever you define in the parent pom will be used for all services.</p>
+<p>Since Lagom requires JDK 8, you will need to set the source and target versions for Java compilation to be 1.8. Additionally, Lagom comes with the Jackson parameter names extension out of the box, allowing Jackson to deserialize json into immutable classes with no additional annotation metadata. To take advantage of this feature, the Java compiler must have parameter names enabled. The source, target and parameter names configuration is best configured in the root project, since the configuration will be inherited by all child modules:</p>
+<pre class="prettyprint"><code class="language-xml">&lt;plugin&gt;
+    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+    &lt;version&gt;3.5.1&lt;/version&gt;
+    &lt;configuration&gt;
+        &lt;source&gt;1.8&lt;/source&gt;
+        &lt;target&gt;1.8&lt;/target&gt;
+        &lt;compilerArgs&gt;
+            &lt;arg&gt;-parameters&lt;/arg&gt;
+        &lt;/compilerArgs&gt;
+    &lt;/configuration&gt;
+&lt;/plugin&gt;
+</code></pre>
+<p>We also recommend using Maven dependency management in your root project pom to control the versions of your dependencies across the whole system. For example:</p>
+<pre class="prettyprint"><code class="language-xml">&lt;dependencyManagement&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.lightbend.lagom&lt;/groupId&gt;
+            &lt;artifactId&gt;lagom-javadsl-server_${scala.binary.version}&lt;/artifactId&gt;
+            &lt;version&gt;${lagom.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.typesafe.play&lt;/groupId&gt;
+            &lt;artifactId&gt;play-akka-http-server_${scala.binary.version}&lt;/artifactId&gt;
+            &lt;version&gt;${play.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.lightbend.lagom&lt;/groupId&gt;
+            &lt;artifactId&gt;lagom-javadsl-api_${scala.binary.version}&lt;/artifactId&gt;
+            &lt;version&gt;${lagom.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        ...
+    &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+</code></pre><h4 id="A-note-on-Scala-versions"><a class="section-marker" href="#A-note-on-Scala-versions">§</a>A note on Scala versions</h4>
+<p>When adding dependencies to Lagom libraries, you need to ensure that you include the Scala major version in the artifact ID, for example, <code>lagom-javadsl-api_${scala.binary.version}</code>. Note, <code>${scala.binary.version}</code> references a maven property as explained above.</p>
+<p>Lagom itself is implemented mostly in Scala. Unlike Java, where the Java maintainers control the virtual machine and so can build backwards compatibility into the virtual machine when new features are added, when new features are added in Scala, backwards compatibility is very difficult if not impossible to maintain. Therefore, libraries have to be compiled against a particular major version of Scala.</p>
+<p>Often libraries will want to support multiple versions of Scala, doing this requires building one artifact for each version of Scala that they support, which introduces the problem of how to differentiate between those artifacts, seeing as maven doesn&rsquo;t support the idea of adding additional metadata to dependencies to specify what version of Scala they require. To solve this, the convention of appending the Scala version to the artifact is used.</p><h3 id="Defining-a-service"><a class="section-marker" href="#Defining-a-service">§</a>Defining a service</h3>
+<p>The API module for a service is a simple maven project. It doesn&rsquo;t need to configure the Lagom plugin, often it will need no more than a dependency on the Lagom API library. For example:</p>
+<pre class="prettyprint"><code class="language-xml">&lt;project&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;parent&gt;
+        &lt;groupId&gt;com.example&lt;/groupId&gt;
+        &lt;artifactId&gt;my-first-system&lt;/artifactId&gt;
+        &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;/parent&gt;
+
+    &lt;artifactId&gt;hello-api&lt;/artifactId&gt;
+
+    &lt;packaging&gt;jar&lt;/packaging&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.lightbend.lagom&lt;/groupId&gt;
+            &lt;artifactId&gt;lagom-javadsl-api_${scala.binary.version}&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;
+</code></pre>
+<p>The implementation module for a service is also a simple maven project, but will have a few more dependencies, and will need to configure the <code>lagom-maven-plugin</code> to mark itself as a service project, so that the plugin knows to include it when <code>lagom:runAll</code> is used:</p>
+<pre class="prettyprint"><code class="language-xml">&lt;project&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;parent&gt;
+        &lt;groupId&gt;com.example&lt;/groupId&gt;
+        &lt;artifactId&gt;my-first-system&lt;/artifactId&gt;
+        &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;/parent&gt;
+
+    &lt;artifactId&gt;hello-impl&lt;/artifactId&gt;
+
+    &lt;packaging&gt;jar&lt;/packaging&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;${project.groupId}&lt;/groupId&gt;
+            &lt;artifactId&gt;hello-api&lt;/artifactId&gt;
+            &lt;version&gt;${project.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.lightbend.lagom&lt;/groupId&gt;
+            &lt;artifactId&gt;lagom-javadsl-server_${scala.binary.version}&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.lightbend.lagom&lt;/groupId&gt;
+            &lt;artifactId&gt;lagom-javadsl-persistence_${scala.binary.version}&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.lightbend.lagom&lt;/groupId&gt;
+            &lt;artifactId&gt;lagom-logback_${scala.binary.version}&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.typesafe.play&lt;/groupId&gt;
+            &lt;artifactId&gt;play-akka-http-server_${scala.binary.version}&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.lightbend.lagom&lt;/groupId&gt;
+            &lt;artifactId&gt;lagom-javadsl-testkit_${scala.binary.version}&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;com.lightbend.lagom&lt;/groupId&gt;
+                &lt;artifactId&gt;lagom-maven-plugin&lt;/artifactId&gt;
+                &lt;configuration&gt;
+                    &lt;lagomService&gt;true&lt;/lagomService&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+&lt;/project&gt;
+</code></pre>
+<p>A few things to notice here are:</p>
+<ul>
+  <li>The implementation depends on its API project, so that it can implement that API.</li>
+  <li>It also has a dependency on <code>lagom-javadsl-server</code>, this provides all server side code for the project.</li>
+  <li>This particular service uses the Lagom persistence API to persist data, and so has a dependency on <code>lagom-javadsl-persistence</code>.</li>
+  <li>A logging implementation needs to be configured, this uses the default <code>lagom-logback</code> logging implementation.</li>
+  <li>An implementation of the Play HTTP server needs to be configured - Play provides two server implementations, one in Netty, and one in Akka HTTP. In this case, Akka HTTP has been selected. Replace <code>play-akka-http-server_${scala.binary.version}</code> with <code>play-netty-server_${scala.binary.version}</code> if you wanted to switch.</li>
+  <li>The <code>lagom-maven-plugin</code> has been configured to say that <code>lagomService</code> is <code>true</code>, this tells Lagom that this is a lagom service that should be run when you run <code>lagom:runAll</code>.</li>
+</ul><h2 id="Defining-a-build-in-sbt"><a class="section-marker" href="#Defining-a-build-in-sbt">§</a>Defining a build in sbt</h2><h3 id="Adding-the-Lagom-sbt-plugin"><a class="section-marker" href="#Adding-the-Lagom-sbt-plugin">§</a>Adding the Lagom sbt plugin</h3>
+<p>A Lagom build must tell sbt to use the Lagom plugin. This is done by creating a file called <code>project/plugins.sbt</code>, and adding the plugin like so:</p>
+<pre class="prettyprint"><code class="language-sbt">addSbtPlugin(&quot;com.lightbend.lagom&quot; % &quot;lagom-sbt-plugin&quot; % &quot;X.Y.Z&quot;) // replace &#39;X.Y.Z&#39; with your preferred version (e.g. &#39;1.2.0-RC2&#39;).</code></pre>
+<p>The plugin provides all the necessary support for building, running, and deploying your Lagom application.</p>
+<p>For more information on sbt plugins, see the sbt documentation on <a href="https://www.scala-sbt.org/1.x/docs/Using-Plugins.html">Using Plugins</a>.</p><h3 id="Defining-a-build"><a class="section-marker" href="#Defining-a-build">§</a>Defining a build</h3>
+<p>An sbt build is defined in one or more <code>*.sbt</code> files in the build&rsquo;s root directory. It&rsquo;s conventional to have a single file named <code>build.sbt</code>; you can split it into multiple files later if it becomes unwieldy.</p>
+<p>sbt build files are defined using a Scala-based DSL. Simple builds use only a small subset of the DSL, so there&rsquo;s no need to spend any time learning Scala. If you use an sbt Giter8 to get started, you&rsquo;ll have a working build from the start. From there, you&rsquo;ll probably only need to make small edits, or copy-and-paste existing code.</p><h3 id="Setting-the-Scala-version"><a class="section-marker" href="#Setting-the-Scala-version">§</a>Setting the Scala version</h3>
+<p>Even though you&rsquo;ll write your services in Java, Lagom itself uses Scala, so every Lagom build must specify a Scala version, like this:</p>
+<pre class="prettyprint"><code class="language-sbt">scalaVersion in ThisBuild := &quot;2.12.8&quot;</code></pre><h3 id="Defining-a-service1"><a class="section-marker" href="#Defining-a-service1">§</a>Defining a service</h3>
+<p>Next we need to define the projects. Recall that each service has at least two projects, API and implementation. First we&rsquo;ll define the <code>hello-api</code> project.</p>
+<p>A Lagom API project is an ordinary sbt project. Our first project looks like this:</p>
+<pre class="prettyprint"><code class="language-sbt">lazy val `hello-api` = (project in file(&quot;hello-api&quot;))
+  .settings(
+    version := &quot;1.0-SNAPSHOT&quot;,
+    libraryDependencies += lagomJavadslApi
+  )</code></pre>
+<p>The first line defines the project itself, by declaring a <code>lazy val</code> of type <code>Project</code>. (sbt tip: declaring projects using <code>lazy val</code> instead of just <code>val</code> can prevent some issues with initialization order.)</p>
+<p>The project is defined to be the <code>hello-api</code> directory, as indicated by <code>project in file(&quot;hello-api&quot;)</code>. This means all the source code for this project will be under that directory, laid out according to the usual Maven structure (which sbt adopts as well). So our main Java sources go in <code>hello-api/src/main/java</code>.</p>
+<p>More settings follow, in which we set the project version and add a library dependency. The Lagom plugin provides some predefined values to make the Lagom libraries easy to add. In this case, we&rsquo;re using <code>lagomJavadslApi</code>. (You can add other dependencies using the usual sbt shorthand for specifying the library&rsquo;s <code>groupId</code>, <code>artifactId</code> and <code>version</code>; see <a href="https://www.scala-sbt.org/1.x/docs/Library-Dependencies.html">Library dependencies</a> in the sbt documentation.)</p>
+<p>Now we need to define the implementation project:</p>
+<pre class="prettyprint"><code class="language-sbt">lazy val `hello-impl` = (project in file(&quot;hello-impl&quot;))
+  .enablePlugins(LagomJava)
+  .settings(
+    version := &quot;1.0-SNAPSHOT&quot;
+  )
+  .dependsOn(`hello-api`)</code></pre>
+<p>The API project didn&rsquo;t need any plugins enabled, but the implementation project does. Enabling the <code>LagomJava</code> plugin adds necessary settings and dependencies and allows us to run the project in development.</p>
+<p>The implementation project declares a dependency on the <code>hello-api</code> project, so it can implement the API&rsquo;s interfaces.</p><h3 id="Selecting-an-HTTP-backend"><a class="section-marker" href="#Selecting-an-HTTP-backend">§</a>Selecting an HTTP backend</h3>
+<p>Play 2.6 introduces a new HTTP backend implemented using Akka HTTP instead of Netty. This switch on the HTTP backend is part of an ongoing effort to replace all building blocks in Lagom for an Akka-based equivalent. Note that when consuming HTTP services, Lagom&rsquo;s Client Factory still relies on a Netty-based Play-WS instance.</p><h4 id="Backend-selection-for-sbt-users"><a class="section-marker" href="#Backend-selection-for-sbt-users">§</a>Backend selection for sbt users</h4>
+<p>When using <code>sbt</code> as a build tool Lagom defaults to using the Akka HTTP backend to serve HTTP.</p>
+<p>You can opt-out of Akka HTTP to use a Netty-based HTTP backend: in <code>sbt</code> you have to explicitly disable the <code>LagomAkkaHttpServer</code> plugin and enable the <code>LagomNettyServer</code> plugin. Note that the <code>LagomAkkaHttpServer</code> plugin is added by default on any <code>LagomJava</code> or <code>LagomScala</code> project.</p>
+<pre class="prettyprint"><code class="language-sbt">lazy val `hello-stream-netty-impl` = (project in file(&quot;hello-stream-nettyimpl&quot;))
+  .enablePlugins(LagomJava, LagomNettyServer) // Adds LagomNettyServer
+  .disablePlugins(LagomAkkaHttpServer)        // Removes LagomAkkaHttpServer
+  .settings(
+    version := &quot;1.0-SNAPSHOT&quot;
+  )
+  .dependsOn(`hello-stream-api`, `hello-api`)</code></pre><h3 id="Adding-a-second-service"><a class="section-marker" href="#Adding-a-second-service">§</a>Adding a second service</h3>
+<p>Our sample build will include two services, a producer (<code>hello</code>) and a consumer (<code>hello-stream</code>).</p>
+<p>Here&rsquo;s the definition of the second service:</p>
+<pre class="prettyprint"><code class="language-sbt">lazy val `hello-stream-api` = (project in file(&quot;hello-stream-api&quot;))
+  .settings(
+    version := &quot;1.0-SNAPSHOT&quot;,
+    libraryDependencies += lagomJavadslApi
+  )
+
+lazy val `hello-stream-impl` = (project in file(&quot;hello-stream-impl&quot;))
+  .enablePlugins(LagomJava)
+  .settings(
+    version := &quot;1.0-SNAPSHOT&quot;
+  )
+  .dependsOn(`hello-stream-api`, `hello-api`)</code></pre>
+<p>This is mostly similar to the first service. The main difference is the added dependency on the first service&rsquo;s API, so the second service can call it.</p>
+<p>In the next section, we&rsquo;ll see an alternative build structure where each service has its own build.</p>

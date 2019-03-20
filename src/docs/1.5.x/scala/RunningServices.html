@@ -1,0 +1,11 @@
+<h1 id="Running-services"><a class="section-marker" href="#Running-services">§</a>Running services</h1>
+<p>As outlined in the <a href="DevEnvironment.html">development environment introduction</a>, all Lagom services defined in a build can be run with a single task: <code>runAll</code>. When executing this task, an embedded <a href="ServiceLocator.html">Service Locator</a> is started, an embedded <a href="CassandraServer.html">Cassandra server</a> is also started, and then all your services are started, in parallel. Furthermore, all started services will be running in hot-reload mode. Hot-reload means that the services are automatically reloaded on every change you make, so that you don&rsquo;t have to manually restart them.</p>
+<p>Most times, the <code>runAll</code> task will serve you well. However, there will be occasions when you may want to manually start only a few services, and this is when the <code>run</code> task will come in handy. The <code>run</code> task is available to each of your Lagom service implementation projects.</p>
+<p>In Maven, you can execute the <code>run</code> task on a particular service by using the maven project list flag, like so:</p>
+<pre class="prettyprint"><code>$ mvn -pl &lt;your-project-name&gt; lagom:run
+</code></pre>
+<p>In sbt, you can specify the project to run on the sbt console by simply prefixing the service project&rsquo;s name, i.e.:</p>
+<pre class="prettyprint"><code>$ sbt
+&gt; &lt;your-project-name&gt;/run
+</code></pre>
+<p>Remember that <code>run</code> only starts the specified service. Neither the Service Locator nor the Cassandra server start implicitly. Hence, consider manually starting both the <a href="ServiceLocator.html#Start-and-stop">Service Locator</a> and the <a href="CassandraServer.html#Start-and-stop">Cassandra server</a> prior to manually running other services.</p>

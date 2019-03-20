@@ -1,0 +1,168 @@
+<h1 id="Testing-Services"><a class="section-marker" href="#Testing-Services">§</a>Testing Services</h1><h2 id="Running-tests"><a class="section-marker" href="#Running-tests">§</a>Running tests</h2>
+<p>Tests can be run from sbt, or from your IDE. Running tests from your IDE will be specific to your IDE, so we&rsquo;ll focus here on how to run tests from sbt.</p>
+<ul>
+  <li>To run all tests, run <code>test</code>.</li>
+  <li>To run only one test class, run <code>testOnly</code> followed by the name of the class i.e. <code>testOnly com.example.MyTest</code>. Wildcards are supported, so you can say <code>testOnly *.MyTest</code>, for example.</li>
+  <li>To run only the tests that cover code that has changed, run <code>testQuick</code>.</li>
+  <li>To run tests continually, run a command with a tilde in front, i.e. <code>~testQuick</code>.</li>
+</ul><h2 id="Testing-libraries"><a class="section-marker" href="#Testing-libraries">§</a>Testing libraries</h2>
+<p>You can use any testing framework with Lagom, popular ones include <a href="http://www.scalatest.org/">ScalaTest</a> and <a href="https://etorreborre.github.io/specs2/">Specs2</a>. If you&rsquo;re not sure which to use, or don&rsquo;t have a preference, we use ScalaTest for testing Lagom itself, and we&rsquo;ll document it here.</p>
+<p>In addition to a test framework, Lagom also provides a helper library for testing common Lagom components, called the Lagom testkit.</p>
+<p>To use your preferred test framework and the Lagom testkit, you&rsquo;ll need to add them to your library dependencies, like so:</p>
+<pre class="prettyprint"><code class="language-sbt">libraryDependencies ++= Seq(
+  lagomScaladslTestKit,
+  &quot;org.scalatest&quot; %% &quot;scalatest&quot; % &quot;3.0.1&quot; % Test
+)</code></pre>
+<p>You may want to use ScalaTest in multiple places in your build, so often it&rsquo;s a good idea to create a single <code>val</code> to hold and, which means you can just reference that val from each place that you need it, rather than having to retype the group id, artifact id and version each time. This can be done like this:</p>
+<pre class="prettyprint"><code class="language-sbt">val scalaTest = &quot;org.scalatest&quot; %% &quot;scalatest&quot; % &quot;3.0.1&quot; % &quot;test&quot;</code></pre>
+<p>Then you can use it in your <code>libraryDependencies</code> by simply referring to it:</p>
+<pre class="prettyprint"><code class="language-sbt">libraryDependencies ++= Seq(
+  lagomScaladslTestKit,
+  scalaTest
+)</code></pre>
+<p>When using Cassandra the tests must be forked, which is enabled by adding the following in your project&rsquo;s build:</p>
+<pre class="prettyprint"><code class="language-sbt">lazy val `hello-impl` = (project in file(&quot;hello-impl&quot;))
+  .enablePlugins(LagomScala)
+  .settings(lagomForkedTestSettings: _*)
+  .settings(
+    // ...
+  )</code></pre><h2 id="How-to-test-one-service"><a class="section-marker" href="#How-to-test-one-service">§</a>How to test one service</h2>
+<p>Lagom provides support for writing functional tests for one service in isolation. The service is running in a server and in the test you can interact with it using its service client, i.e. calls to the service API. These utilities are defined in <a href="api/com/lightbend/lagom/scaladsl/testkit/ServiceTest$.html">ServiceTest</a>.</p>
+<p>Here&rsquo;s what a simple test may look like:</p>
+<pre class="prettyprint"><code class="language-scala">import com.lightbend.lagom.scaladsl.server.LocalServiceLocator
+import com.lightbend.lagom.scaladsl.testkit.ServiceTest
+import org.scalatest.{AsyncWordSpec, Matchers}
+
+class HelloServiceSpec extends AsyncWordSpec with Matchers {
+
+  &quot;The HelloService&quot; should {
+    &quot;say hello&quot; in ServiceTest.withServer(ServiceTest.defaultSetup) { ctx =&gt;
+      new HelloApplication(ctx) with LocalServiceLocator
+    } { server =&gt;
+      val client = server.serviceClient.implement[HelloService]
+
+      client.sayHello.invoke(&quot;Alice&quot;).map { response =&gt;
+        response should ===(&quot;Hello Alice!&quot;)
+      }
+    }
+  }
+}</code></pre>
+<p>There are a few points to note about this code:</p>
+<ul>
+  <li>The test is using ScalaTest&rsquo;s <a href="http://www.scalatest.org/user_guide/async_testing">asynchronous test support</a>. The actual test itself returns a future, and ScalaTest ensures that that future is handled appropriately.</li>
+  <li><code>withServer</code> takes three parameters. The first is a setup parameter, which can be used to configure how the environment should be setup, for example, it can be used to start Cassandra. The second is a constructor for a <a href="api/com/lightbend/lagom/scaladsl/server/LagomApplication.html">LagomApplication</a>, which is where we construct the application, and the third is a block to run that takes the started server and runs the actual test.</li>
+  <li>When we construct the <code>LagomApplication</code>, we mix in <code>LocalServiceLocator</code>. This provides a local service locator which will resolve just the services that our application is running itself, and is how the service client we construct knows where to find our running service.</li>
+  <li>In the test callback, we implement a service client, which we can then use to talk to our service.</li>
+</ul>
+<p>The spec above will start a server for each test, which is often handy because it guarantees a clean state between each test. Sometimes however starting a server for each test can be prohibitively expensive, especially when databases are involved. In these cases it may be better to share the server between all tests in a suite. To do this, <code>startServer</code> can be used instead, invoking <code>stop</code> in a after suite callback:</p>
+<pre class="prettyprint"><code class="language-scala">import com.lightbend.lagom.scaladsl.server.LocalServiceLocator
+import com.lightbend.lagom.scaladsl.testkit.ServiceTest
+import org.scalatest.{AsyncWordSpec, Matchers, BeforeAndAfterAll}
+
+class HelloServiceSpec extends AsyncWordSpec with Matchers with BeforeAndAfterAll {
+
+  lazy val server = ServiceTest.startServer(ServiceTest.defaultSetup) { ctx =&gt;
+    new HelloApplication(ctx) with LocalServiceLocator
+  }
+  lazy val client = server.serviceClient.implement[HelloService]
+
+  &quot;The HelloService&quot; should {
+    &quot;say hello&quot; in {
+      client.sayHello.invoke(&quot;Alice&quot;).map { response =&gt;
+        response should ===(&quot;Hello Alice!&quot;)
+      }
+    }
+  }
+
+  override protected def beforeAll() = server
+
+  override protected def afterAll() = server.stop()
+}</code></pre>
+<p>Dependencies to other services must be replaced by stub or mock implementations by overriding them in your <code>LagomApplication</code> constructor callback. If we were writing a test for the <code>HelloService</code> and it had a dependency on a <code>GreetingService</code> we must create a stub implementation of the <code>GreetingService</code> that can be used for the test without running the real greeting service. It might look like this:</p>
+<pre class="prettyprint"><code class="language-scala">lazy val server = ServiceTest.startServer(ServiceTest.defaultSetup) { ctx =&gt;
+  new HelloApplication(ctx) with LocalServiceLocator {
+
+    override lazy val greetingService = new GreetingService {
+      override def greeting = ServiceCall { _ =&gt;
+        Future.successful(&quot;Hello&quot;)
+      }
+    }
+  }
+}</code></pre>
+<p>The server is by default running with <a href="PubSub.html">pubsub</a>, <a href="Cluster.html">cluster</a> and <a href="PersistentEntity.html">persistence</a> features disabled. You may want to enable clustering in the <code>Setup</code>:</p>
+<pre class="prettyprint"><code class="language-scala">lazy val server = ServiceTest.startServer(
+  ServiceTest.defaultSetup.withCluster()
+) { ctx =&gt;
+  new HelloApplication(ctx) with LocalServiceLocator
+}</code></pre>
+<p>If your service needs <a href="PersistentEntity.html">persistence</a> you will need to enable it explicitly. This can be done by enabling Cassandra or JDBC, depending on which kind of persistence is used by your service. In any case, Lagom persistence requires clustering, so when when enabling one or another, cluster will also be enabled automatically.</p>
+<p>To enable Cassandra Persistence:</p>
+<pre class="prettyprint"><code class="language-scala">lazy val server = ServiceTest.startServer(
+  ServiceTest.defaultSetup.withCassandra()
+) { ctx =&gt;
+  new HelloApplication(ctx) with LocalServiceLocator
+}</code></pre>
+<p>To enable JDBC Persistence:</p>
+<pre class="prettyprint"><code class="language-scala">lazy val server = ServiceTest.startServer(
+  ServiceTest.defaultSetup.withJdbc()
+) { ctx =&gt;
+  new HelloApplication(ctx) with LocalServiceLocator
+}</code></pre>
+<p>There&rsquo;s no way to explicitly enable or disable <a href="PubSub.html">pubsub</a>. When cluster is enabled (either explicitly or transitively via enabling Cassandra or JDBC), pubsub will be available.</p><h2 id="How-to-use-TLS-on-tests"><a class="section-marker" href="#How-to-use-TLS-on-tests">§</a>How to use TLS on tests</h2>
+<p>To open an SSL port on the <code>TestServer</code> used in your tests, you may enable SSL support using <code>withSsl</code>:</p>
+<pre class="prettyprint"><code class="language-java">Setup.defaultSetup.withSsl()
+</code></pre>
+<p>Enabling SSL will automatically open a new random port and provide an <code>javax.net.ssl.SSLContext</code> on the TestServer. Lagom doesn&rsquo;t provide any client factory that allows sending requests to the HTTPS port at the moment. You should create an HTTP client using Play-WS, Akka-HTTP or Akka-gRPC. Then, use the <code>httpsPort</code> and the <code>sslContext</code> provided by the <code>testServer</code> instance to send the request. Note that the <code>SSLContext</code> provided is built by Lagom&rsquo;s testkit to trust the <code>testServer</code> certificates. Finally, because the server certificate is issued for <code>CN=localhost</code> you will have to make sure that&rsquo;s the <code>authority</code> on the requests you generate, otherwise the server may decline and fail the request. At the moment it is not possible to setup the test server with different SSL Certificates. </p>
+<pre class="prettyprint"><code class="language-scala">&quot;complete a WS call over HTTPS&quot; in {
+  val setup = defaultSetup.withSsl()
+  ServiceTest.withServer(setup)(new TestTlsApplication(_)) { server =&gt;
+    implicit val ctx = server.application.executionContext
+    // To explicitly use HTTPS on a test you must create a client of your
+    // own and make sure it uses the provided SSLContext
+    val wsClient = buildCustomWS(server.clientSslContext.get)
+    // use `localhost` as authority
+    val url = s&quot;https://localhost:${server.playServer.httpsPort.get}/api/sample&quot;
+    val response =
+      wsClient
+        .url(url)
+        .get()
+        .map {
+          _.body[String]
+        }
+    whenReady(response, timeout) { r =&gt;
+      r should be(&quot;sample response&quot;)
+    }
+  }
+}</code></pre><h2 id="How-to-test-several-services"><a class="section-marker" href="#How-to-test-several-services">§</a>How to test several services</h2>
+<p>Lagom will provide support for writing integration tests that involve several interacting services. This feature is <a href="https://github.com/lagom/lagom/issues/38">not yet implemented</a>.</p><h2 id="How-to-test-streamed-request/response"><a class="section-marker" href="#How-to-test-streamed-request/response">§</a>How to test streamed request/response</h2>
+<p>Let&rsquo;s say we have a service that has streaming request and/or response parameters. For example an <code>EchoService</code> like this:</p>
+<pre class="prettyprint"><code class="language-scala">trait EchoService extends Service {
+  def echo: ServiceCall[Source[String, NotUsed], Source[String, NotUsed]]
+
+  override def descriptor = {
+    import Service._
+    named(&quot;echo&quot;).withCalls(
+      call(echo)
+    )
+  }
+}</code></pre>
+<p>When writing tests for that the <a href="https://doc.akka.io/docs/akka/2.5/stream/stream-testkit.html?language=scala#streams-testkit">Akka Streams TestKit</a> is very useful. We use the Streams TestKit together with the Lagom <code>ServiceTest</code> utilities:</p>
+<pre class="prettyprint"><code class="language-scala">&quot;The EchoService&quot; should {
+  &quot;echo&quot; in {
+    // Use a source that never terminates (concat Source.maybe) so we
+    // don&#39;t close the upstream, which would close the downstream
+    val input = Source(List(&quot;msg1&quot;, &quot;msg2&quot;, &quot;msg3&quot;)).concat(Source.maybe)
+    client.echo.invoke(input).map { output =&gt;
+      val probe = output.runWith(TestSink.probe(server.actorSystem))
+      probe.request(10)
+      probe.expectNext(&quot;msg1&quot;)
+      probe.expectNext(&quot;msg2&quot;)
+      probe.expectNext(&quot;msg3&quot;)
+      probe.cancel
+      succeed
+    }
+  }
+}</code></pre>
+<p>Read more about it in the documentation of the <a href="https://doc.akka.io/docs/akka/2.5/stream/stream-testkit.html?language=scala#streams-testkit">Akka Streams TestKit</a>.</p><h2 id="How-to-test-a-persistent-entity"><a class="section-marker" href="#How-to-test-a-persistent-entity">§</a>How to test a persistent entity</h2>
+<p><a href="PersistentEntity.html">Persistent Entities</a> can be used in the service tests described above. In addition to that you should write unit tests using the <a href="api/com/lightbend/lagom/scaladsl/testkit/PersistentEntityTestDriver.html">PersistentEntityTestDriver</a>, which will run the <code>PersistentEntity</code> without using a database.</p>
+<p>This is described in the <a href="PersistentEntity.html#Unit-Testing">Persistent Entity</a> documentation.</p>

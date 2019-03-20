@@ -1,0 +1,51 @@
+<h1 id="Introduction-to-Lagom-concepts"><a class="section-marker" href="#Introduction-to-Lagom-concepts">§</a>Introduction to Lagom concepts</h1>
+<p>The Lagom framework includes libraries and a development environment that support you from development to deployment:</p>
+<ul>
+  <li>During development, a single command builds your project and starts all of your services and the supporting Lagom infrastructure. It hot-reloads when you modify code. The development environment allows you to bring up a new service or join an existing Lagom development team in just minutes.</li>
+  <li>You can create microservices using Java or Scala. Lagom offers an especially seamless experience for communication between microservices. Service location, communication protocols, and other issues are handled by Lagom transparently, maximizing convenience and productivity. Lagom supports Event sourcing and CQRS (Command Query Responsibility Segregation) for persistence.</li>
+  <li>Lagom creates service clients for you (based on service descriptors), making it extremely easy to invoke and test endpoints.</li>
+  <li>Deploy on your platform of choice, such as:
+    <ul>
+      <li><a href="https://kubernetes.io">Kubernetes</a>, an open-source system for automating deployment, scaling, and management of containerized applications.</li>
+      <li><a href="https://dcos.io/">DC/OS</a>, an open-source, distributed operating system based on the Apache Mesos distributed systems kernel, created and maintained by Mesosphere, Inc.</li>
+      <li>Any cloud or on-premises deployment environment that supports private networking between hosts.</li>
+    </ul>
+  </li>
+</ul>
+<p>Designing a microservices system that achieves high scalability and manifests resilience in the face of unexpected failures is extremely difficult. Without a framework such as Lagom, you would need to deal with all of the complex threading and concurrency issues inherent in highly distributed systems. By using Lagom as it was designed to be used, you can avoid many of these pitfalls and increase productivity at the same time. But, rather than throwing everything out and starting anew, Lagom allows you to adopt a <a href="https://info.lightbend.com/COLL-20XX-Reactive-Microservices-Architecture-RES-LP.html">reactive architecture</a> within existing constraints. For example, you can create microservices that:</p>
+<ul>
+  <li>Interact with legacy systems and/or replace monolithic application functionality.</li>
+  <li>Use Cassandra for persistence or your database of choice and/or integrate with other data stores. (Lagom&rsquo;s persistence APIs support Cassandra by default because it provides functionality such as sharding and read-side support that work well in a microservices system)</li>
+</ul>
+<p>The remaining topics in this section further introduce:</p>
+<ul>
+  <li>Lagom system architecture:
+    <ul>
+      <li><a href="LagomDesignPhilosophy.html">Lagom design philosophy</a></li>
+      <li><a href="PolyglotSystems.html">Polyglot systems</a></li>
+    </ul>
+  </li>
+  <li>Lagom development environment:
+    <ul>
+      <li><a href="DevelopmentEnvironmentOverview.html">Overview</a></li>
+      <li><a href="BuildConcepts.html">Build philosophy</a></li>
+      <li><a href="ComponentTechnologies.html">Component technologies</a></li>
+      <li><a href="APIOverview.html">API Overview</a></li>
+    </ul>
+  </li>
+  <li>Patterns to use in your system:
+    <ul>
+      <li><a href="MicroserviceSystemDesign.html">Designing your microservices system</a></li>
+      <li><a href="MicroserviceDesign.html">Sizing individual microservices</a></li>
+      <li><a href="InternalAndExternalCommunication.html">Internal and external communication</a></li>
+      <li><a href="ServiceDiscovery.html">Registering and discovering services</a></li>
+      <li><a href="Immutable.html">Using immutable objects</a></li>
+      <li><a href="ES_CQRS.html">Managing data persistence</a></li>
+      <li><a href="ESAdvantage.html">Advantages of Event Sourcing</a></li>
+      <li><a href="ReadVsWrite.html">Separating reads from writes</a></li>
+      <li><a href="ScalableDeployment.html">Deploying resilient, scalable systems</a></li>
+    </ul>
+  </li>
+</ul>
+
+

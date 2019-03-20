@@ -1,0 +1,82 @@
+<h1 id="Cluster"><a class="section-marker" href="#Cluster">§</a>Cluster</h1>
+<p>Instances of the same service may run on multiple nodes, for scalability and redundancy. Nodes may be physical or virtual machines, grouped in a cluster.</p>
+<p>The underlying clustering technology is <a href="https://doc.akka.io/docs/akka/2.5/cluster-usage.html?language=java">Akka Cluster</a>.</p>
+<p>If instances of a service need to know about each other, they must join the same cluster. Within a cluster, services may use the <a href="PersistentEntity.html">Persistence</a> and <a href="PubSub.html">Publish-Subscribe</a> modules of Lagom.</p><h2 id="Dependency"><a class="section-marker" href="#Dependency">§</a>Dependency</h2>
+<p>The clustering feature is already included if you are using either of the <a href="PersistentEntity.html">persistence</a> or <a href="PubSub.html#Dependency">pubsub</a> modules.</p>
+<p>If you want to enable it without those modules, add the following dependency your project&rsquo;s build.</p>
+<p>In Maven:</p>
+<pre class="prettyprint"><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.lightbend.lagom&lt;/groupId&gt;
+    &lt;artifactId&gt;lagom-javadsl-cluster_${scala.binary.version}&lt;/artifactId&gt;
+    &lt;version&gt;${lagom.version}&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>In sbt:</p>
+<pre class="prettyprint"><code class="language-sbt">libraryDependencies += lagomJavadslCluster</code></pre><h2 id="Cluster-composition"><a class="section-marker" href="#Cluster-composition">§</a>Cluster composition</h2>
+<p>A cluster should only span nodes that are running the same service.</p>
+<p>You could imagine using cluster features across different services, but we recommend against that, because it would couple the services too tightly. Different services should only interact with each other through each service&rsquo;s API.</p><h2 id="Joining"><a class="section-marker" href="#Joining">§</a>Joining</h2>
+<p>A service instance joins a cluster when the service starts up.</p>
+<ol>
+  <li>
+  <p><strong>Joining during development</strong>: In development you are typically only running the service on one cluster node. No explicit joining is necessary; the <a href="DevEnvironment.html">Lagom Development Environment</a> handles it automatically and creates a single-node cluster.</p></li>
+  <li>
+    <p><strong>Joining during production</strong>: There are several mechanisms available to create a cluster in production. This documentation covers two approaches supported out-of-the-box:</p>
+    <ol>
+      <li>Akka Cluster Bootstrap (recommended)</li>
+      <li>Manual Cluster Formation (a.k.a. a static list of <code>seed-nodes</code>)</li>
+    </ol>
+  </li>
+</ol>
+<p>The sections below cover the two options for Cluster Joining during Production in more detail.</p><h3 id="Joining-during-production-(Akka-Cluster-Bootstrap)"><a class="section-marker" href="#Joining-during-production-(Akka-Cluster-Bootstrap)">§</a>Joining during production (Akka Cluster Bootstrap)</h3>
+<p>Starting from version 1.5.0, Lagom offers support for <a href="https://developer.lightbend.com/docs/akka-management/1.0.0-RC3/bootstrap/">Akka Cluster Bootstrap</a>. Akka Cluster Bootstrap is enabled by default in production mode and disabled in development and test mode.</p>
+<p>Akka Cluster Bootstrap helps forming (or joining to) a cluster by using <a href="https://doc.akka.io/docs/akka/2.5/discovery/index.html">Akka Discovery</a> to discover peer nodes. It is an alternative to configuring static seed-nodes in dynamic deployment environments such as on Kubernetes or AWS.</p>
+<p>It builds on the flexibility of Akka Discovery, leveraging a range of discovery mechanisms depending on the environment you want to run your cluster in.</p>
+<p>Akka Cluster Bootstrap, in Lagom, can be disabled through the property <code>lagom.cluster.bootstrap.enabled = false</code>. Note that this configuration flag has no effect if you declare seed-nodes explicitly in which case Akka Cluster Bootstrap won&rsquo;t be used.</p><h4 id="Akka-Discovery"><a class="section-marker" href="#Akka-Discovery">§</a>Akka Discovery</h4>
+<p>In order to find the peer nodes and form a cluster, Akka Cluster Bootstrap need to be configured to use one of the existing Akka Discovery implementations.</p>
+<p>The snippet below exemplifies how to configure the Akka Cluster Boostrap to use the Akka Discovery Kubernetes API.</p>
+<pre class="prettyprint"><code>akka.management.cluster.bootstrap {
+  # example using kubernetes-api
+  contact-point-discovery {
+    discovery-method = kubernetes-api
+    service-name = &quot;hello-lagom&quot;
+  }
+}
+</code></pre>
+<p><a href="https://developer.lightbend.com/docs/akka-management/current/discovery/index.html">Other existing implementations</a> are DNS, AWS, Consul, Marathon API, and Static Configuration. It&rsquo;s also possible to provide your own Akka Discovery implementation if needed.</p>
+<p>For more detailed and advanced configurations options, please consult the <a href="https://developer.lightbend.com/docs/akka-management/1.0.0-RC3/bootstrap/">Akka Cluster Bootstrap</a> documentation and its <a href="https://github.com/akka/akka-management/blob/v1.0.0-RC2/cluster-bootstrap/src/main/resources/reference.conf">reference.conf</a> file.</p><h4 id="Akka-Management"><a class="section-marker" href="#Akka-Management">§</a>Akka Management</h4>
+<p><a href="https://developer.lightbend.com/docs/akka-management/1.0.0-RC3/bootstrap/">Akka Cluster Bootstrap</a> relies on <a href="https://developer.lightbend.com/docs/akka-management/1.0.0-RC3/akka-management.html">Akka Management</a> to form a cluster.</p>
+<p><a href="https://developer.lightbend.com/docs/akka-management/1.0.0-RC3/akka-management.html">Akka Management</a> is an extension that opens a dedicated HTTP interface. This management extension allows dedicated plugins to include their routes. Akka Cluster Bootstrap uses this mechanism to expose a route. Akka Management will be enabled when the cluster joining mechanism is Cluster Http Management and it will run on http port <code>8558</code>. You can configure it to another port by setting property <code>akka.management.http.port</code> in your <code>application.conf</code> file.</p><h4 id="Health-Checks"><a class="section-marker" href="#Health-Checks">§</a>Health Checks</h4>
+<p>Akka Management supports two kinds of <a href="https://developer.lightbend.com/docs/akka-management/1.0.0-RC3/healthchecks.html">health checks</a>:</p>
+<ul>
+  <li>Readiness checks: should the application receive external traffic, for example waiting for the cluster to form.</li>
+  <li>Liveness checks: should the application be left running</li>
+</ul>
+<p>Readiness checks can be used to decide if a load balancer should route traffic where as liveness checks can be used in environments which can restart a hung process.</p>
+<p>By default, Lagom enables the Cluster Health Check. This health check includes a readiness check that returns <code>true</code> when the node is either <code>Up</code> or <code>WeaklyUp</code>.</p>
+<p>All readiness checks are hosted on <code>/ready</code> and liveness checks are hosted on <code>/alive</code> on the Akka Management endpoint (port 8558 by default). You can change the paths by configuring it your <code>application.conf</code> file:</p>
+<pre class="prettyprint"><code>akka.management.health-checks {
+  readiness-path = &quot;health/ready&quot;
+  liveness-path = &quot;health/alive&quot;
+}
+</code></pre>
+<p>For further information on Akka Cluster Bootstrap and Health Checks, consult Akka Managment documentation:<br/> * <a href="https://developer.lightbend.com/docs/akka-management/1.0.0-RC3/bootstrap/">Akka Cluster Bootstrap</a><br/> * <a href="https://developer.lightbend.com/docs/akka-management/1.0.0-RC3/cluster-http-management.html">Http Cluster Management</a><br/> * <a href="https://developer.lightbend.com/docs/akka-management/1.0.0-RC3/healthchecks.html">Health Checks</a></p><h3 id="Joining-during-production-(Manual-Cluster-Formation)"><a class="section-marker" href="#Joining-during-production-(Manual-Cluster-Formation)">§</a>Joining during production (Manual Cluster Formation)</h3>
+<p>If you prefer to not use <strong>Akka Cluster Bootstrap</strong> and handle the cluster formation yourself, you can configure the Akka Cluster seed nodes statically.</p>
+<p>You can define some initial contact points of the cluster, so-called seed nodes in your <code>application.conf</code>:</p>
+<pre class="prettyprint"><code>akka.cluster.seed-nodes = [
+  &quot;akka.tcp://MyService@host1:2552&quot;,
+  &quot;akka.tcp://MyService@host2:2552&quot;]
+</code></pre>
+<p>Alternatively, this can be defined as Java system properties when starting the JVM:</p>
+<pre class="prettyprint"><code>-Dlagom.cluster.bootstrap.enabled=false
+-Dakka.cluster.seed-nodes.0=akka.tcp://MyService@host1:2552
+-Dakka.cluster.seed-nodes.1=akka.tcp://MyService@host2:2552
+</code></pre>
+<p>The node that is configured first in the list of <code>seed-nodes</code> is special. Only that node that will join itself. It is used for bootstrapping the cluster.</p>
+<p>The reason for the special first seed node is to avoid forming separated islands when starting from an empty cluster. If the first seed node is restarted and there is an existing cluster it will try to join the other seed nodes, i.e. it will join the existing cluster.</p>
+<p>You can read more about cluster joining in the <a href="https://doc.akka.io/docs/akka/2.5/cluster-usage.html?language=java#joining-to-seed-nodes">Akka documentation</a>.</p><h2 id="Downing"><a class="section-marker" href="#Downing">§</a>Downing</h2>
+<p>When operating a Lagom service cluster you must consider how to handle network partitions (a.k.a. split brain scenarios) and machine crashes (including JVM and hardware failures). This is crucial for correct behavior when using <a href="PersistentEntity.html">Persistent Entities</a>. Persistent entities must be single-writers, i.e. there must only be one active entity with a given entity identity. If the cluster is split in two halves and the wrong downing strategy is used there will be active entities with the same identifiers in both clusters, writing to the same database. That will result in corrupt data.</p>
+<p>The naïve approach is to remove an unreachable node from the cluster membership after a timeout. This works great for crashes and short transient network partitions, but not for long network partitions. Both sides of the network partition will see the other side as unreachable and after a while remove it from its cluster membership. Since this happens on both sides the result is that two separate disconnected clusters have been created. This approach is provided by the opt-in (off by default) auto-down feature in the OSS version of Akka Cluster. Because of this auto-down should not be used in production systems.</p>
+<p><strong>We strongly recommend against using the auto-down feature of Akka Cluster.</strong></p>
+<p>A pre-packaged solution for the downing problem is provided by <a href="https://developer.lightbend.com/docs/akka-commercial-addons/current/split-brain-resolver.html">Split Brain Resolver</a>, which is part of the <a href="https://www.lightbend.com/platform/production">Lightbend Enterprise Suite</a>. The <code>keep-majority</code> strategy is configured to be enabled by default if you use Lagom with the Enterprise Suite.</p>
+<p>See <a href="EnterpriseSuite.html">Using Lightbend Enterprise Suite with Lagom</a> and the <a href="https://developer.lightbend.com/docs/akka-commercial-addons/current/split-brain-resolver.html">Split Brain Resolver documentation</a> for instructions on how to enable it in the build of your project.</p>
+<p>Even if you don&rsquo;t use the commercial Enterprise Suite, you should still read &amp; understand the concepts behind <a href="https://developer.lightbend.com/docs/akka-commercial-addons/current/split-brain-resolver.html">Split Brain Resolver</a> to ensure your solution handles the concerns described there.</p>

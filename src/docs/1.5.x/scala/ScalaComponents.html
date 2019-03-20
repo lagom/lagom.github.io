@@ -1,0 +1,86 @@
+<h1 id="Scala-Components"><a class="section-marker" href="#Scala-Components">§</a>Scala Components</h1>
+<p>This is a list of available Components you may use to build your application cake. This list contains Components provided by Lagom, Play and other libraries. You may develop your own Components and use those instead of the provided on this list as long as the contracts are fulfilled.</p><h5 id="Service-Components"><a class="section-marker" href="#Service-Components">§</a>Service Components</h5>
+<table>
+  <tbody>
+    <tr>
+      <td><a href="api/com/lightbend/lagom/scaladsl/server/LagomServerComponents.html">LagomServerComponents</a> </td>
+      <td>a main Component for any Lagom Service. See <a href="DependencyInjection.html#Defining-your-own-components">Defining your own components</a>.</td>
+    </tr>
+    <tr>
+      <td><a href="api/com/lightbend/lagom/scaladsl/client/LagomServiceClientComponents.html">LagomServiceClientComponents</a> </td>
+      <td>a main Component for any Lagom Service or application consuming Lagom Services. See <a href="DependencyInjection.html">Dependency Injection in Lagom</a> and <a href="ServiceClients.html#Binding-a-service-client">Binding a service client</a>.</td>
+    </tr>
+  </tbody>
+</table><h5 id="Persistence-and-Cluster-Components"><a class="section-marker" href="#Persistence-and-Cluster-Components">§</a>Persistence and Cluster Components</h5>
+<table>
+  <tbody>
+    <tr>
+      <td><a href="api/com/lightbend/lagom/scaladsl/cluster/ClusterComponents.html">ClusterComponents</a> </td>
+      <td>registers the node to the Akka Cluster. The Akka Cluster is required by Pub-Sub and Persistent Entity support and you will rarely need to use it explicitly. See <a href="Cluster.html">Cluster</a></td>
+    </tr>
+    <tr>
+      <td><a href="api/com/lightbend/lagom/scaladsl/pubsub/PubSubComponents.html">PubSubComponents</a> </td>
+      <td>provides <a href="PubSub.html#Publish-Subscribe">Publish-Subscribe</a>. This requires <code>ClusterComponents</code>. See <a href="PubSub.html#Publish-Subscribe">Publish-Subscribe</a></td>
+    </tr>
+    <tr>
+      <td><a href="api/com/lightbend/lagom/scaladsl/persistence/cassandra/CassandraPersistenceComponents.html">CassandraPersistenceComponents</a> </td>
+      <td>provides both Read-Side and Write-Side components for Cassandra-backed CQRS. It provides <code>ReadSideCassandraPersistenceComponents</code> and <code>WriteSideCassandraPersistenceComponents</code> which you might want to use in isolation. See <a href="PersistentEntityCassandra.html">PersistentEntityCassandra</a> for more info. </td>
+    </tr>
+    <tr>
+      <td><a href="api/com/lightbend/lagom/scaladsl/persistence/jdbc/JdbcPersistenceComponents.html">JdbcPersistenceComponents</a> </td>
+      <td>provides both Read-Side and Write-Side components for Cassandra-backed CQRS. It provides <code>ReadSideJdbcPersistenceComponents</code>and <code>WriteSideJdbcPersistenceComponents</code> which you might want to use in isolation. See <a href="PersistentEntityRDBMS.html">PersistentEntityRDBMS</a>. </td>
+    </tr>
+  </tbody>
+</table><h5 id="Broker-API-Components"><a class="section-marker" href="#Broker-API-Components">§</a>Broker API Components</h5>
+<table>
+  <tbody>
+    <tr>
+      <td><a href="api/com/lightbend/lagom/scaladsl/broker/kafka/LagomKafkaClientComponents.html">LagomKafkaClientComponents</a> </td>
+      <td>provide a Kafka implementation for the Broker API so that you Service can subscribe to a Kafka topic. See<a href="KafkaClient.html#Subscriber-only-Services">KafkaClient</a>. </td>
+    </tr>
+    <tr>
+      <td><a href="api/com/lightbend/lagom/scaladsl/broker/kafka/LagomKafkaComponents.html">LagomKafkaComponents</a> </td>
+      <td>provides a Kafka implementation for the Broker API so that you Service can <code>publish</code> to a Kafka topic. This component includes <code>LagomKafkaClientComponents</code> so if you mix this one in, you will be able to <code>publish</code> and <code>subscribe</code>. See <a href="KafkaClient.html#Dependency">Kafka Client</a>. </td>
+    </tr>
+    <tr>
+      <td><a href="api/com/lightbend/lagom/scaladsl/testkit/TestTopicComponents.html">TestTopicComponents</a> </td>
+      <td>provides stubbing tools to test services that use the Broker API. This is meant to be used only on Applications you build on your tests. See <a href="MessageBrokerTesting.html#Testing-publish">Testing publish</a> </td>
+    </tr>
+  </tbody>
+</table><h5 id="Service-Locator-Components"><a class="section-marker" href="#Service-Locator-Components">§</a>Service Locator Components</h5>
+<table>
+  <tbody>
+    <tr>
+      <td><a href="api/com/lightbend/lagom/scaladsl/devmode/LagomDevModeServiceLocatorComponents.html">LagomDevModeServiceLocatorComponents</a> </td>
+      <td>provides the dev mode service locator. This is meant to be used by Lagom Services and other applications such as Play Apps that want to interact with Lagom Services in Dev Mode. See the <a href="api/com/lightbend/lagom/scaladsl/devmode/LagomDevModeServiceLocatorComponents.html">scaladocs</a> for more details. </td>
+    </tr>
+    <tr>
+      <td><a href="api/com/lightbend/lagom/scaladsl/devmode/LagomDevModeComponents.html">LagomDevModeComponents</a> </td>
+      <td>provides the dev mode service locator and registers the services with it in dev mode. See <a href="DependencyInjection.html#Wiring-together-a-Lagom-application">Wiring together a Lagom application</a>.</td>
+    </tr>
+    <tr>
+      <td><a href="api/com/lightbend/lagom/scaladsl/client/StaticServiceLocatorComponents.html">StaticServiceLocatorComponents</a></td>
+      <td>provides a Service Locator that always resolves the same URI for a given Service name. </td>
+    </tr>
+    <tr>
+      <td><a href="api/com/lightbend/lagom/scaladsl/client/ConfigurationServiceLocatorComponents.html">ConfigurationServiceLocatorComponents</a></td>
+      <td>provides a Service Locator based on <code>application.conf</code> files. See <a href="ProductionOverview.html#Using-static-values-for-services-and-Cassandra">Using static values for services and Cassandra to simulate a managed runtime</a>.</td>
+    </tr>
+    <tr>
+      <td><a href="api/com/lightbend/lagom/scaladsl/client/RoundRobinServiceLocatorComponents.html">RoundRobinServiceLocatorComponents</a></td>
+      <td>provides a Service Locator that applies a Round Robin over the passed in sequence of URI. </td>
+    </tr>
+    <tr>
+      <td><a href="api/com/lightbend/lagom/scaladsl/client/CircuitBreakerComponents.html">CircuitBreakerComponents</a></td>
+      <td>implementors of a Service Locator will need to extend this to reuse the Circuit Breaker config provided by Lagom.</td>
+    </tr>
+  </tbody>
+</table><h5 id="Third-party-Components"><a class="section-marker" href="#Third-party-Components">§</a>Third party Components</h5>
+<p>You can mix in <code>Components</code> from other frameworks or libraries, for example:</p>
+<ul>
+  <li><a href="https://github.com/lagom/lagom-akka-discovery-service-locator">AkkaDiscoveryComponents</a>: is defined by the <code>lagom-akka-discovery-service-locator</code> library and provides a Lagom <code>ServiceLocator</code> implementation built on <a href="https://doc.akka.io/docs/akka/current/discovery/index.html">Akka Service Discovery</a>. It is the recommended implementation for production specially for users targeting Kubernetes and DC/OS (Marathon).</li>
+  <li><a href="https://www.playframework.com/documentation/2.6.x/api/scala/index.html#play.api.libs.ws.ahc.AhcWSComponents">AhcWSComponents</a>: provides a <code>WSClient</code> based on an Async HTTP Client.</li>
+  <li><a href="https://www.playframework.com/documentation/2.6.x/api/scala/play/api/db/DBComponents.html">DBComponents</a></li>
+  <li><a href="https://www.playframework.com/documentation/2.6.x/api/scala/play/api/db/HikariCPComponents.html">HikariCPComponents</a></li>
+</ul>
+<p>Lagom inherits all Components provided by Play. You can find the complete list of inherited <code>Components</code> by searching for <em>components</em> in <a href="https://www.playframework.com/documentation/2.6.x/api/scala/index.html">Play docs</a>.</p>

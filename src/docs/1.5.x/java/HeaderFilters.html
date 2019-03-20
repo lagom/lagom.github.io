@@ -1,0 +1,56 @@
+<h1 id="Header-Filters"><a class="section-marker" href="#Header-Filters">§</a>Header Filters</h1>
+<p>In Lagom you may add <code>HeaderFilter</code>s to your <code>ServiceDescriptor</code>. In a <code>HeaderFilter</code> you will usually handle protocol negotiation or authentication. </p>
+<p>A single <code>HeaderFilter</code> implementation may transform a request leaving a client or entering a server and a response leaving a server and entering a client.</p>
+<pre class="prettyprint"><code class="language-java">public class UserAgentHeaderFilter implements HeaderFilter {
+
+    @Override
+    public RequestHeader transformClientRequest(RequestHeader request) {
+        if (request.principal().isPresent()) {
+            Principal principal = request.principal().get();
+            if (principal instanceof ServicePrincipal) {
+                String serviceName = ((ServicePrincipal) principal).serviceName();
+                return request.withHeader(Http.HeaderNames.USER_AGENT, serviceName);
+            } else {
+                return request;
+            }
+        } else {
+            return request;
+        }
+    }
+
+    @Override
+    public RequestHeader transformServerRequest(RequestHeader request) {
+        Optional&lt;String&gt; userAgent = request.getHeader(Http.HeaderNames.USER_AGENT);
+        if (userAgent.isPresent()) {
+            return request.withPrincipal(ServicePrincipal.forServiceNamed(userAgent.get()));
+        } else {
+            return request;
+        }
+    }
+
+    @Override
+    public ResponseHeader transformServerResponse(ResponseHeader response, RequestHeader request) {
+        return response;
+    }
+
+    @Override
+    public ResponseHeader transformClientResponse(ResponseHeader response, RequestHeader request) {
+        return response;
+    }
+}</code></pre>
+<p>This <a href="api/index.html?com/lightbend/lagom/javadsl/api/security/UserAgentHeaderFilter.html"><code>UserAgentHeaderFilter</code></a> is the default <code>HeaderFilter</code> any Lagom service will use if none is specified. It uses a <code>ServicePrincipal</code> which identifies the client with the service name. This way a server may identify a caller client by the <code>User-Agent</code>. </p>
+<p>In <code>UserAgentHeaderFilter</code> the code at <code>transformClientRequest</code> will be invoked when preparing a client invocation to add a <code>User-Agent</code> header if a <a href="api/index.html?com/lightbend/lagom/javadsl/api/security/ServicePrincipal.html">ServicePrincipal</a> was specified on the request. On the server end <code>transformServerRequest</code> will be used to read the <code>User-Agent</code> header and set that value as the request&rsquo;s <a href="https://docs.oracle.com/javase/8/docs/api/java/security/Principal.html">Principal</a>.</p>
+<p>Keep in mind that a header filter should only be used to deal with cross cutting protocol concerns, and nothing more. For example, you may have a header filter that describes how the current authenticated user is communicated over HTTP (by adding a user header, for example). Cross cutting domain concerns, such as authentication and validation, should not be handled in a header filter, rather they should be handled using <a href=" ServiceImplementation.html#Service-call-composition">service call composition</a>.</p><h2 id="Header-Filter-Composition"><a class="section-marker" href="#Header-Filter-Composition">§</a>Header Filter Composition</h2>
+<p>Each service <code>Descriptor</code> can only have one <code>HeaderFilter</code>. In order to use several filters at once you may compose them using <code>HeaderFilter.composite</code> which will return a <code>HeaderFilter</code> that chains all the <code>HeaderFilter</code>s you composed. When composing, the order is important so when sending data the filters of the composite are used in the order they were provided, and when receiving data the filters will be used in reverse order. So if we registered two verbose Filters Foo and Bar like this:</p>
+<pre class="prettyprint"><code class="language-java">default Descriptor descriptor() {
+  return named(&quot;echo&quot;).withCalls(
+      namedCall(&quot;echo&quot;, this::echo)
+  )
+      .withHeaderFilter(HeaderFilter.composite(new FooFilter(), new BarFilter()))
+      .withAutoAcl(true);</code></pre>
+<p>and then called the service, then we would get the following on the server output logs:</p>
+<pre class="prettyprint"><code>[debug] Bar - transforming Server Request
+[debug] Foo - transforming Server Request
+[debug] Foo - transforming Server Response
+[debug] Bar - transforming Server Response
+</code></pre>

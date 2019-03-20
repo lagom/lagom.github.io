@@ -1,0 +1,52 @@
+<h1 id="Importing-an-existing-Maven-project-into-IntelliJ"><a class="section-marker" href="#Importing-an-existing-Maven-project-into-IntelliJ">§</a>Importing an existing Maven project into IntelliJ</h1>
+<p>If you worked through the command line example for <a href="GettingStartedMaven.html">Maven</a>, you have a Maven project that you can integrate into Intellij IDEA Using built in <a href="https://www.jetbrains.com/help/idea/2016.3/getting-started-with-maven.html">IntelliJ Maven</a> support. Before integrating your project, make sure that your IntelliJ <strong>Settings</strong> use the following:</p>
+<ul>
+  <li>Maven 3.3 or higher</li>
+  <li>A JDK 1.8</li>
+</ul>
+<blockquote>
+  <p><strong>Note</strong> When developing with Lagom you will often run several services in a single Java Virtual Machine. See how to <a href="JVMMemoryOnDev.html">increase Memory for Maven</a>.</p>
+</blockquote>
+<p>To integrate an existing Maven Java project into IDEA, follow these steps:</p>
+<ol>
+  <li>
+  <p>Open IntelliJ IDEA and close any existing project.</p></li>
+  <li>
+  <p>From the <code>Welcome</code> screen, click <strong>Import Project</strong>.<br/>The <code>Select File or Directory to Import</code> dialog opens.</p></li>
+  <li>
+  <p>Navigate to your Maven project and select the top-level folder. For example, with a project named <code>my-first-system</code>:<br/><a href="resources/guide/build/IDEASelectMavenFolder.png"><img src="resources/guide/build/IDEASelectMavenFolder.png"/></a></p></li>
+  <li>
+  <p>Click <strong>OK</strong>.<br/>The <strong>Import Project</strong> screen opens:<br/><a href="resources/guide/build/IDEAImportProject.png"><img src="resources/guide/build/IDEAImportProject.png"/></a></p></li>
+  <li>
+  <p>For the <strong>Import project from external model</strong> value, select <strong>Maven</strong> and click <strong>Next</strong>.</p></li>
+  <li>
+  <p>Select <strong>Import Maven projects automatically</strong> and leave the other fields with default values.</p></li>
+  <li>
+  <p>Click <strong>Next</strong>.<br/>Your Maven project should be selected for import:<br/><a href="resources/guide/build/IDEAProjSelected.png"><img src="resources/guide/build/IDEAProjSelected.png"/></a></p></li>
+  <li>
+  <p>Click <strong>Next</strong>.<br/>The <strong>Please select project SDK</strong> screen opens.</p></li>
+  <li>
+  <p>Make sure the correct JDC is selected and click <strong>Next</strong>.</p></li>
+  <li>
+  <p>Change the project name and location if you like, and click <strong>Finish</strong>.</p></li>
+  <li>
+    <p>Create a run configuration to test your project:</p>
+    <ol>
+      <li>From the <strong>Run</strong> menu, select <strong>Run</strong>.</li>
+      <li>Click <strong>Edit Configurations&hellip;</strong>.</li>
+      <li>Make sure <strong>Maven</strong> is selected, and click <strong>+</strong> (Add New Configuration).<br/><a href="resources/guide/build/IDEANewMavenConfig.png"><img src="resources/guide/build/IDEANewMavenConfig.png"/></a></li>
+      <li>Select <strong>Maven</strong>.</li>
+      <li>Give your configuration a name.</li>
+      <li>In the <strong>Comand line:</strong> field, enter <code>lagom:runAll</code>.</li>
+      <li>Click <strong>OK</strong>.</li>
+    </ol>
+  </li>
+  <li>
+  <p>Build your project and run it using the configuration you created.<br/>The console displays the following when Lagom is running:<br/><a href="resources/guide/build/IDEASuccessMavenRun.png"><img src="resources/guide/build/IDEASuccessMavenRun.png"/></a></p></li>
+  <li>
+    <p>Verify that the services are indeed up and running by invoking the <code>hello</code> service endpoint from any HTTP client, such as a browser:</p>
+    <pre class="prettyprint"><code>http://localhost:9000/api/hello/World
+</code></pre>
+    <p>The request returns the message <code>Hello, World!</code>.</p>
+  </li>
+</ol>

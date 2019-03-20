@@ -1,0 +1,47 @@
+<h1 id="Understanding-Hello-World"><a class="section-marker" href="#Understanding-Hello-World">§</a>Understanding Hello World</h1>
+<p>After creating and running Hello World from the command line, you no doubt appreciate what Lagom framework did for you. There was no need to determine what infrastructure you might need and then install and configure it. The template removed the necessity to set up a project or build structure. And, as you create services of your own, Lagom detects changes and performs a hot reload! Lagom allows you to concentrate on satisfying your business needs.</p>
+<p>The separation of concerns illustrated in Hello World and an introduction to service descriptors and the registry will help you as you start developing your own microservices:</p>
+<ul>
+  <li><a href="#Service-interface">Service interface</a></li>
+  <li><a href="#Service-implementation">Service implementation</a></li>
+</ul><h2 id="Service-interface"><a class="section-marker" href="#Service-interface">§</a>Service interface</h2>
+<p>The source file defining a service interface belongs in the service&rsquo;s api project. For example, in Hello World, <code>HelloService.java</code>, the source file for the <code>hello</code> service interface resides in the <code>hello-api</code> directory of the Maven project or sbt build.</p>
+<pre class="prettyprint"><code class="language-java">public interface HelloService extends Service {
+
+  ServiceCall&lt;NotUsed, String&gt; hello(String id);
+
+  @Override
+  default Descriptor descriptor() {
+    return named(&quot;helloservice&quot;).withCalls(
+        restCall(Method.GET,  &quot;/api/hello/:id&quot;, this::hello)
+      ).withAutoAcl(true);
+  }
+}</code></pre>
+<p>Note that:</p>
+<ul>
+  <li>
+  <p>The service interface inherits from <a href="api/index.html?com/lightbend/lagom/javadsl/api/Service.html"><code>Service</code></a> and provides an implementation of <a href="api/index.html?com/lightbend/lagom/javadsl/api/Service.html#descriptor--"><code>Service.descriptor</code></a> method.</p></li>
+  <li>
+  <p>The implementation of <code>Service.descriptor</code> returns a <a href="api/index.html?com/lightbend/lagom/javadsl/api/Descriptor.html"><code>Descriptor</code></a>. The <code>HelloService</code> descriptor defines the service name and the REST endpoints it offers. For each endpoint, declare an abstract method in the service interface, as illustrated in the <code>HelloService.hello</code> method. For more information, see <a href="ServiceDescriptors.html">Service Descriptors</a>.</p></li>
+</ul><h2 id="Service-implementation"><a class="section-marker" href="#Service-implementation">§</a>Service implementation</h2>
+<p>The related <code>impl</code> directory contains the implementation of the service interface&rsquo;s abstract methods. For instance, <code>HelloServiceImpl.java</code> in the <code>hello-impl</code> directory implements the <code>hello</code> service <code>HelloService.hello</code> method. It includes the <a href="api/index.html?com/lightbend/lagom/javadsl/persistence/PersistentEntityRegistry.html"><code>PersistentEntityRegistry</code></a>, which allows you to persist data in the database using <a href="ES_CQRS.html">Event Sourcing and CQRS</a>. </p>
+<pre class="prettyprint"><code class="language-java">public class HelloServiceImpl implements HelloService {
+
+  private final PersistentEntityRegistry persistentEntityRegistry;
+
+  @Inject
+  public HelloServiceImpl(PersistentEntityRegistry persistentEntityRegistry) {
+    this.persistentEntityRegistry = persistentEntityRegistry;
+    persistentEntityRegistry.register(HelloWorld.class);
+  }
+
+  @Override
+  public ServiceCall&lt;NotUsed, String&gt; hello(String id) {
+    return request -&gt; {
+      // Look up the hello world entity for the given ID.
+      PersistentEntityRef&lt;HelloCommand&gt; ref = persistentEntityRegistry.refFor(HelloWorld.class, id);
+      // Ask the entity the Hello command.
+      return ref.ask(new Hello(id, Optional.empty()));
+    };
+  }
+}</code></pre>

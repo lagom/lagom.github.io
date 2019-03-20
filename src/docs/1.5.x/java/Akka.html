@@ -1,0 +1,245 @@
+<h1 id="Advanced-Topic:-Integrating-with-Akka"><a class="section-marker" href="#Advanced-Topic:-Integrating-with-Akka">§</a>Advanced Topic: Integrating with Akka</h1>
+<p>Lagom is built with Akka as one of the underlying technologies. Nonetheless, writing simple Lagom services doesn&rsquo;t require interacting with Akka directly.</p>
+<p>More advanced users may want direct access, as described in this section.</p><h2 id="Usage-from-Service-Implementation"><a class="section-marker" href="#Usage-from-Service-Implementation">§</a>Usage from Service Implementation</h2>
+<p>Pretty much everything in Akka is accessible through an <code>ActorSystem</code> object. You can inject the current <code>ActorSystem</code> into your service implementations or persistent entities with ordinary dependency injection.</p>
+<p>Let&rsquo;s look at an example of a <code>WorkerService</code> that accepts job requests and delegates the work to actors running on other nodes in the service&rsquo;s cluster.</p>
+<pre class="prettyprint"><code class="language-java">import static akka.pattern.Patterns.ask;
+
+import com.lightbend.lagom.javadsl.api.ServiceCall;
+
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.concurrent.CompletionStage;
+import java.util.concurrent.TimeUnit;
+import javax.inject.Inject;
+
+import akka.NotUsed;
+import akka.actor.ActorRef;
+import akka.actor.ActorSystem;
+import akka.actor.Props;
+import akka.cluster.Cluster;
+import akka.cluster.routing.ClusterRouterGroup;
+import akka.cluster.routing.ClusterRouterGroupSettings;
+import akka.routing.ConsistentHashingGroup;
+import akka.util.Timeout;
+
+public class WorkerServiceImpl implements WorkerService {
+
+  private final ActorRef workerRouter;
+
+  @Inject
+  public WorkerServiceImpl(ActorSystem system) {
+    if (Cluster.get(system).getSelfRoles().contains(&quot;worker-node&quot;)) {
+      // start a worker actor on each node that has the &quot;worker-node&quot; role
+      system.actorOf(Worker.props(), &quot;worker&quot;);
+    }
+
+    // start a consistent hashing group router,
+    // which will delegate jobs to the workers. It is grouping
+    // the jobs by their task, i.e. jobs with same task will be
+    // delegated to same worker node
+    List&lt;String&gt; paths = Arrays.asList(&quot;/user/worker&quot;);
+    ConsistentHashingGroup groupConf = new ConsistentHashingGroup(paths)
+      .withHashMapper(msg -&gt; {
+        if (msg instanceof Job) {
+          return ((Job) msg).getTask();
+        } else {
+          return null;
+        }
+      });
+      Set&lt;String&gt; useRoles = new TreeSet&lt;&gt;();
+      useRoles.add(&quot;worker-node&quot;);
+
+      Props routerProps = new ClusterRouterGroup(groupConf,
+        new ClusterRouterGroupSettings(1000, paths,
+          true, useRoles)).props();
+    this.workerRouter = system.actorOf(routerProps, &quot;workerRouter&quot;);
+  }
+
+  @Override
+  public ServiceCall&lt;Job, JobAccepted&gt; doWork() {
+    return job -&gt; {
+      // send the job to a worker, via the consistent hashing router
+      CompletionStage&lt;JobAccepted&gt; reply =
+          ask(
+              workerRouter,
+              job,
+              Duration.ofSeconds(5)
+          )
+        .thenApply(ack -&gt; {
+          return (JobAccepted) ack;
+        });
+      return reply;
+    };
+  }
+}</code></pre>
+<p>Notice how the <code>ActorSystem</code> is injected through the constructor. We create worker actors on each node that has the &ldquo;worker-node&rdquo; role. We create a consistent hashing group router that delegates jobs to the workers. Details on these features are in the <a href="https://doc.akka.io/docs/akka/2.5/?language=java">Akka documentation</a>.</p>
+<p>The worker actor looks like this:</p>
+<pre class="prettyprint"><code class="language-java">import akka.actor.AbstractActor;
+import akka.actor.Props;
+import akka.event.Logging;
+import akka.event.LoggingAdapter;
+
+public class Worker extends AbstractActor {
+
+  public static Props props() {
+    return Props.create(Worker.class);
+  }
+
+  private final LoggingAdapter log = Logging.getLogger(context().system(), this);
+
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder()
+        .match(Job.class, this::perform)
+        .build();
+  }
+
+  private void perform(Job job) {
+    log.info(&quot;Working on job: {}&quot;, job);
+    sender().tell(JobAccepted.of(job.getJobId()), self());
+    // perform the work...
+    context().stop(self());
+  }
+
+}</code></pre>
+<p>The messages are ordinary <a href="Immutable.html">Immutable Objects</a>. Note that they extend <code>Jsonable</code> since they need proper <a href="Serialization.html">Serialization</a> when they are sent across nodes in the cluster of the service:</p>
+<pre class="prettyprint"><code class="language-java">@Value.Immutable
+@ImmutableStyle
+@JsonDeserialize(as = Job.class)
+public interface AbstractJob extends Jsonable {
+  @Value.Parameter
+  public String getJobId();
+
+  @Value.Parameter
+  public String getTask();
+
+  @Value.Parameter
+  public String getPayload();
+}</code></pre>
+<pre class="prettyprint"><code class="language-java">@Value.Immutable
+@ImmutableStyle
+@JsonDeserialize(as = JobAccepted.class)
+public interface AbstractJobAccepted extends Jsonable {
+  @Value.Parameter
+  public String getJobId();
+}</code></pre>
+<pre class="prettyprint"><code class="language-java">@Value.Immutable
+@ImmutableStyle
+@JsonDeserialize(as = JobStatus.class)
+public interface AbstractJobStatus extends Jsonable {
+  @Value.Parameter
+  public String getJobId();
+
+  @Value.Parameter
+  public String getStatus();
+}</code></pre><h2 id="Usage-of-Lagom-APIs-in-Actors"><a class="section-marker" href="#Usage-of-Lagom-APIs-in-Actors">§</a>Usage of Lagom APIs in Actors</h2>
+<p>If you need to have access to some Lagom API from an actor, you have two options:</p>
+<ol>
+  <li>Pass the Lagom object as an ordinary constructor parameter when creating the actor.</li>
+  <li>Use the <code>AkkaGuiceSupport</code> from the Play Framework.</li>
+</ol>
+<p>The first alternative is probably sufficient in many cases, but we will take a closer look at the more advanced second alternative.</p>
+<p>In your Guice module you add <code>AkkaGuiceSupport</code> and use the <code>bindActor</code> method, such as:</p>
+<pre class="prettyprint"><code class="language-java">import play.libs.akka.AkkaGuiceSupport;
+import com.google.inject.AbstractModule;
+import com.lightbend.lagom.javadsl.server.ServiceGuiceSupport;
+
+public class Worker2Module extends AbstractModule
+    implements ServiceGuiceSupport, AkkaGuiceSupport {
+
+  @Override
+  protected void configure() {
+    bindService(WorkerService2.class, WorkerService2Impl.class);
+
+    bindActor(Worker2.class, &quot;worker&quot;);
+  }
+}</code></pre>
+<p>That allows the actor itself to receive injected objects. It also allows the actor ref for the actor to be injected into other components. This actor is named <code>worker</code> and is also qualified with the <code>worker</code> name for injection.</p>
+<p>You can read more about this and how to use dependency injection for child actors in the <a href="https://playframework.com/documentation/2.6.x/JavaAkka#Dependency-injecting-actors">Play documentation</a>.</p>
+<p>Adjusting the <code>Worker</code> actor from the previous section to allow injection of the <code>PubSubRegistry</code>:</p>
+<pre class="prettyprint"><code class="language-java">public class Worker2 extends AbstractActor {
+
+  private final PubSubRef&lt;JobStatus&gt; topic;
+
+  @Inject
+  public Worker2(PubSubRegistry pubSub) {
+    topic = pubSub.refFor(TopicId.of(JobStatus.class, &quot;jobs-status&quot;));
+  }
+
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder()
+            .match(Job.class, this::perform)
+            .build();
+  }
+
+
+  private void perform(Job job) {
+    sender().tell(JobAccepted.of(job.getJobId()), self());
+    topic.publish(JobStatus.of(job.getJobId(), &quot;started&quot;));
+    // perform the work...
+    topic.publish(JobStatus.of(job.getJobId(), &quot;done&quot;));
+    context().stop(self());
+  }
+
+}</code></pre>
+<p>With the <code>PubSubRegistry</code> we can publish updates of the progress of the jobs to all nodes in the cluster, as described in <a href="PubSub.html">Publish-Subscribe</a>.</p>
+<p>To make the example complete, an adjusted service implementation follows. Worker actors are created not by the service implementation, but by the <code>WorkerModule</code>. We have also added a <code>status</code> method that provides a stream of <code>JobStatus</code> values that clients can listen to.</p>
+<pre class="prettyprint"><code class="language-java">public class WorkerService2Impl implements WorkerService2 {
+
+  private final ActorRef workerRouter;
+  private final PubSubRef&lt;JobStatus&gt; topic;
+
+  @Inject
+  public WorkerService2Impl(ActorSystem system, PubSubRegistry pubSub) {
+    // start a consistent hashing group router,
+    // which will delegate jobs to the workers. It is grouping
+    // the jobs by their task, i.e. jobs with same task will be
+    // delegated to same worker node
+    List&lt;String&gt; paths = Arrays.asList(&quot;/user/worker&quot;);
+    ConsistentHashingGroup groupConf = new ConsistentHashingGroup(paths)
+      .withHashMapper(msg -&gt; {
+        if (msg instanceof Job) {
+          return ((Job) msg).getTask();
+        } else {
+          return null;
+        }
+      });
+      Set&lt;String&gt; useRoles = new TreeSet&lt;String&gt;();
+      useRoles.add(&quot;worker-node&quot;);
+      Props routerProps = new ClusterRouterGroup(groupConf,
+        new ClusterRouterGroupSettings(1000, paths,
+          true, useRoles)).props();
+    this.workerRouter = system.actorOf(routerProps, &quot;workerRouter&quot;);
+
+    this.topic = pubSub.refFor(TopicId.of(JobStatus.class, &quot;jobs-status&quot;));
+  }
+
+  @Override
+  public ServiceCall&lt;NotUsed, Source&lt;JobStatus, ?&gt;&gt; status() {
+    return req -&gt; {
+      return CompletableFuture.completedFuture(topic.subscriber());
+    };
+  }
+
+  @Override
+  public ServiceCall&lt;Job, JobAccepted&gt; doWork() {
+    return job -&gt; {
+      // send the job to a worker, via the consistent hashing router
+      CompletionStage&lt;JobAccepted&gt; reply =
+          ask(
+              workerRouter,
+              job,
+              Duration.ofSeconds(5)
+          )
+        .thenApply(ack -&gt; {
+          return (JobAccepted) ack;
+        });
+      return reply;
+    };
+  }
+}</code></pre>

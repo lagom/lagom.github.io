@@ -1,0 +1,66 @@
+<h1 id="Logging"><a class="section-marker" href="#Logging">§</a>Logging</h1>
+<p>Lagom uses SLF4J for logging, backed by <a href="https://logback.qos.ch/">Logback</a> as its default logging engine. Here is a short example showcasing how you can access the logger:</p>
+<pre class="prettyprint"><code class="language-scala">package docs.scaladsl.logging
+
+import org.slf4j.{ Logger, LoggerFactory }
+
+class LoggingExample {
+  private final val log: Logger =
+    LoggerFactory.getLogger(classOf[LoggingExample])
+
+  def demonstrateLogging(msg: String): Unit = {
+    log.debug(&quot;Here is a message at debug level: {}.&quot;, msg)
+  }
+}</code></pre>
+<p>And you can read of more advanced usages on the <a href="https://www.slf4j.org/manual.html">SLF4J user manual</a>.</p>
+<p>If you&rsquo;re using maven, you&rsquo;ll need to add the Lagom logback dependency to your classpath to get Logback support:</p>
+<pre class="prettyprint"><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.lightbend.lagom&lt;/groupId&gt;
+    &lt;artifactId&gt;lagom-logback_${scala.binary.version}&lt;/artifactId&gt;
+    &lt;version&gt;${lagom.version}&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>If you&rsquo;re using sbt, you&rsquo;ll automatically get the Lagom logback support when you enable the Lagom plugin on a project:</p>
+<pre class="prettyprint"><code class="language-sbt">lazy val usersImpl = (project in file(&quot;usersImpl&quot;))
+  // Lagom logging module is automatically added to the classpath
+  .enablePlugins(LagomScala)</code></pre>
+<p>If you&rsquo;d like to use the Lagom logger module on a project that doesn&rsquo;t have the Lagom sbt plugin enabled (e.g., a Lagom API project), simply add the Lagom logger module as an explicit library dependency:</p>
+<pre class="prettyprint"><code class="language-sbt">// `LagomImport` provides a few handy alias to several Lagom modules
+import com.lightbend.lagom.sbt.LagomImport.lagomLogback
+
+lazy val usersApi = (project in file(&quot;usersApi&quot;))
+  .settings(libraryDependencies += lagomLogback)</code></pre>
+<p>The Lagom logger module includes a default logback configuration. Read <a href="SettingsLogger.html">Configuring Logging</a> for details.</p><h2 id="Log4j-2"><a class="section-marker" href="#Log4j-2">§</a>Log4j 2</h2>
+<p>Lagom can be configured to use <a href="https://logging.apache.org/log4j/2.x/">Log4j 2</a> as its default logging engine. Using Log4j 2 can use either the SLF4J API for logging as shown above or the Log4j 2 API. For example, using the Log4j 2 API:</p>
+<pre class="prettyprint"><code class="language-scala">package docs.scaladsl.logging
+
+import org.apache.logging.log4j.{ LogManager, Logger }
+
+object Log4j2Example {
+  private final val Logger: Logger = LogManager.getLogger
+}
+
+class Log4j2Example {
+  def demonstrateLogging(msg: String): Unit = {
+    Log4j2Example.Logger.debug(&quot;Here is a message at the debug level: {}&quot;, msg)
+  }
+}</code></pre>
+<p>If you&rsquo;re using maven, you&rsquo;ll need to add the Lagom log4j2 dependency to your classpath to get Log4j 2 support:</p>
+<pre class="prettyprint"><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.lightbend.lagom&lt;/groupId&gt;
+    &lt;artifactId&gt;lagom-log4j2_${scala.binary.version}&lt;/artifactId&gt;
+    &lt;version&gt;${lagom.version}&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>Note that this dependency replaces logback here, so remove any logback dependencies from your pom.xml as well.</p>
+<p>If you&rsquo;re using sbt, you&rsquo;ll have to disable the <code>LagomLogback</code> plugin and enable the <code>LagomLog4j2</code> plugin instead. So for example, if you&rsquo;re using the Lagom plugin:</p>
+<pre class="prettyprint"><code class="language-sbt">lazy val blogImpl = (project in file(&quot;blogImpl&quot;))
+  .enablePlugins(LagomScala, LagomLog4j2)
+  .disablePlugins(LagomLogback)</code></pre>
+<p>When you&rsquo;re not using the Lagom plugin, add the Lagom Log4j2 module as a dependency:</p>
+<pre class="prettyprint"><code class="language-sbt">// `LagomImport` provides a few handy alias to several Lagom modules
+import com.lightbend.lagom.sbt.LagomImport.lagomLog4j2
+
+lazy val blogApi = (project in file(&quot;blogApi&quot;))
+  .settings(libraryDependencies += lagomLog4j2)</code></pre>
+<p>The Lagom Log4j2 module also includes default logging configurations. Read <a href="SettingsLogger.html">Configuring Logging</a> for details.</p>

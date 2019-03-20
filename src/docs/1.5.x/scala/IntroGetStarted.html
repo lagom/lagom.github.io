@@ -1,0 +1,66 @@
+<h1 id="Creating-and-running-Hello-World-with-sbt"><a class="section-marker" href="#Creating-and-running-Hello-World-with-sbt">§</a>Creating and running Hello World with sbt</h1>
+<p>A Lagom system is typically made up of a set of sbt builds, with each build providing multiple services. The easiest way to get started with a new Lagom system is to create a new project using the <code>lagom</code> sbt Giter8 template. This creates an sbt project, with two services, <code>hello</code> and <code>stream</code>. The template uses the <code>.sbtopts</code> file to increase the memory used by the <code>JVM</code> when starting your project. See <a href="JVMMemoryOnDev.html">Increase Memory in sbt</a> for other ways to increase memory.</p>
+<p>Follow these steps to create and run Hello World:</p>
+<ol>
+  <li><a href="#Create-the-build">Create the build</a></li>
+  <li><a href="#Browse-the-build">Browse the build</a></li>
+  <li><a href="#Run-Hello-World">Run Hello World</a></li>
+</ol><h2 id="Create-the-build"><a class="section-marker" href="#Create-the-build">§</a>Create the build</h2>
+<p>Choose a location on your file system for your Lagom projects. The template will prompt you for a project name and will create a directory with that name that contains the build structure and Lagom example services. Note that it can take from a few seconds to a few minutes for sbt to download dependencies.</p>
+<p>To create your project, follow these steps:</p>
+<ol>
+  <li>
+  <p>Open a console and change into the directory you selected for your project.</p></li>
+  <li>
+  <p>Enter the following command:</p></li>
+</ol>
+<p><code>
+   sbt new lagom/lagom-scala.g8
+</code></p>
+<ol>
+  <li>The template prompts for the following parameters. Press <code>Enter</code> to accept the defaults or specify your own values:</li>
+</ol>
+<ul>
+  <li><code>name</code> - Becomes the name of the top-level project directory.</li>
+  <li><code>organization</code> - Used as a package name.</li>
+  <li><code>version</code> - A version number for your system.</li>
+  <li><code>lagom-version</code> - The version number of Lagom, such as 1.3.2. Be sure to use the <a href="https://www.lagomframework.com/documentation/">current stable release</a>.</li>
+</ul><h2 id="Browse-the-build"><a class="section-marker" href="#Browse-the-build">§</a>Browse the build</h2>
+<p>The created project contains the following elements:</p>
+<pre class="prettyprint"><code>hello                   → Project root
+ └ hello-api            → hello api project
+ └ hello-impl           → hello implementation project
+ └ hello-stream-api     → hello-stream api project
+ └ hello-stream-impl    → hello-stream implementation project
+ └ project              → sbt configuration files
+   └ build.properties   → Marker for sbt project
+   └ plugins.sbt        → sbt plugins including the declaration for Lagom itself
+ └ build.sbt            → Your project build file
+</code></pre>
+<ul>
+  <li>Notice how each service is broken up into two projects: api and implementation. The <code>api</code> project contains a service interface through which consumers may interact with the service. The <code>impl</code> project contains the actual service implementation.</li>
+  <li>The <code>project</code> folder contains sbt-specific files.</li>
+  <li>The <code>build.sbt</code> file contains all information necessary to build, run, and deploy your services.</li>
+</ul><h2 id="Run-Hello-World"><a class="section-marker" href="#Run-Hello-World">§</a>Run Hello World</h2>
+<p>Lagom includes a development environment that let you start all your services by simply typing <code>runAll</code> in the sbt console. To run Hello World, change directories to the top-level directory and start sbt, when the command prompt displays, invoke <code>runAll</code>. For example:</p>
+<pre class="prettyprint"><code>cd hello
+sbt
+... (booting up)
+&gt; runAll
+</code></pre>
+<p>It will take a bit of time to build the project and start the services. Among other messages, you should see the following:</p>
+<pre class="prettyprint"><code>[info] Starting embedded Cassandra server
+..........
+[info] Cassandra server running at 127.0.0.1:4000
+[info] Service locator is running at http://localhost:9008
+[info] Service gateway is running at http://localhost:9000
+[info] Service hello-impl listening for HTTP on 127.0.0.1:24266
+[info] Service hello-impl listening for HTTPS on 127.0.0.1:50695
+[info] Service hello-stream-impl listening for HTTP on 127.0.0.1:26230
+[info] Service hello-stream-impl listening for HTTPS on 127.0.0.1:58440
+(Services started, press enter to stop and go back to the console...)
+</code></pre>
+<p>Verify that the services are indeed up and running by invoking one of its endpoints from any HTTP client, such as a browser:</p>
+<pre class="prettyprint"><code>http://localhost:9000/api/hello/World
+</code></pre>
+<p>The service returns the message, <code>Hello, World!</code>. Congratulations, you&rsquo;ve built your first Lagom project!</p>

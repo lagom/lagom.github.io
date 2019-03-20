@@ -1,0 +1,97 @@
+<h1 id="Lagom-Kafka-Client"><a class="section-marker" href="#Lagom-Kafka-Client">§</a>Lagom Kafka Client</h1>
+<p>Lagom provides an implementation of the Message Broker API that uses Kafka. In the remainder you will learn how to add the dependency in your build, and how to configure and tune topic&rsquo;s publishers and subscribers.</p><h2 id="Dependency"><a class="section-marker" href="#Dependency">§</a>Dependency</h2>
+<p>To use this feature add the following in your project&rsquo;s build.</p>
+<p>In Maven:</p>
+<pre class="prettyprint"><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.lightbend.lagom&lt;/groupId&gt;
+    &lt;artifactId&gt;lagom-javadsl-kafka-broker_${scala.binary.version}&lt;/artifactId&gt;
+    &lt;version&gt;${lagom.version}&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>In sbt:</p>
+<pre class="prettyprint"><code class="language-sbt">libraryDependencies += lagomJavadslKafkaBroker</code></pre>
+<p>When importing the Lagom Kafka Broker module keep in mind that the Lagom Kafka Broker module requires one implementation of a Lagom Persistence so make sure your dependencies include either <a href="PersistentEntityCassandra.html">Lagom Persistence Cassandra</a> or <a href="PersistentEntityRDBMS.html">Lagom Persistence JDBC</a></p><h2 id="Configuration"><a class="section-marker" href="#Configuration">§</a>Configuration</h2>
+<p>The Lagom Kafka Client implementation is built using <a href="https://github.com/akka/alpakka-kafka">Alpakka Kafka</a>. The Alpakka Kafka library wraps the official <a href="https://kafka.apache.org/documentation.html">Apache Java Kafka client</a> and exposes a (Akka) stream based API to publish/consume messages to/from Kafka. Therefore, we have effectively three libraries at play, with each of them exposing its own configuration. Let&rsquo;s explore the configuration keys exposed by each layer, starting with the one sitting at the top, i.e., the Lagom Kafka Client.</p><h3 id="Lagom-Kafka-Client1"><a class="section-marker" href="#Lagom-Kafka-Client1">§</a>Lagom Kafka Client</h3>
+<pre class="prettyprint"><code class="language-conf">lagom.broker.kafka {
+  # The name of the Kafka service to look up out of the service locator.
+  # If this is an empty string, then a service locator lookup will not be done,
+  # and the brokers configuration will be used instead.
+  service-name = &quot;kafka_native&quot;
+  service-name = ${?KAFKA_SERVICE_NAME}
+
+  # The URLs of the Kafka brokers. Separate each URL with a comma.
+  # This will be ignored if the service-name configuration is non empty.
+  brokers = ${lagom.broker.defaults.kafka.brokers}
+
+  client {
+    default {
+      # Exponential backoff for failures
+      failure-exponential-backoff {
+        # minimum (initial) duration until processor is started again
+        # after failure
+        min = 3s
+
+        # the exponential back-off is capped to this duration
+        max = 30s
+
+        # additional random delay is based on this factor
+        random-factor = 0.2
+      }
+    }
+
+    # configuration used by the Lagom Kafka producer
+    producer = ${lagom.broker.kafka.client.default}
+    producer.role = &quot;&quot;
+
+    # configuration used by the Lagom Kafka consumer
+    consumer {
+      failure-exponential-backoff = ${lagom.broker.kafka.client.default.failure-exponential-backoff}
+
+      # The number of offsets that will be buffered to allow the consumer flow to
+      # do its own buffering. This should be set to a number that is at least as
+      # large as the maximum amount of buffering that the consumer flow will do,
+      # if the consumer buffer buffers more than this, the offset buffer will
+      # backpressure and cause the stream to stop.
+      offset-buffer = 100
+
+      # Number of messages batched together by the consumer before the related messages&#39;
+      # offsets are committed to Kafka.
+      # By increasing the batching-size you are trading speed with the risk of having
+      # to re-process a larger number of messages if a failure occurs.
+      # The value provided must be strictly greater than zero.
+      batching-size = 20
+
+      # Interval of time waited by the consumer before the currently batched messages&#39;
+      # offsets are committed to Kafka.
+      # This parameter is useful to ensure that messages&#39; offsets are always committed
+      # within a fixed amount of time.
+      # The value provided must be strictly greater than zero.
+      batching-interval = 5 seconds
+
+      # Parallelsim for async committing to Kafka
+      # The value provided must be strictly greater than zero.
+      batching-parallelism = 3
+    }
+  }
+}</code></pre>
+<p>First, notice that the <code>service-name</code> is set to &ldquo;kafka_native&rdquo; by default. This property defines how the kafka broker URI will be looked up in the service locator (since v1.3.1). If you choose you can disable the lookup by setting the service-name to an empty string and pass the location of your Kafka brokers via the key <code>lagom.broker.kafka.brokers</code>. This setting is mapped to Kafka&rsquo;s <a href="https://kafka.apache.org/documentation/#producerconfigs">boot-strap server</a> list so only a few of the brokers need to be specified since the rest will be discovered dynamically. In production, you will usually want to have at least two brokers for resiliency. Make sure to separate each broker URL with a comma.</p>
+<p>Second, we have configuration that is specific to the publisher and the subscriber. The <code>lagom.broker.kafka.client.default.failure-exponential-backoff</code> defines configuration for what to do when a publisher or subscriber stream fails. Specifically, it allows you to configure the backoff time that is awaited before restarting a publishing/consuming stream. Failure can happen for different reasons, for instance it may be due to an application error, or because of a network error. Independently of the cause, Lagom will keep retrying to restart the stream (whilst waiting longer and longer between each failed retry). As you can see, both the publisher and subscriber use the same defaults, but different values for either of them can be set.</p>
+<p>Third, the consumer has a few more configuration keys allowing you to decide how often the read-side offset is persisted in the datastore. When tuning these values, you are trading performances (storing the offset every time a message is consumed can be costly), with the risk of having to re-process some message if a failure occurs.</p><h3 id="Alpakka-Kafka-configuration"><a class="section-marker" href="#Alpakka-Kafka-configuration">§</a>Alpakka Kafka configuration</h3>
+<p>See the <a href="https://github.com/akka/alpakka-kafka/blob/master/core/src/main/resources/reference.conf">Alpakka Kafka reference.conf</a> to find out about the available configuration parameters.</p><h3 id="Apache-Java-Kafka-Client"><a class="section-marker" href="#Apache-Java-Kafka-Client">§</a>Apache Java Kafka Client</h3>
+<p>See the <a href="https://kafka.apache.org/documentation.html#producerconfigs">Producer Configs</a> documentation to learn about the exposed configuration for the publisher. Meanwhile, for the subscriber, see the <a href="https://kafka.apache.org/documentation.html#newconsumerconfigs">New Consumer Configs</a>. The only caveat is that if you need to change the value of any of the configuration provided by the Java Kafka Client, you must prepend the desired configuration key you want to change with <code>akka.kafka.consumer.kafka-clients</code>, for the consumer, or <code>akka.kafka.producer.kafka-clients</code>. For instance, let&rsquo;s assume you&rsquo;d like to change the consumer&rsquo;s <code>request.timeout.ms</code>, you should add the following in the service&rsquo;s application.conf:</p>
+<pre class="prettyprint"><code class="language-conf">akka.kafka.producer.kafka-clients {
+  request.timeout.ms = 30000
+}
+</code></pre><h2 id="Subscriber-only-Services"><a class="section-marker" href="#Subscriber-only-Services">§</a>Subscriber only Services</h2>
+<p>Sometimes you will implement a Lagom Service that will only consume from the Kafka Topic. In that case you can import the Lagom Kafka Client alone (instead of importing the Lagom Kafka Broker and a Lagom Persistence implementation).</p>
+<p>In Maven:</p>
+<pre class="prettyprint"><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.lightbend.lagom&lt;/groupId&gt;
+    &lt;artifactId&gt;lagom-javadsl-kafka-client_${scala.binary.version}&lt;/artifactId&gt;
+    &lt;version&gt;${lagom.version}&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>In sbt:</p>
+<pre class="prettyprint"><code class="language-sbt">libraryDependencies += lagomJavadslKafkaClient</code></pre>
+<p>If/when your subscriber-only service evolves to include features that publish data to a topic, you will need to depend on Lagom Kafka Broker and remove the dependency to Lagom Kafka Client. The Lagom Kafka Broker module includes the Lagom Kafka Client module.</p><h3 id="Consuming-Topics-from-3rd-parties"><a class="section-marker" href="#Consuming-Topics-from-3rd-parties">§</a>Consuming Topics from 3rd parties</h3>
+<p>You may want your Lagom service to consume data produced on services not implemented in Lagom. In that case, as described in the <a href="ServiceClients.html">Service Clients</a> section, you can create a <code>third-party-service-api</code> module in your Lagom project. That module will contain a Service Descriptor <a href="MessageBrokerApi.html#Declaring-a-topic">declaring the topic</a> you will consume from. Once you have your <code>ThirdPartyService</code> interface and related classes implemented, you should add <code>third-party-service-api</code> as a dependency on your <code>fancy-service-impl</code>. Finally, you can consume from the topic described in <code>ThirdPartyService</code> as documented in the <a href="MessageBrokerApi.html#Subscribe-to-a-topic">Subscribe to a topic</a> section.</p>

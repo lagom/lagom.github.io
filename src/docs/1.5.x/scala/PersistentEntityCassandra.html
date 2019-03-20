@@ -1,0 +1,49 @@
+<h1 id="Storing-Persistent-Entities-in-Cassandra"><a class="section-marker" href="#Storing-Persistent-Entities-in-Cassandra">§</a>Storing Persistent Entities in Cassandra</h1>
+<p>This page describes how to configure Cassandra for use with Lagom&rsquo;s <a href="PersistentEntity.html">Persistent Entity</a> API.</p><h2 id="Project-dependencies"><a class="section-marker" href="#Project-dependencies">§</a>Project dependencies</h2>
+<p>To use Cassandra add the following in your project&rsquo;s build:</p>
+<p>In Maven:</p>
+<pre class="prettyprint"><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.lightbend.lagom&lt;/groupId&gt;
+    &lt;artifactId&gt;lagom-scaladsl-persistence-cassandra_${scala.binary.version}&lt;/artifactId&gt;
+    &lt;version&gt;${lagom.version}&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>In sbt:</p>
+<pre class="prettyprint"><code class="language-sbt">libraryDependencies += lagomScaladslPersistenceCassandra</code></pre><h2 id="Configuration"><a class="section-marker" href="#Configuration">§</a>Configuration</h2>
+<p>Lagom&rsquo;s persistence needs a few tables to store its data. These tables are stored in Cassandra keyspaces. A keyspace in Cassandra is a namespace that defines data replication on Cassandra nodes. Each service should use a unique keyspace name so that the tables of different services do not conflict with each other. You need to configure the keyspaces that are used for these tables in each of your service implementation projects.</p>
+<p>Cassandra keyspace names must start with an alphanumeric character and contain only alphanumeric and underscore characters. They are case-insensitive and stored in lowercase.</p>
+<p>Lagom has three internal components that require keyspace configuration:</p>
+<ul>
+  <li>The <strong>journal</strong> stores serialized events</li>
+  <li>The <strong>snapshot store</strong> stores snapshots of the state as an optimization for faster recovery (see <a href="PersistentEntity.html#Snapshots">Snapshots</a> for details)</li>
+  <li>The <strong>offset store</strong> is used for <a href="ReadSideCassandra.html">Cassandra Read-Side support</a> to keep track of the most recent event handled by each read-side processor (detailed in <a href="ReadSide.html#Read-side-design">Read-side design</a>).</li>
+</ul>
+<p>You can configure these keyspace names in each service implementation project&rsquo;s <code>application.conf</code> file:</p>
+<pre class="prettyprint"><code class="language-conf">cassandra-journal.keyspace = my_service_journal
+cassandra-snapshot-store.keyspace = my_service_snapshot
+lagom.persistence.read-side.cassandra.keyspace = my_service_read_side
+</code></pre>
+<p>While different services should be isolated by using different keyspaces, it is perfectly fine to use the same keyspace for all of these components within one service. In that case, it can be convenient to define a custom keyspace configuration property and use <a href="https://github.com/typesafehub/config#factor-out-common-values">property substitution</a> to avoid repeating it.</p>
+<pre class="prettyprint"><code class="language-conf">my-service.cassandra.keyspace = my_service
+
+cassandra-journal.keyspace = ${my-service.cassandra.keyspace}
+cassandra-snapshot-store.keyspace = ${my-service.cassandra.keyspace}
+lagom.persistence.read-side.cassandra.keyspace = ${my-service.cassandra.keyspace}
+</code></pre>
+<p>When your service starts up, Lagom creates these keyspaces by default if they are missing, and automatically creates its internal tables within them. If you prefer to manage the schema explicitly, you can disable automatic creation with these properties:</p>
+<pre class="prettyprint"><code class="language-conf">cassandra-journal {
+  keyspace-autocreate = false
+  tables-autocreate = false
+}
+cassandra-snapshot-store {
+  keyspace-autocreate = false
+  tables-autocreate = false
+}
+lagom.persistence.read-side.cassandra {
+  keyspace-autocreate = false
+}
+</code></pre>
+<p>With these properties set to <code>false</code>, if the keyspaces or tables are missing at startup your service will log an error and fail to start.</p>
+<p>Lagom&rsquo;s Cassandra support is provided by the <a href="https://github.com/akka/akka-persistence-cassandra"><code>akka-persistence-cassandra</code></a> plugin. A full configuration reference can be in the plugin&rsquo;s <a href="https://github.com/akka/akka-persistence-cassandra/blob/v0.61/core/src/main/resources/reference.conf"><code>reference.conf</code></a>.</p><h2 id="Cassandra-Location"><a class="section-marker" href="#Cassandra-Location">§</a>Cassandra Location</h2>
+<p>Lagom will start an embedded Cassandra server when running in developer mode. You can review the configuration options or how to disable the embedded server in the section on Cassandra Server in <a href="CassandraServer.html">Running Lagom in development</a>.</p>
+<p>In production you usually will prefer a dynamically locatable Cassandra server for resiliency. If you need to use a static list of contact-points to locate your Cassandra server review the section on deploying using static service location for Cassandra Service in <a href="ProductionOverview.html#Using-static-Cassandra-contact-points">Running Lagom in Production</a>.</p>
