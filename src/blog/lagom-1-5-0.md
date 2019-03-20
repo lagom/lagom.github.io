@@ -17,7 +17,7 @@ This version builds on top of the [2.7.x series of Play](https://blog.playframew
 
 # Akka Management
 
-Akka Management is a suite of tools for operating Akka powered applications. Akka Management uses a dedicated HTTP port to expose a few routes allowing remote inspection of the state of the Akka Actor System. For example, if the process is a member of an Akka Cluster, these endpoints will report if the node already joined the cluster.
+[Akka Management](https://developer.lightbend.com/docs/akka-management/current/) is a suite of tools for operating Akka powered applications. Akka Management uses a dedicated HTTP port to expose a few routes allowing remote inspection of the state of the Akka's Actor System. For example, if the process is a member of an Akka Cluster, these endpoints will report if the node already joined the cluster.
 
 Lagom exposes the Akka Management HTTP port out of the box. Lagom will add Health Check routes by default. You can reuse library provided health checks or plugin your own. For example, Lagom uses cluster status to determine when the node is healthy. This is called Cluster Membership Check and is provided by the Akka Cluster HTTP Management library.
 
