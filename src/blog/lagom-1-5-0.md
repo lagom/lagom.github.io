@@ -11,7 +11,7 @@ summary: >
 
 We are happy to announce the availability of Lagom 1.5.0. This is the GA release of Lagom 1.5.0 and is production ready. We invite all our users to upgrade.
 
-This version builds on top of the [2.7.x series of Play](https://blog.playframework.com/play-2-7-0-is-here/), [Alpakka Kafka 1.0](https://akka.io/blog/news/2019/02/28/alpakka-kafka-1.0-released), and the latest improvements on Akka and Akka Management. Here’s a list of improvements.
+This version builds on top of the [2.7.x series of Play](https://blog.playframework.com/play-2-7-0-is-here/), [Alpakka Kafka 1.0](https://akka.io/blog/news/2019/02/28/alpakka-kafka-1.0-released), and the latest improvements on Akka and Akka Management. Here’s a list of the most relevant improvements.
 
 
 
