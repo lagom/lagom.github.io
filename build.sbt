@@ -1,4 +1,6 @@
+import scala.sys.process._
 import java.io.Closeable
+import sbt.PathFinder
 
 import scala.concurrent.Await
 
@@ -61,8 +63,8 @@ val runCommand = Command.make("run") { state =>
         javaOptions += "-Ddev",
         fork := true // required for javaOptions to take effect
       )
-      val stateWithExtraSettings = extracted.append(extraSettings, stateWithStop)
-      Parser.parse("~web-stage", stateWithExtraSettings.combinedParser) match {
+      val stateWithExtraSettings = extracted.appendWithSession(extraSettings, stateWithStop)
+      Parser.parse("~webStage", stateWithExtraSettings.combinedParser) match {
         case Right(cmd) => cmd()
         case Left(msg) => throw sys.error(s"Invalid command:\n$msg")
       }
@@ -74,7 +76,7 @@ commands ++= Seq(runCommand, stopCommand)
 val generateHtml = taskKey[Seq[File]]("Generate the site HTML")
 
 target in generateHtml := WebKeys.webTarget.value / "generated-html"
-generateHtml <<= Def.taskDyn {
+generateHtml := Def.taskDyn {
   val outputDir = (target in generateHtml).value
   val docsDir = sourceDirectory.value / "docs"
   val markdownDir = (sourceDirectory in Compile).value / "markdown"
@@ -88,9 +90,9 @@ generateHtml <<= Def.taskDyn {
       blogDir,
       assetFingerPrint
     ).mkString(" ", " ", "")).value
-    outputDir.***.filter(_.isFile).get
+    (PathFinder(outputDir) ** AllPassFilter).filter(_.isFile).get
   }
-}
+}.value
 
 def path(segments: String*): String =  segments.mkString(java.io.File.separator)
 
@@ -115,11 +117,15 @@ StylusKeys.compress := true
 
 pipelineStages := Seq(uglify, concat)
 WebKeys.pipeline ++= {
-  generateHtml.value pair relativeTo((target in generateHtml).value)
+  generateHtml.value pair (file => IO.relativize((target in generateHtml).value, file))
 }
+//     (PathFinder(outputDir) ** AllPassFilter).filter(_.isFile).get
 watchSources ++= {
-  ((sourceDirectory in Compile).value / "markdown").***.get ++
-    (sourceDirectory.value / "blog").***.get
+  val markdownFolder: File = (sourceDirectory in Compile).value / "markdown"
+  val blogFolder: File = sourceDirectory.value / "blog"
+  val markdown: Seq[File] = (PathFinder(markdownFolder) ** AllPassFilter).get
+  val blog: Seq[File] = (PathFinder(blogFolder) ** AllPassFilter).get
+  markdown ++ blog
 }
 
 // Include hidden files in the output (e.g., src/main/public/.well-known)
