@@ -117,7 +117,7 @@ StylusKeys.compress := true
 
 pipelineStages := Seq(uglify, concat)
 WebKeys.pipeline ++= {
-  generateHtml.value pair (file => IO.relativize((target in generateHtml).value, file))
+  generateHtml.value pair Path.relativeTo((target in generateHtml).value)
 }
 watchSources ++= {
   val markdownFolder: File = (sourceDirectory in Compile).value / "markdown"
