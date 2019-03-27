@@ -90,7 +90,7 @@ generateHtml := Def.taskDyn {
       blogDir,
       assetFingerPrint
     ).mkString(" ", " ", "")).value
-    (PathFinder(outputDir) ** AllPassFilter).filter(_.isFile).get
+    outputDir.allPaths.filter(_.isFile).get
   }
 }.value
 
