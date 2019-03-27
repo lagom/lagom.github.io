@@ -119,7 +119,6 @@ pipelineStages := Seq(uglify, concat)
 WebKeys.pipeline ++= {
   generateHtml.value pair (file => IO.relativize((target in generateHtml).value, file))
 }
-//     (PathFinder(outputDir) ** AllPassFilter).filter(_.isFile).get
 watchSources ++= {
   val markdownFolder: File = (sourceDirectory in Compile).value / "markdown"
   val blogFolder: File = sourceDirectory.value / "blog"
