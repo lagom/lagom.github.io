@@ -122,7 +122,7 @@ WebKeys.pipeline ++= {
 watchSources ++= {
   val markdownFolder: File = (sourceDirectory in Compile).value / "markdown"
   val blogFolder: File = sourceDirectory.value / "blog"
-  val markdown: Seq[File] = (PathFinder(markdownFolder) ** AllPassFilter).get
+  val markdown: Seq[File] = markdownFolder.allPaths.get
   val blog: Seq[File] = blogFolder.allPaths.get
   markdown ++ blog
 }
