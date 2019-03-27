@@ -123,7 +123,7 @@ watchSources ++= {
   val markdownFolder: File = (sourceDirectory in Compile).value / "markdown"
   val blogFolder: File = sourceDirectory.value / "blog"
   val markdown: Seq[File] = (PathFinder(markdownFolder) ** AllPassFilter).get
-  val blog: Seq[File] = (PathFinder(blogFolder) ** AllPassFilter).get
+  val blog: Seq[File] = blogFolder.allPaths.get
   markdown ++ blog
 }
 
