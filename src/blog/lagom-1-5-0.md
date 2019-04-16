@@ -3,7 +3,7 @@ title: "Lagom 1.5 Released: Akka Management, Kubernetes, OpenShift, gRPC, Couchb
 date: 2019-04-16
 author_github: ignasi35
 tags: news
-canonical_rel: http://developer.lightbend.com/
+canonical_rel: https://www.lightbend.com/blog/lagom-1-5-released-akka-management-kubernetes-openshift-grpc-couchbase
 summary: >
     The Lagom team has released Lagom 1.5.0
 
@@ -29,9 +29,9 @@ Lagom 1.5.0 will no longer support Lightbend Orchestration (which was [Incubatin
 
 If you are targeting OpenShift or Kubernetes environments the new [Guide to Deploy Lightbend Applications](https://developer.lightbend.com/guides/openshift-deployment/) covers all the steps and details (including a sample application) to set up and tune your system.
 
-## Support for gRPC 
+## Akka gRPC integration
 
-Lagom supports [Akka gRPC](https://developer.lightbend.com/docs/akka-grpc/current/) for cross-service communication (currently [incubating](https://developer.lightbend.com/docs/reactive-platform/2.0/support-terminology/index.html#incubating)). The original HTTP/JSON-based transport is not disappearing but, instead, Lagom introduces gRPC so users can choose to expose alternative transports increasing the adoption of their services.
+Lagom 1.5.0 introduces [incubating](https://developer.lightbend.com/docs/lightbend-platform/2.0/support-terminology/index.html#incubating) support for  [Akka gRPC](https://developer.lightbend.com/docs/akka-grpc/current/) for cross-service communication. The original HTTP/JSON-based transport is not disappearing but, instead, Lagom introduces gRPC so users can choose to expose alternative transports increasing the adoption of their services.
 
 This feature drove some smaller improvements which non-gRPC users will also welcome.
 Lagom already supported HTTP/2 since it is built on top of Play. In Lagom 1.5 we’ve reviewed all the necessary pieces so HTTP/2 can also be used on dev mode. In the same spirit, it is now also possible to use encrypted (TLS) communication on dev mode. 
@@ -40,16 +40,12 @@ As a final improvement driven by the adoption of gRPC, Lagom 1.5 now supports Ad
 
 ## Couchbase Persistence Support
 
-Lagom 1.5 also offers optional support for [Couchbase](https://www.couchbase.com/) as a new database option for persistent entities and read side processors through the [Akka Persistence Couchbase](https://doc.akka.io/docs/akka-persistence-couchbase/current/) module. Currently available in an [Incubating](https://developer.lightbend.com/docs/reactive-platform/2.0/support-terminology/index.html#incubating) early access release, Akka Persistence Couchbase has been built to work with Lagom 1.5 and the 1.0 release is coming soon. See the documentation for [Couchbase Persistent Entities](https://doc.akka.io/docs/akka-persistence-couchbase/current/lagom-persistent-entity.html) and [Couchbase Read-Side support](https://doc.akka.io/docs/akka-persistence-couchbase/current/lagom-read-side.html) for more details.
+Lagom 1.5 also offers optional support for [Couchbase](https://www.couchbase.com/) as a new database option for persistent entities and read side processors through the [Akka Persistence Couchbase](https://doc.akka.io/docs/akka-persistence-couchbase/current/) module. Currently available in an [Incubating](https://developer.lightbend.com/docs/lightbend-platform/2.0/support-terminology/index.html#incubating) early access release, Akka Persistence Couchbase has been built to work with Lagom 1.5 and the 1.0 release is coming soon. See the documentation for [Couchbase Persistent Entities](https://doc.akka.io/docs/akka-persistence-couchbase/current/lagom-persistent-entity.html) and [Couchbase Read-Side support](https://doc.akka.io/docs/akka-persistence-couchbase/current/lagom-read-side.html) for more details.
 
 
 ## Migrating from previous versions
 
 This release introduces very little changes over the `1.5.0-RC2` so if you already moved to that version the upgrade should be trivial. If you are still using Lagom `1.4.x` we recommend you first migrate to the latest version available of Lagom 1.4 series and then migrate to Lagom 1.5. If you are using a version older than `1.4.x`, you should migrate one version at a time. For example: from `1.3.9` to `1.3.11` (because `1.3.11` is `1.3.latest`), then from `1.3.11` to `1.4.latest` and finally to `1.5.x`. Read the appropriate [release notes](https://github.com/lagom/lagom/releases) and migration guides ([Java](https://www.lagomframework.com/documentation/latest/java/Migration15.html) / [Scala](https://www.lagomframework.com/documentation/latest/scala/Migration15.html)) on each step.
-
-We hope you enjoy this latest release of Lagom, and if you would like to contribute to this exciting OSS project, you can do so here: 
-
-https://www.lagomframework.com/get-involved.html
 
 ## Credits
 
