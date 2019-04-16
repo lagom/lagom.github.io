@@ -1,5 +1,5 @@
 ---
-title: Lagom 1.5.0 released!
+title: "Lagom 1.5 Released: Akka Management, Kubernetes, OpenShift, gRPC, Couchbase and more"
 date: 2019-04-16
 author_github: ignasi35
 tags: news
