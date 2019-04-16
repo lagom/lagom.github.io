@@ -1,6 +1,6 @@
 ---
 title: Lagom 1.5.0 released!
-date: 2019-03-20
+date: 2019-04-16
 author_github: ignasi35
 tags: news
 canonical_rel: http://developer.lightbend.com/
@@ -11,43 +11,45 @@ summary: >
 
 We are happy to announce the availability of Lagom 1.5.0. This is the GA release of Lagom 1.5.0 and is production ready. We invite all our users to upgrade.
 
-This version builds on top of the [2.7.x series of Play](https://blog.playframework.com/play-2-7-0-is-here/), [Alpakka Kafka 1.0](https://akka.io/blog/news/2019/02/28/alpakka-kafka-1.0-released), and the latest improvements on Akka and Akka Management. Here’s a list of the most relevant improvements.
+This version builds on top of the [2.7.x series of Play](https://blog.playframework.com/play-2-7-0-is-here/), [Alpakka Kafka 1.0](https://akka.io/blog/news/2019/02/28/alpakka-kafka-1.0-released), and the latest improvements on Akka and Akka Management. See GitHub for the [full list of commits](https://github.com/lagom/lagom/compare/1.4.11...1.5.0). 
 
+Here’s a list of the most relevant improvements.
 
+## Akka Management
 
-# Akka Management
-
-[Akka Management](https://developer.lightbend.com/docs/akka-management/current/) is a suite of tools for operating Akka powered applications. Akka Management uses a dedicated HTTP port to expose a few routes allowing remote inspection of the state of the Akka's Actor System. For example, if the process is a member of an Akka Cluster, these endpoints will report if the node already joined the cluster.
+[Akka Management](https://developer.lightbend.com/docs/akka-management/current/) is a suite of tools for operating Akka powered applications. Akka Management uses a dedicated HTTP port to expose a few routes allowing remote inspection of the state of the Akka Actor System. For example, if the process is a member of an Akka Cluster, these endpoints will report if the node already joined the cluster.
 
 Lagom exposes the Akka Management HTTP port out of the box. Lagom will add Health Check routes by default. You can reuse library provided health checks or plugin your own. For example, Lagom uses cluster status to determine when the node is healthy. This is called Cluster Membership Check and is provided by the Akka Cluster HTTP Management library.
 
-Another improvement Lagom 1.5 introduces, thanks to the adoption of Akka Management, is the simpler, more robust cluster formation via [Akka Cluster Bootstrap](https://developer.lightbend.com/docs/akka-management/current/bootstrap/). Instead of using a static list of seed nodes or relying on convoluted custom scripts to build the list of seed nodes dynamically, Cluster Bootstrap discovers the existing nodes via plugins adapting Akka Cluster Bootstrap to your orchestration environment (e.g. Kubernetes, Marathon). A static list of seed nodes is still supported but we recommend migrating to Cluster Bootstrap.
+Another improvement Lagom 1.5 introduces, thanks to the adoption of Akka Management, is the simpler, **more robust cluster formation via [Akka Cluster Bootstrap](https://developer.lightbend.com/docs/akka-management/current/bootstrap/)**. Instead of using a static list of seed nodes or relying on convoluted custom scripts to build the list of seed nodes dynamically, Cluster Bootstrap discovers the existing nodes via plugins adapting Akka Cluster Bootstrap to your orchestration environment (e.g. Kubernetes, Marathon). A static list of seed nodes is still supported but we recommend migrating to Cluster Bootstrap.
 
-# Deployment
+## Deployment with Kubernetes or Red Hat OpenShift
 
 Lagom 1.5.0 will no longer support Lightbend Orchestration (which was [Incubating](https://developer.lightbend.com/docs/reactive-platform/2.0/support-terminology/index.html#incubating)). Despite accelerating the first deployment, using Lightbend Orchestration was producing friction and reducing flexibility to tune the deployment. Moving forward, there will be no automated handling of the deployment and the suggested way is to manually maintain the production settings, the deployment descriptors and related scripts.
 
-If you are targeting OpenShift or Kubernetes environments the new a [Guide to Deploy Lightbend Applications](https://developer.lightbend.com/guides/openshift-deployment/) covers all the steps and details (including a sample application) to setup and tune your system.
+If you are targeting OpenShift or Kubernetes environments the new [Guide to Deploy Lightbend Applications](https://developer.lightbend.com/guides/openshift-deployment/) covers all the steps and details (including a sample application) to set up and tune your system.
 
-# gRPC ([Incubating](https://developer.lightbend.com/docs/reactive-platform/2.0/support-terminology/index.html#incubating))
+## Support for gRPC 
 
-Lagom supports gRPC for cross-service communication. The original HTTP/JSON-based transport is not disappearing but, instead, Lagom introduces gRPC so users can choose to expose alternative transports increasing the adoption of their services.
+Lagom supports [Akka gRPC](https://developer.lightbend.com/docs/akka-grpc/current/) for cross-service communication (currently [incubating](https://developer.lightbend.com/docs/reactive-platform/2.0/support-terminology/index.html#incubating)). The original HTTP/JSON-based transport is not disappearing but, instead, Lagom introduces gRPC so users can choose to expose alternative transports increasing the adoption of their services.
 
-This feature drove some improvements which non-gRPC users will also welcome.
+This feature drove some smaller improvements which non-gRPC users will also welcome.
+Lagom already supported HTTP/2 since it is built on top of Play. In Lagom 1.5 we’ve reviewed all the necessary pieces so HTTP/2 can also be used on dev mode. In the same spirit, it is now also possible to use encrypted (TLS) communication on dev mode. 
 
-Lagom already supported HTTP/2 since it is built on top of Play. In Lagom 1.5 we’ve reviewed all the necessary pieces so HTTP/2 can also be used on dev mode. In the same spirit, it is now also possible to use encrypted (TLS) communication on dev mode.
+As a final improvement driven by the adoption of gRPC, Lagom 1.5 now supports Additional Routers ([Java API](https://www.lagomframework.com/documentation/1.5.x/java/AdditionalRouters.html) / [Scala API](https://www.lagomframework.com/documentation/1.5.x/scala/AdditionalRouters.html)), which lets you embed any vanilla Play Router into a Lagom service. You are now able to easily reuse the Play and Akka building blocks whenever the Lagom API is not enough to complete the task at hand. Using Additional Routers it is trivial to reuse Play code you already had or extend Lagom with low-level features supported in Play but not exposed in Lagom directly (such as uploading files).
 
-As a final improvement driven by the adoption of gRPC, it is now possible to embed any vanilla Play Router into a Lagom service. We call the support for Additional Routers. You are now able to easily reuse the Play and Akka building blocks whenever the Lagom API is not enough to complete the task at hand. Using Additional Routers it is trivial to reuse Play code you already had or extend Lagom with low-level features supported in Play but not exposed in Lagom directly (such as uploading files).
+## Couchbase Persistence Support
 
-## Updating a Lagom project to version 1.5.0
+Lagom 1.5 also offers optional support for [Couchbase](https://www.couchbase.com/) as a new database option for persistent entities and read side processors through the [Akka Persistence Couchbase](https://doc.akka.io/docs/akka-persistence-couchbase/current/) module. Currently available in an [Incubating](https://developer.lightbend.com/docs/reactive-platform/2.0/support-terminology/index.html#incubating) early access release, Akka Persistence Couchbase has been built to work with Lagom 1.5 and the 1.0 release is coming soon. See the documentation for [Couchbase Persistent Entities](https://doc.akka.io/docs/akka-persistence-couchbase/current/lagom-persistent-entity.html) and [Couchbase Read-Side support](https://doc.akka.io/docs/akka-persistence-couchbase/current/lagom-read-side.html) for more details.
 
-First, make sure you read the Lagom 1.5 Migration Guide for [Scala](https://www.lagomframework.com/documentation/latest/scala/Migration15.html) or [Java](https://www.lagomframework.com/documentation/latest/java/Migration15.html).
 
-To update an sbt project, change the version of `lagom-sbt-plugin` in your `project/plugins.sbt` file.
+## Migrating from previous versions
 
-To update a Maven project, change the `lagom.version` property in your top-level `pom.xml`.
+This release introduces very little changes over the `1.5.0-RC2` so if you already moved to that version the upgrade should be trivial. If you are still using Lagom `1.4.x` we recommend you first migrate to the latest version available of Lagom 1.4 series and then migrate to Lagom 1.5. If you are using a version older than `1.4.x`, you should migrate one version at a time. For example: from `1.3.9` to `1.3.11` (because `1.3.11` is `1.3.latest`), then from `1.3.11` to `1.4.latest` and finally to `1.5.x`. Read the appropriate [release notes](https://github.com/lagom/lagom/releases) and migration guides ([Java](https://www.lagomframework.com/documentation/latest/java/Migration15.html) / [Scala](https://www.lagomframework.com/documentation/latest/scala/Migration15.html)) on each step.
 
-After updating, it is recommended to fix any new deprecation warnings you see when compiling or running your services.
+We hope you enjoy this latest release of Lagom, and if you would like to contribute to this exciting OSS project, you can do so here: 
+
+https://www.lagomframework.com/get-involved.html
 
 ## Credits
 
@@ -59,14 +61,15 @@ Special thanks to the following contributors who helped with this release:
 
 ```
 commits author    
-     46 Ignasi Marimon-Clos
-     33 Renato Cavalcanti
-     16 Tim Moore
+     53 Ignasi Marimon-Clos
+     37 Renato Cavalcanti
+     20 Tim Moore
+     16 Dale Wijnand
      15 Elijah Rippeth
-     12 Dale Wijnand
-     10 Marcos Pereira
+     11 Marcos Pereira
       4 Martynas Mickevičius
       3 Ayush Prashar
+      2 Alden Torres
       1 sullis
       1 danielklein45
       1 Zhonglai Zhang
@@ -77,8 +80,8 @@ commits author
       1 Kunal sethi
       1 João Guitana
       1 Ido Shamun
-      1 Fran Bermejo
       1 Enno
-      1 Brent Eritou  
+      1 Corey Auger
+      1 Brent Eritou
       1 0xflotus
 ```
