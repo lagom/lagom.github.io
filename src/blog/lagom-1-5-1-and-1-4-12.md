@@ -8,13 +8,13 @@ summary: >
 ---
 
 
-The Lagom team has released the versions 1.5.1 and 1.4.12. For a list of the specific changes in Lagom 1.5.1, see the [change log (1.5.1)](https://github.com/lagom/lagom/compare/1.5.0...1.5.1), and for a list of changes on Lagom 1.4.12 see the [change log (1.4.12)](https://github.com/lagom/lagom/compare/1.4.11...1.4.12).
+The Lagom team has released the versions 1.5.1 and 1.4.12. For a list of the specific changes in Lagom 1.5.1, see the [change log (1.5.1)](https://github.com/lagom/lagom/compare/1.5.0...1.5.1), and for a list of changes in Lagom 1.4.12 see the [change log (1.4.12)](https://github.com/lagom/lagom/compare/1.4.11...1.4.12).
 
 ## Highlights
 
 These two releases bring into Lagom a new `Service Locator` implementation, based on [Akka's Service Discovery](https://doc.akka.io/docs/akka/2.5/discovery/index.html). This component was previously released as an apart library, [lagom-akka-discovery-service-locator](https://github.com/lagom/lagom-akka-discovery-service-locator/), and intended to be a replacement for the Service Locator previously offered by [Lightbend Orchestration](https://developer.lightbend.com/docs/lightbend-orchestration/current/index.html).
 
-In order to allow a smoother transition for Lagom 1.4 users, we decided to include it in 1.4.12 and 1.5.1. So users can choose to first migrate their Lagom 1.4 application to Akka Service Discovery and then to Lagom 1.5. Of course, this is not a required step. It is also possible to migrated directly from Lagom 1.4 and Lightbend Orchestration to Lagom 1.5 and Akka Service Discovery.
+In order to allow a smoother transition for Lagom 1.4 users, we decided to include it in 1.4.12 and 1.5.1. So users can choose to first migrate their Lagom 1.4 application to Akka Service Discovery and then to Lagom 1.5. Of course, this is not a required step. It is also possible to migrate directly from Lagom 1.4 and Lightbend Orchestration to Lagom 1.5 and Akka Service Discovery.
 
 For more information, consult the corresponding documentation for Akka Discovery integration:
  
