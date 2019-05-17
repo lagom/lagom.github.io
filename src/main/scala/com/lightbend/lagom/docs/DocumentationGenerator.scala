@@ -29,7 +29,7 @@ object DocumentationGenerator extends App {
   // This impacts what gets displayed on the main documentation index.
   val stableVersions = Seq(
     VersionSummary("1.5.x", s"Lagom $currentLagomVersion (current stable release)"),
-    VersionSummary("1.4.x", s"Lagom 1.4.13")
+    VersionSummary("1.4.x", s"Lagom 1.4.14")
   )
 
   val previewVersions = Seq()
