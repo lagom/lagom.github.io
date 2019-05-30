@@ -3,7 +3,6 @@ title: "Lagom 1.5 Released: Akka Management, Kubernetes, OpenShift, gRPC, Couchb
 date: 2019-04-16
 author_github: ignasi35
 tags: news
-canonical_rel: https://www.lightbend.com/blog/lagom-1-5-released-akka-management-kubernetes-openshift-grpc-couchbase
 summary: >
     The Lagom team has released Lagom 1.5.0
 
