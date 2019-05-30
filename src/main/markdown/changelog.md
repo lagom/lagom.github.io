@@ -1,5 +1,12 @@
 # Lagom Change Log
 
+## More recent releases
+
+Lagom team is now using Github Releases as the place to list changes in each release. We consider it is better since you can more easily consume all the issues, code changes, and other information there. Lagom releases on Github:
+
+<https://github.com/lagom/lagom/releases>
+
+Because of that, we are not keeping this page anymore, but we aren't removing it either for historical reasons.
 
 ## Lagom 1.4.2
 
