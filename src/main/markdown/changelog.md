@@ -6,7 +6,7 @@ Lagom team is now using Github Releases as the place to list changes in each rel
 
 <https://github.com/lagom/lagom/releases>
 
-Because of that, we are not keeping this page anymore, but we aren't removing it either for historical reasons.
+Because of that, we are not updating this page anymore, but we aren't removing it either for historical reasons.
 
 ## Lagom 1.4.2
 
