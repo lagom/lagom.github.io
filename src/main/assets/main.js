@@ -8,7 +8,7 @@ jQuery.noConflict();
         var iOS = navigator.userAgent.match(/iPhone|iPad|iPod/i);
         if(iOS){$("html").addClass('ios').removeClass('noios')}
         new Waypoint.Sticky({
-            element: $('.social-bar')[0]
+            element: $('.sticky-bar')[0]
         });
 
         // Init docs version selector

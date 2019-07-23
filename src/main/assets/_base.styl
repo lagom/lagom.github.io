@@ -2,13 +2,11 @@ body
 	background lgm-purple
 	color lb-slate
 	font-family lightbend-fonts
-	font-smoothing antialiased
-	-webkit-font-size-adjust none
 	text-rendering optimizeLegibility
 .off-canvas-content
 	position relative
 	background: lgm-purple
-	@media screen and (min-width: 40em)
+	@media menu-break-point-small
 		background: lgm-purple url("images/ui/lagom-hero.png") no-repeat
 		background-position: center top
 		background-attachment: fixed
@@ -69,7 +67,9 @@ body
 		h1,h2,h3,h4,h5,h6,p
 			color: white
 	&.hero-banner
-		padding: 20px 0 102px 0
+		padding: 60px 0 102px 0
+		@media menu-break-point-small
+			padding: 20px 0 102px 0
 		background: transparent
 		br
 			display: none
@@ -94,7 +94,9 @@ body
 			font-size: 2.25em
 			color: lgm-purple
 	&.page-title
-		padding: 0 0 62px 0
+		padding: 40px 0 62px 0
+		@media menu-break-point-small
+			padding: 0 0 62px 0
 		background: transparent
 		br
 			display: none
@@ -126,28 +128,23 @@ body
 
 .navbar
 	background-color white
-	border-top solid 5px lgm-purple
-	height 80px
-	.menu-icon
-		width: 40px
-		margin-right: 10px
-		height: 30px
-		vertical-align: top
-		margin-top: 22px
-		&:after
-			background: lgm-purple
-			box-shadow: 0 14px 0 lgm-purple,0 28px 0 lgm-purple
-
+	height 100px
+	display: none
+	@media menu-break-point-small
+		display: block		
 	.logo
 		float: right
-		@media screen and (min-width: 40em)
-			float: none
+		@media menu-break-point-small
+			float: left
 		display: inline-block
-		margin-top: 15px
+		margin-top: 25px
 		.svg-logo
 			height: 36px
 			margin-top: 2px
-			@media screen and (min-width: 42.500em)
+			@media menu-break-point-small
+				height: 34px
+				margin-top: 8px
+			@media menu-break-point-medium
 				height: 44px
 				margin-top: 0
 
@@ -159,8 +156,8 @@ body
 			float left
 			border-left solid 1px lb-light-grey
 			color lgm-purple-dkr
-			height 75px
-			line-height 45px
+			height 100px
+			line-height 70px
 			padding 15px
 			font-size 14px
 			font-weight 700
@@ -173,7 +170,112 @@ body
 			box-shadow inset 0 4px 0 lgm-purple, inset 0 0 3px lb-off-white-dkr
 			transition anime
 
+.small-menu
+	display: flex
+	justify-content: flex-start
+	align-items: stretch
+	.menu-icon
+		width: 30px
+		height: 30px
+		vertical-align: top
+		margin-top: 25px
+		&:after
+			background: lgm-purple
+			box-shadow: 0 14px 0 lgm-purple,0 28px 0 lgm-purple
+		.stuck &
+			margin-top: 14px
+			&:after
+				background: white
+				box-shadow: 0 10px 0 white,0 20px 0 white
+	.logo
+		padding-left: 20px
+		margin-left: 20px 
+		height: 80px
+		border-left: 1px solid lb-light-grey
+		display: inline-block
+		> span
+			height: 80px
+			width: 150px
+			display: inline-block
+			background: transparent url("images/logos/lagom-full-color.svg") no-repeat center center
+			background-size: contain
+		.stuck &
+			height: header-height
+			border-left: 1px solid rgba(lgm-purple-ltr, .5)
+			> span
+				background-image: url("images/logos/lagom-reverse.svg")
+				height: header-height
+				width: 130px
+			@media menu-break-point-small
+				border-left: none
+				padding: 0
+				margin: 0
+	.sections-scroll
+		display: none
+		a
+			color: white
+			text-transform: uppercase
+			margin: 0 5px
+			line-height: 38px
+			padding: 5px
+			display: inline-block
+			font-weight: 400
+			&:hover
+				color: lgm-purple-ltr
+	.social
+		display: none
+	@media menu-break-point-small
+		justify-content: flex-end
+		.stuck &
+			justify-content: space-between
+		.menu-icon
+			display: none
+		.logo
+			display: none
+			.stuck &
+				height: header-height
+				> span
+					height: header-height
+				display: inline-block
+		.sections-scroll
+			display: none
+			.stuck &
+				display: inline-block
+		.social
+			display: inline-block
 
+
+.sticky-bar
+	background: rgba(white,1)
+	height: 80px
+	box-shadow: 0 0 8px rgba(black,.5)
+	width: 100%
+	z-index: 100
+	@media menu-break-point-small
+		background: rgba(lgm-purple,0)
+		position: relative
+		box-shadow: 0 0 8px rgba(black,0)
+		top: 0
+		width: 100%
+		z-index: 100
+	&.stuck
+		background: rgba(lgm-purple,1)
+		height: header-height
+		position: fixed
+		box-shadow: 0 0 8px rgba(black,.5)
+		top: 0
+		left: 0
+		width: 100%
+		z-index: 100
+		.social
+			display: none
+			padding: 10px 0 10px 0
+		@media menu-break-point-medium
+			.social
+				display: block
+
+
+	
 
 
 .off-canvas

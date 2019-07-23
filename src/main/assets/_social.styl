@@ -1,71 +1,5 @@
-.social-bar
-	background: rgba(lgm-purple,1)
-	transition: anime
-	position: fixed
-	min-height: header-height
-	border-bottom: 0px solid lgm-purple-dkr
-	box-shadow: 0 0 8px rgba(black,.5)
-	top: 0
-	width: 100%
-	z-index: 9999
-	.menu-icon
-		margin: 17px 0 0 0
-		float: left
-		display: block
-	.logo-for-small
-		float: right
-	.svg-logo-lagom-reverse
-		height: 30px
-		margin-top: 8px
-		display: block
-	@media screen and (min-width: 40em)
-		background: rgba(lgm-purple,0)
-		transition: anime
-		position: relative
-		border-bottom: 0px solid lgm-purple-dkr
-		box-shadow: 0 0 8px rgba(black,0)
-		top: 0
-		width: 100%
-		z-index: 9999
-		.svg-logo-lagom-reverse
-			float: left
-			display: none
-	&.stuck
-		background: rgba(lgm-purple,1)
-		transition: anime
-		position: fixed
-		border-bottom: 0px solid lgm-purple-dkr
-		box-shadow: 0 0 8px rgba(black,.5)
-		top: 0
-		left: 0
-		width: 100%
-		z-index: 9999
-		.social
-			display: none
-			padding: 10px 0 10px 0
-		.sections-scroll
-			display: block
-		.svg-logo-lagom-reverse
-			display: block
-		@media screen and (min-width: 63em)
-			.social
-				display: block
-
-.sections-scroll
-	display: none
-	float: right
-	a
-		color: white
-		text-transform: uppercase
-		margin: 0 5px
-		line-height: 38px
-		padding: 5px
-		display: inline-block
-		&:hover
-			color: lgm-purple-ltr
 .social
 	float: right
-	margin-left: 15px
 	padding: 15px 0 15px 0
 	social(pos)
 		background-position: ((pos * -1) * 30px) 0
@@ -91,7 +25,6 @@
 			social(4)
 		&[href*=discuss]
 			social(5)
-
 		span
 			display: none
 			position: absolute

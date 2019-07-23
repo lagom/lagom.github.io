@@ -17,7 +17,7 @@
         <link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" href="@context.path/@context.assetFingerPrint-all-styles-concat.css" type="text/css">
         <!-- OneTrust Cookies Consent Notice (Production Standard, lagomframework.com, en-GB) start -->
-        <script src="https://optanon.blob.core.windows.net/consent/1ee3f0d6-9ed5-4b9e-bed7-ce6faaeaca5d.js" type="text/javascript" charset="UTF-8"></script>
+        <script src="https://optanon.blob.core.windows.net/consent/1ee3f0d6-9ed5-4b9e-bed7-ce6faaeaca5d-test.js" type="text/javascript" charset="UTF-8"></script>
         <script type="text/javascript">
             function OptanonWrapper() { 
                 (function($) {
@@ -47,7 +47,10 @@
                     </nav>
                 </div>
                 <div class="off-canvas-content" data-off-canvas-content>
-                    <header class="navbar show-for-medium">
+
+                    @lightbendBanner()
+
+                    <header class="navbar">
                         <div class="row">
                             <div class="small-12 columns">
                                 <button class="menu-icon hide-for-medium" type="button" data-open="offCanvasLeft" data-toggle="offCanvas"></button>
@@ -58,26 +61,22 @@
                             </div>
                         </div>
                     </header>
-                    <div class="fw-wrapper flush social-bar">
-                        <div class="row hide-for-medium">
+                    <div class="fw-wrapper flush sticky-bar">
+                        <div class="row">
                             <div class="small-12 columns">
-                                <button class="menu-icon" type="button" data-open="offCanvasLeft" data-toggle="offCanvas"></button>
-                                <a class="logo-for-small" href="@context.path/">@lagomReverse()</a>
-                            </div>
-                        </div>
-                        <div class="row show-for-medium">
-                            <div class="small-12 columns">
-                                <!-- social icons -->
-                                <a class="logo" href="@context.path/">@lagomReverse()</a>
-                                <nav class="social">
-                                    <a href="https://discuss.lagomframework.com"><span>Discuss Lagom</span></a>
-                                    <a href="https://twitter.com/lagom"><span>Twitter</span></a>
-                                    <a href="https://github.com/lagom/lagom"><span>GitHub</span></a>
-                                    <a href="https://stackoverflow.com/questions/tagged/lagom"><span>Stack Overflow</span></a>
-                                </nav>
-                                <nav class="sections-scroll">
-                                    @topNav()
-                                </nav>
+                                <div class="small-menu">
+                                    <button class="menu-icon" type="button" data-open="offCanvasLeft" data-toggle="offCanvas"></button>
+                                    <a class="logo" href="@context.path/"><span></span></a>
+                                    <nav class="sections-scroll">
+                                        @topNav()
+                                    </nav>
+                                    <nav class="social">
+                                        <a href="https://discuss.lagomframework.com"><span>Discuss Lagom</span></a>
+                                        <a href="https://twitter.com/lagom"><span>Twitter</span></a>
+                                        <a href="https://github.com/lagom/lagom"><span>GitHub</span></a>
+                                        <a href="https://stackoverflow.com/questions/tagged/lagom"><span>Stack Overflow</span></a>
+                                    </nav>
+                                </div>
                             </div>
                         </div>
                     </div>
