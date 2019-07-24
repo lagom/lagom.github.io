@@ -8,7 +8,7 @@ body
 	background: lgm-purple
 	@media menu-break-point-small
 		background: lgm-purple url("images/ui/lagom-hero.png") no-repeat
-		background-position: center top
+		background-position: center top 40px
 		background-attachment: fixed
 
 @media screen and (min-width: 40em)
@@ -67,9 +67,9 @@ body
 		h1,h2,h3,h4,h5,h6,p
 			color: white
 	&.hero-banner
-		padding: 60px 0 102px 0
+		padding: 60px 0 80px 0
 		@media menu-break-point-small
-			padding: 20px 0 102px 0
+			padding: 20px 0 80px 0
 		background: transparent
 		br
 			display: none
@@ -86,6 +86,14 @@ body
 			width: 200px
 			display: block
 			margin-bottom: 10px
+	&.hero-banner-home
+		h1
+			margin-bottom: .5rem
+			font-size: 2.5rem
+		h2
+			font-size: 1.5rem
+			font-weight: 400
+			margin-bottom: 1.25rem
 	&.home-content
 		border-top: 2px solid white
 		background: lb-light-grey-ltr url("images/ui/lagom-hexagon-repeat-fade.png") repeat-x center top
