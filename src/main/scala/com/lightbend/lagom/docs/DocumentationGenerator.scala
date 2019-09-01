@@ -118,7 +118,8 @@ object DocumentationGenerator extends App {
     "/documentation/scala/index.html" -> s"$context/documentation/$currentDocsVersion/scala/Home.html",
     "/documentation/java/index.html" -> s"$context/documentation/$currentDocsVersion/java/Home.html",
     // Redirect anyone heading to the old download page to the get started page
-    "/download.html" -> "/get-started.html"
+    "/download.html" -> "/get-started.html",
+    "/conduct.html" -> "https://www.lightbend.com/conduct"
   )
 
   val outputDir = new File(args(0))
