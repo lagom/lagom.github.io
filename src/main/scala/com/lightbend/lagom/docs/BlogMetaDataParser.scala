@@ -17,6 +17,7 @@ import scala.util.control.NonFatal
 import scala.io.{ Codec, Source }
 
 object BlogMetaDataParser {
+  val logger = Logger(getClass)
 
   private implicit class IteratorOps[T](i: Iterator[T]) {
     def nextOption = if (i.hasNext) Option(i.next()) else None
@@ -94,7 +95,7 @@ object BlogMetaDataParser {
       } catch {
         case e: java.io.IOException if DocumentationGenerator.devMode => {
           // GitHub might be rate-limiting us. If we're in development mode, just ignore this.
-          Logger.warn(s"GitHub might be rate-limiting us; using fallback for user $name")
+          logger.warn(s"GitHub might be rate-limiting us; using fallback for user $name")
           GitHubUser(name, "https://www.gravatar.com/avatar/default", s"https://github.com/$name")
         }
       }
@@ -109,6 +110,7 @@ object GitHubUser {
 }
 
 case class Yaml(map: Map[String, AnyRef]) {
+  val logger = Logger(getClass)
 
   def getString(key: String) = getAs[String](key)
   def getInt(key: String) = getAs[Int](key)
@@ -119,42 +121,43 @@ case class Yaml(map: Map[String, AnyRef]) {
   def getMap[T](key: String)(implicit ct: ClassTag[T]): Option[Map[String, T]] = getAs[Yaml](key).map(_.map.filter {
     case (k, t) if ct.runtimeClass.isInstance(t) => true
     case (k, other) =>
-      Logger.warn("Ignoring map value for key " + k + ", expected " + ct + " but was " + other)
+      logger.warn("Ignoring map value for key " + k + ", expected " + ct + " but was " + other)
       false
   }.asInstanceOf[Map[String, T]])
 
   def getList[T](key: String)(implicit ct: ClassTag[T]): Option[List[T]] = getAs[List[_]](key).map(_.filter {
     case t if ct.runtimeClass.isInstance(t) => true
     case other =>
-      Logger.warn("Ignoring list value for key " + key + ", expected " + ct + " but was " + other)
+      logger.warn("Ignoring list value for key " + key + ", expected " + ct + " but was " + other)
       false
   }.asInstanceOf[List[T]])
 
   def getAs[T](key: String)(implicit ct: ClassTag[T]): Option[T] = map.get(key).flatMap {
     case t if ct.runtimeClass.isInstance(t) => Some(t.asInstanceOf[T])
     case other =>
-      Logger.warn("Ignoring value for key " + key + ", expected " + ct + " but was " + other)
+      logger.warn("Ignoring value for key " + key + ", expected " + ct + " but was " + other)
       None
   }
 }
 
 object Yaml {
+  val logger = Logger(getClass)
   val empty = Yaml(Map())
 
   def parse(yaml: String) = {
 
     import scala.collection.JavaConverters._
 
-    def yamlToScala(obj: AnyRef): AnyRef = obj match {
-      case map: java.util.Map[String, AnyRef] => new Yaml(map.asScala.toMap.mapValues(yamlToScala))
-      case list: java.util.List[AnyRef] => list.asScala.toList.map(yamlToScala)
+    def yamlToScala(obj: Any): AnyRef = obj match {
+      case map: java.util.Map[_, _] => new Yaml(map.asScala.toMap.asInstanceOf[Map[String, AnyRef]].mapValues(yamlToScala))
+      case list: java.util.List[_] => list.asScala.toList.map(yamlToScala)
       case s: String => s
       case n: Number => n
       case b: java.lang.Boolean => b
       case d: Date => new DateTime(d)
       case null => null
       case other =>
-        Logger.warn("Unexpected YAML object of type " + other.getClass)
+        logger.warn("Unexpected YAML object of type " + other.getClass)
         other.toString
     }
 
@@ -162,12 +165,12 @@ object Yaml {
       yamlToScala(new org.yaml.snakeyaml.Yaml().load(yaml)) match {
         case y: Yaml => y
         case other =>
-          Logger.warn("YAML was not object: " + other)
+          logger.warn("YAML was not object: " + other)
           Yaml.empty
       }
     } catch {
       case NonFatal(t) =>
-        Logger.warn("Error parsing YAML content", t)
+        logger.warn("Error parsing YAML content", t)
         Yaml.empty
     }
   }

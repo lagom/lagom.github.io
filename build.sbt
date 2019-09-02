@@ -7,7 +7,8 @@ import scala.concurrent.Await
 lazy val `lagom-docs` = (project in file("."))
   .enablePlugins(SbtTwirl, SbtWeb)
 
-scalaVersion := "2.11.7"
+scalaVersion := "2.12.9"
+scalacOptions += "-deprecation"
 
 libraryDependencies ++= Seq(
   "org.webjars" % "normalize.css" % "3.0.2",
@@ -15,7 +16,7 @@ libraryDependencies ++= Seq(
   "org.webjars" % "jquery" % "2.2.1",
   "org.webjars.bower" % "waypoints" % "4.0.0",
   "org.webjars" % "prettify" % "4-Mar-2013",
-  "com.lightbend.markdown" %% "lightbend-markdown-server" % "1.5.0",
+  "com.lightbend.markdown" %% "lightbend-markdown-server" % "1.7.0",
   "org.yaml" % "snakeyaml" % "1.12"
 )
 

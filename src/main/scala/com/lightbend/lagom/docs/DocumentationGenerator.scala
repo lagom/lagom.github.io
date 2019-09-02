@@ -15,9 +15,10 @@ import scala.collection.JavaConverters._
 import scala.xml.XML
 
 object DocumentationGenerator extends App {
+  val logger = Logger(getClass)
 
   val devMode = sys.props.contains("dev")
-  if (devMode) Logger.info("Running in dev mode")
+  if (devMode) logger.info("Running in dev mode")
 
   /*
    * CONFIGURATION
