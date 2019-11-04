@@ -44,53 +44,6 @@ object DocumentationGenerator extends App {
     VersionSummary("1.0.x", s"Lagom 1.0.0")
   )
 
-  val communityContents = Seq(
-  //    CommunityContent("title", "href", "hrefTitle"),
-
-    CommunityContent("Lagom 1.4 and Kubernetes Orchestration",
-      "https://ordina-jworks.github.io/orchestration/2018/05/22/lagom-1-4-and-kubernetes-orchestration.html",
-      "JWORKS TECH BLOG"),
-    CommunityContent("Event Sourcing with Lagom on GCP",
-      "https://medium.com/google-cloud/event-sourcing-with-lagom-on-gcp-95f94a282fbe",
-      "Ido Shamun"),
-    CommunityContent("Lagom tutorial: using Event Sourcing to create an online shopping cart",
-      "https://inviqa.com/blog/lagom-tutorial-using-event-sourcing-create-online-shopping-cart",
-      "Inviqa"),
-    CommunityContent("Lagom Circuit Breaker: What, Why and How?",
-      "https://blog.knoldus.com/2017/06/15/lagom-circuit-breaker-what-why-and-how/",
-      "Knoldus"),
-    CommunityContent("Tour de Lagom (blog post series)",
-      "https://manuel.bernhardt.io/2017/06/05/tour-de-lagom-part-1-lagom-microservices/",
-      "Manuel Bernhardt"),
-    CommunityContent("Guide to Reactive Microservices Using Lagom Framework",
-      "http://www.baeldung.com/lagom-reactive-microservices",
-      "Baeldung"),
-    CommunityContent("CQRS and Event Sourcing with Lagom",
-      "https://blog.codecentric.de/en/2017/02/cqrs-event-sourcing-lagom/",
-      "codecentric Blog"),
-    CommunityContent("Lagom 1.2: What's New?",
-      "https://ordina-jworks.github.io/microservices/2017/02/01/Lagom-1-2.html",
-      "JWORKS TECH BLOG"),
-    CommunityContent("Run a Lagom service standalone with Zookeeper",
-      "https://thecoderwriter.wordpress.com/2016/09/24/run-a-lagom-service-standalone-with-zookeeper/",
-      "Coder's IO"),
-    CommunityContent("The Lagom Framework for Microservices and Domain-Driven Design",
-      "https://jaxenter.com/the-lagom-framework-tutorial-130264.html",
-      "jaxenter")
-  )
-
-  val videos = Seq(
-//    VideoLink(description, href),
-    VideoLink("Begin Event Sourcing with Lagom", "https://youtube.com/watch?v=Sx8ctqLxDf0"),
-    VideoLink("EventSourcing and CQRS with Lagom Microservice Framework", "https://youtube.com/watch?v=BuyXxw79fKk"),
-    VideoLink("CQRS and Event Sourcing with Lagom by Miel Donkers", "https://youtube.com/watch?v=1VOfcuWOuy8"),
-    VideoLink("Event Sourcing and CQRS by Lutz Huehnken", "https://youtube.com/watch?v=Z6_Nd7lu2PI"),
-    VideoLink("Events-First Microservices with Lagom by Gideon de Kok", "https://youtube.com/watch?v=f1YSSaI_J-c"),
-    VideoLink("Lagom in Practice by Yannick De Turck", "https://youtube.com/watch?v=JOGlZzY6ycI")
-  )
-
-
-
   // Set this to Some("your-github-account-name") if you want to deploy the docs to the gh-pages of your own fork
   // of the repo
   val gitHubAccount: Option[String] = None
@@ -322,7 +275,7 @@ object DocumentationGenerator extends App {
   }
 
   val generated = templatePages.map((generatePage _).tupled) ++
-    Seq(savePage("documentation/index.html", html.documentationIndex(stableVersions, previewVersions, oldVersions, versions, communityContents, videos))) ++
+    Seq(savePage("documentation/index.html", html.documentationIndex(stableVersions, previewVersions, oldVersions, versions))) ++
     versions.map { version =>
       savePage(s"documentation/${version.name}/index.html", html.documentationVersionIndex(version), includeInSitemap = false)
     } ++
