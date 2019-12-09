@@ -34,7 +34,7 @@ object DocumentationGenerator extends App {
   )
 
   val previewVersions = Seq(
-    VersionSummary("latest", s"Lagom 1.6.0-RC2 (preview)")
+    VersionSummary("latest", s"Lagom 1.6.0-RC3 (preview)")
   )
 
   val oldVersions = Seq(
