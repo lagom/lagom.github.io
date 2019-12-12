@@ -47,6 +47,10 @@ object DocumentationGenerator extends App {
   val communityContents = Seq(
   //    CommunityContent("title", "href", "hrefTitle"),
 
+    CommunityContent(
+      "The complete picture: Lagom and Play in action (Java)",
+      "https://xebia.com/blog/the-complete-picture-lagom-and-play-in-action-java/",
+      "Xebia blog (jbargsten)"),
     CommunityContent("Lagom 1.4 and Kubernetes Orchestration",
       "https://ordina-jworks.github.io/orchestration/2018/05/22/lagom-1-4-and-kubernetes-orchestration.html",
       "JWORKS TECH BLOG"),
