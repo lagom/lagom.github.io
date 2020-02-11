@@ -5,7 +5,7 @@ addSbtPlugin("com.typesafe.sbt" % "sbt-stylus" % "1.1.0")
 addSbtPlugin("net.ground5hark.sbt" % "sbt-concat" % "0.2.0")
 addSbtPlugin("com.typesafe.sbt" % "sbt-uglify" % "2.0.0")
 
-resolvers += "Typesafe Releases Repository" at "http://repo.typesafe.com/typesafe/releases/"
+resolvers += "Typesafe Releases Repository" at "https://repo.typesafe.com/typesafe/releases/"
 
 // Used for our SimpleHTTPServer in Akka HTTP
 libraryDependencies += "com.typesafe.akka" %% "akka-http" % "10.1.8"
