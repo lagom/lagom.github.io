@@ -99,6 +99,7 @@ def path(segments: String*): String =  segments.mkString(java.io.File.separator)
 
 Concat.groups := Seq(
   s"$assetFingerPrint-all-styles-concat.css" -> group(Seq(
+      path("css", "oss-banners.css"),
       path("lib", "foundation", "dist", "foundation.min.css"),
       path("lib", "prettify", "prettify.css"),
       "main.min.css"
