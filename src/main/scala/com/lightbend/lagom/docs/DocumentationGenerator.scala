@@ -30,7 +30,7 @@ object DocumentationGenerator extends App {
    */
   // Current documentation version
   val currentDocsVersion = "1.6.x"
-  val currentLagomVersion = "1.6.4"
+  val currentLagomVersion = "1.6.5"
 
   // This impacts what gets displayed on the main documentation index.
   val stableVersions = Seq(
