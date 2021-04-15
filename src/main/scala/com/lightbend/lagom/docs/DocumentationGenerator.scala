@@ -37,13 +37,13 @@ object DocumentationGenerator extends App {
     VersionSummary(
       "1.6.x",
       s"Lagom $currentLagomVersion (current stable release)"
-    ),
-    VersionSummary("1.5.x", s"Lagom 1.5.5")
+    )
   )
 
   val previewVersions = Seq()
 
   val oldVersions = Seq(
+    VersionSummary("1.5.x", s"Lagom 1.5.5"),
     VersionSummary("1.4.x", s"Lagom 1.4.15"),
     VersionSummary("1.3.x", s"Lagom 1.3.11"),
     VersionSummary("1.2.x", s"Lagom 1.2.3"),
