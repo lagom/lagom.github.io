@@ -292,7 +292,7 @@ service call information, the other is to implement circuit breaking functionali
 <a href="#doWithService[T](name:String,serviceCall:com.lightbend.lagom.scaladsl.api.Descriptor.Call[_,_])(block:java.net.URI=&gt;scala.concurrent.Future[T])(implicitec:scala.concurrent.ExecutionContext):scala.concurrent.Future[Option[T]]" class="extmbr" name="com.lightbend.lagom.scaladsl.api.ServiceLocator#doWithService">#doWithService</a> is invoked.</p><p>The reason circuit breaking is a service locator concern is that generally, the service locator will want to be aware
 of when a circuit breaker is open, and respond accordingly.  For example, it may decide to pull that node from its
 routing pool, or it may decide to notify some up stream service registry that that node is no longer responding.
-</p></div><dl class="attributes block"> <dt>Source</dt><dd><a href="https://github.com/lagom/lagom/tree/1.6.1+747-1849a390//service/scaladsl/api/src/main/scala/com/lightbend/lagom/scaladsl/api/ServiceLocator.scala" target="_blank">ServiceLocator.scala</a></dd></dl><div class="toggleContainer block">
+</p></div><dl class="attributes block"> <dt>Source</dt><dd><a href="https://github.com/lagom/lagom/tree/1.6.1+749-f61c3039//service/scaladsl/api/src/main/scala/com/lightbend/lagom/scaladsl/api/ServiceLocator.scala" target="_blank">ServiceLocator.scala</a></dd></dl><div class="toggleContainer block">
           <span class="toggle">
             Linear Supertypes
           </span>
