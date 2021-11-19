@@ -1,3 +1,0 @@
-WhatIsLagom:What is Lagom?
-WhatDoesLagomMean:What’s in the name?
-WhereToStart:Where to begin
