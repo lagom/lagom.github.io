@@ -1,2 +1,0 @@
-Akka:Integrating with Akka
-IntegratingNonLagom:Integrating with non Lagom services
