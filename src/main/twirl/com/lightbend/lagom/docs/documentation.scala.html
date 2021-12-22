@@ -18,7 +18,7 @@
     <script type="text/javascript" src="//cdn.jsdelivr.net/autocomplete.js/0/autocomplete.min.js"></script>
         <!-- Cross-site search. This is using Algolia's autocomplete.js  -->
     <script>
-            var clientLagom = algoliasearch('BH4D9OD16A', '77ef1e29e6bddfca861f7a42cc51725e');
+            var clientLagom = algoliasearch('VL9SRZN02O', 'f917bb0ebcb845db99a96bd01e281393');
             var lagomIndex = clientLagom.initIndex('lagomframework');
 
             var displayValue = function (suggestion, level) {
@@ -81,7 +81,7 @@
 
             };
 
-            var lagomFacetFilters = ['version:current'];
+            var lagomFacetFilters = ['version:@lang.name'];
 
             var useScalaFacetFilter = window.location.href.split('/').includes("scala");
             if (useScalaFacetFilter) {
