@@ -20,8 +20,6 @@ libraryDependencies ++= Seq(
   "org.yaml" % "snakeyaml" % "1.12"
 )
 
-resolvers += Resolver.bintrayIvyRepo("typesafe", "ivy-releases")
-
 lazy val assetFingerPrint = "git rev-parse HEAD".!!.trim
 
 val httpServer = AttributeKey[Closeable]("http-server")
