@@ -6,10 +6,6 @@ Have a question about Lagom? We've sorted out a sample of frequently asked quest
 - [Lagom Gitter channel](https://gitter.im/lagom/lagom)
 - [Stack Overflow Lagom questions](https://stackoverflow.com/questions/tagged/lagom)
 
-## Is Lagom open source or commercial?
-
-Lagom is completely open source, free to use, and has a vibrant and growing community. However, you do have the option to purchase a [Lightbend subscription](https://www.lightbend.com/platform/subscription) that provides technical support. You can also purchase a license to use [Lightbend Platform](https://www.lightbend.com/lightbend-platform), which includes a range of powerful application management, intelligent monitoring, and enterprise integration tooling.
-
 ## Does Lagom require me to use Cassandra for persistence?
 
 No, Lagom supports using either Cassandra, Couchbase or relational databases, including MySQL, PostgreSQL, Oracle, SQL Server and H2. The Lagom development environment provides and uses Cassandra by default because it offers great scalability and replication features.  See more in the [Java documentation](/documentation/current/java/PersistentEntity.html) or the [Scala documentation](/documentation/current/scala/PersistentEntity.html).
