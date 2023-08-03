@@ -18,7 +18,7 @@ sbt clean webStage
 
 # Make the website a git repo
 cd target/web/stage
-git init
+git init --initial-branch master
 git add .
 git commit -m "Website build"
 
