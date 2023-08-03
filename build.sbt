@@ -10,6 +10,8 @@ lazy val `lagom-docs` = (project in file("."))
 scalaVersion := "2.12.9"
 scalacOptions += "-deprecation"
 
+resolvers += "Lightbend ivy releases repository" at "https://dl.cloudsmith.io/public/lightbend/ivy-releases/maven/"
+
 libraryDependencies ++= Seq(
   "org.webjars" % "normalize.css" % "3.0.2",
   "org.webjars" % "foundation" % "6.2.0",
@@ -17,7 +19,8 @@ libraryDependencies ++= Seq(
   "org.webjars.bower" % "waypoints" % "4.0.0",
   "org.webjars" % "prettify" % "4-Mar-2013",
   "com.lightbend.markdown" %% "lightbend-markdown-server" % "1.7.0",
-  "org.yaml" % "snakeyaml" % "1.12"
+  "org.yaml" % "snakeyaml" % "1.12",
+  "org.parboiled" % "parboiled-java" % "1.4.1"
 )
 
 lazy val assetFingerPrint = "git rev-parse HEAD".!!.trim
