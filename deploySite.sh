@@ -14,7 +14,7 @@ else
 fi
 
 # Build the website
-sbt clean web-stage
+sbt clean webStage
 
 # Make the website a git repo
 cd target/web/stage
