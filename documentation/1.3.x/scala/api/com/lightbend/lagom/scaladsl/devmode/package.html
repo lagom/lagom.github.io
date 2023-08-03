@@ -1,0 +1,146 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>devmode - com.lightbend.lagom.scaladsl.devmode</title>
+          <meta name="description" content="devmode - com.lightbend.lagom.scaladsl.devmode" />
+          <meta name="keywords" content="devmode com.lightbend.lagom.scaladsl.devmode" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../../../index.html';
+            var hash = 'com.lightbend.lagom.scaladsl.devmode.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img alt="Package" src="../../../../../lib/package_big.png" />
+        <p id="owner"><a href="../../../../package.html" class="extype" name="com">com</a>.<a href="../../../package.html" class="extype" name="com.lightbend">lightbend</a>.<a href="../../package.html" class="extype" name="com.lightbend.lagom">lagom</a>.<a href="../package.html" class="extype" name="com.lightbend.lagom.scaladsl">scaladsl</a></p>
+        <h1>devmode</h1><span class="permalink">
+      <a href="../../../../../index.html#com.lightbend.lagom.scaladsl.devmode.package" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">devmode</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        
+        
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="com.lightbend.lagom.scaladsl.devmode.LagomDevModeComponents" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="LagomDevModeComponentsextendsLagomDevModeServiceLocatorComponents"></a>
+      <a id="LagomDevModeComponents:LagomDevModeComponents"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="LagomDevModeComponents.html"><span class="name">LagomDevModeComponents</span></a><span class="result"> extends <a href="LagomDevModeServiceLocatorComponents.html" class="extype" name="com.lightbend.lagom.scaladsl.devmode.LagomDevModeServiceLocatorComponents">LagomDevModeServiceLocatorComponents</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#com.lightbend.lagom.scaladsl.devmode.package@LagomDevModeComponentsextendsLagomDevModeServiceLocatorComponents" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Provides the Lagom dev mode components.</p><div class="fullcomment"><div class="comment cmt"><p>Provides the Lagom dev mode components.</p><p>This trait primarily has two responsibilities, it provides a service locator that uses Lagom's development service
+locator, and it registers any services returned by the <code>serviceInfo</code> component with the Lagom develompent service
+registry.</p><p>It can be used both by Lagom services, and also by non Lagom services, such as pure Play applications, in order to
+use the Lagom dev mode service locator and register components with Lagom. When used with non Lagom applications,
+<code>serviceInfo</code> will need to manually be implemented to return the service name and any ACLs for the service gateway
+to use.</p><p>It expects the service locator URL to be provided using the <code>lagom.service-locator.url</code> property, which by default
+will be automatically provided to the service by Lagom's dev mode build plugins.
+</p></div></div>
+    </li><li name="com.lightbend.lagom.scaladsl.devmode.LagomDevModeServiceLocatorComponents" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="LagomDevModeServiceLocatorComponentsextendsCircuitBreakerComponents"></a>
+      <a id="LagomDevModeServiceLocatorComponents:LagomDevModeServiceLocatorComponents"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="LagomDevModeServiceLocatorComponents.html"><span class="name">LagomDevModeServiceLocatorComponents</span></a><span class="result"> extends <a href="../client/CircuitBreakerComponents.html" class="extype" name="com.lightbend.lagom.scaladsl.client.CircuitBreakerComponents">CircuitBreakerComponents</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#com.lightbend.lagom.scaladsl.devmode.package@LagomDevModeServiceLocatorComponentsextendsCircuitBreakerComponents" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Provides the Lagom dev mode service locator.</p><div class="fullcomment"><div class="comment cmt"><p>Provides the Lagom dev mode service locator.</p><p>It can be used both by Lagom services, and also by non Lagom services, such as pure Play applications, in order to
+use the Lagom dev mode service locator. When used with non Lagom applications, <code>serviceInfo</code> will need to manually
+be implemented to return the service name.</p><p>It expects the service locator URL to be provided using the <code>lagom.service-locator.url</code> property, which by default
+will be automatically provided to the service by Lagom's dev mode build plugins.
+</p></div></div>
+    </li></ol>
+            </div>
+
+        
+
+        
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>
