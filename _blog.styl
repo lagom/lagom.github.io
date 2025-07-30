@@ -1,0 +1,90 @@
+.blog-meta
+  margin-bottom 20px
+
+.blog-author-image
+  vertical-align top
+  display inline-block
+  margin 0 6px 10px 0
+
+  a
+    height 50px
+  img
+    width 50px
+    height 50px
+
+.blog-meta-details
+  display inline-block
+
+.blog-meta-tags
+
+  .blog-tag a:after
+    content ","
+  .blog-tag:last-of-type a:after
+    content none
+
+  .svg-icon
+    width 22px
+    height 22px
+
+.blog-tag-box
+  margin-bottom 20px
+
+  a
+    display inline-block
+    border 1px solid lgm-purple-dkr
+    font-size 0.875em
+    padding 0 0 0 5px
+    margin 4px 4px 4px 0
+    background lb-off-white
+    line-height 30px
+    color lgm-purple
+    font-weight 400
+    &:after
+      color white
+      content attr(data-count)
+      display inline-block
+      width auto
+      height 30px
+      line-height 30px
+      background lgm-purple
+      float right
+      text-align center
+      padding 0 6px
+      margin 0 0 0 5px
+    &:hover
+      background lgm-purple-ltr
+      color white
+      text-decoration none
+      &:after
+        background lgm-purple
+
+header
+
+  .blog-meta-details
+    color lgm-purple-ltr-ltr
+
+    .blog-author-name
+      color white
+
+    .blog-post-date
+      color white
+
+    .blog-tag a
+      display inline-block
+      color white
+      font-weight 400
+      padding-top 4px
+
+article
+  .blog-meta-tags
+    text-align right
+
+  .blog-tag a
+    font-weight 400
+
+aside
+  .blog-meta-details
+    display inline
+  .blog-author-image
+    display block
+    float left

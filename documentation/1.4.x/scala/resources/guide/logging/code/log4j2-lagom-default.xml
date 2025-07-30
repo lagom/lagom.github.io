@@ -1,0 +1,32 @@
+<!--
+  ~ Copyright (C) 2016-2019 Lightbend Inc. <https://www.lightbend.com>
+  -->
+<!-- The default log4j2 configuration that Lagom uses if no other configuration is provided -->
+<Configuration name="DefaultLagomConfig">
+  <Appenders>
+    <Console name="STDOUT">
+      <PatternLayout>
+        <Pattern>%d{yyyy-MM-dd'T'HH:mm:ss.SSS'Z'}{GMT+0} %highlight{%level} %logger [%mdc] - %msg%n</Pattern>
+      </PatternLayout>
+    </Console>
+  </Appenders>
+
+  <Loggers>
+    <!-- Set logging for all Play library classes to INFO -->
+    <Logger name="play" level="INFO"/>
+    <!-- Set logging for all Akka library classes to INFO -->
+    <Logger name="akka" level="INFO"/>
+    <!-- Set logging for all Lagom library classes to INFO -->
+    <Logger name="com.lightbend.lagom" level="INFO"/>
+
+    <!-- Cassandra and the datastax driver are used by the Lagom event sourcing modules -->
+    <Logger name="org.apache.cassandra" level="ERROR"/>
+    <Logger name="com.datastax.driver" level="ERROR"/>
+    <!-- Turn down Kafka noise -->
+    <Logger name="org.apache.kafka" level="WARN"/>
+
+    <AsyncRoot level="INFO">
+      <AppenderRef ref="STDOUT"/>
+    </AsyncRoot>
+  </Loggers>
+</Configuration>

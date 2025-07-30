@@ -1,0 +1,458 @@
+<feed xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2005/Atom">
+      <title>Lagom Blog</title>
+      <link rel="alternate" type="text/html" href="https://www.lagomframework.com/blog"/>
+      <link rel="self" type="application/atom+xml" href="https://www.lagomframework.com/blog/atom.xml"/>
+      <id>https://www.lagomframework.com/blog</id>
+      <rights>Copyright 2025, Lightbend</rights>
+      <updated>2019-12-13T11:00:00.000+11:00</updated>
+      <dc:creator>Lightbend</dc:creator>
+      <dc:date>2019-12-13T11:00:00.000+11:00</dc:date>
+      <dc:language>en</dc:language>
+      <dc:rights>Copyright 2025, Lightbend</dc:rights>
+      <entry>
+          <title>Lagom 1.6 Released: Akka Persistence Typed, Projections Stop/Resume, Akka Jackson support and more</title>
+          <link rel="alternate" href="https://www.lagomframework.com/blog/lagom-1-6-0.html"/>
+          <category term="news" scheme="https://www.lagomframework.com/blog/tags/news.html"/>
+          <author>
+            <name>Renato Cavalcanti</name>
+            <uri>https://github.com/renatocaval</uri>
+          </author>
+          <id>https://www.lagomframework.com/blog/lagom-1-6-0.html</id>
+          <updated>2019-12-13T11:00:00.000+11:00</updated>
+          <published>2019-12-13T11:00:00.000+11:00</published>
+          <content type="html"><![CDATA[<p>We are happy to announce the availability of Lagom 1.6.0. This is the GA release of Lagom 1.6.0 and is production ready. We invite all our users to upgrade.</p>
+<p>This version builds on top of the <a href="https://blog.playframework.com/play-2-8-0-released/">2.8.x series of Play</a> and <a href="https://akka.io/blog/news/2019/11/06/akka-2.6.0-released">Akka 2.6</a>. See GitHub for the <a href="https://github.com/lagom/lagom/compare/1.5.5...1.6.0">full list of commits</a>.</p>
+<p>Here’s a list of the most relevant improvements.</p>
+<h2><a href="#akka-typed-and-akka-persistence-typed" name="akka-typed-and-akka-persistence-typed">Akka Typed and Akka Persistence Typed</a></h2>
+<p>Lagom 1.6 is based on the new Akka 2.6 release and has integrated support for Akka Typed.</p>
+<p>As presented in the <a href="https://www.lightbend.com/blog/six-things-architects-should-know-about-akka-2.6">announcement for Akka 2.6</a>, the new Akka Actor APIs (known as Akka Typed) represent a major shift in the Akka ecosystem towards type-safety and more explicit guidance with Actors. We’re happy to bring this to all Lagom users as well.</p>
+<p>Lagom includes dependency injection support for typed Actors in Akka 2.6 <a href="https://www.playframework.com/documentation/2.8.x/AkkaTyped#Integrating-with-Akka-Typed">through Play</a>.</p>
+<p>While the Lagom Persistence API is still supported and maintained, the new Akka Persistence API (<a href="https://www.lagomframework.com/documentation/1.6.x/scala/UsingAkkaPersistenceTyped.html">Scala</a>/<a href="https://www.lagomframework.com/documentation/1.6.x/java/UsingAkkaPersistenceTyped.html">Java</a>) in Akka 2.6 is now the recommended default for persistence. This provides a more flexible API that gives you more control over some lower-level details while retaining some of the guided approaches that Lagom introduced. Akka Persistence can coexist with existing persistent entities, and the same read-side processor and topic producer APIs fully support both types of entities.</p>
+<h2><a href="#jackson-serialization" name="jackson-serialization">Jackson serialization</a></h2>
+<p>For Java API, Lagom now uses the Akka Jackson serializer, which is an improved version of the serializer in Lagom 1.5. You can find more information about the Akka Jackson serializer in the <a href="https://doc.akka.io/docs/akka/2.6/serialization-jackson.html">Akka documentation</a>.</p>
+<p>It is compatible with Lagom 1.5 in both directions. See our migration guide (<a href="https://www.lagomframework.com/documentation/1.6.x/scala/Migration16.html">Scala</a>/<a href="https://www.lagomframework.com/documentation/1.6.x/java/Migration16.html">Java</a>) for detailed information in case you are upgrading an existing Lagom application.</p>
+<p>For Scala API, in addition to <code>play-json</code> support, Akka Jackson serializer is now also supported. Akka Jackson serialization is especially useful when using Akka Persistence Typed API as it allows serialization of <code>ActorRef[T]</code> typically used when encoding command replies.</p>
+<h2><a href="#stop-and-resume-projections" name="stop-and-resume-projections">Stop and Resume Projections</a></h2>
+<p>Lagom 1.6 has a new API to programmatically stop and resume projections (<a href="https://www.lagomframework.com/documentation/1.6.x/scala/Projections.html">Scala</a>/<a href="https://www.lagomframework.com/documentation/1.6.x/java/Projections.html">Java</a>) (Read Side Processors and Topic Producers) allowing users to control when a projection should start, stop or resume.</p>
+<h2>Support for Scala 2.13 and Java 11</h2>
+<p>Lagom 1.6 supports the latest Scala version (2.13), LTS Java version (11), and sbt 1.3, as well as the earlier Scala 2.12 and Java 8 versions.</p>
+<p>Scala 2.13 brings in a few performance improvements for its collection and async (Future) APIs. Although Java users are not exposed directly to Scala APIs, the Lagom itself is built in Scala and uses many Scala dependencies. That said, updating to Scala v2.13 is also beneficial for Java API users.</p>
+<h2><a href="#multiple-changes-in-default-behaviors" name="multiple-changes-in-default-behaviors">Multiple changes in default behaviors</a></h2>
+<ul>
+  <li>Kafka client defaults to only 1 max inflight request per connection. This can mean a drop in throughput but also increases guarantees against duplication or reordering of messages.</li>
+  <li>persistence sharding uses <code>ddata</code> strategy instead of persistence</li>
+  <li>JSON compression only triggers for payloads bigger than 32kb</li>
+  <li>java.time.* serializes using ISO-8601instead of custom Jackson formats (only affects Java Lagom users)</li>
+</ul>
+<h2><a href="#migrating-from-previous-versions" name="migrating-from-previous-versions">Migrating from previous versions</a></h2>
+<p>This release introduces minimal changes over the <code>1.6.0-RC3</code>. Therefore if you already moved to that version, the upgrade should be trivial. If you are still using Lagom <code>1.5.x</code>, we recommend you first migrate to the latest version available of Lagom 1.5 series and then migrate to Lagom 1.6. If you are using a version older than <code>1.5.x</code>, you should migrate one version at a time. For example: from <code>1.4.9</code> to <code>1.4.15</code> (because <code>1.4.15</code> is <code>1.4.latest</code>), then from <code>1.4.15</code> to <code>1.5.latest</code> and finally to <code>1.6.x</code>. Read the appropriate <a href="https://github.com/lagom/lagom/releases">release notes</a> and migration guides (<a href="https://www.lagomframework.com/documentation/1.6.x/java/Migration16.html">Java</a> / <a href="https://www.lagomframework.com/documentation/1.6.x/scala/Migration16.html">Scala</a>) on each step.</p>
+<h2><a href="#credits" name="credits">Credits</a></h2>
+<p>Thanks to the community for their detailed bug reports and contributions.</p>
+<p>Thanks to <a href="https://www.lightbend.com/">Lightbend</a> for their continued sponsorship of the Lagom core team’s efforts. Lightbend offers <a href="https://www.lightbend.com/subscription">commercial support</a> for Lagom.</p>
+<p>Special thanks to the following contributors who helped with this release:</p>
+<pre class="prettyprint"><code class="language-text">commits   added  removed  author
+    249   25624    14553  Ignasi Marimon-Clos
+    202   13607     7824  Renato Cavalcanti
+    147    8846     3755  Marcos Pereira
+     93    1704     2856  Dale Wijnand
+     20     260      178  Tim Moore
+     13     534      508  Patrik Nordwall
+      6     200      155  Sergey Morgunov
+      4      16       10  Alden Torres
+      4      39       27  Enno Runne
+      3      10        9  Martynas Mickevičius
+      2       2        2  Abhiknoldur
+      2     755      385  James Roper
+      2      35       11  Ruth Stento
+      1       3       46  Sethi, Kunal
+      1       7        7  Juan Marin Otero
+      1       7        7  Matthias Kurz
+      1       2        2  Prashant Sharma
+      1       0        0  0xflotus
+      1       1        1  norfe
+      1       0        6  Fabian Grutsch
+      1       2        2  Fran Bermejo
+      1       1        1  Johannes Rudolph
+      1      24        1  Corey Auger
+      1      10        0  Zhonglai Zhang
+      1      72       60  Michael Liarakos
+      1      27        3  Dmitriy Grigoryev
+      1      23        1  Stephan Emmerich
+      1       2        2  Steve Swing
+</code></pre>]]></content>
+          <dc:date>2019-12-13T11:00:00.000+11:00</dc:date>
+        </entry><entry>
+          <title>Lagom 1.5.1 and 1.4.12 Released: Akka Service Discovery integration</title>
+          <link rel="alternate" href="https://www.lagomframework.com/blog/lagom-1-5-1-and-1-4-12.html"/>
+          <category term="news" scheme="https://www.lagomframework.com/blog/tags/news.html"/>
+          <author>
+            <name>Renato Cavalcanti</name>
+            <uri>https://github.com/renatocaval</uri>
+          </author>
+          <id>https://www.lagomframework.com/blog/lagom-1-5-1-and-1-4-12.html</id>
+          <updated>2019-04-30T10:00:00.000+10:00</updated>
+          <published>2019-04-30T10:00:00.000+10:00</published>
+          <content type="html"><![CDATA[<p>The Lagom team has released the versions 1.5.1 and 1.4.12. For a list of the specific changes in Lagom 1.5.1, see the <a href="https://github.com/lagom/lagom/compare/1.5.0...1.5.1">change log (1.5.1)</a>, and for a list of changes in Lagom 1.4.12 see the <a href="https://github.com/lagom/lagom/compare/1.4.11...1.4.12">change log (1.4.12)</a>.</p>
+<h2><a href="#highlights" name="highlights">Highlights</a></h2>
+<p>These two releases bring into Lagom a new <code>Service Locator</code> implementation, based on <a href="https://doc.akka.io/docs/akka/2.5/discovery/index.html">Akka&rsquo;s Service Discovery</a>. This component was previously released as an apart library, <a href="https://github.com/lagom/lagom-akka-discovery-service-locator/">lagom-akka-discovery-service-locator</a>, and intended to be a replacement for the Service Locator previously offered by <a href="https://developer.lightbend.com/docs/lightbend-orchestration/current/index.html">Lightbend Orchestration</a>.</p>
+<p>In order to allow a smoother transition for Lagom 1.4 users, we decided to include it in 1.4.12 and 1.5.1. So users can choose to first migrate their Lagom 1.4 application to Akka Service Discovery and then to Lagom 1.5. Of course, this is not a required step. It is also possible to migrate directly from Lagom 1.4 and Lightbend Orchestration to Lagom 1.5 and Akka Service Discovery.</p>
+<p>For more information, consult the corresponding documentation for Akka Discovery integration:</p>
+<ul>
+  <li><a href="https://www.lagomframework.com/documentation/1.4.x/java/AkkaDiscoveryIntegration.html">Java API Lagom 1.4</a></li>
+  <li><a href="https://www.lagomframework.com/documentation/1.4.x/scala/AkkaDiscoveryIntegration.html">Scala API Lagom 1.4</a></li>
+  <li><a href="https://www.lagomframework.com/documentation/1.5.x/java/AkkaDiscoveryIntegration.html">Java API Lagom 1.5</a></li>
+  <li><a href="https://www.lagomframework.com/documentation/1.5.x/scala/AkkaDiscoveryIntegration.html">Scala API Lagom 1.5</a></li>
+</ul>
+<h2><a href="#credits" name="credits">Credits</a></h2>
+<p>Thanks to the community for their detailed bug reports and contributions.</p>
+<p>Thanks to <a href="https://www.lightbend.com/">Lightbend</a> for their continued sponsorship of the Lagom core team’s efforts. Lightbend offers <a href="https://www.lightbend.com/subscription">commercial support</a> for Lagom.</p>
+<p>Special thanks to the following contributors who helped with this release: <em>Renato Cavalcanti</em>, <em>Steve Swing</em>, <em>Ignasi Marimon-Clos</em>, <em>Dale Wijnand</em>, <em>Tim Moore</em>, <em>Alden Torres</em>.</p>]]></content>
+          <dc:date>2019-04-30T10:00:00.000+10:00</dc:date>
+        </entry><entry>
+          <title>Lagom 1.5 Released: Akka Management, Kubernetes, OpenShift, gRPC, Couchbase and more</title>
+          <link rel="alternate" href="https://www.lagomframework.com/blog/lagom-1-5-0.html"/>
+          <category term="news" scheme="https://www.lagomframework.com/blog/tags/news.html"/>
+          <author>
+            <name>Ignasi Marimon-Clos</name>
+            <uri>https://github.com/ignasi35</uri>
+          </author>
+          <id>https://www.lagomframework.com/blog/lagom-1-5-0.html</id>
+          <updated>2019-04-16T10:00:00.000+10:00</updated>
+          <published>2019-04-16T10:00:00.000+10:00</published>
+          <content type="html"><![CDATA[<p>We are happy to announce the availability of Lagom 1.5.0. This is the GA release of Lagom 1.5.0 and is production ready. We invite all our users to upgrade.</p>
+<p>This version builds on top of the <a href="https://blog.playframework.com/play-2-7-0-is-here/">2.7.x series of Play</a>, <a href="https://akka.io/blog/news/2019/02/28/alpakka-kafka-1.0-released">Alpakka Kafka 1.0</a>, and the latest improvements on Akka and Akka Management. See GitHub for the <a href="https://github.com/lagom/lagom/compare/1.4.11...1.5.0">full list of commits</a>. </p>
+<p>Here’s a list of the most relevant improvements.</p>
+<h2><a href="#akka-management" name="akka-management">Akka Management</a></h2>
+<p><a href="https://developer.lightbend.com/docs/akka-management/current/">Akka Management</a> is a suite of tools for operating Akka powered applications. Akka Management uses a dedicated HTTP port to expose a few routes allowing remote inspection of the state of the Akka Actor System. For example, if the process is a member of an Akka Cluster, these endpoints will report if the node already joined the cluster.</p>
+<p>Lagom exposes the Akka Management HTTP port out of the box. Lagom will add Health Check routes by default. You can reuse library provided health checks or plugin your own. For example, Lagom uses cluster status to determine when the node is healthy. This is called Cluster Membership Check and is provided by the Akka Cluster HTTP Management library.</p>
+<p>Another improvement Lagom 1.5 introduces, thanks to the adoption of Akka Management, is the simpler, <strong>more robust cluster formation via <a href="https://developer.lightbend.com/docs/akka-management/current/bootstrap/">Akka Cluster Bootstrap</a></strong>. Instead of using a static list of seed nodes or relying on convoluted custom scripts to build the list of seed nodes dynamically, Cluster Bootstrap discovers the existing nodes via plugins adapting Akka Cluster Bootstrap to your orchestration environment (e.g. Kubernetes, Marathon). A static list of seed nodes is still supported but we recommend migrating to Cluster Bootstrap.</p>
+<h2><a href="#deployment-with-kubernetes-or-red-hat-openshift" name="deployment-with-kubernetes-or-red-hat-openshift">Deployment with Kubernetes or Red Hat OpenShift</a></h2>
+<p>Lagom 1.5.0 will no longer support Lightbend Orchestration (which was <a href="https://developer.lightbend.com/docs/reactive-platform/2.0/support-terminology/index.html#incubating">Incubating</a>). Despite accelerating the first deployment, using Lightbend Orchestration was producing friction and reducing flexibility to tune the deployment. Moving forward, there will be no automated handling of the deployment and the suggested way is to manually maintain the production settings, the deployment descriptors and related scripts.</p>
+<p>If you are targeting OpenShift or Kubernetes environments the new <a href="https://developer.lightbend.com/guides/openshift-deployment/">Guide to Deploy Lightbend Applications</a> covers all the steps and details (including a sample application) to set up and tune your system.</p>
+<h2><a href="#akka-grpc-integration" name="akka-grpc-integration">Akka gRPC integration</a></h2>
+<p>Lagom 1.5.0 introduces <a href="https://developer.lightbend.com/docs/lightbend-platform/2.0/support-terminology/index.html#incubating">incubating</a> support for <a href="https://developer.lightbend.com/docs/akka-grpc/current/">Akka gRPC</a> for cross-service communication. The original HTTP/JSON-based transport is not disappearing but, instead, Lagom introduces gRPC so users can choose to expose alternative transports increasing the adoption of their services.</p>
+<p>This feature drove some smaller improvements which non-gRPC users will also welcome.<br/>Lagom already supported HTTP/2 since it is built on top of Play. In Lagom 1.5 we’ve reviewed all the necessary pieces so HTTP/2 can also be used on dev mode. In the same spirit, it is now also possible to use encrypted (TLS) communication on dev mode. </p>
+<p>As a final improvement driven by the adoption of gRPC, Lagom 1.5 now supports Additional Routers (<a href="https://www.lagomframework.com/documentation/1.5.x/java/AdditionalRouters.html">Java API</a> / <a href="https://www.lagomframework.com/documentation/1.5.x/scala/AdditionalRouters.html">Scala API</a>), which lets you embed any vanilla Play Router into a Lagom service. You are now able to easily reuse the Play and Akka building blocks whenever the Lagom API is not enough to complete the task at hand. Using Additional Routers it is trivial to reuse Play code you already had or extend Lagom with low-level features supported in Play but not exposed in Lagom directly (such as uploading files).</p>
+<h2><a href="#couchbase-persistence-support" name="couchbase-persistence-support">Couchbase Persistence Support</a></h2>
+<p>Lagom 1.5 also offers optional support for <a href="https://www.couchbase.com/">Couchbase</a> as a new database option for persistent entities and read side processors through the <a href="https://doc.akka.io/docs/akka-persistence-couchbase/current/">Akka Persistence Couchbase</a> module. Currently available in an <a href="https://developer.lightbend.com/docs/lightbend-platform/2.0/support-terminology/index.html#incubating">Incubating</a> early access release, Akka Persistence Couchbase has been built to work with Lagom 1.5 and the 1.0 release is coming soon. See the documentation for <a href="https://doc.akka.io/docs/akka-persistence-couchbase/current/lagom-persistent-entity.html">Couchbase Persistent Entities</a> and <a href="https://doc.akka.io/docs/akka-persistence-couchbase/current/lagom-read-side.html">Couchbase Read-Side support</a> for more details.</p>
+<h2><a href="#migrating-from-previous-versions" name="migrating-from-previous-versions">Migrating from previous versions</a></h2>
+<p>This release introduces very little changes over the <code>1.5.0-RC2</code> so if you already moved to that version the upgrade should be trivial. If you are still using Lagom <code>1.4.x</code> we recommend you first migrate to the latest version available of Lagom 1.4 series and then migrate to Lagom 1.5. If you are using a version older than <code>1.4.x</code>, you should migrate one version at a time. For example: from <code>1.3.9</code> to <code>1.3.11</code> (because <code>1.3.11</code> is <code>1.3.latest</code>), then from <code>1.3.11</code> to <code>1.4.latest</code> and finally to <code>1.5.x</code>. Read the appropriate <a href="https://github.com/lagom/lagom/releases">release notes</a> and migration guides (<a href="https://www.lagomframework.com/documentation/latest/java/Migration15.html">Java</a> / <a href="https://www.lagomframework.com/documentation/latest/scala/Migration15.html">Scala</a>) on each step.</p>
+<h2><a href="#credits" name="credits">Credits</a></h2>
+<p>Thanks to the community for their detailed bug reports and contributions.</p>
+<p>Thanks to <a href="https://www.lightbend.com/">Lightbend</a> for their continued sponsorship of the Lagom core team’s efforts. Lightbend offers <a href="https://www.lightbend.com/subscription">commercial support</a> for Lagom.</p>
+<p>Special thanks to the following contributors who helped with this release:</p>
+<pre class="prettyprint"><code>commits author    
+     53 Ignasi Marimon-Clos
+     37 Renato Cavalcanti
+     20 Tim Moore
+     16 Dale Wijnand
+     15 Elijah Rippeth
+     11 Marcos Pereira
+      4 Martynas Mickevičius
+      3 Ayush Prashar
+      2 Alden Torres
+      1 sullis
+      1 danielklein45
+      1 Zhonglai Zhang
+      1 Sergey Morgunov
+      1 Riccardo Sirigu
+      1 Prashant Sharma
+      1 Piyush Goyal
+      1 Kunal sethi
+      1 João Guitana
+      1 Ido Shamun
+      1 Enno
+      1 Corey Auger
+      1 Brent Eritou
+      1 0xflotus
+</code></pre>]]></content>
+          <dc:date>2019-04-16T10:00:00.000+10:00</dc:date>
+        </entry><entry>
+          <title>Lagom 1.5.0-RC2 released!</title>
+          <link rel="alternate" href="https://www.lagomframework.com/blog/lagom-1-5-0-RC2.html"/>
+          <category term="news" scheme="https://www.lagomframework.com/blog/tags/news.html"/>
+          <author>
+            <name>Marcos Pereira</name>
+            <uri>https://github.com/marcospereira</uri>
+          </author>
+          <id>https://www.lagomframework.com/blog/lagom-1-5-0-RC2.html</id>
+          <updated>2019-02-25T11:00:00.000+11:00</updated>
+          <published>2019-02-25T11:00:00.000+11:00</published>
+          <content type="html"><![CDATA[<p>We are happy to announce the availability of Lagom 1.5.0-RC2. This is the second release candidate of Lagom 1.5.0. We expect this to be considerably more stable than the milestone releases, not only in terms of functionality but we are also moving closer to the idea of freezing the APIs. Our plan is to later promote this release candidate to a stable release if we don&rsquo;t find major issues.</p>
+<p>Because of that, and as with milestones, the primary goal is to get feedback, so please let us know if something isn&rsquo;t working or you see something that should be improved. If there are changes not well documented in javadocs, scaladocs or our migration guides, please, let us know so that we can improve them before the general availability release.</p>
+<h2><a href="#highlights" name="highlights">Highlights</a></h2>
+<h3><a href="#deployment" name="deployment">Deployment</a></h3>
+<p>Since version <code>1.5.0-RC2</code> Lagom no longer supports <a href="https://developer.lightbend.com/docs/lightbend-orchestration/current/">Lightbend Orchestration</a>. If you depend on Lightbend Orchestration to produce your <code>Dockerfile</code> and deployment specs (Kubernetes or DC/OS) refer to the <a href="https://www.lagomframework.com/documentation/latest/scala/Migration15.html">Lagom 1.5 Migration Guide</a>.</p>
+<p>If your deployment target is OpenShift you can also refer to the <a href="https://developer.lightbend.com/guides/openshift-deployment/">Deploying Lightbend applications to OpenShift</a> guide.</p>
+<h3><a href="#upgrades-for-major-dependencies" name="upgrades-for-major-dependencies">Upgrades for major dependencies</a></h3>
+<ul>
+  <li>Play upgraded to 2.7.0 (<a href="https://blog.playframework.com/play-2-7-0-is-here/">release notes</a>)</li>
+  <li>Akka upgraded to 2.5.21 (<a href="https://akka.io/blog/news/2019/02/13/akka-2.5.21-released">release notes</a>, but we also recommend that you read other release notes since Akka 2.5.18)</li>
+  <li>Alpakka Kafka upgraded to 1.0-RC2 (<a href="https://doc.akka.io/docs/akka-stream-kafka/current/release-notes/1.0-RC2.html">release notes</a>)</li>
+  <li>Slick upgraded to 3.3.0 (<a href="http://slick.lightbend.com/news/2019/01/30/slick-3.3.0-released.html">release notes</a>)</li>
+</ul>
+<p>There is also a brand new integration with <a href="https://developer.lightbend.com/docs/akka-management/current/">Akka Management</a> providing an easier way to do cluster bootstrap, health-checks enabled by default, and works better with our <a href="https://github.com/lagom/akka-discovery-service-locator">new implementation of ServiceLocator</a> based on <a href="https://doc.akka.io/docs/akka/2.5/discovery/index.html">Akka Discovery</a>.</p>
+<p>See GitHub for the <a href="https://github.com/lagom/lagom/compare/1.5.0-RC1...1.5.0-RC2">full list of commits</a> and the issues and pull requests assigned to the <a href="https://github.com/lagom/lagom/milestone/44?closed=1">1.5.0-RC2 milestone</a>.</p>
+<h2>Updating a Lagom project to version 1.5.0-RC2</h2>
+<p>First, make sure you read the Lagom 1.5 Migration Guide for <a href="https://www.lagomframework.com/documentation/latest/scala/Migration15.html">Scala</a> or <a href="https://www.lagomframework.com/documentation/latest/java/Migration15.html">Java</a>.</p>
+<p>To update an sbt project, change the version of <code>lagom-sbt-plugin</code> in your <code>project/plugins.sbt</code> file.</p>
+<p>To update a Maven project, change the <code>lagom.version</code> property in your top-level <code>pom.xml</code>.</p>
+<p>After updating, it is recommended to fix any new deprecation warnings you see when compiling or running your services.</p>
+<h2><a href="#credits" name="credits">Credits</a></h2>
+<p>Thanks to the community for their detailed bug reports and contributions.</p>
+<p>Thanks to <a href="https://www.lightbend.com/">Lightbend</a> for their continued sponsorship of the Lagom core team’s efforts. Lightbend offers <a href="https://www.lightbend.com/subscription">commercial support</a> for Lagom.</p>
+<p>Special thanks to the following contributors who helped with this release:</p>
+<pre class="prettyprint"><code>commits  added  removed  author
+     13    767      362   Renato Cavalcanti
+      7   1090      697   Ignasi Marimon-Clos
+      4    176      100   Marcos Pereira
+      2      6        5   Martynas Mickevičius
+      2     55       36   Dale Wijnand
+      1     10        0   Zhonglai Zhang
+      1     24       18   Enno
+      1      2        2   Fran Bermejo
+      1      2        2   Prashant Sharma
+</code></pre>]]></content>
+          <dc:date>2019-02-25T11:00:00.000+11:00</dc:date>
+        </entry><entry>
+          <title>Lagom 1.4.11 released!</title>
+          <link rel="alternate" href="https://www.lagomframework.com/blog/lagom-1-4-11.html"/>
+          <category term="news" scheme="https://www.lagomframework.com/blog/tags/news.html"/>
+          <author>
+            <name>Marcos Pereira</name>
+            <uri>https://github.com/marcospereira</uri>
+          </author>
+          <id>https://www.lagomframework.com/blog/lagom-1-4-11.html</id>
+          <updated>2019-02-11T11:00:00.000+11:00</updated>
+          <published>2019-02-11T11:00:00.000+11:00</published>
+          <content type="html"><![CDATA[<p>The Lagom team has released Lagom 1.4.11.</p>
+<p>This release upgrades Akka to resolve a compatibility problem with Lightbend Orchestration 1.7.3.</p>
+<h2><a href="#highlights" name="highlights">Highlights</a></h2>
+<ul>
+  <li>Updates Akka to version <a href="https://akka.io/blog/news/2019/01/29/akka-2.5.20-released">2.5.20</a> which stabilizes some APIs and brings bug fixes.</li>
+</ul>
+<p>If you are a user of <a href="https://developer.lightbend.com/docs/lightbend-orchestration/current/setup/project-setup.html">Lightbend Orchestration</a> you will have to upgrade your dependency of the <code>sbt-reactive-app</code> plugin to <code>1.7.0</code>.</p>
+<p>See GitHub for the <a href="https://github.com/lagom/lagom/compare/1.4.10...1.4.11">full list of commits</a> and the issues and pull requests assigned to the <a href="https://github.com/lagom/lagom/milestone/42?closed=1">1.4.11 milestone</a>.</p>
+<h2>Updating a Lagom project to version 1.4.11</h2>
+<p>To update an sbt project, change the version of <code>lagom-sbt-plugin</code> in your <code>project/plugins.sbt</code> file.</p>
+<p>To update a Maven project, change the <code>lagom.version</code> property in your top-level <code>pom.xml</code>.</p>
+<p>After updating, it is recommended to fix any new deprecation warnings you see when compiling or running your services.</p>
+<h2><a href="#credits" name="credits">Credits</a></h2>
+<p>Thanks to the community for their detailed bug reports and contributions.</p>
+<p>Thanks to <a href="https://www.lightbend.com/">Lightbend</a> for their continued sponsorship of the Lagom core team’s efforts. Lightbend offers <a href="https://www.lightbend.com/subscription">commercial support</a> for Lagom.</p>
+<p>Special thanks to the following contributors who helped with this release:</p>
+<pre class="prettyprint"><code>commits  added  removed  author
+1            4        2  Renato Cavalcanti
+1           23       10  Ignasi Marimon-Clos
+1            1        1  Marcos Pereira
+1            3        3  Tim Moore
+1           26        7  Dale Wijnand
+</code></pre>]]></content>
+          <dc:date>2019-02-11T11:00:00.000+11:00</dc:date>
+        </entry><entry>
+          <title>Lagom 1.4.10 released!</title>
+          <link rel="alternate" href="https://www.lagomframework.com/blog/lagom-1-4-10.html"/>
+          <category term="news" scheme="https://www.lagomframework.com/blog/tags/news.html"/>
+          <author>
+            <name>Ignasi Marimon-Clos</name>
+            <uri>https://github.com/ignasi35</uri>
+          </author>
+          <id>https://www.lagomframework.com/blog/lagom-1-4-10.html</id>
+          <updated>2019-01-11T11:00:00.000+11:00</updated>
+          <published>2019-01-11T11:00:00.000+11:00</published>
+          <content type="html"><![CDATA[<p>The Lagom team has released Lagom 1.4.10.</p>
+<p>This release upgrades Play (and transitively upgrades Akka and Akka HTTP) and Scala.</p>
+<h2><a href="#highlights" name="highlights">Highlights</a></h2>
+<ul>
+  <li>Updates Play to <a href="https://blog.playframework.com/play-2-6-21-released//">2.6.21</a> with some minor improvements. This upgrade transitively upgrades Akka and Akka HTTP. Make sure you review Play&rsquo;s announcement for details.</li>
+</ul>
+<p>If you are a user of <a href="https://developer.lightbend.com/docs/lightbend-orchestration/current/setup/project-setup.html">Lightbend Orchestration</a> you will have to upgrade your dependency of the <code>sbt-reactive-app</code> plugin to <code>1.6.1</code>.</p>
+<p>See GitHub for the <a href="https://github.com/lagom/lagom/compare/1.4.9...1.4.10">full list of commits</a> and the issues and pull requests assigned to the <a href="https://github.com/lagom/lagom/milestone/41?closed=1">1.4.10 milestone</a>.</p>
+<h2>Updating a Lagom project to version 1.4.10</h2>
+<p>To update an sbt project, change the version of <code>lagom-sbt-plugin</code> in your <code>project/plugins.sbt</code> file.</p>
+<p>To update a Maven project, change the <code>lagom.version</code> property in your top-level <code>pom.xml</code>.</p>
+<p>After updating, it is recommended to fix any new deprecation warnings you see when compiling or running your services.</p>
+<h2><a href="#credits" name="credits">Credits</a></h2>
+<p>Thanks to the community for their detailed bug reports and contributions.</p>
+<p>Thanks to <a href="https://www.lightbend.com/">Lightbend</a> for their continued sponsorship of the Lagom core team’s efforts. Lightbend offers <a href="https://www.lightbend.com/subscription">commercial support</a> for Lagom.</p>
+<p>Special thanks to the following contributors who helped with this release:</p>
+<pre class="prettyprint"><code>commits  added  removed  author    
+      2     673     661  Ignasi Marimon-Clos
+      1      28      28  Dale Wijnand
+      1       2       2  Fran Bermejo
+</code></pre>]]></content>
+          <dc:date>2019-01-11T11:00:00.000+11:00</dc:date>
+        </entry><entry>
+          <title>Lagom 1.5.0-RC1 released!</title>
+          <link rel="alternate" href="https://www.lagomframework.com/blog/lagom-1-5-0-RC1.html"/>
+          <category term="news" scheme="https://www.lagomframework.com/blog/tags/news.html"/>
+          <author>
+            <name>Renato Cavalcanti</name>
+            <uri>https://github.com/renatocaval</uri>
+          </author>
+          <id>https://www.lagomframework.com/blog/lagom-1-5-0-RC1.html</id>
+          <updated>2018-11-16T11:00:00.000+11:00</updated>
+          <published>2018-11-16T11:00:00.000+11:00</published>
+          <content type="html"><![CDATA[<p>We are happy to announce the availability of Lagom 1.5.0-RC1. This is the first release candidate of Lagom 1.5.0. We expect this to be considerably more stable than the milestone releases, not only in terms of functionality but we are also moving closer to the idea of freezing the APIs.</p>
+<p>As with milestones, the primary goal is to get feedback, so please let us know if something isn&rsquo;t working or you see something that should be improved. If there are changes not well documented in javadocs, scaladocs or our migration guides, please, let us know so that we can improve them before the general availability release.</p>
+<h2><a href="#highlights" name="highlights">Highlights</a></h2>
+<h3><a href="#upgrades-for-play-akka-and-alpakka-kafka" name="upgrades-for-play-akka-and-alpakka-kafka">Upgrades for Play, Akka and Alpakka Kafka</a></h3>
+<ul>
+  <li>Play upgraded to 2.7.0-RC3 (<a href="https://blog.playframework.com/play-2-7-0-rc3-released/">release notes</a>)</li>
+  <li>Akka upgraded to 2.5.18 (<a href="https://akka.io/blog/news/2018/10/07/akka-2.5.18-released">release notes</a>)</li>
+  <li>Alpakka Kafka upgraded to 1.0-M1 (<a href="https://doc.akka.io/docs/akka-stream-kafka/current/release-notes/1.0-M1.html">release notes</a>)</li>
+</ul>
+<p>See GitHub for the <a href="https://github.com/lagom/lagom/compare/1.5.0-M4...1.5.0-RC1">full list of commits</a> and the issues and pull requests assigned to the <a href="https://github.com/lagom/lagom/milestone/39?closed=1">1.5.0-RC1 milestone</a>.</p>
+<h2>Updating a Lagom project to version 1.5.0-RC1</h2>
+<p>First, make sure you read the Lagom 1.5 Migration Guide for <a href="https://www.lagomframework.com/documentation/latest/scala/Migration15.html">Scala</a> or <a href="https://www.lagomframework.com/documentation/latest/java/Migration15.html">Java</a>.</p>
+<p>To update an sbt project, change the version of <code>lagom-sbt-plugin</code> in your <code>project/plugins.sbt</code> file.</p>
+<p>To update a Maven project, change the <code>lagom.version</code> property in your top-level <code>pom.xml</code>.</p>
+<p>After updating, it is recommended to fix any new deprecation warnings you see when compiling or running your services.</p>
+<h2><a href="#credits" name="credits">Credits</a></h2>
+<p>Thanks to the community for their detailed bug reports and contributions.</p>
+<p>Thanks to <a href="https://www.lightbend.com/">Lightbend</a> for their continued sponsorship of the Lagom core team’s efforts. Lightbend offers <a href="https://www.lightbend.com/subscription">commercial support</a> for Lagom.</p>
+<p>Special thanks to the following contributors who helped with this release:</p>
+<pre class="prettyprint"><code>commits  added  removed  author    
+      3    103      126  Dale Wijnand
+      1     30        8  Ignasi Marimon-Clos
+      1      4        4  danielklein45
+      1     21       19  Martynas Mickevičius
+</code></pre>]]></content>
+          <dc:date>2018-11-16T11:00:00.000+11:00</dc:date>
+        </entry><entry>
+          <title>Lagom 1.4.9 released!</title>
+          <link rel="alternate" href="https://www.lagomframework.com/blog/lagom-1-4-9.html"/>
+          <category term="news" scheme="https://www.lagomframework.com/blog/tags/news.html"/>
+          <author>
+            <name>Ignasi Marimon-Clos</name>
+            <uri>https://github.com/ignasi35</uri>
+          </author>
+          <id>https://www.lagomframework.com/blog/lagom-1-4-9.html</id>
+          <updated>2018-11-15T11:00:00.000+11:00</updated>
+          <published>2018-11-15T11:00:00.000+11:00</published>
+          <content type="html"><![CDATA[<p>The Lagom team has released Lagom 1.4.9.</p>
+<p>This release provides a few bug fixes and an improvement.</p>
+<h2><a href="#highlights" name="highlights">Highlights</a></h2>
+<ul>
+  <li>Updates Akka to <a href="https://akka.io/blog/news/2018/10/07/akka-2.5.18-released">2.5.18</a>. This Akka release introduces few improvements on the DNS implementation. It also improves the cluster membership handling so if you are using Akka&rsquo;s <a href="https://developer.lightbend.com/docs/akka-commercial-addons/current/split-brain-resolver.html">Split Brain Resolver</a> you may want to upgrade.</li>
+  <li>Updates Akka HTTP to <a href="https://akka.io/blog/news/2018/09/06/akka-http-10.1.5-10.0.14-security-fix-released">10.0.14</a> with an important security fix. It&rsquo;s is unlikely that as a Lagom user you were exposed to the vulnerability, though.</li>
+  <li>Updates Play to <a href="https://blog.playframework.com/play-2-6-20-released/">2.6.20</a> with some minor improvements.</li>
+  <li>Fixes <a href="https://github.com/lagom/lagom/issues/1557">a regression</a> on <code>LagomClientFactory</code> introduced on the <code>1.4.x</code> series which was causing a <code>LagomClientFactory</code> running inside a Lagom service to interfere with the service in some scenarios causing failures at boot time.</li>
+</ul>
+<p>See GitHub for the <a href="https://github.com/lagom/lagom/compare/1.4.8...1.4.9">full list of commits</a> and the issues and pull requests assigned to the <a href="https://github.com/lagom/lagom/milestone/37?closed=1">1.4.9 milestone</a>.</p>
+<h2>Updating a Lagom project to version 1.4.9</h2>
+<p>To update an sbt project, change the version of <code>lagom-sbt-plugin</code> in your <code>project/plugins.sbt</code> file.</p>
+<p>To update a Maven project, change the <code>lagom.version</code> property in your top-level <code>pom.xml</code>.</p>
+<p>After updating, it is recommended to fix any new deprecation warnings you see when compiling or running your services.</p>
+<h2><a href="#credits" name="credits">Credits</a></h2>
+<p>Thanks to the community for their detailed bug reports and contributions.</p>
+<p>Thanks to <a href="https://www.lightbend.com/">Lightbend</a> for their continued sponsorship of the Lagom core team’s efforts. Lightbend offers <a href="https://www.lightbend.com/subscription">commercial support</a> for Lagom.</p>
+<p>Special thanks to the following contributors who helped with this release:</p>
+<pre class="prettyprint"><code>commits  added  removed  author    
+    4       4      10    Dale Wijnand
+    3      82      48    Ignasi Marimon-Clos
+    2       2       2    Martijn Riemers
+    1       1       1    Ravi Thinakkal
+    1     506      76    Renato Cavalcanti
+</code></pre>]]></content>
+          <dc:date>2018-11-15T11:00:00.000+11:00</dc:date>
+        </entry><entry>
+          <title>Lagom 1.5.0-M4 released!</title>
+          <link rel="alternate" href="https://www.lagomframework.com/blog/lagom-1-5-0-M4.html"/>
+          <category term="news" scheme="https://www.lagomframework.com/blog/tags/news.html"/>
+          <author>
+            <name>Ignasi Marimon-Clos</name>
+            <uri>https://github.com/ignasi35</uri>
+          </author>
+          <id>https://www.lagomframework.com/blog/lagom-1-5-0-M4.html</id>
+          <updated>2018-10-15T11:00:00.000+11:00</updated>
+          <published>2018-10-15T11:00:00.000+11:00</published>
+          <content type="html"><![CDATA[<p>We are happy to announce the availability of Lagom 1.5.0-M4. This new milestone towards the releasing of Lagom 1.5.0 continues to improve support for gRPC in Lagom. This release includes Play 2.7.0-M4, Akka 2.5.17 and Akka-HTTP 10.1.5.</p>
+<p>Note that ConductR will not be supported for Lagom 1.5.0. Also note that this is an unsupported, pre-release milestone and we don&rsquo;t guarantee API stability or binary compatibility between milestones.</p>
+<h2><a href="#highlights" name="highlights">Highlights</a></h2>
+<h3><a href="#updates-play-and-akka" name="updates-play-and-akka">Updates Play and Akka</a></h3>
+<ul>
+  <li>Bump dependencies: Play was bumped to 2.7.0-M4 (<a href="https://blog.playframework.com/play-2-7-0-m4-released/">release notes</a>) and, since Lagom 1.5.0-M2, we&rsquo;ve bumped Akka to 2.5.17 (<a href="https://akka.io/blog/news/2018/09/27/akka-2.5.17-released">release notes</a>) and Akka-HTTP to 10.1.5(<a href="https://akka.io/blog/news/2018/09/06/akka-http-10.1.5-10.0.14-security-fix-released">release notes</a>).</li>
+</ul>
+<h2><a href="#grpc" name="grpc">gRPC</a></h2>
+<p>Previous milestones of Lagom 1.5.0 started laying the groundwork for integration with <a href="https://github.com/akka/akka-grpc">Akka gRPC</a> to add it as a transport alternative. In Lagom 1.5.0-M4 we&rsquo;ve improved the Lagom testkit so you can also test the gRPC of your Lagom application.</p>
+<p>In this release, the following are introduced as part of the effort to support gRPC:</p>
+<ul>
+  <li>It is now possible to run the <code>TestServer</code> with SSL enabled and build a gRPC client to interact with the gRPC endpoints offered.</li>
+  <li>Lagom 1.5.0-M3 enabled SSL by default in Lagom&rsquo;s Dev Mode. In Lagom 1.5.0-M4 we&rsquo;ve restored the previous behavior where only HTTP is used in Dev Mode and made SSL an Opt-In feature in Dev Mode. Use <code>lagomServiceEnableSsl in ThisBuild := true</code> to start your service with both HTTP and HTTPS ports bound.</li>
+</ul>
+<h2><a href="#miscellaneous-improvements" name="miscellaneous-improvements">Miscellaneous improvements</a></h2>
+<p>This release includes a few other small improvements:</p>
+<ul>
+  <li><a href="https://github.com/lagom/lagom/issues/1475">1475</a> handle no body as a valid input contributed by Ido Shamun</li>
+  <li><a href="https://github.com/lagom/lagom/issues/1572">1572</a> which improves Dev Mode&rsquo;s Service Gateway to stack Host header into X-Forwarded-Host so the target service running behind service Gateway still sees the data sent on the original request.</li>
+</ul>
+<p>See GitHub for the <a href="https://github.com/lagom/lagom/compare/1.5.0-M3...1.5.0-M4">full list of commits</a> and the issues and pull requests assigned to the <a href="https://github.com/lagom/lagom/milestone/38?closed=1">1.5.0-M4 milestone</a>.</p>
+<h2>Updating a Lagom project to version 1.5.0-M4</h2>
+<p>To update an sbt project, change the version of <code>lagom-sbt-plugin</code> in your <code>project/plugins.sbt</code> file.</p>
+<p>To update a Maven project, change the <code>lagom.version</code> property in your top-level <code>pom.xml</code>.</p>
+<p>After updating, it is recommended to fix any new deprecation warnings you see when compiling or running your services.</p>
+<h2><a href="#credits" name="credits">Credits</a></h2>
+<p>Thanks to the community for their detailed bug reports and contributions.</p>
+<p>Thanks to <a href="https://www.lightbend.com/">Lightbend</a> for their continued sponsorship of the Lagom core team’s efforts. Lightbend offers <a href="https://www.lightbend.com/subscription">commercial support</a> for Lagom.</p>
+<p>Special thanks to the following contributors who helped with this release:</p>
+<pre class="prettyprint"><code>commits  added  removed  author    
+    8     347      94    Ignasi Marimon-Clos
+    6     342     242    Dale Wijnand
+    4     515      77    Renato Cavalcanti
+    2      68      10    Marcos Pereira
+    2       2       2    Martijn Riemers
+    1       1       1    Ravi Thinakkal
+    1     148     146    Kunal sethi
+    1     156       2    Ido Shamun
+</code></pre>]]></content>
+          <dc:date>2018-10-15T11:00:00.000+11:00</dc:date>
+        </entry><entry>
+          <title>Lagom 1.5.0-M3 released!</title>
+          <link rel="alternate" href="https://www.lagomframework.com/blog/lagom-1-5-0-M3.html"/>
+          <category term="news" scheme="https://www.lagomframework.com/blog/tags/news.html"/>
+          <author>
+            <name>Ignasi Marimon-Clos</name>
+            <uri>https://github.com/ignasi35</uri>
+          </author>
+          <id>https://www.lagomframework.com/blog/lagom-1-5-0-M3.html</id>
+          <updated>2018-09-04T10:00:00.000+10:00</updated>
+          <published>2018-09-04T10:00:00.000+10:00</published>
+          <content type="html"><![CDATA[<p>We are happy to announce the availability of Lagom 1.5.0-M3. This new milestone towards the releasing of Lagom 1.5.0 introduces important improvements to support gRPC in Lagom. This release includes Play 2.7.0-M3 and Akka 2.5.16.</p>
+<p>Note that this should not be used in production, that Lightbend Orchestration (sbt-reactive-app) does not yet support Lagom 1.5.0-M3, and that ConductR will not be supported for Lagom 1.5.0. Also note that this is an unsupported, pre-release milestone and we don&rsquo;t guarantee API stability or binary compatibility between milestones.</p>
+<h2><a href="#highlights" name="highlights">Highlights</a></h2>
+<h3><a href="#updates-play-and-akka" name="updates-play-and-akka">Updates Play and Akka</a></h3>
+<ul>
+  <li>Bump dependencies: Play was bumped to 2.7.0-M3 (<a href="https://blog.playframework.com/play-2-7-0-m3-released/">release notes</a>) and, since Lagom 1.5.0-M2, we&rsquo;ve bumped Akka to 2.5.16 (<a href="https://akka.io/blog/news/2018/08/29/akka-2.5.16-security-fix-released">release notes</a>). See also the <a href="https://akka.io/blog/news/2018/08/24/akka-2.5.15-released">release notes</a> for Akka 2.5.15.</li>
+</ul>
+<h2><a href="#grpc" name="grpc">gRPC</a></h2>
+<p>Lagom 1.5.0-M2 started laying groundwork for integration with <a href="https://github.com/akka/akka-grpc">Akka gRPC</a> to add it as a transport alternative, allowing seamless communication between applications written using Akka, Play, Lagom and other stacks using gRPC.</p>
+<p>In this release,the following are introduced as part of the effort to support gRPC:</p>
+<ul>
+  <li>It is now possible to add additional Play <code>Router</code>s to a Lagom Service (next to the Lagom Router built from the <code>Service.Descriptor</code>). This allows wiring a <a href="https://developer.lightbend.com/docs/akka-grpc/current/play-framework.html">Play router that handles gRPC</a> traffic next to the Lagom router provided out of the box.</li>
+  <li>Lagom&rsquo;s Dev Mode now binds an SSL port for each service next to HTTP port already bound. This changes the default behavior in Dev Mode and there’s <a href="https://github.com/lagom/lagom/issues/1537">ongoing effort</a> to restore the default which only binds HTTP and make the use of SSL an opt-in.</li>
+</ul>
+<p>See GitHub for the <a href="https://github.com/lagom/lagom/compare/1.5.0-M2...1.5.0-M3">full list of commits</a> and the issues and pull requests assigned to the <a href="https://github.com/lagom/lagom/milestone/36?closed=1">1.5.0-M3 milestone</a>.</p>
+<h2>Updating a Lagom project to version 1.5.0-M3</h2>
+<p>To update an sbt project, change the version of <code>lagom-sbt-plugin</code> in your <code>project/plugins.sbt</code> file.</p>
+<p>To update a Maven project, change the <code>lagom.version</code> property in your top-level <code>pom.xml</code>.</p>
+<p>After updating, it is recommended to fix any new deprecation warnings you see when compiling or running your services.</p>
+<h2><a href="#credits" name="credits">Credits</a></h2>
+<p>Thanks to the community for their detailed bug reports and contributions.</p>
+<p>Thanks to <a href="https://www.lightbend.com/">Lightbend</a> for their continued sponsorship of the Lagom core team’s efforts. Lightbend offers <a href="https://www.lightbend.com/subscription">commercial support</a> for Lagom.</p>
+<p>Special thanks to the following contributors who helped with this release:</p>
+<pre class="prettyprint"><code>commits  added  removed  author    
+    9    1098     367    Renato Cavalcanti
+    6    1469     608    Ignasi Marimon-Clos
+    2      40      64    Tim Moore
+    2       2       2    kunals201
+    2       6       2    Ayush Prashar
+    2       9       7    Dale Wijnand
+    2      12      11    Marcos Pereira
+    1      27      27    Elijah Rippeth
+    1       1       1    Jo Vanthournout
+    1      16      14    João Guitana
+</code></pre>]]></content>
+          <dc:date>2018-09-04T10:00:00.000+10:00</dc:date>
+        </entry>
+    </feed>

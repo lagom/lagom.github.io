@@ -1,0 +1,7 @@
+This file disables Jekyll processing of this repository, which is needed to get
+GitHub to publish the .well-known directory.
+
+It's also possible to configure Jekyll to include it, but since we use our own
+static site generator, processing with Jekyll is unnecessary.
+
+See https://help.github.com/articles/files-that-start-with-an-underscore-are-missing/
