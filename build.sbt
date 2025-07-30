@@ -7,7 +7,7 @@ import scala.concurrent.Await
 lazy val `lagom-docs` = (project in file("."))
   .enablePlugins(SbtTwirl, SbtWeb)
 
-scalaVersion := "2.12.9"
+scalaVersion := "2.12.20"
 scalacOptions += "-deprecation"
 
 resolvers += "Lightbend ivy releases repository" at "https://dl.cloudsmith.io/public/lightbend/ivy-releases/maven/"

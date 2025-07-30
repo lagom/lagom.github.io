@@ -18,19 +18,6 @@
         <link rel="stylesheet" href="@context.path/@context.assetFingerPrint-all-styles-concat.css" type="text/css">
         <!-- OneTrust Cookies Consent Notice (Production Standard, lagomframework.com, en-GB) start -->
         <script src="https://optanon.blob.core.windows.net/consent/1ee3f0d6-9ed5-4b9e-bed7-ce6faaeaca5d.js" type="text/javascript" charset="UTF-8"></script>
-        <script type="text/javascript">
-            function OptanonWrapper() { 
-                (function($) {
-                    $(function() {
-                        //find each YT embed and only load if cookies have been approved
-                        $( ".yt-widget" ).each(function( index ) {
-                            var ytID = $(this).attr("id").slice(3);
-                            Optanon.InsertHtml('<iframe id="player" class="youtube-embed-player" src="//www.youtube.com/embed/'+ytID+'?rel=0&amp;autohide=1&amp;modestbranding=0&amp;showinfo=1" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe>', 'yt-'+ytID, null, {deleteSelectorContent: true}, 4);
-                        });
-                    });
-                })(jQuery);
-            }
-        </script>
         <!-- OneTrust Cookies Consent Notice (Production Standard, lagomframework.com, en-GB) end -->
         @header
     </head>
