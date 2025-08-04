@@ -1,0 +1,556 @@
+
+<!DOCTYPE html>
+<html class="noios">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Lagom - Lagom 1.6 Migration Guide</title>
+        <meta name="description" content="Lagom">
+        
+            <link rel="canonical" href="https://www.lagomframework.com/documentation/1.6.x/java/Migration16.html"/>
+        
+        <meta name="viewport" content="width=device-width,maximum-scale=1"/>
+        <link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700" rel="stylesheet" type="text/css"/>
+        <link rel="stylesheet" href="/4f4ff39f69a5c5f34c7957a8dead27652480e264-all-styles-concat.css" type="text/css">
+         
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css" />
+    
+
+    </head>
+    <body>
+        <div class="off-canvas-wrapper">
+            <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+                <div class="off-canvas position-left" id="offCanvasLeft" data-off-canvas >
+                    <nav>
+                        <button class="close-button" aria-label="Close menu" type="button" data-close>
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <a href="/get-started.html">Try Lagom</a>
+                        
+<h3>Documentation</h3>
+<ul>
+    <li><a href="/documentation">By release</a></li>
+    <li><a href="/faq.html">FAQ</a></li>
+    <li><a href="/blog">Team Blog</a></li>
+</ul>
+<h3>Find Help</h3>
+<ul>
+    <li><a href="https://gitter.im/lagom/lagom">Gitter channel</a></li>
+    <li><a href="https://stackoverflow.com/questions/tagged/lagom">Stack overflow</a></li>
+    <li><a href="/support.html">Support</a></li>
+</ul>
+<h3>Contribute</h3>
+<ul>
+    <li><a href="/get-involved.html">Get involved</a></li>
+    <li><a href="https://www.lightbend.com/conduct">Code of conduct</a></li>
+    <li><a href="/community-process.html">Community process</a></li>
+    <li><a href="/contributing.html">Contributor guidelines</a></li>
+</ul>
+<!-- <h3>Programs</h3> Commented out Oct 2017 because the team is not participating in this round of the program.
+<ul>
+    <li><a href="/outreachy/round14.html">Outreachy</a></li>
+</ul> -->
+
+                    </nav>
+                </div>
+                <div class="off-canvas-content" data-off-canvas-content>
+
+                    
+<div id="lightbend-banner" class="lightbend-banner lagom full-width" data-category="OSS Lightbend Banner Impression" data-label="Lagom Banner Impression">
+	<div class="wrapper">
+		<div class="brand">
+			<a class="oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Lightbend Logo - Lagom Banner" href="https://www.lightbend.com?r=oss-banner-lagom" target="_blank">
+				<img class="lightbend-logo" src="/images/banner-logos/lightbend-reverse.svg" alt="Lightbend" title="Lightbend">
+			</a>
+		</div>
+		<div class="nav">
+			
+		</div>
+	</div>
+</div>
+
+                    <header class="navbar">
+                        <div class="row">
+                            <div class="small-12 columns">
+                                <button class="menu-icon hide-for-medium" type="button" data-open="offCanvasLeft" data-toggle="offCanvas"></button>
+                                <a class="logo" href="/"><svg id="Lagom_Full_Color" class="svg-logo svg-logo-lagom-full-color" data-name="Lagom Full Color" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 752 192"><title>logom</title><g id="Lagom"><path d="M291.58,31.79h19.83v87.91c0,8.1,2.64,11.57,9.91,11.57a21.11,21.11,0,0,0,5.95-.66V148.3a35.63,35.63,0,0,1-9.42,1c-17.52,0-26.28-8.92-26.28-26.94V31.79Z" fill="#652b7c"/><path d="M398.34,75.75V63.69h19.83v58.17c0,7.11,1.65,9.75,6.11,9.75a41.28,41.28,0,0,0,4.13-.33v16a28.65,28.65,0,0,1-9.75,1.32c-4.79,0-8.59-.83-11.57-2.64a15.33,15.33,0,0,1-6.78-10.08C394.53,144.66,385,149,371.73,149A39.58,39.58,0,0,1,342,136.4c-7.93-8.43-11.9-18.67-11.9-31.07s4-22.64,11.9-30.9a39.58,39.58,0,0,1,29.75-12.56C385.12,61.87,395.2,67.82,398.34,75.75Zm-5.95,47.76a24.29,24.29,0,0,0,7.44-18.18,24.29,24.29,0,0,0-7.44-18.18,24.68,24.68,0,0,0-18-7.27,23.93,23.93,0,0,0-17.68,7.27c-4.63,4.79-6.94,10.91-6.94,18.18s2.31,13.39,6.94,18.18a23.93,23.93,0,0,0,17.68,7.27A24.68,24.68,0,0,0,392.39,123.51Z" fill="#652b7c"/><path d="M495.67,63.69H515.5v69.41c0,20-2.81,32.23-14,41-7.93,6.11-17.68,9.25-29.42,9.25-15.53,0-28.92-4-40.32-12.06l9.59-14.71a50.47,50.47,0,0,0,28.59,9.09q11.65,0,18.34-5c5.29-3.8,7.93-10.91,7.93-21.15v-4.13c-4,7.11-13.88,12.23-27.1,12.23a40.53,40.53,0,0,1-29.75-12.23c-7.93-8.1-11.9-18.34-11.9-30.41s4-22.31,12.06-30.57a39.23,39.23,0,0,1,29.58-12.56c13.72,0,23.8,5.78,26.61,13.88V63.69ZM489.72,123a24.19,24.19,0,0,0,7.44-18,23.82,23.82,0,0,0-7.44-17.85,24.68,24.68,0,0,0-18-7.27A23.93,23.93,0,0,0,454,87.15,24.69,24.69,0,0,0,447.09,105,25.08,25.08,0,0,0,454,123a23.79,23.79,0,0,0,17.68,7.11C478.81,130.12,484.93,127.81,489.72,123Z" fill="#652b7c"/><path d="M522.44,105.33a42.05,42.05,0,0,1,13.22-31.4c8.76-8.43,19.5-12.72,32.22-12.72s23.47,4.3,32.23,12.72a42.05,42.05,0,0,1,13.22,31.4,42.05,42.05,0,0,1-13.22,31.4c-8.76,8.43-19.5,12.72-32.23,12.72s-23.47-4.3-32.22-12.72A42.05,42.05,0,0,1,522.44,105.33ZM586.23,124a25.67,25.67,0,0,0,7.44-18.67,25,25,0,0,0-7.44-18.51,26.13,26.13,0,0,0-36.85,0,25.56,25.56,0,0,0-7.27,18.51A26.22,26.22,0,0,0,549.38,124,26.54,26.54,0,0,0,586.23,124Z" fill="#652b7c"/><path d="M620.6,147V63.69h19.67v11.9C643.74,67.49,652,62,662.58,62,674,62,681.91,66.83,686,76.58,690.84,66.83,699.76,62,712.81,62c18,0,28.42,12.72,28.42,33.38v26.28c0,6.44,1.16,8.76,5.62,8.76a14.56,14.56,0,0,0,2.81-.33v16.69a28.37,28.37,0,0,1-8.59,1c-13.05,0-19.5-7.27-19.5-21.81V98.23c0-11.4-5.29-18.51-14.54-18.51s-16,8.1-16,19.33V147H671.34V98.23c0-11.4-5.45-18.51-14.87-18.51-9.25,0-16.2,8.1-16.2,19.33V147H620.6Z" fill="#652b7c"/></g><g id="Icon"><path d="M261,84l-70,34,70,34S260.78,84.27,261,84Z" fill="#652b7c"/><polygon points="121 152 191 118 121 84 121 152" fill="#652b7c"/><path d="M191,118l70,34c-0.27,0-41.76,25-60.63,36.24a17.64,17.64,0,0,1-18,0C163.47,177,121,152,121,152Z" fill="#421540"/><path d="M200.23,47.65C219.09,58.88,261,84,261,84l-70,34L121,84c0.27,0,42.31-25.12,61.18-36.36A17.64,17.64,0,0,1,200.23,47.65Z" fill="#bf97c6"/><path d="M145,20.58l-35,17,35,17S144.89,20.72,145,20.58Z" fill="#652b7c"/><polygon points="75 54.58 110 37.58 75 20.58 75 54.58" fill="#652b7c"/><path d="M110,37.58l35,17c-0.14,0-20.88,12.5-30.31,18.12a8.82,8.82,0,0,1-9,0C96.23,67.08,75,54.58,75,54.58Z" fill="#421540"/><path d="M114.61,2.4C124,8,145,20.58,145,20.58l-35,17-35-17C75.14,20.59,96.16,8,105.59,2.4A8.82,8.82,0,0,1,114.61,2.4Z" fill="#bf97c6"/><path d="M101,91L51,115.54l50,24.53S100.84,91.21,101,91Z" fill="#652b7c"/><polygon points="1 140.07 51 115.54 1 91.02 1 140.07" fill="#652b7c"/><path d="M51,115.54l50,24.53c-0.19,0-29.83,18-43.3,26.14a12.5,12.5,0,0,1-12.89,0C31.34,158.1,1,140.07,1,140.07Z" fill="#421540"/><path d="M57.59,64.79C71.06,72.9,101,91,101,91L51,115.54,1,91C1.19,91,31.22,72.9,44.7,64.79A12.5,12.5,0,0,1,57.59,64.79Z" fill="#bf97c6"/></g></svg></a>
+                                <nav class="sections show-for-medium">
+                                    
+<a href="/documentation/">Documentation</a>
+<a href="/faq.html">FAQ</a>
+<a href="/support.html">Support</a>
+<a href="/get-involved.html">Get Involved</a>
+<a href="/blog/">Blog</a>
+
+                                </nav>
+                            </div>
+                        </div>
+                    </header>
+                    <div class="fw-wrapper flush sticky-bar">
+                        <div class="row">
+                            <div class="small-12 columns">
+                                <div class="small-menu">
+                                    <button class="menu-icon" type="button" data-open="offCanvasLeft" data-toggle="offCanvas"></button>
+                                    <a class="logo" href="/"><span></span></a>
+                                    <nav class="sections-scroll">
+                                        
+<a href="/documentation/">Documentation</a>
+<a href="/faq.html">FAQ</a>
+<a href="/support.html">Support</a>
+<a href="/get-involved.html">Get Involved</a>
+<a href="/blog/">Blog</a>
+
+                                    </nav>
+                                    <nav class="social">
+                                        <a href="https://discuss.lagomframework.com"><span>Discuss Lagom</span></a>
+                                        <a href="https://twitter.com/lagom"><span>Twitter</span></a>
+                                        <a href="https://github.com/lagom/lagom"><span>GitHub</span></a>
+                                        <a href="https://stackoverflow.com/questions/tagged/lagom"><span>Stack Overflow</span></a>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                     
+    <header class="fw-wrapper lgm-purple page-title">
+        <div class="row">
+            <div class="small-12 columns">
+                <h1>Lagom 1.6 Migration Guide</h1>
+            </div>
+        </div>
+    </header>
+
+    <div class="fw-wrapper documentation-content">
+        <div class="row">
+            <div class="small-12 large-7 columns">
+                
+                    <nav class="breadcrumbs">
+                        <a href="Home.html">Java Home</a>
+                        
+                                    &raquo;
+                            <a href="Highlights16.html">Lagom releases</a>
+                        
+                    </nav>
+                
+
+                <article>
+                <h1 id="Lagom-1.6-Migration-Guide"><a class="section-marker" href="#Lagom-1.6-Migration-Guide">§</a>Lagom 1.6 Migration Guide</h1>
+<p>This guide explains how to migrate from Lagom 1.5 to Lagom 1.6. If you are upgrading from an earlier version, be sure to review previous migration guides.</p>
+<p>Lagom 1.6 updates to the latest major versions of Play (2.8), Akka (2.6) and Akka HTTP (10.1). We have highlighted the changes that are relevant to most Lagom users, but you may need to change code in your services that uses Play APIs directly. You&rsquo;ll also need to update any Play services in your Lagom project repositories to be compatible with Play 2.8. Please refer to the <a href="https://www.playframework.com/documentation/2.8.x/Migration28">Play 2.8 migration guide</a>, <a href="https://doc.akka.io/docs/akka/2.6/project/migration-guide-2.5.x-2.6.x.html">Akka Migration Guide 2.5.x to 2.6.x</a> and the <a href="https://akka.io/blog/news-archive.html">Akka HTTP 10.1.x release announcements</a> for more details.</p>
+<p>For a detailed list of version upgrades of other libraries Lagom builds on such as for Slick, Kafka and others, refer to the <a href="https://github.com/lagom/lagom/releases">release notes</a>.</p><h2 id="Migrating-from-Lagom-1.5"><a class="section-marker" href="#Migrating-from-Lagom-1.5">§</a>Migrating from Lagom 1.5</h2>
+<p>To migrate from Lagom 1.5 we recommend first migrating to latest version of Lagom 1.5 before upgrading to Lagom 1.6. Refer to the <a href="https://github.com/lagom/lagom/releases">release notes</a> for details upgrading to latest version of Lagom 1.5.</p><h2 id="Build-changes"><a class="section-marker" href="#Build-changes">§</a>Build changes</h2><h3 id="Maven"><a class="section-marker" href="#Maven">§</a>Maven</h3>
+<p>If you&rsquo;re using a <code>lagom.version</code> property in the <code>properties</code> section of your root <code>pom.xml</code>, then simply update that to <code>1.6.0</code>. Otherwise, you&rsquo;ll need to go through every place that a Lagom dependency, including plugins, is used, and set the version there.</p>
+<blockquote>
+  <p><strong>Note:</strong> Lagom 1.6 requires, at least, Maven <code>3.6.0</code>. Please update your environments.</p>
+</blockquote><h3 id="sbt"><a class="section-marker" href="#sbt">§</a>sbt</h3>
+<p>The version of Lagom can be updated by editing the <code>project/plugins.sbt</code> file, and updating the version of the Lagom sbt plugin. For example:</p>
+<pre class="prettyprint"><code class="language-scala">addSbtPlugin(&quot;com.lightbend.lagom&quot; % &quot;lagom-sbt-plugin&quot; % &quot;1.6.0&quot;)
+</code></pre>
+<p>Lagom 1.6 requires sbt 1.3.2 or later, upgrade your version by updating the <code>sbt.version</code> in <code>project/build.properties</code>.</p><h2 id="Main-changes"><a class="section-marker" href="#Main-changes">§</a>Main changes</h2><h3 id="Jackson-serialization"><a class="section-marker" href="#Jackson-serialization">§</a>Jackson serialization</h3>
+<p>Lagom is now using the Jackson serializer from Akka, which is an improved version of the serializer in Lagom 1.5. You can find more information about the Akka Jackson serializer in the <a href="https://doc.akka.io/docs/akka/2.6/serialization-jackson.html">Akka documentation</a>. It is compatible with Lagom 1.5 in both directions.</p>
+<p>The serializer provided by Akka creates new <a href="https://doc.akka.io/docs/akka/current/serialization.html">Akka serialization bindings</a> so if you want to do a rolling upgrade from Lagom 1.5.x to Lagom 1.6.x you need to do a <a href="Migration16.html">multi-step upgrade</a>.</p><h4 id="JacksonJsonMigration"><a class="section-marker" href="#JacksonJsonMigration">§</a>JacksonJsonMigration</h4>
+<p>If you have used <code>JacksonJsonMigration</code> classes they must be changed to extend <code>akka.serialization.jackson.JacksonMigration</code> instead. It has the same method signatures as the deprecated <code>JacksonJsonMigration</code>.</p>
+<p>The configuration in <code>lagom.serialization.json.migrations</code> must be moved to <code>akka.serialization.jackson.migrations</code>.<br/>It has the same structure.</p><h4 id="Service-API"><a class="section-marker" href="#Service-API">§</a>Service API</h4>
+<p>The default settings for the <code>ObjectMapper</code> that is used for JSON serialization in the Service API now uses <code>ISO-8601</code> date formats. The default in previous versions of Lagom was to use Jackson private format which can be more time and/or space efficient. The reason for this change is that the ISO format is a better default for interoperability.</p>
+<p>If you want your Service API to produce the same output for types like <code>java.time.Instant</code>or <code>java.time.LocalDateTime</code> adjust the configuration for the <code>ObjectMapper</code> in your <code>application.conf</code>:</p>
+<pre class="prettyprint"><code class="language-json">akka.serialization.jackson {
+  # Configuration of the ObjectMapper for external service api
+  jackson-json-serviceapi {
+     # Serializes dates using Jackson custom formats
+     WRITE_DATES_AS_TIMESTAMPS = on
+  }
+}
+</code></pre><h4 id="Configuration-changes"><a class="section-marker" href="#Configuration-changes">§</a>Configuration changes</h4>
+<ul>
+  <li><code>lagom.serialization.json.compress-larger-than</code> is now configured with <code>akka.serialization.jackson.jackson-json-compressed.compression.compress-larger-than</code></li>
+  <li><code>lagom.serialization.json.jackson-modules</code> is now configured in <code>akka.serialization.jackson.jackson-modules</code></li>
+</ul><h4 id="JSON-Compression-threshold"><a class="section-marker" href="#JSON-Compression-threshold">§</a>JSON Compression threshold</h4>
+<p>When marking a serializable class with <code>CompressedJsonable</code> compression will only kick in when the serialized representation goes past a threshold. The default value for <code>akka.serialization.jackson.jackson-json-compressed.compression.compress-larger-than</code> is 32 Kilobytes. As mentioned above, this setting was previously configure by <code>lagom.serialization.json.compress-larger-than</code> and defaulted to 1024 bytes. (See <a href="https://github.com/lagom/lagom/pull/1983">#1983</a>)</p><h3 id="Remoting-Artery"><a class="section-marker" href="#Remoting-Artery">§</a>Remoting Artery</h3>
+<p>Lagom 1.6.0 builds on Akka 2.6.0 that uses a new Akka Remote implementation called Artery. Artery is enabled by default in Lagom and replaces the previous Akka Remote protocol (aka. Akka Remote Classic). If you are using Lagom in a clustered setup, you will need to shutdown all nodes before updating, unless you choose to disable Artery.</p>
+<p>To use classic remoting instead of Artery, you need to:</p>
+<ol>
+  <li>Set property <code>akka.remote.artery.enabled</code> to <code>false</code>. Further, any configuration under <code>akka.remote</code> that is specific to classic remoting needs to be moved to <code>akka.remote.classic</code>. To see which configuration options are specific to classic search for them in: <a href="https://github.com/akka/akka/blob/master/akka-remote/src/main/resources/reference.conf"><code>akka-remote/reference.conf</code></a></li>
+  <li>Add Netty dependency as explained in <a href="https://doc.akka.io/docs/akka/2.6/remoting.html#dependency">Akka Remoting docs</a>:</li>
+</ol>
+<pre class="prettyprint"><code class="language-scala">libraryDependencies += &quot;io.netty&quot; % &quot;netty&quot; % &quot;3.10.6.Final&quot;
+</code></pre><h3 id="Shard-Coordination"><a class="section-marker" href="#Shard-Coordination">§</a>Shard Coordination</h3>
+<p>In Lagom 1.4 and 1.5 users could use the <code>akka.cluster.sharding.store-state-mode</code> configuration key to switch from the default <code>persistence</code>-based shard coordination to the <code>ddata</code>-based coordination. As of Lagom 1.6 <code>ddata</code> is the new default.</p>
+<p>Switching from <code>persistence</code> to <code>ddata</code>, such as if your cluster relies of Lagom&rsquo;s default configuration, will require a full cluster shutdown. Therefore, if you want to avoid the full service shutdown when migrating to Lagom 1.6 you need to explicitly opt-back to <code>persistence</code>, as such:</p>
+<pre class="prettyprint"><code class="language-HOCON"># Opt-back to Lagom 1.5&#39;s &#39;persistence&#39; instead of Lagom 1.6&#39;s default of &#39;ddata&#39;.
+akka.cluster.sharding.state-store-mode = persistence
+</code></pre><h3 id="Akka-Persistence-Cassandra-Update"><a class="section-marker" href="#Akka-Persistence-Cassandra-Update">§</a>Akka Persistence Cassandra Update</h3>
+<p>The Akka Persistence Cassandra plugin is updated to version 0.101. This version requires two schema migrations before you upgrade to Lagom 1.6.0. For more information on how to migrate, consult the following documentations:</p>
+<ul>
+  <li><a href="https://doc.akka.io/docs/akka-persistence-cassandra/0.101/migrations.html#migrations-to-0-101">Akka Persistence Cassandra Migrations to 0.101</a></li>
+  <li><a href="https://doc.akka.io/docs/akka-persistence-cassandra/0.101/migrations.html#migrations-to-0-80-and-later">Akka Persistence Cassandra Migrations to 0.80</a></li>
+</ul>
+<p>Note that although it&rsquo;s technically possible to run the migrations while running your application we advise against it.</p><h2 id="Upgrading-a-production-system"><a class="section-marker" href="#Upgrading-a-production-system">§</a>Upgrading a production system</h2>
+<p>As usual, before upgrading to Lagom 1.6.0, make sure you are using the latest version on the 1.5.x series.</p>
+<p>During a rolling upgrade your <a href="Projections.html">Projections</a> may experience a degraded behavior. The service will self-heal when the rolling upgrade completes. Some internal messages taking care of the distribution of the worker instances of your projection have changed. As a consequence, your old nodes won&rsquo;t be able to gossip with the new ones but as soon as the rolling upgrade completes, all nodes will be on the same version of your service the projection will operate normally.</p><h3 id="Split-Brain-Resolver"><a class="section-marker" href="#Split-Brain-Resolver">§</a>Split Brain Resolver</h3>
+<p>If you are subscriber of the <a href="https://www.lightbend.com/lightbend-platform">Lightbend Platform</a> and use the <a href="https://doc.akka.io/docs/akka-enhancements/1.1/split-brain-resolver.html">Akka Split Brain Resolver</a>, when you update to Lagom <code>1.6.4</code> you can opt out of the commercial implementation and use the <a href="https://doc.akka.io/docs/akka/current/split-brain-resolver.html#split-brain-resolver">Open Source Akka Split Brain Resolver</a>. The migration has two steps: </p>
+<ol>
+  <li>remove the dependency:</li>
+</ol>
+<pre class="prettyprint"><code>// before
+&quot;com.lightbend.akka&quot; %% &quot;akka-split-brain-resolver&quot; % &quot;1.1.14&quot;
+// after
+// The OSS SBR implementation is part of &quot;akka-cluster&quot; so you don&#39;t need to add a new dependency
+</code></pre>
+<ol>
+  <li>update your settings to use the new implementation:</li>
+</ol>
+<pre class="prettyprint"><code>## Before:
+akka.cluster.downing-provider-class = &quot;com.lightbend.akka.sbr.SplitBrainResolverProvider&quot;
+## After:
+akka.cluster.downing-provider-class = &quot;akka.cluster.sbr.SplitBrainResolverProvider&quot;
+</code></pre>
+<p>Note that a rolling upgrade where some nodes use the commercial SBR and other nodes use the OSS SBR is possible as long as all nodes use the same configuration values (<code>active-strategy</code>, <code>stable-after</code>,&hellip;)</p><h3 id="Cluster-shutdown-migrating-from-Lagom-1.5"><a class="section-marker" href="#Cluster-shutdown-migrating-from-Lagom-1.5">§</a>Cluster shutdown migrating from Lagom 1.5</h3>
+<p>Lagom 1.6.0 has a few new default settings that will prevent you to run a rolling upgrade. In case you prefer to run a rolling upgrade, you will need to opt-out from each of these new defaults as explained below.</p>
+<p>This is a summary of changes in Lagom 1.6 that would require a full cluster shutdown rather than a rolling upgrade:</p>
+<ul>
+  <li>The change in <a href="Migration16.html#Remoting-Artery">Akka Remote</a> default implementation.</li>
+  <li>The change in default <a href="Migration16.html#Shard-Coordination">Shard Coordination</a> strategy.</li>
+  <li>The change in <a href="Migration16.html#Akka-Persistence-Cassandra-Update">Cassandra plugin version</a>. Only impact Lagom applications using Cassandra.</li>
+</ul><h3 id="A-note-on-Rolling-Updates-and-PATCH-Versions"><a class="section-marker" href="#A-note-on-Rolling-Updates-and-PATCH-Versions">§</a>A note on Rolling Updates and PATCH Versions</h3>
+<p>Sometimes patch versions of Akka Cluster introduce changes that make certain pairs of versions incompatible. As a consequence, sometimes it is necessary to upgrade in multiple steps if downtime is not possible. See, for example, the following note in the Akka Docs on <a href="https://doc.akka.io/docs/akka/current/project/rolling-update.html#2-6-0-several-changes-in-minor-release">Rolling Updates and Versions</a>:</p>
+<blockquote>
+  <p>This means that a rolling update will have to go through at least one of 2.6.2, 2.6.3 or 2.6.4 when upgrading to 2.6.5 or higher or else cluster nodes will not be able to communicate during the rolling update.</p>
+</blockquote>
+<p>What this means for Lagom is that directly upgrading from <code>1.6.0</code> to <code>1.6.3</code>, for example, is not possible in a rolling upgrade. Instead, you should first migrate to <code>1.6.2</code> deploy the upgraded version and then upgrade to <code>1.6.3</code>. Following is a table of safe migrations (versions that can coexist safely during a rolling upgrade):</p>
+<table>
+  <thead>
+    <tr>
+      <th align="center">from </th>
+      <th align="center">to </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">1.6.0 </td>
+      <td align="center">1.6.2 </td>
+    </tr>
+    <tr>
+      <td align="center">1.6.1 </td>
+      <td align="center">1.6.3 </td>
+    </tr>
+    <tr>
+      <td align="center">1.6.2 </td>
+      <td align="center">1.6.3 </td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Note:</strong> Lagom doesn&rsquo;t use <code>jackson-cbor</code> serializer internally, but if you have <code>jackson-cbor</code> in your <code>serialization-bindings</code> you need to know about <a href="https://doc.akka.io/docs/akka/current/project/rolling-update.html#2-6-5-jacksoncborserializer">JacksonCborSerializer issue</a> in Akka, and a rolling upgrade will have to go through <code>1.6.3</code> when upgrading to <code>1.6.3</code> or higher.</p><h3 id="Multi-step-upgrade:-serialization"><a class="section-marker" href="#Multi-step-upgrade:-serialization">§</a>Multi-step upgrade: serialization</h3>
+<p>Changes in default serializers require rolling upgrades to happen in two steps.</p><h4 id="Step-1:-new-binary,-old-serializers"><a class="section-marker" href="#Step-1:-new-binary,-old-serializers">§</a>Step 1: new binary, old serializers</h4>
+<p>First, you will have to deploy a version of your binary that&rsquo;s already a Lagom 1.6.x application but you must set it up to use the serializers that are compatible with Lagom 1.5.x so your old nodes can continue to operate. On your <code>application.conf</code> use:</p>
+<pre class="prettyprint"><code>## Lagom 1.6 no longer enables Java serialization by default but some
+## code in Lagom 1.5 (or your own code) still used it so we enable it back.
+akka.actor.allow-java-serialization = on
+
+## Configures Akka to only produce messages using the `old-lagom-json` serializer
+akka.actor {
+  serialization-bindings {
+    &quot;com.lightbend.lagom.serialization.Jsonable&quot; = old-lagom-json
+    &quot;com.lightbend.lagom.serialization.CompressedJsonable&quot; = old-lagom-json
+  }
+}
+</code></pre>
+<p>The setup above makes all traffic and durable data produced by Lagom 1.6 code to be readable by a Lagom 1.5 binary.</p><h4 id="Step-2:-new-binary,-default-serializers"><a class="section-marker" href="#Step-2:-new-binary,-default-serializers">§</a>Step 2: new binary, default serializers</h4>
+<p>Once all your production nodes are running a binary of your service based on Lagom 1.6 you can remove the settings for the old serializers from <code>application.conf</code> and use the defaults.</p>
+                </article>
+
+                
+                    
+                        
+                            <nav class="next-link">
+                                <a href="Migration15.html"><strong>Next: </strong>
+                                    Lagom 1.5 Migration Guide</a>
+                            </nav>
+                        
+                    
+                
+
+                
+                    <p class="edit-source">Found an error in this documentation? The source code for this page can be found
+                        <a href="https://github.com/lagom/lagom/edit/1.6.x/docs/manual/java/releases/Migration16.md">here</a>. Please feel free to edit and contribute a pull request. </p>
+                
+            </div>
+            <aside class="small-12 large-4 columns">
+                <nav class="side-menu">
+
+                    <input type="search" id="cross-docs-search" placeholder="Search..." />
+
+                    <label for="docs-version">Version:</label>
+                    <select id="docs-version">
+                    
+                        <option value="/documentation/1.0.x/java/Home.html" >1.0.x</option>
+                    
+                        <option value="/documentation/1.1.x/java/Home.html" >1.1.x</option>
+                    
+                        <option value="/documentation/1.2.x/java/Home.html" >1.2.x</option>
+                    
+                        <option value="/documentation/1.3.x/java/Home.html" >1.3.x</option>
+                    
+                        <option value="/documentation/1.4.x/java/Home.html" >1.4.x</option>
+                    
+                        <option value="/documentation/1.5.x/java/Home.html" >1.5.x</option>
+                    
+                        <option value="/documentation/1.6.x/java/Migration16.html" >1.6.x</option>
+                    
+                        <option value="/documentation/current/java/Migration16.html" 
+                            selected="selected">current</option>
+                    
+                        <option value="/documentation/latest/java/Migration16.html" >latest</option>
+                    
+                    </select>
+
+                    <a href="/documentation/current/java/api/index.html" class="api-docs">
+                        API Documentation</a>
+
+                    
+                        <h3>Lagom releases</h3>
+                        <ul>
+                        
+                            
+                                <li><a href="Highlights16.html">What&#x27;s new in Lagom 1.6</a></li>
+                            
+                        
+                            
+                                <li><a href="Highlights15.html">What&#x27;s new in Lagom 1.5</a></li>
+                            
+                        
+                            
+                                <li class="current-page"><a href="Migration16.html">Lagom 1.6 Migration Guide</a></li>
+                            
+                        
+                            
+                                <li><a href="Migration15.html">Lagom 1.5 Migration Guide</a></li>
+                            
+                        
+                            
+                                <li><a href="Migration14.html">Lagom 1.4 Migration Guide</a></li>
+                            
+                        
+                            
+                                <li><a href="Migration13.html">Lagom 1.3 Migration Guide</a></li>
+                            
+                        
+                            
+                                <li><a href="Migration12.html">Lagom 1.2 Migration Guide</a></li>
+                            
+                        
+                        </ul>
+                    
+                        <h3>Java Home</h3>
+                        <ul>
+                        
+                            
+                                <li><a href="Home.html">Home</a></li>
+                            
+                        
+                            
+                                <li><a href="WhatIsLagom.html">Welcome to Lagom</a></li>
+                            
+                        
+                            
+                                <li><a href="IntroGetStarted.html">Getting started with Lagom</a></li>
+                            
+                        
+                            
+                                <li><a href="CoreConcepts.html">Lagom core concepts</a></li>
+                            
+                        
+                            
+                                <li><a href="ReferenceGuide.html">Lagom reference guide</a></li>
+                            
+                        
+                            
+                                <li class="current-page"><a href="Highlights16.html">Lagom releases</a></li>
+                            
+                        
+                        </ul>
+                    
+                </nav>
+            </aside>
+        </div>
+    </div>
+
+
+                    <footer>
+                        <section class="fw-wrapper lb-grey-dkr support">
+                            <div class="row">
+                                <div class="small-12 medium-6 columns">
+                                    <svg class="svg-icon svg-icon-chat" version="1.1" id="Chat" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
+<path fill="#ffffff" d="M5.8,12.2V6H2C0.9,6,0,6.9,0,8v6c0,1.1,0.9,2,2,2h1v3l3-3h5c1.1,0,2-0.9,2-2v-1.82c-0.064,0.014-0.132,0.021-0.2,0.021h-7
+	V12.2z M18,1H9C7.9,1,7,1.9,7,3v8h7l3,3v-3h1c1.1,0,2-0.899,2-2V3C20,1.9,19.1,1,18,1z"/>
+</svg>
+
+                                    <h3>Community support</h3>
+                                    <ul>
+                                        <li><a href="https://discuss.lagomframework.com">Discuss Lagom</a></li>
+                                        <li><a href="https://stackoverflow.com/questions/tagged/lagom">Stack Overflow</a></li>
+                                    </ul>
+                                </div>
+                                
+                            </div>
+                        </section>
+
+                        <section class="fw-wrapper lb-grey links">
+                            <div class="row">
+                                <div class="small-12 medium-6 large-3 columns">
+                                    <h3>Lagom</h3>
+                                    <ul class="no-bullet">
+                                        <li><a href="/blog">Blog</a></li>
+                                        <li><a href="/documentation/">Documentation</a></li>
+                                        <li><a href="/faq.html">FAQ</a></li>
+                                        <li><a href="/support.html">Support</a></li>
+                                    </ul>
+                                </div>
+                                <div class="small-12 medium-6 large-3 columns">
+                                    <h3>Community links</h3>
+                                    <ul>
+                                        <li><a href="https://www.eventbrite.com/directory/?q=lagom&amp;loc=Worldwide">Events <em>via Eventbrite</em></a></li>
+                                        <li><a href="http://www.indeed.com/jobs?q=%22lagom%22&amp;l=">Jobs <em>via Indeed</em></a></li>
+                                    </ul>
+                                </div>
+                                <div class="small-12 medium-6 large-3 columns">
+                                    <h3>Code &amp; contribution</h3>
+                                    <ul>
+                                        <li><a href="https://github.com/lagom/lagom/issues">Bug tracker <em>GitHub</em></a></li>
+                                        <li><a href="/get-involved.html">Get involved</a></li>
+                                    </ul>
+                                </div>
+                                <div class="small-12 medium-6 large-3 columns">
+                                    <h3>Social networks</h3>
+                                    <ul>
+                                        <li><a href="https://twitter.com/lagom"><span>Twitter</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="fw-wrapper lgm-purple-dkr credits">
+                            <div class="row">
+                                <div class="small-12 medium-3 columns">
+                                    <a href="/" class="logo"><img src="/images/logos/lagom-reverse.svg"></a>
+                                </div>
+                                <div class="small-12 medium-3 columns">
+                                    <a href="https://www.lightbend.com" class="partner"><img src="/images/logos/lightbend-reverse.svg"></a>
+                                </div>
+                                <div class="small-12 medium-6 columns">
+                                    <p>Lagom is released under the Apache 2 License</p>
+                                </div>
+                            </div>
+                            <div class="row lb-legal">
+                                <div class="small-12 columns">
+                                    <p>
+                                        &copy; Lightbend 2018 - 2025 | 
+                                        <a href="https://www.lightbend.com/legal/licenses" target="_blank">Licenses</a> | 
+                                        <a href="https://www.lightbend.com/legal/terms" target="_blank">Terms</a> | 
+                                        <a href="https://www.lightbend.com/legal/privacy" target="_blank">Privacy Policy</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </section>
+
+                    </footer>
+
+                </div>
+            </div>
+        </div>
+    </body>
+    <script src="/4f4ff39f69a5c5f34c7957a8dead27652480e264-all-scripts-concat.js"></script>
+     
+    <script type="text/javascript" src="//cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/autocomplete.js/0/autocomplete.min.js"></script>
+        <!-- Cross-site search. This is using Algolia's autocomplete.js  -->
+    <script>
+            var clientLagom = algoliasearch('VL9SRZN02O', 'f917bb0ebcb845db99a96bd01e281393');
+            var lagomIndex = clientLagom.initIndex('lagomframework');
+
+            var displayValue = function (suggestion, level) {
+                if (level === 0)
+                    return suggestion._highlightResult.hierarchy.lvl0.value;
+                if (suggestion._highlightResult.hierarchy['lvl' + level] !== undefined) {
+                    return suggestion._highlightResult.hierarchy['lvl' + level].value ;
+                } else {
+                    return displayValue(suggestion, level - 1) ;
+                }
+            };
+            var displaySnippet = function (suggestion) {
+                if (typeof suggestion._snippetResult !== 'undefined') {
+                    return '<div class="algolia-docsearch-suggestion--text">' + suggestion._snippetResult.content.value + '</div>'
+                } else {
+                    return ''
+                }
+            }
+
+            var wrap = function (content, wrapper) {
+                if (typeof wrapper !== 'undefined') {
+                    return '<span class=' + wrapper + '>' + content + '</span>';
+                } else {
+                    return content;
+                }
+            }
+
+            var buildIndexSettings = function (_indexObj, _hitsPerPage, _faceFilters, title, useFooter, wrapper) {
+                var _header = wrap('<span class="algolia-docsearch-suggestion algolia-docsearch-suggestion__main algolia-docsearch-suggestion__secondary algolia-docsearch-suggestion--category-header ">' + title + '</span>', wrapper);
+                var _templates = {
+                    header: _header,
+                    suggestion: function (suggestion) {
+                        var suggestionHtml = '<div class="algolia-docsearch-suggestion algolia-docsearch-suggestion__secondary" style="white-space: normal;">' +
+                                '<div class="algolia-docsearch-suggestion--wrapper">' +
+                                '<div class="algolia-docsearch-suggestion--subcategory-column ">' +
+                                '<span class="algolia-docsearch-suggestion--subcategory-column-text">' + displayValue(suggestion, 0) + '</span>' +
+                                '</div>' +
+                                '<div class="algolia-docsearch-suggestion--content">' +
+                                '<div class="algolia-docsearch-suggestion--subcategory-inline ">' + displayValue(suggestion, 1) + '</div>' +
+                                '<div class="algolia-docsearch-suggestion--title algolia-docsearch-suggestion--duplicate-content">' + displayValue(suggestion, 2) + '</div>' +
+                                displaySnippet(suggestion) +
+                                '</div>' +
+                                '</div>' +
+                                '</div>';
+                        return wrap(suggestionHtml, wrapper)
+                    }
+                };
+                if (useFooter) {
+                    _templates['footer'] = '<div class="algolia-docsearch-footer"><a class="algolia-docsearch-footer--logo" href="https://www.algolia.com/docsearch">Algolia</a></div>';
+                }
+
+                return {
+                    source: autocomplete.sources.hits(
+                            _indexObj,
+                            {hitsPerPage: _hitsPerPage, facetFilters: _faceFilters}
+                    )
+                    ,
+                    templates: _templates
+                };
+
+            };
+
+            var lagomFacetFilters = ['version:current'];
+
+            var useScalaFacetFilter = window.location.href.split('/').includes("scala");
+            if (useScalaFacetFilter) {
+                lagomFacetFilters.push('language:scala');
+            } else {
+                lagomFacetFilters.push('language:java');
+            }
+
+
+            autocomplete('#cross-docs-search',
+                    {hint: false},
+                    [
+                        buildIndexSettings(lagomIndex, 10, lagomFacetFilters, "Lagom Documentation", false)
+                    ]
+            ).on('autocomplete:selected', function (event, suggestion, dataset) {
+                location.href = suggestion.url;
+            });
+    </script>
+
+
+    
+
+</html>
+

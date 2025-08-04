@@ -1,0 +1,915 @@
+
+<!DOCTYPE html>
+<html class="noios">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Lagom - Domain Modelling with Akka Persistence Typed</title>
+        <meta name="description" content="Lagom">
+        
+            <link rel="canonical" href="https://www.lagomframework.com/documentation/1.6.x/java/UsingAkkaPersistenceTyped.html"/>
+        
+        <meta name="viewport" content="width=device-width,maximum-scale=1"/>
+        <link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700" rel="stylesheet" type="text/css"/>
+        <link rel="stylesheet" href="/4f4ff39f69a5c5f34c7957a8dead27652480e264-all-styles-concat.css" type="text/css">
+         
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css" />
+    
+
+    </head>
+    <body>
+        <div class="off-canvas-wrapper">
+            <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+                <div class="off-canvas position-left" id="offCanvasLeft" data-off-canvas >
+                    <nav>
+                        <button class="close-button" aria-label="Close menu" type="button" data-close>
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <a href="/get-started.html">Try Lagom</a>
+                        
+<h3>Documentation</h3>
+<ul>
+    <li><a href="/documentation">By release</a></li>
+    <li><a href="/faq.html">FAQ</a></li>
+    <li><a href="/blog">Team Blog</a></li>
+</ul>
+<h3>Find Help</h3>
+<ul>
+    <li><a href="https://gitter.im/lagom/lagom">Gitter channel</a></li>
+    <li><a href="https://stackoverflow.com/questions/tagged/lagom">Stack overflow</a></li>
+    <li><a href="/support.html">Support</a></li>
+</ul>
+<h3>Contribute</h3>
+<ul>
+    <li><a href="/get-involved.html">Get involved</a></li>
+    <li><a href="https://www.lightbend.com/conduct">Code of conduct</a></li>
+    <li><a href="/community-process.html">Community process</a></li>
+    <li><a href="/contributing.html">Contributor guidelines</a></li>
+</ul>
+<!-- <h3>Programs</h3> Commented out Oct 2017 because the team is not participating in this round of the program.
+<ul>
+    <li><a href="/outreachy/round14.html">Outreachy</a></li>
+</ul> -->
+
+                    </nav>
+                </div>
+                <div class="off-canvas-content" data-off-canvas-content>
+
+                    
+<div id="lightbend-banner" class="lightbend-banner lagom full-width" data-category="OSS Lightbend Banner Impression" data-label="Lagom Banner Impression">
+	<div class="wrapper">
+		<div class="brand">
+			<a class="oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Lightbend Logo - Lagom Banner" href="https://www.lightbend.com?r=oss-banner-lagom" target="_blank">
+				<img class="lightbend-logo" src="/images/banner-logos/lightbend-reverse.svg" alt="Lightbend" title="Lightbend">
+			</a>
+		</div>
+		<div class="nav">
+			
+		</div>
+	</div>
+</div>
+
+                    <header class="navbar">
+                        <div class="row">
+                            <div class="small-12 columns">
+                                <button class="menu-icon hide-for-medium" type="button" data-open="offCanvasLeft" data-toggle="offCanvas"></button>
+                                <a class="logo" href="/"><svg id="Lagom_Full_Color" class="svg-logo svg-logo-lagom-full-color" data-name="Lagom Full Color" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 752 192"><title>logom</title><g id="Lagom"><path d="M291.58,31.79h19.83v87.91c0,8.1,2.64,11.57,9.91,11.57a21.11,21.11,0,0,0,5.95-.66V148.3a35.63,35.63,0,0,1-9.42,1c-17.52,0-26.28-8.92-26.28-26.94V31.79Z" fill="#652b7c"/><path d="M398.34,75.75V63.69h19.83v58.17c0,7.11,1.65,9.75,6.11,9.75a41.28,41.28,0,0,0,4.13-.33v16a28.65,28.65,0,0,1-9.75,1.32c-4.79,0-8.59-.83-11.57-2.64a15.33,15.33,0,0,1-6.78-10.08C394.53,144.66,385,149,371.73,149A39.58,39.58,0,0,1,342,136.4c-7.93-8.43-11.9-18.67-11.9-31.07s4-22.64,11.9-30.9a39.58,39.58,0,0,1,29.75-12.56C385.12,61.87,395.2,67.82,398.34,75.75Zm-5.95,47.76a24.29,24.29,0,0,0,7.44-18.18,24.29,24.29,0,0,0-7.44-18.18,24.68,24.68,0,0,0-18-7.27,23.93,23.93,0,0,0-17.68,7.27c-4.63,4.79-6.94,10.91-6.94,18.18s2.31,13.39,6.94,18.18a23.93,23.93,0,0,0,17.68,7.27A24.68,24.68,0,0,0,392.39,123.51Z" fill="#652b7c"/><path d="M495.67,63.69H515.5v69.41c0,20-2.81,32.23-14,41-7.93,6.11-17.68,9.25-29.42,9.25-15.53,0-28.92-4-40.32-12.06l9.59-14.71a50.47,50.47,0,0,0,28.59,9.09q11.65,0,18.34-5c5.29-3.8,7.93-10.91,7.93-21.15v-4.13c-4,7.11-13.88,12.23-27.1,12.23a40.53,40.53,0,0,1-29.75-12.23c-7.93-8.1-11.9-18.34-11.9-30.41s4-22.31,12.06-30.57a39.23,39.23,0,0,1,29.58-12.56c13.72,0,23.8,5.78,26.61,13.88V63.69ZM489.72,123a24.19,24.19,0,0,0,7.44-18,23.82,23.82,0,0,0-7.44-17.85,24.68,24.68,0,0,0-18-7.27A23.93,23.93,0,0,0,454,87.15,24.69,24.69,0,0,0,447.09,105,25.08,25.08,0,0,0,454,123a23.79,23.79,0,0,0,17.68,7.11C478.81,130.12,484.93,127.81,489.72,123Z" fill="#652b7c"/><path d="M522.44,105.33a42.05,42.05,0,0,1,13.22-31.4c8.76-8.43,19.5-12.72,32.22-12.72s23.47,4.3,32.23,12.72a42.05,42.05,0,0,1,13.22,31.4,42.05,42.05,0,0,1-13.22,31.4c-8.76,8.43-19.5,12.72-32.23,12.72s-23.47-4.3-32.22-12.72A42.05,42.05,0,0,1,522.44,105.33ZM586.23,124a25.67,25.67,0,0,0,7.44-18.67,25,25,0,0,0-7.44-18.51,26.13,26.13,0,0,0-36.85,0,25.56,25.56,0,0,0-7.27,18.51A26.22,26.22,0,0,0,549.38,124,26.54,26.54,0,0,0,586.23,124Z" fill="#652b7c"/><path d="M620.6,147V63.69h19.67v11.9C643.74,67.49,652,62,662.58,62,674,62,681.91,66.83,686,76.58,690.84,66.83,699.76,62,712.81,62c18,0,28.42,12.72,28.42,33.38v26.28c0,6.44,1.16,8.76,5.62,8.76a14.56,14.56,0,0,0,2.81-.33v16.69a28.37,28.37,0,0,1-8.59,1c-13.05,0-19.5-7.27-19.5-21.81V98.23c0-11.4-5.29-18.51-14.54-18.51s-16,8.1-16,19.33V147H671.34V98.23c0-11.4-5.45-18.51-14.87-18.51-9.25,0-16.2,8.1-16.2,19.33V147H620.6Z" fill="#652b7c"/></g><g id="Icon"><path d="M261,84l-70,34,70,34S260.78,84.27,261,84Z" fill="#652b7c"/><polygon points="121 152 191 118 121 84 121 152" fill="#652b7c"/><path d="M191,118l70,34c-0.27,0-41.76,25-60.63,36.24a17.64,17.64,0,0,1-18,0C163.47,177,121,152,121,152Z" fill="#421540"/><path d="M200.23,47.65C219.09,58.88,261,84,261,84l-70,34L121,84c0.27,0,42.31-25.12,61.18-36.36A17.64,17.64,0,0,1,200.23,47.65Z" fill="#bf97c6"/><path d="M145,20.58l-35,17,35,17S144.89,20.72,145,20.58Z" fill="#652b7c"/><polygon points="75 54.58 110 37.58 75 20.58 75 54.58" fill="#652b7c"/><path d="M110,37.58l35,17c-0.14,0-20.88,12.5-30.31,18.12a8.82,8.82,0,0,1-9,0C96.23,67.08,75,54.58,75,54.58Z" fill="#421540"/><path d="M114.61,2.4C124,8,145,20.58,145,20.58l-35,17-35-17C75.14,20.59,96.16,8,105.59,2.4A8.82,8.82,0,0,1,114.61,2.4Z" fill="#bf97c6"/><path d="M101,91L51,115.54l50,24.53S100.84,91.21,101,91Z" fill="#652b7c"/><polygon points="1 140.07 51 115.54 1 91.02 1 140.07" fill="#652b7c"/><path d="M51,115.54l50,24.53c-0.19,0-29.83,18-43.3,26.14a12.5,12.5,0,0,1-12.89,0C31.34,158.1,1,140.07,1,140.07Z" fill="#421540"/><path d="M57.59,64.79C71.06,72.9,101,91,101,91L51,115.54,1,91C1.19,91,31.22,72.9,44.7,64.79A12.5,12.5,0,0,1,57.59,64.79Z" fill="#bf97c6"/></g></svg></a>
+                                <nav class="sections show-for-medium">
+                                    
+<a href="/documentation/">Documentation</a>
+<a href="/faq.html">FAQ</a>
+<a href="/support.html">Support</a>
+<a href="/get-involved.html">Get Involved</a>
+<a href="/blog/">Blog</a>
+
+                                </nav>
+                            </div>
+                        </div>
+                    </header>
+                    <div class="fw-wrapper flush sticky-bar">
+                        <div class="row">
+                            <div class="small-12 columns">
+                                <div class="small-menu">
+                                    <button class="menu-icon" type="button" data-open="offCanvasLeft" data-toggle="offCanvas"></button>
+                                    <a class="logo" href="/"><span></span></a>
+                                    <nav class="sections-scroll">
+                                        
+<a href="/documentation/">Documentation</a>
+<a href="/faq.html">FAQ</a>
+<a href="/support.html">Support</a>
+<a href="/get-involved.html">Get Involved</a>
+<a href="/blog/">Blog</a>
+
+                                    </nav>
+                                    <nav class="social">
+                                        <a href="https://discuss.lagomframework.com"><span>Discuss Lagom</span></a>
+                                        <a href="https://twitter.com/lagom"><span>Twitter</span></a>
+                                        <a href="https://github.com/lagom/lagom"><span>GitHub</span></a>
+                                        <a href="https://stackoverflow.com/questions/tagged/lagom"><span>Stack Overflow</span></a>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                     
+    <header class="fw-wrapper lgm-purple page-title">
+        <div class="row">
+            <div class="small-12 columns">
+                <h1>Domain Modelling with Akka Persistence Typed</h1>
+            </div>
+        </div>
+    </header>
+
+    <div class="fw-wrapper documentation-content">
+        <div class="row">
+            <div class="small-12 large-7 columns">
+                
+                    <nav class="breadcrumbs">
+                        <a href="Home.html">Java Home</a>
+                        
+                                    &raquo;
+                            <a href="ReferenceGuide.html">Lagom reference guide</a>
+                        
+                                    &raquo;
+                            <a href="UsingAkkaPersistenceTyped.html">Writing persistent and clustered services</a>
+                        
+                    </nav>
+                
+
+                <article>
+                <h1 id="Domain-Modelling-with-Akka-Persistence-Typed"><a class="section-marker" href="#Domain-Modelling-with-Akka-Persistence-Typed">§</a>Domain Modelling with Akka Persistence Typed</h1>
+<p>This section presents all the steps to model an <a href="https://martinfowler.com/bliki/DDD_Aggregate.html">Aggregate</a>, as defined in Domain-Driven Design, using <a href="https://doc.akka.io/docs/akka/2.6/typed/persistence.html?language=Java">Akka Persistence Typed</a> and following the <a href="ES_CQRS.html">CQRS</a> principles embraced by Lagom.</p>
+<p>Akka Persistence Typed provides an API for building distributed event-sourced Actors. We call it an Event Sourced Entity. By applying a few design rules, we can design CQRS Aggregates on top of Akka&rsquo;s API. We will refer to the term <strong>Aggregate</strong> whenever we cover a DDD Aggregate concept. Otherwise the term <strong>Entity</strong> or <strong>Event Sourced Entity</strong> will be used.</p>
+<p>We use a simplified shopping cart example to guide you through the process. You can find a full-fledged shopping cart sample on our <a href="https://github.com/lagom/lagom-samples/tree/1.6.x/shopping-cart/shopping-cart-java">samples repository</a>.</p><h2 id="Encoding-the-model"><a class="section-marker" href="#Encoding-the-model">§</a>Encoding the model</h2>
+<p>First, create a class (ie: <code>ShoppingCartEntity</code>) extending the abstract class <code>EventSourcedBehaviorWithEnforcedReplies</code>. It&rsquo;s recommended to use <code>EventSourcedBehaviorWithEnforcedReplies</code> when modeling a CQRS Aggregate. Using <a href="https://doc.akka.io/docs/akka/2.6/typed/persistence.html?language=Java#replies">enforced replies</a> requires command handlers to return a <code>ReplyEffect</code> forcing the developers to be explicit about replies.</p>
+<pre class="prettyprint"><code class="language-java">public class ShoppingCartEntity
+    extends EventSourcedBehaviorWithEnforcedReplies&lt;
+        ShoppingCartEntity.Command, ShoppingCartEntity.Event, ShoppingCartEntity.ShoppingCart&gt;</code></pre>
+<p><code>EventSourcedBehaviorWithEnforcedReplies</code> has three type parameters (Command, Event and State) and a few mandatory and optional methods that will be implemented as we progress through the guide.</p>
+<p>All model classes (<code>ShoppingCartEntity.Command</code>, <code>ShoppingCartEntity.Event</code>, <code>ShoppingCartEntity.ShoppingCart</code>) will be defined as static inner classes of <code>ShoppingCartEntity</code>.</p><h3 id="Modelling-the-State"><a class="section-marker" href="#Modelling-the-State">§</a>Modelling the State</h3>
+<p>The state of the shopping cart is defined as following:</p>
+<pre class="prettyprint"><code class="language-java">@Value
+@JsonDeserialize
+static final class ShoppingCart implements CompressedJsonable {
+
+  public final PMap&lt;String, Integer&gt; items;
+  public final Optional&lt;Instant&gt; checkoutDate;
+
+  @JsonCreator
+  ShoppingCart(PMap&lt;String, Integer&gt; items, Instant checkoutDate) {
+    this.items = Preconditions.checkNotNull(items, &quot;items&quot;);
+    this.checkoutDate = Optional.ofNullable(checkoutDate);
+  }
+
+  ShoppingCart removeItem(String itemId) {
+    PMap&lt;String, Integer&gt; newItems = items.minus(itemId);
+    return new ShoppingCart(newItems, null);
+  }
+
+  ShoppingCart updateItem(String itemId, int quantity) {
+    PMap&lt;String, Integer&gt; newItems = items.plus(itemId, quantity);
+    return new ShoppingCart(newItems, null);
+  }
+
+  boolean isEmpty() {
+    return items.isEmpty();
+  }
+
+  boolean hasItem(String itemId) {
+    return items.containsKey(itemId);
+  }
+
+  ShoppingCart checkout(Instant when) {
+    return new ShoppingCart(items, when);
+  }
+
+  boolean isOpen() {
+    return !this.isCheckedOut();
+  }
+
+  boolean isCheckedOut() {
+    return this.checkoutDate.isPresent();
+  }
+
+  public static final ShoppingCart EMPTY = new ShoppingCart(HashTreePMap.empty(), null);
+}</code></pre>
+<p>The <code>ShoppingCart</code> has a <code>checkedOutTime</code> that can be set when transitioning from one state (open shopping cart) to another (checked-out shopping cart). As we will see later, each state encodes the commands it can handle, which events it can persist, and to which other states it can transition.</p>
+<blockquote>
+  <p><strong>Note</strong>: The sample shown above is a simplified case. Whenever your model goes through different state transitions, a better approach is to have an interface and implementations of it for each state. See examples in the <a href="https://doc.akka.io/docs/akka/2.6/typed/persistence-style.html?language=Java">style guide for Akka Persistence Typed</a>.</p>
+</blockquote><h3 id="Modelling-Commands-and-Replies"><a class="section-marker" href="#Modelling-Commands-and-Replies">§</a>Modelling Commands and Replies</h3>
+<p>Next, we define the commands that we can send to it.</p>
+<p>Each command defines a <a href="https://doc.akka.io/docs/akka/2.6/typed/persistence.html?language=Java#replies">reply</a> through a <code>ActorRef&lt;R&gt; replyTo</code> field where <code>R</code> is the reply <em>type</em> that will be sent back to the caller. Replies are used to communicate back if a command was accepted or rejected or to read the Entity data (ie: read-only commands). It is also possible to have a mix of both. For example, if the command succeeds, it returns some updated data; if it fails, it returns a rejected message. Or you can have commands without replies (ie: <code>fire-and-forget</code>). This is a less common pattern in CQRS Aggregate modeling though and not covered in this example.</p>
+<pre class="prettyprint"><code class="language-java">interface Command&lt;R&gt; extends Jsonable {}
+
+@Value
+@JsonDeserialize
+static final class AddItem implements Command&lt;Confirmation&gt;, CompressedJsonable {
+  public final String itemId;
+  public final int quantity;
+  public final ActorRef&lt;Confirmation&gt; replyTo;
+
+  @JsonCreator
+  AddItem(String itemId, int quantity, ActorRef&lt;Confirmation&gt; replyTo) {
+    this.itemId = Preconditions.checkNotNull(itemId, &quot;itemId&quot;);
+    this.quantity = quantity;
+    this.replyTo = replyTo;
+  }
+}
+
+static final class Get implements Command&lt;Summary&gt; {
+  private final ActorRef&lt;Summary&gt; replyTo;
+
+  @JsonCreator
+  Get(ActorRef&lt;Summary&gt; replyTo) {
+    this.replyTo = replyTo;
+  }
+}
+
+static final class Checkout implements Command&lt;Confirmation&gt; {
+  private final ActorRef&lt;Confirmation&gt; replyTo;
+
+  @JsonCreator
+  Checkout(ActorRef&lt;Confirmation&gt; replyTo) {
+    this.replyTo = replyTo;
+  }
+}</code></pre>
+<p>In Akka Typed, unlike Akka classic and Lagom Persistence, it&rsquo;s not possible to return an exception to the caller. All communication between the actor and the caller must be done via the <code>ActorRef&lt;R&gt; replyTo</code> passed in the command. Therefore, if you want to signal a rejection, you most have it encoded in your reply protocol.</p>
+<p>The replies used by the commands above are defined like this:</p>
+<pre class="prettyprint"><code class="language-java">interface Reply extends Jsonable {}
+
+interface Confirmation extends Reply {}
+
+@Value
+@JsonDeserialize
+static final class Summary implements Reply {
+
+  public final Map&lt;String, Integer&gt; items;
+  public final boolean checkedOut;
+  public final Optional&lt;Instant&gt; checkoutDate;
+
+  @JsonCreator
+  Summary(Map&lt;String, Integer&gt; items, boolean checkedOut, Optional&lt;Instant&gt; checkoutDate) {
+    this.items = items;
+    this.checkedOut = checkedOut;
+    this.checkoutDate = checkoutDate;
+  }
+}
+
+@Value
+@JsonDeserialize
+static final class Accepted implements Confirmation {
+  public final Summary summary;
+
+  @JsonCreator
+  Accepted(Summary summary) {
+    this.summary = summary;
+  }
+}
+
+@Value
+@JsonDeserialize
+static final class Rejected implements Confirmation {
+  public final String reason;
+
+  @JsonCreator
+  Rejected(String reason) {
+    this.reason = reason;
+  }
+}</code></pre>
+<p>Here there are two different kinds of replies: <code>Confirmation</code> and <code>Summary</code>. <code>Confirmation</code> is used when we want to modify the state. A modification request can be <code>Accepted</code> or <code>Rejected</code>. Then, the <code>Summary</code> is used when we want to read the state of the shopping cart.</p>
+<blockquote>
+  <p><strong>Note</strong>: Keep in mind that <code>Summary</code> is not the shopping cart itself, but the representation we want to expose to the external world. It&rsquo;s a good practice to keep the internal state of the Entity private because it allows the internal state, and the exposed API to evolve independently.</p>
+</blockquote><h3 id="Modelling-Events"><a class="section-marker" href="#Modelling-Events">§</a>Modelling Events</h3>
+<p>Next, we define the events that our model will persist. The events must extend Lagom&rsquo;s <a href="api/com/lightbend/lagom/javadsl/persistence/AggregateEvent.html"><code>AggregateEvent</code></a>. This is important for tagging events. We will cover it soon in the <a href="UsingAkkaPersistenceTyped.html#Tagging-the-events--Akka-Persistence-Query-considerations">tagging events</a> section.</p>
+<pre class="prettyprint"><code class="language-java">public interface Event extends Jsonable, AggregateEvent&lt;Event&gt; {
+  // #shopping-cart-event-tag
+  /** The tag for shopping cart events used for consuming the journal event stream. */
+  AggregateEventShards&lt;Event&gt; TAG = AggregateEventTag.sharded(Event.class, 10);
+  // #shopping-cart-event-tag
+
+  @Override
+  default AggregateEventTagger&lt;Event&gt; aggregateTag() {
+    return TAG;
+  }
+}
+
+@Value
+@JsonDeserialize
+static final class ItemAdded implements Event {
+  public final String shoppingCartId;
+  public final String itemId;
+  public final int quantity;
+  public final Instant eventTime;
+
+  @JsonCreator
+  ItemAdded(String shoppingCartId, String itemId, int quantity, Instant eventTime) {
+    this.shoppingCartId = Preconditions.checkNotNull(shoppingCartId, &quot;shoppingCartId&quot;);
+    this.itemId = Preconditions.checkNotNull(itemId, &quot;itemId&quot;);
+    this.quantity = quantity;
+    this.eventTime = eventTime;
+  }
+}
+
+@Value
+@JsonDeserialize
+static final class CheckedOut implements Event {
+
+  public final String shoppingCartId;
+  public final Instant eventTime;
+
+  @JsonCreator
+  CheckedOut(String shoppingCartId, Instant eventTime) {
+    this.shoppingCartId = Preconditions.checkNotNull(shoppingCartId, &quot;shoppingCartId&quot;);
+    this.eventTime = eventTime;
+  }
+}</code></pre><h3 id="Defining-Commands-Handlers"><a class="section-marker" href="#Defining-Commands-Handlers">§</a>Defining Commands Handlers</h3>
+<p>Once you&rsquo;ve defined your model in terms of Commands, Replies, Events, and State, you need to specify the business rules. The command handlers define how to handle each incoming command, which validations must be applied, and finally, which events will be persisted if any.</p>
+<p>You can encode it in different ways. The <a href="https://doc.akka.io/docs/akka/2.6/typed/persistence-style.html#command-handlers-in-the-state?language=Java">recommended style</a> is to add the command handlers in your state classes. For <code>ShoppingCart</code>, we can define the command handlers based on the two possible states:</p>
+<pre class="prettyprint"><code class="language-java">@Override
+public CommandHandlerWithReply&lt;Command, Event, ShoppingCart&gt; commandHandler() {
+  CommandHandlerWithReplyBuilder&lt;Command, Event, ShoppingCart&gt; builder =
+      newCommandHandlerWithReplyBuilder();
+  builder
+      .forState(ShoppingCart::isOpen)
+      .onCommand(AddItem.class, this::onAddItem)
+      .onCommand(Checkout.class, this::onCheckout);
+
+  builder
+      .forState(ShoppingCart::isCheckedOut)
+      .onCommand(
+          AddItem.class,
+          cmd -&gt;
+              Effect()
+                  .reply(cmd.replyTo, new Rejected(&quot;Cannot add an item to a checked-out cart&quot;)))
+      .onCommand(
+          Checkout.class,
+          cmd -&gt; Effect().reply(cmd.replyTo, new Rejected(&quot;Cannot checkout a checked-out cart&quot;)));
+
+  builder.forAnyState().onCommand(Get.class, this::onGet);
+
+  return builder.build();
+}
+
+private ReplyEffect&lt;Event, ShoppingCart&gt; onAddItem(ShoppingCart shoppingCart, AddItem cmd) {
+  if (shoppingCart.hasItem(cmd.getItemId())) {
+    return Effect()
+        .reply(cmd.replyTo, new Rejected(&quot;Item was already added to this shopping cart&quot;));
+  } else if (cmd.getQuantity() &lt;= 0) {
+    return Effect().reply(cmd.replyTo, new Rejected(&quot;Quantity must be greater than zero&quot;));
+  } else {
+    return Effect()
+        .persist(new ItemAdded(cartId, cmd.getItemId(), cmd.getQuantity(), Instant.now()))
+        .thenReply(cmd.replyTo, s -&gt; new Accepted(toSummary(s)));
+  }
+}
+
+private ReplyEffect&lt;Event, ShoppingCart&gt; onGet(ShoppingCart shoppingCart, Get cmd) {
+  return Effect().reply(cmd.replyTo, toSummary(shoppingCart));
+}
+
+private ReplyEffect&lt;Event, ShoppingCart&gt; onCheckout(ShoppingCart shoppingCart, Checkout cmd) {
+  if (shoppingCart.isEmpty()) {
+    return Effect().reply(cmd.replyTo, new Rejected(&quot;Cannot checkout empty shopping cart&quot;));
+  } else {
+    return Effect()
+        .persist(new CheckedOut(cartId, Instant.now()))
+        .thenReply(cmd.replyTo, s -&gt; new Accepted(toSummary(s)));
+  }
+}</code></pre>
+<blockquote>
+  <p><strong>Note</strong>: of course, it is possible to organize the command handlers in a way that you consider more convenient for your use case, but we recommend the <code>onCommand</code> pattern since it can help to keep the logic for each command well isolated.</p>
+</blockquote>
+<p>Command handlers are the meat of the model. They encode the business rules of your model and act as a guardian of the model consistency. The command handler must first validate that the incoming command can be applied to the current model state. In case of successful validation, one or more events expressing the mutations are persisted. Once the events are persisted, they are applied to the state producing a new valid state.</p>
+<p>Because a DDD Aggregate is intended to model a consistency boundary, it&rsquo;s not recommended validating commands using data that is not available in scope. Any decision should be solely based on the data passed in the commands and the state of the Aggregate. Any external call should be considered a smell because it means that the Aggregate is not in full control of the invariants it&rsquo;s supposed to be protecting.</p>
+<p>There are two ways of sending back a reply: using <code>Effect().reply</code> and <code>Effect().persist(...).thenReply</code>. The first one is available directly on <code>Effect</code> and should be used when you reply without persisting any event. In this case, you can use the available state in scope because it&rsquo;s guaranteed not to have changed. The second variant should be used when you have persisted one or more events. The updated state is then available to you on the function used to define the reply.</p>
+<p>You may run side effects inside the command handler. Please refer to <a href="https://doc.akka.io/docs/akka/2.6/typed/persistence.html?language=Java#effects-and-side-effects">Akka documentation</a> for detailed information.</p><h3 id="Defining-the-Event-Handlers"><a class="section-marker" href="#Defining-the-Event-Handlers">§</a>Defining the Event Handlers</h3>
+<p>The event handlers are used to mutate the state of the Entity by applying the events to it. Event handlers must be pure functions as they will be used when instantiating the Entity and replaying the event journal. Similar to the command handlers, a <a href="https://doc.akka.io/docs/akka/2.6/typed/persistence-style.html?language=Java#command-handlers-in-the-state">recommended style</a> is to add them in the state classes.</p>
+<pre class="prettyprint"><code class="language-java">@Override
+public EventHandler&lt;ShoppingCart, Event&gt; eventHandler() {
+  return newEventHandlerBuilder()
+      .forAnyState()
+      .onEvent(
+          ItemAdded.class,
+          (shoppingCart, evt) -&gt; shoppingCart.updateItem(evt.getItemId(), evt.getQuantity()))
+      .onEvent(CheckedOut.class, (shoppingCart, evt) -&gt; shoppingCart.checkout(evt.getEventTime()))
+      .build();
+}</code></pre><h3 id="EventSourcingBehaviour---gluing-the-bits-together"><a class="section-marker" href="#EventSourcingBehaviour---gluing-the-bits-together">§</a>EventSourcingBehaviour - gluing the bits together</h3>
+<p>With all the model encoded, the next step is to prepare <code>ShoppingCartEntity</code> so we can let it run as an Actor.</p>
+<p>The <code>EventSourcedBehaviorWithEnforcedReplies</code> has a constructor receiving a <code>PersistenceId</code> that we need to call from <code>ShoppingCartEntity</code> own constructor. In order to build a <code>PersistenceId</code> instance we will need an <code>EntityContext&lt;Command&gt;</code> instance. We will add it as a constructor argument to <code>ShoppingCartEntity</code>.</p>
+<p>The <code>persistenceId</code> defines the id that will be used in the event journal. The id is composed of a name (for example, <code>entityContext.entityTypeKey.name</code>) and a business id (for example, <code>entityContext.entityId</code>). These two values will be concatenated using a <code>&quot;|&quot;</code> by default (for example, <code>&quot;ShoppingCart|123456&quot;</code>). See <a href="https://doc.akka.io/docs/akka/2.6/typed/persistence.html?language=Java#persistenceid">Akka&rsquo;s documentation</a> for more details.</p>
+<pre class="prettyprint"><code class="language-java">private ShoppingCartEntity(EntityContext&lt;Command&gt; entityContext) {
+  super(
+      // PersistenceId needs a typeHint (or namespace) and entityId,
+      // we take then from the EntityContext
+      PersistenceId.of(
+          entityContext.getEntityTypeKey().name(), // &lt;- type hint
+          entityContext.getEntityId() // &lt;- business id
+          ));
+  // we keep a copy of cartId because it&#39;s used in the events
+  this.cartId = entityContext.getEntityId();
+  // tagger is constructed from adapter and needs EntityContext
+  this.tagger = AkkaTaggerAdapter.fromLagom(entityContext, Event.TAG);
+}
+
+static ShoppingCartEntity create(EntityContext&lt;Command&gt; entityContext) {
+  return new ShoppingCartEntity(entityContext);
+}</code></pre>
+<blockquote>
+  <p><strong>Note</strong>: the constructor is <code>private</code> and there is a static method <code>create()</code> to create instances, as recommended by the <a href="https://doc.akka.io/docs/akka/2.6/typed/persistence-style.html?language=Java">Akka style guide</a>. This and the need for <code>EntityContext</code> will be explained when covering <code>ClusterSharding</code> later in this guide.</p>
+</blockquote>
+<p>Morever, we also initialize a field called <code>tagger</code> using an <code>AkkaTaggerAdapter</code>. We will cover it soon in the <a href="UsingAkkaPersistenceTyped.html#Tagging-the-events--Akka-Persistence-Query-considerations">tagging events</a> section.</p>
+<p>Next we need to implement the <code>emptyState()</code> method. The <code>emptyState</code> is the state used when the journal is empty. It&rsquo;s the initial state:</p>
+<pre class="prettyprint"><code class="language-java">@Override
+public ShoppingCart emptyState() {
+  return ShoppingCart.EMPTY;
+}</code></pre><h3 id="Changing-behavior--Finite-State-Machines"><a class="section-marker" href="#Changing-behavior--Finite-State-Machines">§</a>Changing behavior &ndash; Finite State Machines</h3>
+<p>If you are familiar with general Akka Actors, you are probably aware that after processing a message, you should return the next behavior to be used. With Akka Persistence Typed this happens differently. Command handlers and event handlers are all dependent on the current state, therefore you can change behavior by returning a new state in the event handler. Consult the <a href="https://doc.akka.io/docs/akka/2.6/typed/persistence.html?language=Java#changing-behavior">Akka documentation</a> for more insight on this topic.</p><h3 id="Tagging-the-events--Akka-Persistence-Query-considerations"><a class="section-marker" href="#Tagging-the-events--Akka-Persistence-Query-considerations">§</a>Tagging the events &ndash; Akka Persistence Query considerations</h3>
+<p>Events are persisted in the event journal and are primarily used to replay the state of the event-sourced entity each time it needs to be instantiated. However, in CQRS, we also want to consume those same events and generate read-side views or publish them in a message broker (eg: Kafka) for external consumption.</p>
+<p>To be able to consume the events on the read-side, the events must be tagged. This is done using the <code>AggregateEventTag</code> utility. It&rsquo;s recommended to shard the tags so they can be consumed in a distributed fashion by Lagom&rsquo;s <a href="ReadSide.html">Read-Side Processor</a> and <a href="MessageBrokerApi.html#Implementing-a-topic">Topic Producers</a>. Although not recommended, it&rsquo;s also possible to not shard the events as explained <a href="ReadSide.html#Event-tags">here</a>.</p>
+<p>This example splits the tags into 10 shards and defines the event tagger in the <code>ShoppingCartEntity.Event</code> interface. Note that the tag name must be stable, as well as the number of shards. These two values can&rsquo;t be changed later without migrating the journal.</p>
+<pre class="prettyprint"><code class="language-java">/** The tag for shopping cart events used for consuming the journal event stream. */
+AggregateEventShards&lt;Event&gt; TAG = AggregateEventTag.sharded(Event.class, 10);</code></pre>
+<blockquote>
+  <p><strong>Note</strong>: if you&rsquo;re using a JDBC database to store your journal, the number of sharded tags (<code>NumShards</code>) should not be greater then 10. This is due to an existing <a href="https://github.com/dnvriend/akka-persistence-jdbc/issues/168">bug</a> in the plugin. Failing to follow this directive will result in some events being delivered more than once on the read-side or topic producers.</p>
+</blockquote>
+<p>The <code>AggregateEventTag</code> is a Lagom class used by Lagom&rsquo;s <a href="ReadSide.html">Read-Side Processor</a> and <a href="MessageBrokerApi.html#Implementing-a-topic">Topic Producers</a>, however Akka Persistence Typed provides a method accepting an <code>Event</code> and returning a <code>Set&lt;String&gt;</code> to tag events before persisting them. Therefore, we need to use an adapter to transform Lagom&rsquo;s <code>AggregateEventTag</code> to the required Akka tagger function. As shown in the constructor section, we instantiate a <code>tagger</code> field using <code>AkkaTaggerAdapter</code>. This field can then be used when implementing the tagging method.</p>
+<pre class="prettyprint"><code class="language-java">private final Function&lt;Event, Set&lt;String&gt;&gt; tagger;
+
+@Override
+public Set&lt;String&gt; tagsFor(Event event) {
+  return tagger.apply(event);
+}</code></pre><h3 id="Configuring-snapshots"><a class="section-marker" href="#Configuring-snapshots">§</a>Configuring snapshots</h3>
+<p>Snapshotting is a common optimization to avoid replaying all the events since the beginning.</p>
+<p>You can define snapshot rules in two ways: by predicate and by counter. Both can be combined. The example below uses a counter to illustrate the APIs. You can find more details on the <a href="https://doc.akka.io/docs/akka/2.6/typed/persistence-snapshot.html?language=Java">Akka documentation</a>.</p>
+<pre class="prettyprint"><code class="language-java">@Override
+public RetentionCriteria retentionCriteria() {
+  return RetentionCriteria.snapshotEvery(100, 2);
+}</code></pre><h2 id="Akka-Cluster-Sharding"><a class="section-marker" href="#Akka-Cluster-Sharding">§</a>Akka Cluster Sharding</h2>
+<p>Lagom uses <a href="https://doc.akka.io/docs/akka/2.6/typed/cluster-sharding.html?language=Java">Akka Cluster Sharding</a> to distribute the event-sourced entites across all the nodes and guarantee that, at any single time, there is only one instance of a given Entity loaded in memory over the whole cluster.</p><h3 id="Creating-the-Entity-instance"><a class="section-marker" href="#Creating-the-Entity-instance">§</a>Creating the Entity instance</h3>
+<p>The event-sourced behavior needs to be initialized on the <code>ClusterSharding</code> before it&rsquo;s used. That process won&rsquo;t create any specific Entity instance, and it will only create the Shard Regions and prepare it to be used (read more about Shard Regions in the <a href="https://doc.akka.io/docs/akka/2.6/typed/cluster-sharding.html?language=Java">Akka Cluster Sharding</a> docs).</p>
+<p>You must define an <code>EntityTypeKey</code> and a function of <code>EntityContext&lt;Command&gt; -&gt; Behavior&lt;Command&gt;</code> to initialize the the Shopping Cart Entity.</p>
+<p>The <code>EntityTypeKey</code> has as name to uniquely identify this model in the cluster. It should be typed on <code>ShoppingCartCommand</code> which is the type of the messages that the Shopping Cart can receive. The easiest is to define if as a static field in <code>ShoppingCartEntity</code>.</p>
+<pre class="prettyprint"><code class="language-java">static EntityTypeKey&lt;Command&gt; ENTITY_TYPE_KEY =
+    EntityTypeKey.create(Command.class, &quot;ShoppingCart&quot;);</code></pre>
+<p>Finally, initialize the Entity on the <code>ClusterSharding</code> using the <code>typeKey</code> and the <code>create()</code> static method. Lagom provides an instance of the <code>clusterSharding</code> extension through dependency injection for your convenience. Initializing an Entity should be done only once and, in the case of Lagom, it is typically done in the constructor of the service implementation. You should inject the <code>ClusterSharding</code> on your service for that matter.</p>
+<pre class="prettyprint"><code class="language-java">@Inject
+public ShoppingCartServiceImpl(ClusterSharding clusterSharing) {
+  this.clusterSharing = clusterSharing;
+
+  // register entity on shard
+  this.clusterSharing.init(
+      Entity.of(
+          ShoppingCartEntity.ENTITY_TYPE_KEY, // &lt;- type key
+          ShoppingCartEntity::create // &lt;- create function
+          ));
+}</code></pre><h3 id="Getting-instances-of-the-Entity"><a class="section-marker" href="#Getting-instances-of-the-Entity">§</a>Getting instances of the Entity</h3>
+<p>To access instances of the Entity (which may be running locally or remotely on the cluster), you should use the injected the <code>ClusterSharding</code>. You can instantiate an <code>EntityRef</code> using the method <code>entityRefFor</code>. In our case, the <code>EntityRef</code> is typed to only accept <code>ShoppingCart.Command</code>s.</p>
+<pre class="prettyprint"><code class="language-java">private EntityRef&lt;ShoppingCartEntity.Command&gt; entityRef(String id) {
+  return clusterSharing.entityRefFor(ShoppingCartEntity.ENTITY_TYPE_KEY, id);
+}</code></pre>
+<p>To locate the correct actor across the cluster, you need to specify the <code>EntityTypeKey</code> we used to initialize the entity and the <code>id</code> for the instance we need. Akka Cluster will create the required actor in one node on the cluster or reuse the existing instance if the actor has already been created and is still alive.</p>
+<p>The <code>EntityRef</code> is similar to an <code>ActorRef</code> but denotes the actor is sharded. Interacting with an <code>EntityRef</code> implies the messages exchanged with the actor may need to travel over the wire to another node.</p><h4 id="Considerations-on-using-the-ask-pattern"><a class="section-marker" href="#Considerations-on-using-the-ask-pattern">§</a>Considerations on using the ask pattern</h4>
+<p>Since we want to send commands to the Entity and these commands declare a reply we will need to use the <a href="https://doc.akka.io/docs/akka/2.6/typed/interaction-patterns.html?language=Java#request-response">ask pattern</a>.</p>
+<p>The code we introduced below creates an <code>EntityRef</code> from inside the <code>ShoppingCartServiceImpl</code> meaning we are calling the actor (the <code>EntityRef</code>) from outside the <code>ActorSystem</code>. <code>EntityRef</code> provides an <code>ask()</code> overload out of the box meant to be used from outside actors.</p>
+<pre class="prettyprint"><code class="language-java">private final Duration askTimeout = Duration.ofSeconds(5);
+
+@Override
+public ServiceCall&lt;NotUsed, ShoppingCartView&gt; get(String id) {
+  return request -&gt;
+      entityRef(id)
+          .&lt;ShoppingCartEntity.Summary&gt;ask(
+              replyTo -&gt; new ShoppingCartEntity.Get(replyTo), askTimeout)
+          .thenApply(summary -&gt; asShoppingCartView(id, summary));
+}</code></pre>
+<p>So we declare an <code>askTimeout</code> and then invoke <code>ask</code>. The <code>ask</code> method accepts a function of <code>ActorRef&lt;Res&gt; -&gt; M</code> in which <code>Res</code> is the expected response type and <code>M</code> is the message being sent to the actor. The <code>ask</code> method will create an instance of <code>ActorRef&lt;Res&gt;</code> that can be used to build the outgoing message (command). Once the response is sent to <code>ActorRef&lt;Res&gt;</code>, Akka will complete the returned <code>CompletionStage&lt;Res&gt;</code> with the response (in this case <code>CompletionStage&lt;ShoppingCartSummary&gt;</code>).</p>
+<p>Finally, we operate over the <code>summary</code> (in this case, we map it to a different type, ie: <code>ShoppingCartView</code>, using the <code>thenApply</code> method).</p>
+<p>The <code>ShoppingCartView</code> and <code>asShoppingCartView</code> are defined as:</p>
+<pre class="prettyprint"><code class="language-java">@Value
+@JsonDeserialize
+public final class ShoppingCartView {
+  /** The ID of the shopping cart. */
+  public final String id;
+
+  /** The list of items in the cart. */
+  public final List&lt;ShoppingCartItem&gt; items;
+
+  /** Whether this cart has been checked out. */
+  public final boolean checkedOut;
+
+  /** When this cart was checked out. */
+  public final Optional&lt;Instant&gt; checkedOutTime;
+
+  @JsonCreator
+  public ShoppingCartView(
+      String id, List&lt;ShoppingCartItem&gt; items, Optional&lt;Instant&gt; checkedOutTime) {
+    this.id = Preconditions.checkNotNull(id, &quot;id&quot;);
+    this.items = Preconditions.checkNotNull(items, &quot;items&quot;);
+    this.checkedOutTime = checkedOutTime;
+    this.checkedOut = checkedOutTime.isPresent();
+  }
+
+  public boolean hasItem(String itemId) {
+    return items.stream().anyMatch(item -&gt; item.getItemId().equals(itemId));
+  }
+
+  public Optional&lt;ShoppingCartItem&gt; get(String itemId) {
+    return items.stream().filter(item -&gt; item.getItemId().equals(itemId)).findFirst();
+  }
+}</code></pre>
+<pre class="prettyprint"><code class="language-java">private ShoppingCartView asShoppingCartView(String id, ShoppingCartEntity.Summary summary) {
+  List&lt;ShoppingCartItem&gt; items = new ArrayList&lt;&gt;();
+  for (Map.Entry&lt;String, Integer&gt; item : summary.getItems().entrySet()) {
+    items.add(new ShoppingCartItem(item.getKey(), item.getValue()));
+  }
+  return new ShoppingCartView(id, items, summary.getCheckoutDate());
+}</code></pre>
+<blockquote>
+  <p><strong>Note</strong>: We are keeping the internal state of the Entity isolated from the exposed service API so they can evolve independently.</p>
+</blockquote><h3 id="Configuring-number-of-shards"><a class="section-marker" href="#Configuring-number-of-shards">§</a>Configuring number of shards</h3>
+<p>Akka recommends, as a rule of thumb, that the number of shards should be a factor ten higher than the planned maximum number of cluster nodes. It doesn&rsquo;t have to be exact. Fewer shards than the number of nodes will result in that some nodes will not host any shards. Too many shards will result in less efficient management of the shards, e.g. rebalancing overhead, and increased latency because the coordinator is involved in the routing of the first message for each shard.</p>
+<p>See the <a href="https://doc.akka.io/docs/akka/2.6/typed/cluster-sharding.html?language=Java#shard-allocation">Akka Cluster Sharding documentation</a> for details on how to configure the number of shards.</p><h3 id="Configuring-Entity-passivation"><a class="section-marker" href="#Configuring-Entity-passivation">§</a>Configuring Entity passivation</h3>
+<p>Keeping all the Entities in memory all the time is inefficient. Entity passivation allows removal from the cluster when they&rsquo;ve been unused for some time.</p>
+<p>Akka supports both <a href="https://doc.akka.io/docs/akka/2.6/typed/cluster-sharding.html?language=Java#passivation">programmatic passivation</a> and <a href="https://doc.akka.io/docs/akka/2.6/typed/cluster-sharding.html?language=Java#automatic-passivation">automatic passivation</a>. The default values for automatic passivation are generally good enough.</p><h2 id="Data-Serialization"><a class="section-marker" href="#Data-Serialization">§</a>Data Serialization</h2>
+<p>The messages (commands, replies) and the durable classes (events, state snapshots) need to be serializable to be sent over the wire across the cluster or be stored on the database. Akka recommends <a href="https://doc.akka.io/docs/akka/2.6/serialization-jackson.html?language=Java">Jackson-based serializers</a> &ndash;preferably JSON, but CBOR is also supported&ndash; as a good default in most cases.</p>
+<p>Read more about the serialization setup and configuration in the <a href="Serialization.html">serialization</a> section.</p><h2 id="Testing"><a class="section-marker" href="#Testing">§</a>Testing</h2>
+<p>The section in <a href="https://doc.akka.io/docs/akka/2.6/typed/persistence-testing.html?language=Java">Testing</a> covers all the steps and features you need to write unit tests for your Aggregates.</p>
+                </article>
+
+                
+                    
+                        <nav class="next-links">
+                            <strong>Next:</strong>
+                            <ul>
+                            
+                                <li><a href="MigratingToAkkaPersistenceTyped.html"> Migrating to Akka Persistence Typed</a>
+                                </li>
+                            
+                                <li><a href="ChoosingADatabase.html">Choosing a Database</a>
+                                </li>
+                            
+                                <li><a href="ReadSide.html">Persistent Read-Side</a>
+                                </li>
+                            
+                            </ul>
+                        </nav>
+                    
+                
+
+                
+                    <p class="edit-source">Found an error in this documentation? The source code for this page can be found
+                        <a href="https://github.com/lagom/lagom/edit/master/docs/manual/java/guide/cluster/UsingAkkaPersistenceTyped.md">here</a>. Please feel free to edit and contribute a pull request. </p>
+                
+            </div>
+            <aside class="small-12 large-4 columns">
+                <nav class="side-menu">
+
+                    <input type="search" id="cross-docs-search" placeholder="Search..." />
+
+                    <label for="docs-version">Version:</label>
+                    <select id="docs-version">
+                    
+                        <option value="/documentation/1.0.x/java/Home.html" >1.0.x</option>
+                    
+                        <option value="/documentation/1.1.x/java/Home.html" >1.1.x</option>
+                    
+                        <option value="/documentation/1.2.x/java/Home.html" >1.2.x</option>
+                    
+                        <option value="/documentation/1.3.x/java/Home.html" >1.3.x</option>
+                    
+                        <option value="/documentation/1.4.x/java/Home.html" >1.4.x</option>
+                    
+                        <option value="/documentation/1.5.x/java/Home.html" >1.5.x</option>
+                    
+                        <option value="/documentation/1.6.x/java/UsingAkkaPersistenceTyped.html" >1.6.x</option>
+                    
+                        <option value="/documentation/current/java/UsingAkkaPersistenceTyped.html" >current</option>
+                    
+                        <option value="/documentation/latest/java/UsingAkkaPersistenceTyped.html" 
+                            selected="selected">latest</option>
+                    
+                    </select>
+
+                    <a href="/documentation/latest/java/api/index.html" class="api-docs">
+                        API Documentation</a>
+
+                    
+                        <h3>Writing persistent and clustered services</h3>
+                        <ul>
+                        
+                            
+                                <li class="current-page"><a href="UsingAkkaPersistenceTyped.html">Domain Modelling with Akka Persistence Typed</a></li>
+                            
+                        
+                            
+                                <li><a href="MigratingToAkkaPersistenceTyped.html"> Migrating to Akka Persistence Typed</a></li>
+                            
+                        
+                            
+                                <li><a href="PersistentEntity.html">Persistent Entity (classic)</a></li>
+                            
+                        
+                            
+                                <li><a href="ChoosingADatabase.html">Choosing a Database</a></li>
+                            
+                        
+                            
+                                <li><a href="PersistentEntityCassandra.html">Cassandra Setup</a></li>
+                            
+                        
+                            
+                                <li><a href="PersistentEntityRDBMS.html">Relational Database Setup</a></li>
+                            
+                        
+                            
+                                <li><a href="ReadSide.html">Persistent Read-Side</a></li>
+                            
+                        
+                            
+                                <li><a href="ReadSideCassandra.html">Cassandra Read-Side Support</a></li>
+                            
+                        
+                            
+                                <li><a href="ReadSideRDBMS.html">Relational Database Read-Side Support</a></li>
+                            
+                        
+                            
+                                <li><a href="ReadSideJDBC.html">JDBC Read-Side Support</a></li>
+                            
+                        
+                            
+                                <li><a href="ReadSideJPA.html">JPA Read-Side Support</a></li>
+                            
+                        
+                            
+                                <li><a href="PubSub.html">Publish-Subscribe</a></li>
+                            
+                        
+                            
+                                <li><a href="Cluster.html">Cluster</a></li>
+                            
+                        
+                            
+                                <li><a href="Serialization.html">Serialization</a></li>
+                            
+                        
+                            
+                                <li><a href="Projections.html">Projections</a></li>
+                            
+                        
+                        </ul>
+                    
+                        <h3>Lagom reference guide</h3>
+                        <ul>
+                        
+                            
+                                <li><a href="ReferenceGuide.html">Reference Guide</a></li>
+                            
+                        
+                            
+                                <li><a href="LagomBuild.html">Configuring builds and the development environment</a></li>
+                            
+                        
+                            
+                                <li><a href="DevEnvironment.html">Running Lagom in development</a></li>
+                            
+                        
+                            
+                                <li><a href="ServiceDescriptors.html">Writing Lagom services</a></li>
+                            
+                        
+                            
+                                <li class="current-page"><a href="UsingAkkaPersistenceTyped.html">Writing persistent and clustered services</a></li>
+                            
+                        
+                            
+                                <li><a href="MessageBroker.html">Decouple services with a message broker</a></li>
+                            
+                        
+                            
+                                <li><a href="ProductionOverview.html">Running Lagom in production</a></li>
+                            
+                        
+                            
+                                <li><a href="Logging.html">Logging</a></li>
+                            
+                        
+                            
+                                <li><a href="Akka.html">Advanced topics</a></li>
+                            
+                        
+                        </ul>
+                    
+                        <h3>Java Home</h3>
+                        <ul>
+                        
+                            
+                                <li><a href="Home.html">Home</a></li>
+                            
+                        
+                            
+                                <li><a href="WhatIsLagom.html">Welcome to Lagom</a></li>
+                            
+                        
+                            
+                                <li><a href="IntroGetStarted.html">Getting started with Lagom</a></li>
+                            
+                        
+                            
+                                <li><a href="CoreConcepts.html">Lagom core concepts</a></li>
+                            
+                        
+                            
+                                <li class="current-page"><a href="ReferenceGuide.html">Lagom reference guide</a></li>
+                            
+                        
+                            
+                                <li><a href="Highlights16.html">Lagom releases</a></li>
+                            
+                        
+                        </ul>
+                    
+                </nav>
+            </aside>
+        </div>
+    </div>
+
+
+                    <footer>
+                        <section class="fw-wrapper lb-grey-dkr support">
+                            <div class="row">
+                                <div class="small-12 medium-6 columns">
+                                    <svg class="svg-icon svg-icon-chat" version="1.1" id="Chat" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
+<path fill="#ffffff" d="M5.8,12.2V6H2C0.9,6,0,6.9,0,8v6c0,1.1,0.9,2,2,2h1v3l3-3h5c1.1,0,2-0.9,2-2v-1.82c-0.064,0.014-0.132,0.021-0.2,0.021h-7
+	V12.2z M18,1H9C7.9,1,7,1.9,7,3v8h7l3,3v-3h1c1.1,0,2-0.899,2-2V3C20,1.9,19.1,1,18,1z"/>
+</svg>
+
+                                    <h3>Community support</h3>
+                                    <ul>
+                                        <li><a href="https://discuss.lagomframework.com">Discuss Lagom</a></li>
+                                        <li><a href="https://stackoverflow.com/questions/tagged/lagom">Stack Overflow</a></li>
+                                    </ul>
+                                </div>
+                                
+                            </div>
+                        </section>
+
+                        <section class="fw-wrapper lb-grey links">
+                            <div class="row">
+                                <div class="small-12 medium-6 large-3 columns">
+                                    <h3>Lagom</h3>
+                                    <ul class="no-bullet">
+                                        <li><a href="/blog">Blog</a></li>
+                                        <li><a href="/documentation/">Documentation</a></li>
+                                        <li><a href="/faq.html">FAQ</a></li>
+                                        <li><a href="/support.html">Support</a></li>
+                                    </ul>
+                                </div>
+                                <div class="small-12 medium-6 large-3 columns">
+                                    <h3>Community links</h3>
+                                    <ul>
+                                        <li><a href="https://www.eventbrite.com/directory/?q=lagom&amp;loc=Worldwide">Events <em>via Eventbrite</em></a></li>
+                                        <li><a href="http://www.indeed.com/jobs?q=%22lagom%22&amp;l=">Jobs <em>via Indeed</em></a></li>
+                                    </ul>
+                                </div>
+                                <div class="small-12 medium-6 large-3 columns">
+                                    <h3>Code &amp; contribution</h3>
+                                    <ul>
+                                        <li><a href="https://github.com/lagom/lagom/issues">Bug tracker <em>GitHub</em></a></li>
+                                        <li><a href="/get-involved.html">Get involved</a></li>
+                                    </ul>
+                                </div>
+                                <div class="small-12 medium-6 large-3 columns">
+                                    <h3>Social networks</h3>
+                                    <ul>
+                                        <li><a href="https://twitter.com/lagom"><span>Twitter</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="fw-wrapper lgm-purple-dkr credits">
+                            <div class="row">
+                                <div class="small-12 medium-3 columns">
+                                    <a href="/" class="logo"><img src="/images/logos/lagom-reverse.svg"></a>
+                                </div>
+                                <div class="small-12 medium-3 columns">
+                                    <a href="https://www.lightbend.com" class="partner"><img src="/images/logos/lightbend-reverse.svg"></a>
+                                </div>
+                                <div class="small-12 medium-6 columns">
+                                    <p>Lagom is released under the Apache 2 License</p>
+                                </div>
+                            </div>
+                            <div class="row lb-legal">
+                                <div class="small-12 columns">
+                                    <p>
+                                        &copy; Lightbend 2018 - 2025 | 
+                                        <a href="https://www.lightbend.com/legal/licenses" target="_blank">Licenses</a> | 
+                                        <a href="https://www.lightbend.com/legal/terms" target="_blank">Terms</a> | 
+                                        <a href="https://www.lightbend.com/legal/privacy" target="_blank">Privacy Policy</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </section>
+
+                    </footer>
+
+                </div>
+            </div>
+        </div>
+    </body>
+    <script src="/4f4ff39f69a5c5f34c7957a8dead27652480e264-all-scripts-concat.js"></script>
+     
+    <script type="text/javascript" src="//cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/autocomplete.js/0/autocomplete.min.js"></script>
+        <!-- Cross-site search. This is using Algolia's autocomplete.js  -->
+    <script>
+            var clientLagom = algoliasearch('VL9SRZN02O', 'f917bb0ebcb845db99a96bd01e281393');
+            var lagomIndex = clientLagom.initIndex('lagomframework');
+
+            var displayValue = function (suggestion, level) {
+                if (level === 0)
+                    return suggestion._highlightResult.hierarchy.lvl0.value;
+                if (suggestion._highlightResult.hierarchy['lvl' + level] !== undefined) {
+                    return suggestion._highlightResult.hierarchy['lvl' + level].value ;
+                } else {
+                    return displayValue(suggestion, level - 1) ;
+                }
+            };
+            var displaySnippet = function (suggestion) {
+                if (typeof suggestion._snippetResult !== 'undefined') {
+                    return '<div class="algolia-docsearch-suggestion--text">' + suggestion._snippetResult.content.value + '</div>'
+                } else {
+                    return ''
+                }
+            }
+
+            var wrap = function (content, wrapper) {
+                if (typeof wrapper !== 'undefined') {
+                    return '<span class=' + wrapper + '>' + content + '</span>';
+                } else {
+                    return content;
+                }
+            }
+
+            var buildIndexSettings = function (_indexObj, _hitsPerPage, _faceFilters, title, useFooter, wrapper) {
+                var _header = wrap('<span class="algolia-docsearch-suggestion algolia-docsearch-suggestion__main algolia-docsearch-suggestion__secondary algolia-docsearch-suggestion--category-header ">' + title + '</span>', wrapper);
+                var _templates = {
+                    header: _header,
+                    suggestion: function (suggestion) {
+                        var suggestionHtml = '<div class="algolia-docsearch-suggestion algolia-docsearch-suggestion__secondary" style="white-space: normal;">' +
+                                '<div class="algolia-docsearch-suggestion--wrapper">' +
+                                '<div class="algolia-docsearch-suggestion--subcategory-column ">' +
+                                '<span class="algolia-docsearch-suggestion--subcategory-column-text">' + displayValue(suggestion, 0) + '</span>' +
+                                '</div>' +
+                                '<div class="algolia-docsearch-suggestion--content">' +
+                                '<div class="algolia-docsearch-suggestion--subcategory-inline ">' + displayValue(suggestion, 1) + '</div>' +
+                                '<div class="algolia-docsearch-suggestion--title algolia-docsearch-suggestion--duplicate-content">' + displayValue(suggestion, 2) + '</div>' +
+                                displaySnippet(suggestion) +
+                                '</div>' +
+                                '</div>' +
+                                '</div>';
+                        return wrap(suggestionHtml, wrapper)
+                    }
+                };
+                if (useFooter) {
+                    _templates['footer'] = '<div class="algolia-docsearch-footer"><a class="algolia-docsearch-footer--logo" href="https://www.algolia.com/docsearch">Algolia</a></div>';
+                }
+
+                return {
+                    source: autocomplete.sources.hits(
+                            _indexObj,
+                            {hitsPerPage: _hitsPerPage, facetFilters: _faceFilters}
+                    )
+                    ,
+                    templates: _templates
+                };
+
+            };
+
+            var lagomFacetFilters = ['version:latest'];
+
+            var useScalaFacetFilter = window.location.href.split('/').includes("scala");
+            if (useScalaFacetFilter) {
+                lagomFacetFilters.push('language:scala');
+            } else {
+                lagomFacetFilters.push('language:java');
+            }
+
+
+            autocomplete('#cross-docs-search',
+                    {hint: false},
+                    [
+                        buildIndexSettings(lagomIndex, 10, lagomFacetFilters, "Lagom Documentation", false)
+                    ]
+            ).on('autocomplete:selected', function (event, suggestion, dataset) {
+                location.href = suggestion.url;
+            });
+    </script>
+
+
+    
+
+</html>
+

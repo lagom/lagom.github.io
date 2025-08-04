@@ -1,0 +1,538 @@
+
+<!DOCTYPE html>
+<html class="noios">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Lagom - Dependency Injection</title>
+        <meta name="description" content="Lagom">
+        
+            <link rel="canonical" href="https://www.lagomframework.com/documentation/1.6.x/scala/DependencyInjection.html"/>
+        
+        <meta name="viewport" content="width=device-width,maximum-scale=1"/>
+        <link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700" rel="stylesheet" type="text/css"/>
+        <link rel="stylesheet" href="/4f4ff39f69a5c5f34c7957a8dead27652480e264-all-styles-concat.css" type="text/css">
+         
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css" />
+    
+
+    </head>
+    <body>
+        <div class="off-canvas-wrapper">
+            <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+                <div class="off-canvas position-left" id="offCanvasLeft" data-off-canvas >
+                    <nav>
+                        <button class="close-button" aria-label="Close menu" type="button" data-close>
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <a href="/get-started.html">Try Lagom</a>
+                        
+<h3>Documentation</h3>
+<ul>
+    <li><a href="/documentation">By release</a></li>
+    <li><a href="/faq.html">FAQ</a></li>
+    <li><a href="/blog">Team Blog</a></li>
+</ul>
+<h3>Find Help</h3>
+<ul>
+    <li><a href="https://gitter.im/lagom/lagom">Gitter channel</a></li>
+    <li><a href="https://stackoverflow.com/questions/tagged/lagom">Stack overflow</a></li>
+    <li><a href="/support.html">Support</a></li>
+</ul>
+<h3>Contribute</h3>
+<ul>
+    <li><a href="/get-involved.html">Get involved</a></li>
+    <li><a href="https://www.lightbend.com/conduct">Code of conduct</a></li>
+    <li><a href="/community-process.html">Community process</a></li>
+    <li><a href="/contributing.html">Contributor guidelines</a></li>
+</ul>
+<!-- <h3>Programs</h3> Commented out Oct 2017 because the team is not participating in this round of the program.
+<ul>
+    <li><a href="/outreachy/round14.html">Outreachy</a></li>
+</ul> -->
+
+                    </nav>
+                </div>
+                <div class="off-canvas-content" data-off-canvas-content>
+
+                    
+<div id="lightbend-banner" class="lightbend-banner lagom full-width" data-category="OSS Lightbend Banner Impression" data-label="Lagom Banner Impression">
+	<div class="wrapper">
+		<div class="brand">
+			<a class="oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Lightbend Logo - Lagom Banner" href="https://www.lightbend.com?r=oss-banner-lagom" target="_blank">
+				<img class="lightbend-logo" src="/images/banner-logos/lightbend-reverse.svg" alt="Lightbend" title="Lightbend">
+			</a>
+		</div>
+		<div class="nav">
+			
+		</div>
+	</div>
+</div>
+
+                    <header class="navbar">
+                        <div class="row">
+                            <div class="small-12 columns">
+                                <button class="menu-icon hide-for-medium" type="button" data-open="offCanvasLeft" data-toggle="offCanvas"></button>
+                                <a class="logo" href="/"><svg id="Lagom_Full_Color" class="svg-logo svg-logo-lagom-full-color" data-name="Lagom Full Color" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 752 192"><title>logom</title><g id="Lagom"><path d="M291.58,31.79h19.83v87.91c0,8.1,2.64,11.57,9.91,11.57a21.11,21.11,0,0,0,5.95-.66V148.3a35.63,35.63,0,0,1-9.42,1c-17.52,0-26.28-8.92-26.28-26.94V31.79Z" fill="#652b7c"/><path d="M398.34,75.75V63.69h19.83v58.17c0,7.11,1.65,9.75,6.11,9.75a41.28,41.28,0,0,0,4.13-.33v16a28.65,28.65,0,0,1-9.75,1.32c-4.79,0-8.59-.83-11.57-2.64a15.33,15.33,0,0,1-6.78-10.08C394.53,144.66,385,149,371.73,149A39.58,39.58,0,0,1,342,136.4c-7.93-8.43-11.9-18.67-11.9-31.07s4-22.64,11.9-30.9a39.58,39.58,0,0,1,29.75-12.56C385.12,61.87,395.2,67.82,398.34,75.75Zm-5.95,47.76a24.29,24.29,0,0,0,7.44-18.18,24.29,24.29,0,0,0-7.44-18.18,24.68,24.68,0,0,0-18-7.27,23.93,23.93,0,0,0-17.68,7.27c-4.63,4.79-6.94,10.91-6.94,18.18s2.31,13.39,6.94,18.18a23.93,23.93,0,0,0,17.68,7.27A24.68,24.68,0,0,0,392.39,123.51Z" fill="#652b7c"/><path d="M495.67,63.69H515.5v69.41c0,20-2.81,32.23-14,41-7.93,6.11-17.68,9.25-29.42,9.25-15.53,0-28.92-4-40.32-12.06l9.59-14.71a50.47,50.47,0,0,0,28.59,9.09q11.65,0,18.34-5c5.29-3.8,7.93-10.91,7.93-21.15v-4.13c-4,7.11-13.88,12.23-27.1,12.23a40.53,40.53,0,0,1-29.75-12.23c-7.93-8.1-11.9-18.34-11.9-30.41s4-22.31,12.06-30.57a39.23,39.23,0,0,1,29.58-12.56c13.72,0,23.8,5.78,26.61,13.88V63.69ZM489.72,123a24.19,24.19,0,0,0,7.44-18,23.82,23.82,0,0,0-7.44-17.85,24.68,24.68,0,0,0-18-7.27A23.93,23.93,0,0,0,454,87.15,24.69,24.69,0,0,0,447.09,105,25.08,25.08,0,0,0,454,123a23.79,23.79,0,0,0,17.68,7.11C478.81,130.12,484.93,127.81,489.72,123Z" fill="#652b7c"/><path d="M522.44,105.33a42.05,42.05,0,0,1,13.22-31.4c8.76-8.43,19.5-12.72,32.22-12.72s23.47,4.3,32.23,12.72a42.05,42.05,0,0,1,13.22,31.4,42.05,42.05,0,0,1-13.22,31.4c-8.76,8.43-19.5,12.72-32.23,12.72s-23.47-4.3-32.22-12.72A42.05,42.05,0,0,1,522.44,105.33ZM586.23,124a25.67,25.67,0,0,0,7.44-18.67,25,25,0,0,0-7.44-18.51,26.13,26.13,0,0,0-36.85,0,25.56,25.56,0,0,0-7.27,18.51A26.22,26.22,0,0,0,549.38,124,26.54,26.54,0,0,0,586.23,124Z" fill="#652b7c"/><path d="M620.6,147V63.69h19.67v11.9C643.74,67.49,652,62,662.58,62,674,62,681.91,66.83,686,76.58,690.84,66.83,699.76,62,712.81,62c18,0,28.42,12.72,28.42,33.38v26.28c0,6.44,1.16,8.76,5.62,8.76a14.56,14.56,0,0,0,2.81-.33v16.69a28.37,28.37,0,0,1-8.59,1c-13.05,0-19.5-7.27-19.5-21.81V98.23c0-11.4-5.29-18.51-14.54-18.51s-16,8.1-16,19.33V147H671.34V98.23c0-11.4-5.45-18.51-14.87-18.51-9.25,0-16.2,8.1-16.2,19.33V147H620.6Z" fill="#652b7c"/></g><g id="Icon"><path d="M261,84l-70,34,70,34S260.78,84.27,261,84Z" fill="#652b7c"/><polygon points="121 152 191 118 121 84 121 152" fill="#652b7c"/><path d="M191,118l70,34c-0.27,0-41.76,25-60.63,36.24a17.64,17.64,0,0,1-18,0C163.47,177,121,152,121,152Z" fill="#421540"/><path d="M200.23,47.65C219.09,58.88,261,84,261,84l-70,34L121,84c0.27,0,42.31-25.12,61.18-36.36A17.64,17.64,0,0,1,200.23,47.65Z" fill="#bf97c6"/><path d="M145,20.58l-35,17,35,17S144.89,20.72,145,20.58Z" fill="#652b7c"/><polygon points="75 54.58 110 37.58 75 20.58 75 54.58" fill="#652b7c"/><path d="M110,37.58l35,17c-0.14,0-20.88,12.5-30.31,18.12a8.82,8.82,0,0,1-9,0C96.23,67.08,75,54.58,75,54.58Z" fill="#421540"/><path d="M114.61,2.4C124,8,145,20.58,145,20.58l-35,17-35-17C75.14,20.59,96.16,8,105.59,2.4A8.82,8.82,0,0,1,114.61,2.4Z" fill="#bf97c6"/><path d="M101,91L51,115.54l50,24.53S100.84,91.21,101,91Z" fill="#652b7c"/><polygon points="1 140.07 51 115.54 1 91.02 1 140.07" fill="#652b7c"/><path d="M51,115.54l50,24.53c-0.19,0-29.83,18-43.3,26.14a12.5,12.5,0,0,1-12.89,0C31.34,158.1,1,140.07,1,140.07Z" fill="#421540"/><path d="M57.59,64.79C71.06,72.9,101,91,101,91L51,115.54,1,91C1.19,91,31.22,72.9,44.7,64.79A12.5,12.5,0,0,1,57.59,64.79Z" fill="#bf97c6"/></g></svg></a>
+                                <nav class="sections show-for-medium">
+                                    
+<a href="/documentation/">Documentation</a>
+<a href="/faq.html">FAQ</a>
+<a href="/support.html">Support</a>
+<a href="/get-involved.html">Get Involved</a>
+<a href="/blog/">Blog</a>
+
+                                </nav>
+                            </div>
+                        </div>
+                    </header>
+                    <div class="fw-wrapper flush sticky-bar">
+                        <div class="row">
+                            <div class="small-12 columns">
+                                <div class="small-menu">
+                                    <button class="menu-icon" type="button" data-open="offCanvasLeft" data-toggle="offCanvas"></button>
+                                    <a class="logo" href="/"><span></span></a>
+                                    <nav class="sections-scroll">
+                                        
+<a href="/documentation/">Documentation</a>
+<a href="/faq.html">FAQ</a>
+<a href="/support.html">Support</a>
+<a href="/get-involved.html">Get Involved</a>
+<a href="/blog/">Blog</a>
+
+                                    </nav>
+                                    <nav class="social">
+                                        <a href="https://discuss.lagomframework.com"><span>Discuss Lagom</span></a>
+                                        <a href="https://twitter.com/lagom"><span>Twitter</span></a>
+                                        <a href="https://github.com/lagom/lagom"><span>GitHub</span></a>
+                                        <a href="https://stackoverflow.com/questions/tagged/lagom"><span>Stack Overflow</span></a>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                     
+    <header class="fw-wrapper lgm-purple page-title">
+        <div class="row">
+            <div class="small-12 columns">
+                <h1>Dependency Injection</h1>
+            </div>
+        </div>
+    </header>
+
+    <div class="fw-wrapper documentation-content">
+        <div class="row">
+            <div class="small-12 large-7 columns">
+                
+                    <nav class="breadcrumbs">
+                        <a href="Home.html">Scala Home</a>
+                        
+                                    &raquo;
+                            <a href="ReferenceGuide.html">Lagom reference guide</a>
+                        
+                                    &raquo;
+                            <a href="ServiceDescriptors.html">Writing Lagom services</a>
+                        
+                    </nav>
+                
+
+                <article>
+                <h1 id="Dependency-Injection-in-Lagom"><a class="section-marker" href="#Dependency-Injection-in-Lagom">§</a>Dependency Injection in Lagom</h1>
+<p>When building services in Lagom, your code will have dependencies on Lagom APIs and other services that need to be satisfied by concrete implementations at runtime. Often, the specific implementations will vary between development, test and production environments, so it&rsquo;s important not to couple your code tightly to a concrete implementation class. A class can declare constructor parameters with the abstract types of its dependencies &mdash; usually represented by traits in Scala &mdash; allowing the concrete implementations to be provided when the class is constructed. This pattern is called &ldquo;dependency injection&rdquo; and is fundamental to the way Lagom applications are assembled. Read &ldquo;Dependency Injection in Scala using MacWire&rdquo; for more background on this pattern and its benefits.</p>
+<p>Your service&rsquo;s dependencies will have their own dependencies on other APIs in turn. Taken all together, these form a dependency graph that must be constructed when your application starts up. This process is called &ldquo;wiring&rdquo; your application, and is performed by creating a subclass of LagomApplication that contains initialization code.</p>
+<p>It is common to have clusters of interdependent classes that together form a larger logical component. It can be useful to modularize wiring code in a way that reflects these groupings. You can do so in Scala by defining a &ldquo;component&rdquo; trait that includes a combination of lazy val declarations that instantiate concrete implementations of interfaces that the component provides. Some of their constructor parameters may be declared as abstract methods, indicating a dependency that must be provided by another component or your application itself. Your application can then extend multiple components to mix them together into a fully assembled dependency graph. If you don&rsquo;t fulfill all of the declared requirements for the components you include in your service, it will not compile.</p>
+<p>In &ldquo;<a href="https://di-in-scala.github.io/#modules">Dependency Injection in Scala: guide</a>&rdquo; this method of mixing components together to form an application is referred to as the &ldquo;thin cake pattern&rdquo;. The guide also introduces <a href="https://di-in-scala.github.io/#macwire">Macwire</a> which we&rsquo;ll use in the next steps.</p><h2 id="Wiring-together-a-Lagom-application"><a class="section-marker" href="#Wiring-together-a-Lagom-application">§</a>Wiring together a Lagom application</h2>
+<p>In section <a href="ServiceDescriptors.html">Service descriptors</a> and <a href="ServiceImplementation.html">Implementing services</a> we created a Service and its implementation, we now want to bind them and create a Lagom server with them. Lagom&rsquo;s Scala API is built on top of Play Framework, and uses Play&rsquo;s <a href="https://www.playframework.com/documentation/2.5.x/ScalaCompileTimeDependencyInjection">compile time dependency injection support</a> to wire together a Lagom application. Play&rsquo;s compile time dependency injection support is based on the thin cake pattern we just described.</p>
+<p>Once you are creating your Application you will use Components provided by Lagom and obtain your dependencies from them (e.g., an Akka Actor System or a <code>CassandraSession</code> for your read-side processor to access the database). Although it&rsquo;s not strictly necessary, we recommend that you use <a href="https://github.com/adamw/macwire">Macwire</a> to assist in wiring dependencies into your code. Macwire provides some very lightweight macros that locate dependencies for the components you wish to create so that you don&rsquo;t have to manually wire them together yourself. Macwire can be added to your service by adding the following to your service implementations dependencies:</p>
+<pre class="prettyprint"><code class="language-sbt">libraryDependencies += &quot;com.softwaremill.macwire&quot; %% &quot;macros&quot; % &quot;2.2.5&quot; % &quot;provided&quot;</code></pre>
+<p>The simplest way to build the Application cake and then wire your code inside it is by creating an abstract class that extends <a href="api/com/lightbend/lagom/scaladsl/server/LagomApplication.html"><code>LagomApplication</code></a>:</p>
+<pre class="prettyprint"><code class="language-scala">import com.lightbend.lagom.scaladsl.server._
+import play.api.libs.ws.ahc.AhcWSComponents
+import com.softwaremill.macwire._
+
+abstract class HelloApplication(context: LagomApplicationContext)
+  extends LagomApplication(context)
+    with AhcWSComponents {
+
+  override lazy val lagomServer = serverFor[HelloService](wire[HelloServiceImpl])
+}</code></pre>
+<p>In this sample, the <code>HelloApplication</code> gets <a href="ScalaComponents.html#Third-party-Components">AhcWSComponents</a> mixed in using the cake pattern and implements the <code>lazy val lagomService</code> using Macwire. The important method here is the <code>lagomServer</code> method. Lagom will use this to discover your service bindings and create a Play router for handling your service calls. You can see that we&rsquo;ve bound one service descriptor, the <code>HelloService</code>, to our <code>HelloServiceImpl</code> implementation. The name of the Service Descriptor you bind will be used as the Service name, that is used in cross-service communication to identify the client making a request.</p>
+<p>We&rsquo;ve used Macwire&rsquo;s <code>wire</code> macro to wire the dependencies into <code>HelloServiceImpl</code> - at the moment our service actually has no dependencies so we could just construct it manually ourselves, but it&rsquo;s not likely that a real service implementation would have no dependencies.</p>
+<p>The <code>HelloApplication</code> is an abstract class, the reason for this is that there is still one method that hasn&rsquo;t been implemented, the <code>serviceLocator</code> method. The <code>HelloApplication</code> extends <a href="api/com/lightbend/lagom/scaladsl/server/LagomApplication.html"><code>LagomApplication</code></a> which needs a <code>serviceLocator: ServiceLocator</code>, a <code>lagomServer: LagomServer</code> and a <code>wcClient: WSClient</code>. We provide the <code>wcClient: WSClient</code> mixing in <code>AhcWSComponents</code> and we provide <code>lagomServer: LagomServer</code> programmatically. A typical application will use different service locators in different environments, in development, it will use the service locator provided by the Lagom development environment, while in production it will use whatever is appropriate for your production environment, such as the <code>ConductR</code> service locator implementation. So our main application cake leaves this method abstract so that it can mix in the right one depending on which mode it is in when the application gets loaded.</p>
+<p>Having created our application cake, we can now write an application loader. Play&rsquo;s mechanism for loading an application is for the application to provide an application loader. Play will pass some context information to this loader, such as a classloader, the running mode, and any extra configuration, so that the application can bootstrap itself. Lagom provides a convenient mechanism for implementing this, the <a href="api/com/lightbend/lagom/scaladsl/server/LagomApplicationLoader.html"><code>LagomApplicationLoader</code></a>:</p>
+<pre class="prettyprint"><code class="language-scala">import com.lightbend.lagom.scaladsl.server._
+import com.lightbend.lagom.scaladsl.api.ServiceLocator
+import com.lightbend.lagom.scaladsl.devmode.LagomDevModeComponents
+
+class HelloApplicationLoader extends LagomApplicationLoader {
+
+  override def loadDevMode(context: LagomApplicationContext) =
+    new HelloApplication(context) with LagomDevModeComponents
+
+  override def load(context: LagomApplicationContext) =
+    new HelloApplication(context) {
+      override def serviceLocator = ServiceLocator.NoServiceLocator
+    }
+
+  override def describeService = Some(readDescriptor[HelloService])
+}</code></pre>
+<p>The loader has two methods that must be implemented, <code>load</code> and <code>loadDevMode</code>. You can see that we&rsquo;ve mixed in different service locators for each method, we&rsquo;ve mixed in <a href="api/com/lightbend/lagom/scaladsl/devmode/LagomDevModeComponents.html"><code>LagomDevModeComponents</code></a> that provides the dev mode service locator and registers the services with it in dev mode, and in prod mode, for now, we&rsquo;ve simply provided <a href="api/com/lightbend/lagom/scaladsl/api/ServiceLocator$$NoServiceLocator$.html"><code>NoServiceLocator</code></a> as the service locator - this is a service locator that will return nothing for every lookup. We&rsquo;ll see in the <a href="ProductionOverview.html">deploying to production</a> documentation how to select the right service locator for production.</p>
+<p>A third method, <code>describeService</code>, is optional, but may be used by tooling, for example by <a href="ConductR.html">ConductR</a>, to discover what service APIs are offered by this service. The metadata read from here may in turn be used to configure service gateways and other components.</p>
+<p>Finally, we need to tell Play about our application loader. We can do that by adding the following configuration to <code>application.conf</code>:</p>
+<pre class="prettyprint"><code>play.application.loader = com.example.HelloApplicationLoader
+</code></pre><h2 id="Defining-your-own-components"><a class="section-marker" href="#Defining-your-own-components">§</a>Defining your own components</h2>
+<p>To create a complex Application (one that uses Persistence, Clustering, the Broker API, etc&hellip;) you will need to mix in many Components. It is a good choice to create small custom traits that mix in some of those Components and build the Application by mixing in your small custom traits. That will let you test parts of the complete Application in isolation.</p>
+<p>Imagine your Service consumes messages from a Broker topic where <code>Orders</code> are notified. Then your service stores that info into a database and does some processing with a final step of invoking a third party endpoint. If you only wanted to test the consuming of messages and proper storage you could create an <code>OrderConsumingComponent</code> trait and mix in <code>LagomServiceClientComponents</code> and <code>CassandraPersistenceComponents</code> so that you could consume the messages and store them. On your test you could extend your <code>OrderConsumingComponent</code> with <code>TestTopicComponents</code> that provides a mocked up broker so you didn&rsquo;t need to start a broker to run the tests. Finally, on your Application you would mix in the tested <code>OrderConsumingComponent</code> and <code>LagomKafkaClientComponents</code>.</p>
+<p>Lagom provides several Components. For this reference guide we grouped the components by feature:</p>
+<ul>
+  <li><a href="ScalaComponents.html#Service-Components">Service Components</a></li>
+  <li><a href="ScalaComponents.html#Persistence-and-Cluster-Components">Persistence and Cluster Components</a></li>
+  <li><a href="ScalaComponents.html#Broker-API-Components">Broker API Components</a></li>
+  <li><a href="ScalaComponents.html#Service-Locator-Components">Service Locator Components</a></li>
+  <li><a href="ScalaComponents.html#Third-party-Components">Third party Components</a></li>
+</ul>
+                </article>
+
+                
+                    
+                        
+                            <nav class="next-link">
+                                <a href="ServiceInfo.html"><strong>Next: </strong>
+                                    Service Metadata</a>
+                            </nav>
+                        
+                    
+                
+
+                
+                    <p class="edit-source">Found an error in this documentation? The source code for this page can be found
+                        <a href="https://github.com/lagom/lagom/edit/1.3.x/docs/manual/scala/guide/services/DependencyInjection.md">here</a>. Please feel free to edit and contribute a pull request. </p>
+                
+            </div>
+            <aside class="small-12 large-4 columns">
+                <nav class="side-menu">
+
+                    <input type="search" id="cross-docs-search" placeholder="Search..." />
+
+                    <label for="docs-version">Version:</label>
+                    <select id="docs-version">
+                    
+                        <option value="/documentation/1.3.x/scala/DependencyInjection.html" 
+                            selected="selected">1.3.x</option>
+                    
+                        <option value="/documentation/1.4.x/scala/DependencyInjection.html" >1.4.x</option>
+                    
+                        <option value="/documentation/1.5.x/scala/DependencyInjection.html" >1.5.x</option>
+                    
+                        <option value="/documentation/1.6.x/scala/DependencyInjection.html" >1.6.x</option>
+                    
+                        <option value="/documentation/current/scala/DependencyInjection.html" >current</option>
+                    
+                        <option value="/documentation/latest/scala/DependencyInjection.html" >latest</option>
+                    
+                    </select>
+
+                    <a href="/documentation/1.3.x/scala/api/index.html#com.lightbend.lagom.scaladsl.package" class="api-docs">
+                        API Documentation</a>
+
+                    
+                        <h3>Writing Lagom services</h3>
+                        <ul>
+                        
+                            
+                                <li><a href="ServiceDescriptors.html">Service descriptors</a></li>
+                            
+                        
+                            
+                                <li><a href="ServiceImplementation.html">Implementing services</a></li>
+                            
+                        
+                            
+                                <li class="current-page"><a href="DependencyInjection.html">Dependency Injection</a></li>
+                            
+                        
+                            
+                                <li><a href="ScalaComponents.html">Scala Components</a></li>
+                            
+                        
+                            
+                                <li><a href="ServiceInfo.html">Service Metadata</a></li>
+                            
+                        
+                            
+                                <li><a href="ServiceClients.html">Consuming services</a></li>
+                            
+                        
+                            
+                                <li><a href="TestingServices.html">Testing Services</a></li>
+                            
+                        
+                            
+                                <li><a href="MessageSerializers.html">Message serializers</a></li>
+                            
+                        
+                            
+                                <li><a href="HeaderFilters.html">Header Filters</a></li>
+                            
+                        
+                            
+                                <li><a href="ServiceErrorHandling.html">Error handling</a></li>
+                            
+                        
+                        </ul>
+                    
+                        <h3>Lagom reference guide</h3>
+                        <ul>
+                        
+                            
+                                <li><a href="ReferenceGuide.html">Reference Guide</a></li>
+                            
+                        
+                            
+                                <li><a href="LagomBuild.html">Configuring builds and the development environment</a></li>
+                            
+                        
+                            
+                                <li><a href="DevEnvironment.html">Running Lagom in development</a></li>
+                            
+                        
+                            
+                                <li class="current-page"><a href="ServiceDescriptors.html">Writing Lagom services</a></li>
+                            
+                        
+                            
+                                <li><a href="PersistentEntity.html">Writing persistent and clustered services</a></li>
+                            
+                        
+                            
+                                <li><a href="MessageBroker.html">Decouple services with a message broker</a></li>
+                            
+                        
+                            
+                                <li><a href="ProductionOverview.html">Running Lagom in production</a></li>
+                            
+                        
+                            
+                                <li><a href="Logging.html">Logging</a></li>
+                            
+                        
+                            
+                                <li><a href="Akka.html">Advanced topics</a></li>
+                            
+                        
+                        </ul>
+                    
+                        <h3>Scala Home</h3>
+                        <ul>
+                        
+                            
+                                <li><a href="Home.html">Home</a></li>
+                            
+                        
+                            
+                                <li><a href="WhatIsLagom.html">Welcome to Lagom</a></li>
+                            
+                        
+                            
+                                <li><a href="Installation.html">Getting started with Lagom</a></li>
+                            
+                        
+                            
+                                <li><a href="CoreConcepts.html">Lagom core concepts</a></li>
+                            
+                        
+                            
+                                <li class="current-page"><a href="ReferenceGuide.html">Lagom reference guide</a></li>
+                            
+                        
+                            
+                                <li><a href="Migration13.html">Lagom releases</a></li>
+                            
+                        
+                        </ul>
+                    
+                </nav>
+            </aside>
+        </div>
+    </div>
+
+
+                    <footer>
+                        <section class="fw-wrapper lb-grey-dkr support">
+                            <div class="row">
+                                <div class="small-12 medium-6 columns">
+                                    <svg class="svg-icon svg-icon-chat" version="1.1" id="Chat" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
+<path fill="#ffffff" d="M5.8,12.2V6H2C0.9,6,0,6.9,0,8v6c0,1.1,0.9,2,2,2h1v3l3-3h5c1.1,0,2-0.9,2-2v-1.82c-0.064,0.014-0.132,0.021-0.2,0.021h-7
+	V12.2z M18,1H9C7.9,1,7,1.9,7,3v8h7l3,3v-3h1c1.1,0,2-0.899,2-2V3C20,1.9,19.1,1,18,1z"/>
+</svg>
+
+                                    <h3>Community support</h3>
+                                    <ul>
+                                        <li><a href="https://discuss.lagomframework.com">Discuss Lagom</a></li>
+                                        <li><a href="https://stackoverflow.com/questions/tagged/lagom">Stack Overflow</a></li>
+                                    </ul>
+                                </div>
+                                
+                            </div>
+                        </section>
+
+                        <section class="fw-wrapper lb-grey links">
+                            <div class="row">
+                                <div class="small-12 medium-6 large-3 columns">
+                                    <h3>Lagom</h3>
+                                    <ul class="no-bullet">
+                                        <li><a href="/blog">Blog</a></li>
+                                        <li><a href="/documentation/">Documentation</a></li>
+                                        <li><a href="/faq.html">FAQ</a></li>
+                                        <li><a href="/support.html">Support</a></li>
+                                    </ul>
+                                </div>
+                                <div class="small-12 medium-6 large-3 columns">
+                                    <h3>Community links</h3>
+                                    <ul>
+                                        <li><a href="https://www.eventbrite.com/directory/?q=lagom&amp;loc=Worldwide">Events <em>via Eventbrite</em></a></li>
+                                        <li><a href="http://www.indeed.com/jobs?q=%22lagom%22&amp;l=">Jobs <em>via Indeed</em></a></li>
+                                    </ul>
+                                </div>
+                                <div class="small-12 medium-6 large-3 columns">
+                                    <h3>Code &amp; contribution</h3>
+                                    <ul>
+                                        <li><a href="https://github.com/lagom/lagom/issues">Bug tracker <em>GitHub</em></a></li>
+                                        <li><a href="/get-involved.html">Get involved</a></li>
+                                    </ul>
+                                </div>
+                                <div class="small-12 medium-6 large-3 columns">
+                                    <h3>Social networks</h3>
+                                    <ul>
+                                        <li><a href="https://twitter.com/lagom"><span>Twitter</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="fw-wrapper lgm-purple-dkr credits">
+                            <div class="row">
+                                <div class="small-12 medium-3 columns">
+                                    <a href="/" class="logo"><img src="/images/logos/lagom-reverse.svg"></a>
+                                </div>
+                                <div class="small-12 medium-3 columns">
+                                    <a href="https://www.lightbend.com" class="partner"><img src="/images/logos/lightbend-reverse.svg"></a>
+                                </div>
+                                <div class="small-12 medium-6 columns">
+                                    <p>Lagom is released under the Apache 2 License</p>
+                                </div>
+                            </div>
+                            <div class="row lb-legal">
+                                <div class="small-12 columns">
+                                    <p>
+                                        &copy; Lightbend 2018 - 2025 | 
+                                        <a href="https://www.lightbend.com/legal/licenses" target="_blank">Licenses</a> | 
+                                        <a href="https://www.lightbend.com/legal/terms" target="_blank">Terms</a> | 
+                                        <a href="https://www.lightbend.com/legal/privacy" target="_blank">Privacy Policy</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </section>
+
+                    </footer>
+
+                </div>
+            </div>
+        </div>
+    </body>
+    <script src="/4f4ff39f69a5c5f34c7957a8dead27652480e264-all-scripts-concat.js"></script>
+     
+    <script type="text/javascript" src="//cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/autocomplete.js/0/autocomplete.min.js"></script>
+        <!-- Cross-site search. This is using Algolia's autocomplete.js  -->
+    <script>
+            var clientLagom = algoliasearch('VL9SRZN02O', 'f917bb0ebcb845db99a96bd01e281393');
+            var lagomIndex = clientLagom.initIndex('lagomframework');
+
+            var displayValue = function (suggestion, level) {
+                if (level === 0)
+                    return suggestion._highlightResult.hierarchy.lvl0.value;
+                if (suggestion._highlightResult.hierarchy['lvl' + level] !== undefined) {
+                    return suggestion._highlightResult.hierarchy['lvl' + level].value ;
+                } else {
+                    return displayValue(suggestion, level - 1) ;
+                }
+            };
+            var displaySnippet = function (suggestion) {
+                if (typeof suggestion._snippetResult !== 'undefined') {
+                    return '<div class="algolia-docsearch-suggestion--text">' + suggestion._snippetResult.content.value + '</div>'
+                } else {
+                    return ''
+                }
+            }
+
+            var wrap = function (content, wrapper) {
+                if (typeof wrapper !== 'undefined') {
+                    return '<span class=' + wrapper + '>' + content + '</span>';
+                } else {
+                    return content;
+                }
+            }
+
+            var buildIndexSettings = function (_indexObj, _hitsPerPage, _faceFilters, title, useFooter, wrapper) {
+                var _header = wrap('<span class="algolia-docsearch-suggestion algolia-docsearch-suggestion__main algolia-docsearch-suggestion__secondary algolia-docsearch-suggestion--category-header ">' + title + '</span>', wrapper);
+                var _templates = {
+                    header: _header,
+                    suggestion: function (suggestion) {
+                        var suggestionHtml = '<div class="algolia-docsearch-suggestion algolia-docsearch-suggestion__secondary" style="white-space: normal;">' +
+                                '<div class="algolia-docsearch-suggestion--wrapper">' +
+                                '<div class="algolia-docsearch-suggestion--subcategory-column ">' +
+                                '<span class="algolia-docsearch-suggestion--subcategory-column-text">' + displayValue(suggestion, 0) + '</span>' +
+                                '</div>' +
+                                '<div class="algolia-docsearch-suggestion--content">' +
+                                '<div class="algolia-docsearch-suggestion--subcategory-inline ">' + displayValue(suggestion, 1) + '</div>' +
+                                '<div class="algolia-docsearch-suggestion--title algolia-docsearch-suggestion--duplicate-content">' + displayValue(suggestion, 2) + '</div>' +
+                                displaySnippet(suggestion) +
+                                '</div>' +
+                                '</div>' +
+                                '</div>';
+                        return wrap(suggestionHtml, wrapper)
+                    }
+                };
+                if (useFooter) {
+                    _templates['footer'] = '<div class="algolia-docsearch-footer"><a class="algolia-docsearch-footer--logo" href="https://www.algolia.com/docsearch">Algolia</a></div>';
+                }
+
+                return {
+                    source: autocomplete.sources.hits(
+                            _indexObj,
+                            {hitsPerPage: _hitsPerPage, facetFilters: _faceFilters}
+                    )
+                    ,
+                    templates: _templates
+                };
+
+            };
+
+            var lagomFacetFilters = ['version:1.3.x'];
+
+            var useScalaFacetFilter = window.location.href.split('/').includes("scala");
+            if (useScalaFacetFilter) {
+                lagomFacetFilters.push('language:scala');
+            } else {
+                lagomFacetFilters.push('language:java');
+            }
+
+
+            autocomplete('#cross-docs-search',
+                    {hint: false},
+                    [
+                        buildIndexSettings(lagomIndex, 10, lagomFacetFilters, "Lagom Documentation", false)
+                    ]
+            ).on('autocomplete:selected', function (event, suggestion, dataset) {
+                location.href = suggestion.url;
+            });
+    </script>
+
+
+    
+
+</html>
+
